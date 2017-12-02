@@ -25,6 +25,8 @@ Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugi
   
 ## config.yml example
 
+Make Sure to include all mobs. Previous builds had few missing.
+
 The following configuration sets mobs AI enabled and the auto spawn task will be triggered all 300 ticks.
 It's configured to spawn only wolfes:
 
