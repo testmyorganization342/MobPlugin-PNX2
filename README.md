@@ -7,14 +7,13 @@ Development: **[kniffo80](https://github.com/kniffo80)**
 MobPlugin is a plugin that implements the mob entities for MCPE including movement, aggression etc.
 
 ## Notice
-#### Welcome Github issue!
 This plug-in is in development. Therefore, It is possible to function abnormally.
 
 [![Nukkit.io](https://img.shields.io/badge/Nukkit%20MobPlugin-Download-yellow.svg)](https://forums.nukkit.io/resources/mobplugin.155/)
 [![Discord](https://discordapp.com/api/guilds/331619998059593738/widget.png)](https://discord.gg/tDfqkNB)
 
 # Credits
-Credits go to Team-SW! They have a nice plugin already made. I used it and adapt it for 0.16.
+Credits go to Team-SW! They have a nice plugin already made.
 
 # Plugin Example configuration
 Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugin".
