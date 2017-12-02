@@ -4,9 +4,9 @@ version: "1.0"
 api: ["1.0.0"]
 
 load: STARTUP
-author: kniffo80
-description: Implement Entity AI from scratch beginning with 0.16.x
-website: https://github.com/kniffo80/NukkitMobPlugin
+author: kniffo80, matt404, augesrob, PetteriM1
+description: Mob plugin for Nukkit
+website: https://github.com/Nukkit-coders/mob-plugin
 commands: []
 
 commands:
