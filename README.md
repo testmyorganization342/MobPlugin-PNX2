@@ -2,6 +2,7 @@
 Development: **[kniffo80](https://github.com/kniffo80)**
              **[matt404](https://github.com/matt404)**
              **[augesrob](https://github.com/augesrob)**
+             **[PetteriM1](https://github.com/PetteriM1)**
 
 MobPlugin is a plugin that implements the mob entities for MCPE including movement, aggression etc.
 
@@ -17,15 +18,12 @@ Credits go to Team-SW! They have a nice plugin already made. I used it and adapt
 
 # Plugin Example configuration
 Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugin".
-#### Example:
-  /usr/share/nukkit/plugins/MobPlugin-0.0.2-SNAPSHOT.jar
 
-Then you have to create a folder in plugin folder with the name of the plugin and place the config.yml there ("${NUKKIT_HOME}/plugin/MobPlugin").
 #### Example:
+  /usr/share/nukkit/plugins/MobPlugin.jar
+  
   /usr/share/nukkit/plugins/MobPlugin/config.yml
-
-When Nukkit Server starts up and the plugin is activated, the config.yml is read and evaluated by the plugin.
-
+  
 ## config.yml example
 
 The following configuration sets mobs AI enabled and the auto spawn task will be triggered all 300 ticks.
