@@ -61,11 +61,13 @@ public class AutoSpawnTask implements Runnable {
                 // offlinePlayers.add((OfflinePlayer) foundPlayer);
             }
         }
-        
-        for (IEntitySpawner spawner : entitySpawners) {
+
+        if (onlinePlayers.size() > 0 || offlinePlayers.size() > 0) {
+            for (IEntitySpawner spawner : entitySpawners) {
                 spawner.spawn(onlinePlayers, offlinePlayers);
             }
         }
+    }
 
     private void prepareSpawnerClasses() {
         entitySpawners.add(new BatSpawner(this, this.pluginConfig));
