@@ -13,7 +13,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
-import de.kniffo80.mobplugin.FileLogger;
 import de.kniffo80.mobplugin.entities.utils.Utils;
 
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             while (tokenizer.hasMoreTokens()) {
                 disabledSpawnWorlds.add(tokenizer.nextToken());
             }
-            FileLogger.debug(String.format("[%s] Disabled spawn for the following worlds: %s", getLogprefix(), disabledSpawnWorlds));
         }
     }
 
@@ -69,7 +67,6 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 }
             }
         } else {
-            FileLogger.debug(String.format("[%s] Spawn not allowed because of difficulty [entityName:%s]", getLogprefix(), getEntityName()));
         }
 
     }
