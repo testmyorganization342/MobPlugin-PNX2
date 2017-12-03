@@ -10,14 +10,14 @@ website: https://github.com/Nukkit-coders/mob-plugin
 commands: []
 
 commands:
-  mob:
+  mob spawn:
     description: Spawn a simple mob to the player, that is using this command
     aliases: ["mob"]
     usage: "/mob spawn <mob_name>"
     permission: mob-plugin.command
-  removemobs:
+  mob removeall:
     description: Remove all living mobs
-    aliases: ["removeall"]
+    aliases: ["mob removeall"]
     usage: "/mob removeall"
     permission: mob-plugin.command
 permissions:
