@@ -104,7 +104,7 @@ public class MobPlugin extends PluginBase implements Listener {
         String output = "";
 
         if (sub.length == 0) {
-            output += "no command given. Use 'mob spawn Wolf <opt:playername(if spawned by server)>' e.g.";
+            output += "No command given. Usage: /mob spawn <mob_name> <opt:player_name>";
         } else {
             switch (sub[0]) {
                 case "spawn":
@@ -417,7 +417,6 @@ public class MobPlugin extends PluginBase implements Listener {
     public void PlayerMouseOverEntityEvent(PlayerMouseOverEntityEvent ev) {
         if (this.counter > 10) {
             counter = 0;
-            FileLogger.debug(String.format("Received PlayerMouseOverEntityEvent [entity:%s]", ev.getEntity()));
             // wolves can be tamed using bones
             if (ev != null && ev.getEntity() != null && ev.getPlayer() != null && ev.getEntity().getNetworkId() == Wolf.NETWORK_ID && ev.getPlayer().getInventory().getItemInHand().getId() == Item.BONE) {
                 // check if already owned and tamed ...
@@ -442,6 +441,5 @@ public class MobPlugin extends PluginBase implements Listener {
     //
     // @EventHandler
     // public void PlayerMouseRightEntityEvent(PlayerMouseRightEntityEvent ev) {
-    // FileLogger.debug(String.format("Received PlayerMouseRightEntityEvent [entity:%s]", ev.getEntity()));
     // }
 }

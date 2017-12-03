@@ -10,7 +10,7 @@ MobPlugin is a plugin that implements the mob entities for MCPE including moveme
 This plug-in is in development. Therefore, It is possible to function abnormally.
 
 [![Nukkit.io](https://img.shields.io/badge/Nukkit%20MobPlugin-Download-yellow.svg)](https://forums.nukkit.io/resources/mobplugin.155/)
-[![Discord](https://discordapp.com/api/guilds/331619998059593738/widget.png)](https://discord.gg/tDfqkNB)
+[![Discord](https://discordapp.com/api/guilds/386601650963349504/widget.png)](https://discord.gg/rBew6kc)
 
 # Credits
 Credits go to Team-SW! They have a nice plugin already made.
@@ -25,8 +25,12 @@ Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugi
   
 ## config.yml example
 
+Make Sure to include all mobs. Previous builds had few missing.
+
 The following configuration sets mobs AI enabled and the auto spawn task will be triggered all 300 ticks.
 It's configured to spawn only wolfes:
+
+Recommended Settings: Change the 0 to 1 and nothing higher.
 
 ```yaml
 entities:
