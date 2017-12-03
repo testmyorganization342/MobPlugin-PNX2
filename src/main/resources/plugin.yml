@@ -20,6 +20,11 @@ commands:
     aliases: ["mob removeall"]
     usage: "/mob removeall"
     permission: mob-plugin.command
+  mob removeitems:
+    description: Remove all items from ground
+    aliases: ["mob removeitems"]
+    usage: "/mob removeitems"
+    permission: mob-plugin.command    
 permissions:
   mob-plugin.command:
     description: ""
