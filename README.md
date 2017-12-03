@@ -30,7 +30,10 @@ Make Sure to include all mobs. Previous builds had few missing.
 The following configuration sets mobs AI enabled and the auto spawn task will be triggered all 300 ticks.
 It's configured to spawn only wolfes:
 
-Recommended Settings: Change the 0 to 1 and nothing higher.
+#### Recommended Settings: 
+Change the 0 to 1 and nothing higher.
+0 = Disabled
+1 = allow them to spawn
 
 ```yaml
 entities:
