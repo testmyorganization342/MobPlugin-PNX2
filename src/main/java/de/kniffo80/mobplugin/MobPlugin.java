@@ -104,7 +104,7 @@ public class MobPlugin extends PluginBase implements Listener {
         String output = "";
 
         if (sub.length == 0) {
-            output += "no command given. Use 'mob spawn Wolf <opt:playername(if spawned by server)>' e.g.";
+            output += "No command given. Usage: /mob spawn <mob_name> <opt:player_name>";
         } else {
             switch (sub[0]) {
                 case "spawn":
