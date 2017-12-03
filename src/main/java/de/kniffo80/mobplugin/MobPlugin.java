@@ -331,7 +331,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent ev) {
-        if (ev.getFace().getZOffset() == 255 || ev.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+        if (ev.getFace() == null || ev.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
