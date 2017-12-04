@@ -10,6 +10,7 @@ import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Explosion;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.sound.TNTPrimeSound;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
@@ -137,9 +138,12 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             double z = this.target.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
-            double distance = Math.sqrt(Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2));
+            double distance = target.distance(this);
             if (distance <= 4.5) {
                 if (target instanceof EntityCreature) {
+                    if (bombTime == 0) {
+                        this.level.addSound(new TNTPrimeSound(this.add(0, getEyeHeight())));
+                    }
                     this.bombTime += tickDiff;
                     if (this.bombTime >= 64) {
                         this.explode();
@@ -219,6 +223,10 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience
+    }
+    
+    public int getMaxFallHeight() {
+        return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F); //TODO: change this to attack target only
     }
 
 }
