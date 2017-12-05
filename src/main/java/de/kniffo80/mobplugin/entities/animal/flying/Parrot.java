@@ -5,6 +5,10 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.entities.animal.FlyingAnimal;
+import de.kniffo80.mobplugin.entities.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Parrot extends FlyingAnimal {
     
@@ -42,12 +46,19 @@ public class Parrot extends FlyingAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[0];
+         List<Item> drops = new ArrayList<>();
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+            int featherDrop = Utils.rand(1, 3);
+            for (int i = 0; i < featherDrop; i++) {
+                drops.add(Item.get(Item.FEATHER, 0, 1));
+            }
+        }
+        return drops.toArray(new Item[drops.size()]);
     }
     
     @Override
     public int getKillExperience() {
-        return 4;
+        return Utils.rand(1, 4);
     }
     
 }
