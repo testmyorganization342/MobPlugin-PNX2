@@ -11,6 +11,8 @@ This plug-in is in development. Therefore, It is possible to function abnormally
 
 [![Nukkit.io](https://img.shields.io/badge/Nukkit%20MobPlugin-Download-yellow.svg)](https://forums.nukkit.io/resources/mobplugin.155/)
 [![Discord](https://discordapp.com/api/guilds/386601650963349504/widget.png)](https://discord.gg/rBew6kc)
+[![Github All Releases](https://img.shields.io/github/downloads/Nukkit-coders/mob-plugin/total.svg)](https://github.com/Nukkit-coders/mob-plugin/releases)
+[![GitHub release](https://img.shields.io/github/release/Nukkit-coders/mob-plugin.svg)](https://github.com/Nukkit-coders/mob-plugin/releases/latest)
 
 # Credits
 Credits go to Team-SW! They have a nice plugin already made.
