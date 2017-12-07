@@ -1,3 +1,6 @@
+# Switched Our Focus to NovaMobs
+https://github.com/Nukkit-coders/NovaMobs
+
 # Nukkit Mob Plugin
 Development: **[kniffo80](https://github.com/kniffo80)**
              **[matt404](https://github.com/matt404)**
