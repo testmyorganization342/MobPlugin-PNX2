@@ -181,17 +181,22 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Cow.class.getSimpleName(), Cow.class);
         Entity.registerEntity(Donkey.class.getSimpleName(), Donkey.class);
         Entity.registerEntity(Horse.class.getSimpleName(), Horse.class);
+        Entity.registerEntity(Llama.class.getSimpleName(), Llama.class);
         Entity.registerEntity(Mooshroom.class.getSimpleName(), Mooshroom.class);
         Entity.registerEntity(Mule.class.getSimpleName(), Mule.class);
         Entity.registerEntity(Ocelot.class.getSimpleName(), Ocelot.class);
+        Entity.registerEntity(Parrot.class.getSimpleName(), Parrot.class);
         Entity.registerEntity(Pig.class.getSimpleName(), Pig.class);
+        Entity.registerEntity(PolarBear.class.getSimpleName(), PolarBear.class);
         Entity.registerEntity(Rabbit.class.getSimpleName(), Rabbit.class);
         Entity.registerEntity(Sheep.class.getSimpleName(), Sheep.class);
         Entity.registerEntity(SkeletonHorse.class.getSimpleName(), SkeletonHorse.class);
         Entity.registerEntity(Squid.class.getSimpleName(), Squid.class);
+        Entity.registerEntity(Villager.class.getSimpleName(), Villager.class);
         Entity.registerEntity(ZombieHorse.class.getSimpleName(), ZombieHorse.class);
 
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
+        Entity.registerEntity(EnderDragon.class.getSimpleName(), EnderDragon.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);
         Entity.registerEntity(CaveSpider.class.getSimpleName(), CaveSpider.class);
         Entity.registerEntity(Creeper.class.getSimpleName(), Creeper.class);
