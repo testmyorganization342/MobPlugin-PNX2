@@ -12,7 +12,7 @@ import de.kniffo80.mobplugin.entities.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Llama extends WalkingAnimal implements EntityRideable {
+public class Llama extends WalkingAnimal {
 
     public static final int NETWORK_ID = 29;
 
