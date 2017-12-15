@@ -47,7 +47,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
      * @see cn.nukkit.entity.ai.IEntitySpawner#spawn(java.util.List, java.util.List)
      */
     @Override
-    public void spawn(List<Player> onlinePlayers, List<OfflinePlayer> offlinePlayers) {
+    public void spawn(List<Player> onlinePlayers) {
         // first spawn everything for online players ...
         if (isSpawnAllowedByDifficulty()) {
             SpawnResult lastSpawnResult = null;
@@ -57,13 +57,6 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                     if (lastSpawnResult.equals(SpawnResult.MAX_SPAWN_REACHED)) {
                         break;
                     }
-                }
-            }
-            if (lastSpawnResult == null || !lastSpawnResult.equals(SpawnResult.MAX_SPAWN_REACHED)) {
-                for (OfflinePlayer player : offlinePlayers) {
-                    lastSpawnResult = spawn(player);
-                    // stop spawning because max spawn is reached!
-                    break;
                 }
             }
         } else {

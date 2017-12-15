@@ -1,7 +1,6 @@
 package de.kniffo80.mobplugin;
 
 import cn.nukkit.IPlayer;
-import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
@@ -46,25 +45,19 @@ public class AutoSpawnTask implements Runnable {
 
     @Override
     public void run() {
-        // when any player is online, we want to spawn in his range. if no player is online, we spawn for players, that
-        // were online in the last day
         List<IPlayer> players = plugin.getAllRegisteredPlayers();
         List<Player> onlinePlayers = new ArrayList<>();
-        List<OfflinePlayer> offlinePlayers = new ArrayList<>();
 
-        // organize lists for later use
         for (IPlayer foundPlayer : players) {
             if (foundPlayer instanceof Player) {
                 onlinePlayers.add((Player) foundPlayer);
             } else {
-                // as offline player is not working currently, we need to only submit online players ...
-                // offlinePlayers.add((OfflinePlayer) foundPlayer);
             }
         }
 
-        if (onlinePlayers.size() > 0 || offlinePlayers.size() > 0) {
+        if (onlinePlayers.size() > 0) {
             for (IEntitySpawner spawner : entitySpawners) {
-                spawner.spawn(onlinePlayers, offlinePlayers);
+                spawner.spawn(onlinePlayers);
             }
         }
     }

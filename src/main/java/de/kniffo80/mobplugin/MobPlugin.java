@@ -6,7 +6,6 @@
 package de.kniffo80.mobplugin;
 
 import cn.nukkit.IPlayer;
-import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -263,26 +262,12 @@ public class MobPlugin extends PluginBase implements Listener {
     /**
      * Returns all registered players to the current server
      * 
-     * @return a {@link List} containing a number of {@link IPlayer} elements, which can be {@link Player} or {@link OfflinePlayer}
+     * @return a {@link List} containing a number of {@link IPlayer} elements, which can be {@link Player}
      */
     public List<IPlayer> getAllRegisteredPlayers() {
         List<IPlayer> playerList = new ArrayList<>();
         for (Player player : this.getServer().getOnlinePlayers().values()) {
             playerList.add(player);
-        }
-        // now get all stores offline players ...
-        File playerDirectory = new File(this.getServer().getDataPath() + "players");
-        File entry;
-        String[] storedFiles = playerDirectory.list();
-        if (storedFiles != null && storedFiles.length > 0) {
-            for (String file : storedFiles) {
-                entry = new File(file);
-                String filename = entry.getName();
-                filename = filename.substring(0, filename.indexOf(".dat"));
-                if (!isPlayerAlreadyInList(filename, playerList)) {
-                    playerList.add(new OfflinePlayer(this.getServer(), filename));
-                }
-            }
         }
         return playerList;
     }
@@ -409,7 +394,6 @@ public class MobPlugin extends PluginBase implements Listener {
         Block block = ev.getBlock();
         if ((block.getId() == Block.STONE || block.getId() == Block.STONE_BRICK || block.getId() == Block.STONE_WALL || block.getId() == Block.STONE_BRICK_STAIRS)
             && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
-            // TODO: 돌만 붓시면 되긋나
             /*
              * Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5)); if(entity != null){ entity.spawnToAll(); }
              */
