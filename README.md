@@ -1,6 +1,3 @@
-# Switched Our Focus to NovaMobs
-https://github.com/Nukkit-coders/NovaMobs
-
 # Nukkit Mob Plugin
 Development: **[kniffo80](https://github.com/kniffo80)**
              **[matt404](https://github.com/matt404)**
@@ -17,9 +14,6 @@ This plug-in is in development. Therefore, It is possible to function abnormally
 [![Github All Releases](https://img.shields.io/github/downloads/Nukkit-coders/mob-plugin/total.svg)](https://github.com/Nukkit-coders/mob-plugin/releases)
 [![GitHub release](https://img.shields.io/github/release/Nukkit-coders/mob-plugin.svg)](https://github.com/Nukkit-coders/mob-plugin/releases/latest)
 
-# Credits
-Credits go to Team-SW! They have a nice plugin already made.
-
 # Plugin Example configuration
 Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugin".
 
@@ -33,25 +27,24 @@ Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugi
 Make Sure to include all mobs. Previous builds had few missing.
 
 The following configuration sets mobs AI enabled and the auto spawn task will be triggered all 300 ticks.
-It's configured to spawn only wolfes:
 
 #### Recommended Settings: 
 Change the 0 to 1 and nothing higher.
 0 = Disabled
-1 = allow them to spawn
+1 = Allow them to spawn
 
 ```yaml
 entities:
   mob-ai: true
   auto-spawn-tick: 300
-  worlds-spawn-disabled: 
+  worlds-spawn-disabled: "exampleworld"
 
 max-spawns:
   bat: 0
   blaze: 0
   cave-spider: 0
-  chicken: 0
-  cow: 0
+  chicken: 1
+  cow: 1
   creeper: 0
   donkey: 0
   enderman: 0
@@ -61,18 +54,18 @@ max-spawns:
   mooshroom: 0
   mule: 0
   ocelot: 0
-  pig: 0
+  pig: 1
   pig-zombie: 0
   rabbit: 0
   silverfish: 0
-  sheep: 0
+  sheep: 1
   skeleton: 0
   skeleton-horse: 0
   snow-golem: 0
   spider: 0
   squid: 0
   witch: 0
-  wolf: 1
+  wolf: 0
   zombie: 0
   zombie-horse: 0
   zombie-villager: 0
