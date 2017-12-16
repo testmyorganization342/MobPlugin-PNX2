@@ -12,7 +12,7 @@ commands:
   mob spawn:
     description: Spawn a mob
     aliases: ["mob"]
-    usage: "/mob spawn <mob>"
+    usage: "/mob spawn <mob> <opt:player>"
     permission: mob-plugin.command
   mob removeall:
     description: Remove all living mobs
