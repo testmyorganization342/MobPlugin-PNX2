@@ -6,7 +6,6 @@
 package de.kniffo80.mobplugin.entities.autospawn;
 
 import cn.nukkit.IPlayer;
-import cn.nukkit.OfflinePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
@@ -48,7 +47,6 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
      */
     @Override
     public void spawn(List<Player> onlinePlayers) {
-        // first spawn everything for online players ...
         if (isSpawnAllowedByDifficulty()) {
             SpawnResult lastSpawnResult = null;
             for (Player player : onlinePlayers) {
