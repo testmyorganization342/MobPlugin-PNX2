@@ -8,7 +8,6 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.entities.animal.WalkingAnimal;
 import de.kniffo80.mobplugin.entities.utils.Utils;
-import de.kniffo80.mobplugin.items.MobPluginItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class Sheep extends WalkingAnimal {
             drops.add(Item.get(Item.WOOL, 0, 1)); // each time drops 1 wool
             int muttonDrop = Utils.rand(1, 3); // drops 1-2 muttons / cooked muttons
             for (int i=0; i < muttonDrop; i++) {
-                drops.add(Item.get(this.isOnFire() ? MobPluginItems.COOKED_MUTTON : MobPluginItems.RAW_MUTTON, 0, 1));
+                drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);

@@ -12,13 +12,7 @@ import cn.nukkit.item.ItemEdible;
  */
 public abstract class MobPluginItems extends ItemEdible {
 
-    public static final int ENDER_PEARL   = 368;
-
     public static final int INK_SAC       = 351;
-
-    public static final int RAW_MUTTON    = 423;
-
-    public static final int COOKED_MUTTON = 424;
 
     public MobPluginItems(int networkId, Integer meta, int count, String name) {
         super(networkId, meta, count, name);

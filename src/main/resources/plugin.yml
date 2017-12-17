@@ -9,22 +9,13 @@ description: Mob plugin for Nukkit
 website: https://github.com/Nukkit-coders/mob-plugin
 
 commands:
-  mob spawn:
-    description: Spawn a mob
+  mob:
+    description: MobPlugin main command
     aliases: ["mob"]
-    usage: "/mob spawn <mob> <opt:player>"
-    permission: mob-plugin.command
-  mob removeall:
-    description: Remove all living mobs
-    aliases: ["mob removeall"]
-    usage: "/mob removeall"
-    permission: mob-plugin.command
-  mob removeitems:
-    description: Remove all items from ground
-    aliases: ["mob removeitems"]
-    usage: "/mob removeitems"
-    permission: mob-plugin.command    
+    usage: /mob
+    permission: mobplugin.command  
+    
 permissions:
-  mob-plugin.command:
+  novamobs.mob:
     description: ""
     default: op

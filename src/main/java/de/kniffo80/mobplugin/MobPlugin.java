@@ -24,8 +24,6 @@ import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.food.Food;
-import cn.nukkit.item.food.FoodNormal;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
@@ -70,7 +68,6 @@ public class MobPlugin extends PluginBase implements Listener {
     public void onLoad() {
         registerEntities();
         registerItems();
-        Utils.logServerInfo("Plugin loaded successfully.");
     }
 
     @Override
@@ -90,7 +87,7 @@ public class MobPlugin extends PluginBase implements Listener {
             this.getServer().getScheduler().scheduleRepeatingTask(new AutoSpawnTask(this), spawnDelay, true);
         }
 
-        Utils.logServerInfo(String.format("Plugin enabling successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
+        Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
     }
 
     @Override
@@ -99,19 +96,23 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command cmd, String label, String[] sub) {
-        String output = "";
+    public boolean onCommand(CommandSender commandSender, cn.nukkit.command.Command cmd, String label, String[] args) {
+        if (cmd.getName().toLowerCase().equals("mob")) {
 
-        if (sub.length == 0) {
-            output += "No command given. Usage: /mob spawn <mob_name> <opt:player_name>";
+        if (args.length == 0) {
+            commandSender.sendMessage("-- MobPlugin 1.0 --");
+            commandSender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
+            commandSender.sendMessage("/mob removeall - Remove all living mobs");
+            commandSender.sendMessage("/mob removeitems - Remove all items from ground");
         } else {
-            switch (sub[0]) {
+            switch (args[0]) {
+
                 case "spawn":
-                    String mob = sub[1];
+                    String mob = args[1];
                     Player playerThatSpawns = null;
 
-                    if (sub.length == 3) {
-                        playerThatSpawns = this.getServer().getPlayer(sub[2]);
+                    if (args.length == 3) {
+                        playerThatSpawns = this.getServer().getPlayer(args[2]);
                     } else {
                         playerThatSpawns = (Player) commandSender;
                     }
@@ -122,12 +123,12 @@ public class MobPlugin extends PluginBase implements Listener {
                         Entity ent;
                         if ((ent = MobPlugin.create(mob, pos)) != null) {
                             ent.spawnToAll();
-                            output += "spawned " + mob + " to " + playerThatSpawns.getName();
+                            commandSender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
                         } else {
-                            output += "Unable to spawn " + mob;
+                            commandSender.sendMessage("Unable to spawn " + mob);
                         }
                     } else {
-                        output += "Unknown player " + (sub.length == 3 ? sub[2] : ((Player) commandSender).getName());
+                        commandSender.sendMessage("Unknown player " + (args.length == 3 ? args[2] : ((Player) commandSender).getName()));
                     }
                     break;
                 case "removeall":
@@ -140,7 +141,7 @@ public class MobPlugin extends PluginBase implements Listener {
                             }
                         }
                     }
-                    output += "Removed " + count + " entities from all levels.";
+                    commandSender.sendMessage("Removed " + count + " entities from all levels.");
                     break;
                 case "removeitems":
                     count = 0;
@@ -152,16 +153,16 @@ public class MobPlugin extends PluginBase implements Listener {
                             }
                         }
                     }
-                    output += "Removed " + count + " items on ground from all levels.";
+                    commandSender.sendMessage("Removed " + count + " items on ground from all levels.");
                     break;
                 default:
-                    output += "Unkown command.";
+                    commandSender.sendMessage("Unkown command.");
                     break;
+                }
             }
         }
-
-        commandSender.sendMessage(output);
         return true;
+
     }
 
     /**
@@ -214,26 +215,12 @@ public class MobPlugin extends PluginBase implements Listener {
 
         // register the mob spawner (which is probably not needed anymore)
         BlockEntity.registerBlockEntity("MobSpawner", BlockEntitySpawner.class);
-        Utils.logServerInfo("registerEntites: done.");
     }
 
     private void registerItems() {
-        // register the new items
-        Item.addCreativeItem(new ItemMuttonCooked());
-        Item.addCreativeItem(new ItemMuttonRaw());
-        Item.addCreativeItem(new ItemEnderPearl());
         Item.addCreativeItem(new ItemInkSac());
 
-        // register the items as food
-        Food.registerFood(new FoodNormal(6, 9.6F).addRelative(MobPluginItems.COOKED_MUTTON), this);
-        Food.registerFood(new FoodNormal(2, 1.2F).addRelative(MobPluginItems.RAW_MUTTON), this);
-
-        Item.list[MobPluginItems.COOKED_MUTTON] = ItemMuttonCooked.class;
-        Item.list[MobPluginItems.RAW_MUTTON] = ItemMuttonRaw.class;
-        Item.list[MobPluginItems.ENDER_PEARL] = ItemEnderPearl.class;
         Item.list[MobPluginItems.INK_SAC] = ItemInkSac.class;
-
-        Utils.logServerInfo("registerItems: done.");
     }
 
     /**
