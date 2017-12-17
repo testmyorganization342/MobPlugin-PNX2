@@ -12,7 +12,7 @@ import cn.nukkit.item.ItemEdible;
  */
 public abstract class MobPluginItems extends ItemEdible {
 
-    public static final int ENDER_PEARL   = 87;
+    public static final int ENDER_PEARL   = 368;
 
     public static final int INK_SAC       = 351;
 
