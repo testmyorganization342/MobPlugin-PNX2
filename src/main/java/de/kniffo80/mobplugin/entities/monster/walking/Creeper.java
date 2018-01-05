@@ -10,7 +10,7 @@ import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Explosion;
 import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.level.sound.TNTPrimeSound;
+import cn.nukkit.level.Sound;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
@@ -142,7 +142,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             if (distance <= 4.5) {
                 if (target instanceof EntityCreature) {
                     if (bombTime == 0) {
-                        this.level.addSound(new TNTPrimeSound(this.add(0, getEyeHeight())));
+                        this.level.addSound(this, Sound.RANDOM_FUSE);
                     }
                     this.bombTime += tickDiff;
                     if (this.bombTime >= 64) {
