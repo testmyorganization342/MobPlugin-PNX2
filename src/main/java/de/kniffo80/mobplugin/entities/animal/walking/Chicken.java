@@ -16,8 +16,6 @@ public class Chicken extends WalkingAnimal {
 
     public static final int NETWORK_ID = 10;
 
-    Entity entity;
-
     public Chicken(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
