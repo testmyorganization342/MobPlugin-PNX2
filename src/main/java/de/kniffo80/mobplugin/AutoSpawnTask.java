@@ -14,7 +14,7 @@ import de.kniffo80.mobplugin.entities.monster.flying.Blaze;
 import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.spawners.*;
-import de.kniffo80.mobplugin.entities.utils.Utils;
+import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
