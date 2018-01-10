@@ -9,7 +9,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.entities.animal.WalkingAnimal;
-import de.kniffo80.mobplugin.entities.utils.Utils;
+import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     public void initEntity() {
         super.initEntity();
+        this.fireProof = false;
         this.setMaxHealth(10);
     }
 
