@@ -3,16 +3,18 @@ Development: **[kniffo80](https://github.com/kniffo80)**
              **[matt404](https://github.com/matt404)**
              **[augesrob](https://github.com/augesrob)**
              **[PetteriM1](https://github.com/PetteriM1)**
+             **[PicyCZ](https://github.com/PikyCZ)**
 
 MobPlugin is a plugin that implements the mob entities for MCPE including movement, aggression etc.
 
 ## Notice
 This plug-in is in development. Therefore, It is possible to function abnormally.
 
-[![Nukkit.io](https://img.shields.io/badge/Nukkit%20MobPlugin-Download-yellow.svg)](https://forums.nukkit.io/resources/mobplugin.155/)
+[![Nukkit.io](https://img.shields.io/badge/Nukkit%20MobPlugin-Download-yellow.svg)](https://potestas.xyz/resources/mob-plugin.3/)
 [![Discord](https://discordapp.com/api/guilds/386601650963349504/widget.png)](https://discord.gg/rBew6kc)
 [![Github All Releases](https://img.shields.io/github/downloads/Nukkit-coders/mob-plugin/total.svg)](https://github.com/Nukkit-coders/mob-plugin/releases)
 [![GitHub release](https://img.shields.io/github/release/Nukkit-coders/mob-plugin.svg)](https://github.com/Nukkit-coders/mob-plugin/releases/latest)
+[![CircleCI builds](https://img.shields.io/circleci/project/github/Nukkit-coders/mob-plugin.svg)](https://circleci.com/gh/Nukkit-coders/mob-plugin)
 
 # Plugin Example configuration
 Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugin".
