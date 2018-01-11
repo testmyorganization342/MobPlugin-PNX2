@@ -17,14 +17,7 @@ This plug-in is in development. Therefore, It is possible to function abnormally
 [![CircleCI builds](https://img.shields.io/circleci/project/github/Nukkit-coders/mob-plugin.svg)](https://circleci.com/gh/Nukkit-coders/mob-plugin)
 
 # Plugin Example configuration
-Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugin".
-
-#### Example:
-  /usr/share/nukkit/plugins/MobPlugin.jar
-  
-  /usr/share/nukkit/plugins/MobPlugin/config.yml
-  
-## config.yml example
+Place this plugin jar file to your Nukkit's home directory "${NUKKIT_HOME}/plugins".
 
 Make Sure to include all mobs. Previous builds had few missing.
 
