@@ -45,7 +45,7 @@ import de.kniffo80.mobplugin.entities.block.BlockEntitySpawner;
 import de.kniffo80.mobplugin.entities.monster.flying.*;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.projectile.EntityFireBall;
-import de.kniffo80.mobplugin.entities.utils.Utils;
+import de.kniffo80.mobplugin.utils.Utils;
 import de.kniffo80.mobplugin.items.*;
 
 import java.io.File;
@@ -184,6 +184,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Mooshroom.class.getSimpleName(), Mooshroom.class);
         Entity.registerEntity(Mule.class.getSimpleName(), Mule.class);
         Entity.registerEntity(Ocelot.class.getSimpleName(), Ocelot.class);
+        Entity.registerEntity(Parrot.class.getSimpleName(), Parrot.class);
         Entity.registerEntity(Pig.class.getSimpleName(), Pig.class);
         Entity.registerEntity(PolarBear.class.getSimpleName(), PolarBear.class);
         Entity.registerEntity(Rabbit.class.getSimpleName(), Rabbit.class);
@@ -199,13 +200,18 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Creeper.class.getSimpleName(), Creeper.class);
         Entity.registerEntity(EnderDragon.class.getSimpleName(), EnderDragon.class);
         Entity.registerEntity(Enderman.class.getSimpleName(), Enderman.class);
+        Entity.registerEntity(Husk.class.getSimpleName(), Husk.class);
         Entity.registerEntity(IronGolem.class.getSimpleName(), IronGolem.class);
         Entity.registerEntity(PigZombie.class.getSimpleName(), PigZombie.class);
+        Entity.registerEntity(Shulker.class.getSimpleName(), Shulker.class);
         Entity.registerEntity(Silverfish.class.getSimpleName(), Silverfish.class);
         Entity.registerEntity(Skeleton.class.getSimpleName(), Skeleton.class);
         Entity.registerEntity(SnowGolem.class.getSimpleName(), SnowGolem.class);
         Entity.registerEntity(Spider.class.getSimpleName(), Spider.class);
+        Entity.registerEntity(Stray.class.getSimpleName(), Stray.class);
         Entity.registerEntity(Witch.class.getSimpleName(), Witch.class);
+        Entity.registerEntity(Wither.class.getSimpleName(), Wither.class);
+        Entity.registerEntity(WitherSkeleton.class.getSimpleName(), WitherSkeleton.class);
         Entity.registerEntity(Wolf.class.getSimpleName(), Wolf.class);
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
         Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
@@ -379,11 +385,10 @@ public class MobPlugin extends PluginBase implements Listener {
         }
 
         Block block = ev.getBlock();
-        if ((block.getId() == Block.STONE || block.getId() == Block.STONE_BRICK || block.getId() == Block.STONE_WALL || block.getId() == Block.STONE_BRICK_STAIRS)
+        if ((block.getId() == Block.MONSTER_EGG)
             && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
-            /*
-             * Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5)); if(entity != null){ entity.spawnToAll(); }
-             */
+            
+              Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5)); if(entity != null){ entity.spawnToAll(); }
         }
     }
 

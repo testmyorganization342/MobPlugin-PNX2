@@ -16,7 +16,7 @@ import cn.nukkit.potion.Effect;
 import cn.nukkit.potion.Potion;
 import de.kniffo80.mobplugin.MobPlugin;
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
-import de.kniffo80.mobplugin.entities.utils.Utils;
+import de.kniffo80.mobplugin.utils.Utils;
 
 public class Witch extends WalkingMonster {
 
