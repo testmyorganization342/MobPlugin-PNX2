@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Parrot extends FlyingAnimal {
     
-    public static final int NETWORK_ID = 105;
+    public static final int NETWORK_ID = 30;
     
 
     public Parrot(FullChunk chunk, CompoundTag nbt) {
