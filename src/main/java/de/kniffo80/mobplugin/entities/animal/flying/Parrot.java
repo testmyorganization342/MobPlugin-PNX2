@@ -22,6 +22,10 @@ public class Parrot extends FlyingAnimal {
         return NETWORK_ID;
     }
 
+    public String getName() {
+        return "parrot";
+    }
+
     @Override
     public float getWidth() {
         return 0.5f;

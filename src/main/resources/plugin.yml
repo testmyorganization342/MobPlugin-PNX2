@@ -4,7 +4,7 @@ version: "1.0"
 api: ["1.0.0"]
 
 load: STARTUP
-author: kniffo80, matt404, augesrob, PetteriM1, PicyCZ
+author: kniffo80, matt404, augesrob, PetteriM1
 description: Mob plugin for Nukkit
 website: https://github.com/Nukkit-coders/mob-plugin
 
