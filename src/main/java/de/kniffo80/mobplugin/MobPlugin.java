@@ -65,7 +65,6 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public void onLoad() {
         registerEntities();
-        registerItems();
     }
 
     @Override
