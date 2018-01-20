@@ -3,7 +3,7 @@ Development: **[kniffo80](https://github.com/kniffo80)**
              **[matt404](https://github.com/matt404)**
              **[augesrob](https://github.com/augesrob)**
              **[PetteriM1](https://github.com/PetteriM1)**
-             **[PicyCZ](https://github.com/PikyCZ)**
+             **[PikyCZ](https://github.com/PikyCZ)**
 
 MobPlugin is a plugin that implements the mob entities for MCPE including movement, aggression etc.
 

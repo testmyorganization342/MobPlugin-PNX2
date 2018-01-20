@@ -46,7 +46,6 @@ import de.kniffo80.mobplugin.entities.monster.flying.*;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.projectile.EntityFireBall;
 import de.kniffo80.mobplugin.utils.Utils;
-import de.kniffo80.mobplugin.items.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -66,7 +65,6 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public void onLoad() {
         registerEntities();
-        registerItems();
     }
 
     @Override
@@ -221,12 +219,6 @@ public class MobPlugin extends PluginBase implements Listener {
 
         // register the mob spawner (which is probably not needed anymore)
         BlockEntity.registerBlockEntity("MobSpawner", BlockEntitySpawner.class);
-    }
-
-    private void registerItems() {
-        Item.addCreativeItem(new ItemInkSac());
-
-        Item.list[MobPluginItems.INK_SAC] = ItemInkSac.class;
     }
 
     /**
