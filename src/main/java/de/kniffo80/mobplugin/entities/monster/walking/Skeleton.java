@@ -30,13 +30,13 @@ public class Skeleton extends WalkingMonster {
     public Skeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
-    
+
     @Override
     public void initEntity() {
         super.initEntity();
 
         this.setMaxHealth(20);
-    }    
+    }
 
     @Override
     public int getNetworkId() {
@@ -97,8 +97,7 @@ public class Skeleton extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = new ItemBow();
-        pk.inventorySlot = 10;
-        pk.inventorySlot = 10;
+        pk.hotbarSlot = 9;
         player.dataPacket(pk);
     }
 
@@ -133,7 +132,7 @@ public class Skeleton extends WalkingMonster {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience
