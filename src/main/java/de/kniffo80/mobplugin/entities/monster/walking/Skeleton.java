@@ -109,7 +109,7 @@ public class Skeleton extends WalkingMonster {
         hasUpdate = super.entityBaseTick(tickDiff);
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && (time < Level.TIME_NIGHT || time > Level.TIME_SUNRISE)) {
+        if (!this.isOnFire() && !this.level.isRaining() && (time < 13184 || time > 22800)) {
             this.setOnFire(100);
         }
 
