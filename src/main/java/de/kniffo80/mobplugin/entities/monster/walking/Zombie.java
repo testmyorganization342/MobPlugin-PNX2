@@ -134,7 +134,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
         hasUpdate = super.entityBaseTick(tickDiff);
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && !(time >= Level.TIME_NIGHT && time < Level.TIME_SUNRISE)) {
+        if (!this.isOnFire() && !this.level.isRaining() && (time < 13184 || time > 22800)) {
             this.setOnFire(100);
         }
 
@@ -153,7 +153,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience
