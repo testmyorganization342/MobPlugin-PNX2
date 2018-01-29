@@ -45,7 +45,7 @@ public abstract class BaseEntity extends EntityCreature {
     }
 
     public abstract Vector3 updateMove(int tickDiff);
-    
+
     public abstract int getKillExperience();
 
     public boolean isFriendly() {
@@ -142,7 +142,7 @@ public abstract class BaseEntity extends EntityCreature {
                 this.lastZ = this.z;
                 this.lastYaw = this.yaw;
                 this.lastPitch = this.pitch;
-    
+
                 this.addMovement(this.x, this.y, this.z, this.yaw, this.pitch, this.yaw);
             }
         }
@@ -152,7 +152,7 @@ public abstract class BaseEntity extends EntityCreature {
         if (this instanceof Monster) {
             if (creature instanceof Player) {
                 Player player = (Player) creature;
-                return !player.closed && player.spawned && player.isAlive() && player.isSurvival() && distance <= 100;
+                return !player.closed && player.spawned && player.isAlive() && player.isSurvival() && distance <= 80;
             }
             return creature.isAlive() && !creature.closed && distance <= 81;
         }
@@ -162,12 +162,12 @@ public abstract class BaseEntity extends EntityCreature {
     @Override
     public List<Block> getBlocksAround() {
         if (this.blocksAround == null) {
-            int minX = NukkitMath.floorDouble(this.boundingBox.minX);
-            int minY = NukkitMath.floorDouble(this.boundingBox.minY);
-            int minZ = NukkitMath.floorDouble(this.boundingBox.minZ);
-            int maxX = NukkitMath.ceilDouble(this.boundingBox.maxX);
-            int maxY = NukkitMath.ceilDouble(this.boundingBox.maxY);
-            int maxZ = NukkitMath.ceilDouble(this.boundingBox.maxZ);
+            int minX = NukkitMath.floorDouble(this.boundingBox.getMinX());
+            int minY = NukkitMath.floorDouble(this.boundingBox.getMinY());
+            int minZ = NukkitMath.floorDouble(this.boundingBox.getMinZ());
+            int maxX = NukkitMath.ceilDouble(this.boundingBox.getMaxX());
+            int maxY = NukkitMath.ceilDouble(this.boundingBox.getMaxY());
+            int maxZ = NukkitMath.ceilDouble(this.boundingBox.getMaxZ());
 
             this.blocksAround = new ArrayList<>();
 
@@ -289,7 +289,7 @@ public abstract class BaseEntity extends EntityCreature {
                     return false;
                 }
             }
-    
+
             this.motionX = motion.x;
             this.motionY = motion.y;
             this.motionZ = motion.z;
@@ -301,18 +301,18 @@ public abstract class BaseEntity extends EntityCreature {
     public boolean move(double dx, double dy, double dz) {
         if (MobPlugin.MOB_AI_ENABLED) {
             // Timings.entityMoveTimer.startTiming();
-    
+
             double movX = dx;
             double movY = dy;
             double movZ = dz;
-    
+
             AxisAlignedBB[] list = this.level.getCollisionCubes(this, this.level.getTickRate() > 1 ? this.boundingBox.getOffsetBoundingBox(dx, dy, dz) : this.boundingBox.addCoord(dx, dy, dz));
             if (this.isWallCheck()) {
                 for (AxisAlignedBB bb : list) {
                     dx = bb.calculateXOffset(this.boundingBox, dx);
                 }
                 this.boundingBox.offset(dx, 0, 0);
-    
+
                 for (AxisAlignedBB bb : list) {
                     dz = bb.calculateZOffset(this.boundingBox, dz);
                 }
@@ -322,13 +322,13 @@ public abstract class BaseEntity extends EntityCreature {
                 dy = bb.calculateYOffset(this.boundingBox, dy);
             }
             this.boundingBox.offset(0, dy, 0);
-    
+
             this.setComponents(this.x + dx, this.y + dy, this.z + dz);
             this.checkChunks();
-    
+
             this.checkGroundState(movX, movY, movZ, dx, dy, dz);
             this.updateFallState(this.onGround);
-    
+
             // Timings.entityMoveTimer.stopTiming();
         }
         return true;
