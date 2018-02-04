@@ -19,9 +19,9 @@ public class EntityFireBall extends EntityProjectile {
 
     public static final int NETWORK_ID = 85;
 
-    protected boolean       critical   = false;
+    protected boolean critical = false;
 
-    protected boolean       canExplode = false;
+    protected boolean canExplode = false;
 
     @Override
     public int getNetworkId() {
@@ -77,7 +77,6 @@ public class EntityFireBall extends EntityProjectile {
         }
 
         // this.timings.startTiming();
-
         boolean hasUpdate = super.onUpdate(currentTick);
 
         if (!this.hadCollision && this.critical) {

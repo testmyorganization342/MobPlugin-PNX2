@@ -1,75 +1,61 @@
-/**
- * CreeperSpawner.java
- *
- * Created on 10:39:49
- */
 package de.kniffo80.mobplugin.entities.spawners;
 
 import cn.nukkit.IPlayer;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
+import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.utils.Config;
+import de.kniffo80.mobplugin.entities.animal.walking.Mooshroom;
 import de.kniffo80.mobplugin.AutoSpawnTask;
-import de.kniffo80.mobplugin.entities.animal.walking.Sheep;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
 
 /**
- * Each entity get it's own spawner class.
- *
- * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
+ * @author PikyCZ
  */
-public class SheepSpawner extends AbstractEntitySpawner {
+public class MooshroomSpawner extends AbstractEntitySpawner {
 
-    /**
-     * @param spawnTask
-     */
-    public SheepSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
+    public MooshroomSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
     }
 
+    @Override
+    protected String getLogprefix() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
+        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
-        if (blockId != Block.GRASS) { // only spawns on gras
+        if (Block.transparent[blockId]) { // only spawns on opaque blocks
             result = SpawnResult.WRONG_BLOCK;
-//        } else if (blockLightLevel < 9) { // uncommented because lightlevel not working now
-//            result = SpawnResult.WRONG_LIGHTLEVEL;
+        } else if (blockLightLevel < 9) {
+            result = SpawnResult.WRONG_LIGHTLEVEL;
+        } else if (biomeId != Biome.MUSHROOM_ISLAND) {
+            result = SpawnResult.WRONG_BLOCK;
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
-        } else { // creeper is spawned
+        } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
         }
 
         return result;
     }
 
-    /* (@Override)
-     * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityNetworkId()
-     */
     @Override
     public int getEntityNetworkId() {
-        return Sheep.NETWORK_ID;
+        return Mooshroom.NETWORK_ID;
     }
 
-    /* (@Override)
-     * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityName()
-     */
     @Override
     public String getEntityName() {
-        return "Sheep";
-    }
-
-    /* (@Override)
-     * @see de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner#getLogprefix()
-     */
-    @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return "Mooshroom";
     }
 
 }

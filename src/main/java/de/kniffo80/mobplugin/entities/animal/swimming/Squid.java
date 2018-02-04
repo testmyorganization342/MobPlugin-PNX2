@@ -25,16 +25,12 @@ public class Squid extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        return 0.95f;
+        return 0.8f;
     }
 
     @Override
     public float getHeight() {
-        return 0.95f;
-    }
-    
-    public float getLength() {
-        return 0.95f;
+        return 0.8f;
     }
 
     @Override
@@ -65,6 +61,5 @@ public class Squid extends WalkingAnimal {
     public int getKillExperience() {
         return Utils.rand(1, 4); // gain 1-3 experience
     }
-    
 
 }

@@ -7,8 +7,8 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.Sound;
+import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.MobPlugin;
@@ -52,7 +52,7 @@ public class Ghast extends FlyingMonster {
 
         this.fireProof = true;
         this.setMaxHealth(10);
-        this.setDamage(new int[] { 0, 0, 0, 0 });
+        this.setDamage(new int[]{0, 0, 0, 0});
     }
 
     public boolean targetOption(EntityCreature creature, double distance) {
@@ -99,18 +99,18 @@ public class Ghast extends FlyingMonster {
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int gunPowder = Utils.rand(0, 3); // drops 0-2 gun powder
             int ghastTears = Utils.rand(0, 2); // drops 0-1 ghast tears
-            for (int i=0; i < gunPowder; i++) {
+            for (int i = 0; i < gunPowder; i++) {
                 drops.add(Item.get(Item.GUNPOWDER, 0, 1));
             }
-            for (int i=0; i < ghastTears; i++) {
+            for (int i = 0; i < ghastTears; i++) {
                 drops.add(Item.get(Item.GHAST_TEAR, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 5; // gain 5 experience
     }
 

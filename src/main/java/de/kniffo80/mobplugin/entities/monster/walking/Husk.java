@@ -26,7 +26,7 @@ public class Husk extends WalkingMonster implements EntityAgeable {
     public int getNetworkId() {
         return NETWORK_ID;
     }
-    
+
     @Override
     public String getName() {
         return "Husk";

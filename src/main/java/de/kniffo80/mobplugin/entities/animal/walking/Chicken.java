@@ -47,6 +47,16 @@ public class Chicken extends WalkingAnimal {
     }
 
     @Override
+    public float getDrag() {
+        return 0.2f;
+    }
+
+    @Override
+    public float getGravity() {
+        return 0.04f;
+    }
+
+    @Override
     public void initEntity() {
         super.initEntity();
 
@@ -57,12 +67,11 @@ public class Chicken extends WalkingAnimal {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            return player.isAlive() && !player.closed &&
-                (player.getInventory().getItemInHand().getId() == Item.SEEDS ||
-                    player.getInventory().getItemInHand().getId() == Item.BEETROOT_SEEDS ||
-                    player.getInventory().getItemInHand().getId() == Item.MELON_SEEDS ||
-                    player.getInventory().getItemInHand().getId() == Item.PUMPKIN_SEEDS
-                )&& distance <= 49;
+            return player.isAlive() && !player.closed
+                    && (player.getInventory().getItemInHand().getId() == Item.SEEDS
+                    || player.getInventory().getItemInHand().getId() == Item.BEETROOT_SEEDS
+                    || player.getInventory().getItemInHand().getId() == Item.MELON_SEEDS
+                    || player.getInventory().getItemInHand().getId() == Item.PUMPKIN_SEEDS) && distance <= 49;
         }
         return false;
     }
@@ -72,7 +81,7 @@ public class Chicken extends WalkingAnimal {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int featherDrop = Utils.rand(0, 3); // drops 0-2 feathers
-            for (int i=0; i < featherDrop; i++) {
+            for (int i = 0; i < featherDrop; i++) {
                 drops.add(Item.get(Item.FEATHER, 0, 1));
             }
             // chicken on fire: cooked chicken otherwise raw chicken
@@ -80,11 +89,10 @@ public class Chicken extends WalkingAnimal {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return Utils.rand(1, 4); // gain 1-3 experience
     }
-    
 
 }

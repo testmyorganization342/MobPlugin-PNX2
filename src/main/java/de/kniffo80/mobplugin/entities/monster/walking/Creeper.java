@@ -9,8 +9,8 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Explosion;
-import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.Sound;
+import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
@@ -23,13 +23,13 @@ import java.util.List;
 
 public class Creeper extends WalkingMonster implements EntityExplosive {
 
-    public static final int NETWORK_ID   = 33;
+    public static final int NETWORK_ID = 33;
 
     public static final int DATA_POWERED = 19;
 
-    private int             bombTime     = 0;
-    
-    private boolean         exploded     = false;
+    private int bombTime = 0;
+
+    private boolean exploded = false;
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -213,18 +213,18 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         }
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int gunPowder = Utils.rand(0, 3); // drops 0-2 gunpowder
-            for (int i=0; i < gunPowder; i++) {
+            for (int i = 0; i < gunPowder; i++) {
                 drops.add(Item.get(Item.GUNPOWDER, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
-    public int getKillExperience () {
+    public int getKillExperience() {
         return 5; // gain 5 experience
     }
-    
+
     public int getMaxFallHeight() {
         return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F); //TODO: change this to attack target only
     }

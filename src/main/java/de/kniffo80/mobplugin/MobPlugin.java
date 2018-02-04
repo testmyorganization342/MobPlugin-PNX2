@@ -1,6 +1,6 @@
 /**
  * MobPlugin.java
- * 
+ *
  * Created on 17:46:07
  */
 package de.kniffo80.mobplugin;
@@ -58,9 +58,9 @@ public class MobPlugin extends PluginBase implements Listener {
 
     public static boolean MOB_AI_ENABLED = false;
 
-    private int           counter        = 0;
+    private int counter = 0;
 
-    private Config        pluginConfig   = null;
+    private Config pluginConfig = null;
 
     @Override
     public void onLoad() {
@@ -93,68 +93,68 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, cn.nukkit.command.Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().toLowerCase().equals("mob")) {
 
-        if (args.length == 0) {
-            commandSender.sendMessage("-- MobPlugin 1.0 --");
-            commandSender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
-            commandSender.sendMessage("/mob removeall - Remove all living mobs");
-            commandSender.sendMessage("/mob removeitems - Remove all items from ground");
-        } else {
-            switch (args[0]) {
+            if (args.length == 0) {
+                sender.sendMessage("-- MobPlugin 1.0 --");
+                sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
+                sender.sendMessage("/mob removeall - Remove all living mobs");
+                sender.sendMessage("/mob removeitems - Remove all items from ground");
+            } else {
+                switch (args[0]) {
 
-                case "spawn":
-                    String mob = args[1];
-                    Player playerThatSpawns = null;
+                    case "spawn":
+                        String mob = args[1];
+                        Player playerThatSpawns = null;
 
-                    if (args.length == 3) {
-                        playerThatSpawns = this.getServer().getPlayer(args[2]);
-                    } else {
-                        playerThatSpawns = (Player) commandSender;
-                    }
-
-                    if (playerThatSpawns != null) {
-                        Position pos = playerThatSpawns.getPosition();
-
-                        Entity ent;
-                        if ((ent = MobPlugin.create(mob, pos)) != null) {
-                            ent.spawnToAll();
-                            commandSender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
+                        if (args.length == 3) {
+                            playerThatSpawns = this.getServer().getPlayer(args[2]);
                         } else {
-                            commandSender.sendMessage("Unable to spawn " + mob);
+                            playerThatSpawns = (Player) sender;
                         }
-                    } else {
-                        commandSender.sendMessage("Unknown player " + (args.length == 3 ? args[2] : ((Player) commandSender).getName()));
-                    }
-                    break;
-                case "removeall":
-                    int count = 0;
-                    for (Level level : getServer().getLevels().values()) {
-                        for (Entity entity : level.getEntities()) {
-                            if (entity instanceof BaseEntity && !entity.closed && entity.isAlive()) {
-                                entity.close();
-                                count++;
+
+                        if (playerThatSpawns != null) {
+                            Position pos = playerThatSpawns.getPosition();
+
+                            Entity ent;
+                            if ((ent = MobPlugin.create(mob, pos)) != null) {
+                                ent.spawnToAll();
+                                sender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
+                            } else {
+                                sender.sendMessage("Unable to spawn " + mob);
+                            }
+                        } else {
+                            sender.sendMessage("Unknown player " + (args.length == 3 ? args[2] : ((Player) sender).getName()));
+                        }
+                        break;
+                    case "removeall":
+                        int count = 0;
+                        for (Level level : getServer().getLevels().values()) {
+                            for (Entity entity : level.getEntities()) {
+                                if (entity instanceof BaseEntity) {
+                                    entity.close();
+                                    count++;
+                                }
                             }
                         }
-                    }
-                    commandSender.sendMessage("Removed " + count + " entities from all levels.");
-                    break;
-                case "removeitems":
-                    count = 0;
-                    for (Level level : getServer().getLevels().values()) {
-                        for (Entity entity : level.getEntities()) {
-                            if (entity instanceof EntityItem && entity.isOnGround()) {
-                                entity.close();
-                                count++;
+                        sender.sendMessage("Removed " + count + " entities from all levels.");
+                        break;
+                    case "removeitems":
+                        count = 0;
+                        for (Level level : getServer().getLevels().values()) {
+                            for (Entity entity : level.getEntities()) {
+                                if (entity instanceof EntityItem && entity.isOnGround()) {
+                                    entity.close();
+                                    count++;
+                                }
                             }
                         }
-                    }
-                    commandSender.sendMessage("Removed " + count + " items on ground from all levels.");
-                    break;
-                default:
-                    commandSender.sendMessage("Unkown command.");
-                    break;
+                        sender.sendMessage("Removed " + count + " items on ground from all levels.");
+                        break;
+                    default:
+                        sender.sendMessage("Unkown command.");
+                        break;
                 }
             }
         }
@@ -164,7 +164,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     /**
      * Returns plugin specific yml configuration
-     * 
+     *
      * @return a {@link Config} instance
      */
     public Config getPluginConfig() {
@@ -246,8 +246,9 @@ public class MobPlugin extends PluginBase implements Listener {
 
     /**
      * Returns all registered players to the current server
-     * 
-     * @return a {@link List} containing a number of {@link IPlayer} elements, which can be {@link Player}
+     *
+     * @return a {@link List} containing a number of {@link IPlayer} elements,
+     * which can be {@link Player}
      */
     public List<IPlayer> getAllRegisteredPlayers() {
         List<IPlayer> playerList = new ArrayList<>();
@@ -258,8 +259,9 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     /**
-     * checks if a given player name's player instance is already in the given list
-     * 
+     * checks if a given player name's player instance is already in the given
+     * list
+     *
      * @param name the name of the player to be checked
      * @param playerList the existing entries
      * @return <code>true</code> if the player is already in the list
@@ -275,8 +277,9 @@ public class MobPlugin extends PluginBase implements Listener {
 
     // --- event listeners ---
     /**
-     * This event is called when an entity dies. We need this for experience gain.
-     * 
+     * This event is called when an entity dies. We need this for experience
+     * gain.
+     *
      * @param ev the event that is received
      */
     @EventHandler
@@ -379,7 +382,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Block block = ev.getBlock();
         if ((block.getId() == Block.MONSTER_EGG)
             && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
-            
+
               Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5)); if(entity != null){ entity.spawnToAll(); }
         }
     }
@@ -391,14 +394,14 @@ public class MobPlugin extends PluginBase implements Listener {
             // wolves can be tamed using bones
             if (ev != null && ev.getEntity() != null && ev.getPlayer() != null && ev.getEntity().getNetworkId() == Wolf.NETWORK_ID && ev.getPlayer().getInventory().getItemInHand().getId() == Item.BONE) {
                 // check if already owned and tamed ...
-                Wolf wolf = (Wolf)ev.getEntity();
+                Wolf wolf = (Wolf) ev.getEntity();
                 if (!wolf.isAngry() && wolf.getOwner() == null) {
                     // now try it out ...
                     EntityEventPacket packet = new EntityEventPacket();
                     packet.eid = ev.getEntity().getId();
                     packet.event = EntityEventPacket.TAME_SUCCESS;
-                    Server.broadcastPacket(new Player[] { ev.getPlayer() }, packet);
-                    
+                    Server.broadcastPacket(new Player[]{ev.getPlayer()}, packet);
+
                     // set the owner
                     wolf.setOwner(ev.getPlayer());
                     wolf.setCollarColor(DyeColor.BLUE);

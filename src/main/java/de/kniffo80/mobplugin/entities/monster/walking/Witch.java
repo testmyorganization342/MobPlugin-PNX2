@@ -8,8 +8,8 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.Sound;
+import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
@@ -20,7 +20,7 @@ import de.kniffo80.mobplugin.utils.Utils;
 
 public class Witch extends WalkingMonster {
 
-    public static final int  NETWORK_ID   = 45;
+    public static final int NETWORK_ID = 45;
 
     private static final int ATTACK_TICKS = 20; // how many ticks does the witch need to attack
 
@@ -110,7 +110,7 @@ public class Witch extends WalkingMonster {
                     }
                 }
             } else {
-                this.attackDelay ++;
+                this.attackDelay++;
             }
         }
     }
