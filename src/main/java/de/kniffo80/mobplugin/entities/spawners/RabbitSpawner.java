@@ -11,7 +11,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.AutoSpawnTask;
-import de.kniffo80.mobplugin.entities.animal.walking.Rabbit;
+import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
 import de.kniffo80.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
 

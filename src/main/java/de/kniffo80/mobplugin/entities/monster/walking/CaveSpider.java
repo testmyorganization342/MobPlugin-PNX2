@@ -28,12 +28,12 @@ public class CaveSpider extends Spider {
 
     @Override
     public float getWidth() {
-        return 0.9f;
+        return 0.7f;
     }
 
     @Override
     public float getHeight() {
-        return 0.8f;
+        return 0.5f;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class CaveSpider extends Spider {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience

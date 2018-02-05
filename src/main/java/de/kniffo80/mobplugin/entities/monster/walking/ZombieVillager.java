@@ -29,12 +29,12 @@ public class ZombieVillager extends WalkingMonster {
 
     @Override
     public float getWidth() {
-        return 0.72f;
+        return 0.6f;
     }
 
     @Override
     public float getHeight() {
-        return 1.8f;
+        return 1.95f;
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ZombieVillager extends WalkingMonster {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience

@@ -7,11 +7,12 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
-import de.kniffo80.mobplugin.entities.animal.flying.Bat;
+import de.kniffo80.mobplugin.entities.animal.flying.*;
+import de.kniffo80.mobplugin.entities.animal.jumping.*;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
 import de.kniffo80.mobplugin.entities.autospawn.IEntitySpawner;
-import de.kniffo80.mobplugin.entities.monster.flying.Blaze;
-import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
+import de.kniffo80.mobplugin.entities.monster.flying.*;
+import de.kniffo80.mobplugin.entities.monster.jumping.*;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.spawners.*;
 import de.kniffo80.mobplugin.utils.Utils;
@@ -27,9 +28,9 @@ public class AutoSpawnTask implements Runnable {
     private Map<Integer, Integer> maxSpawns      = new HashMap<>();
 
     private List<IEntitySpawner>  entitySpawners = new ArrayList<>();
-    
+
     private Config                pluginConfig   = null;
-    
+
     private MobPlugin             plugin = null;
 
     public AutoSpawnTask(MobPlugin plugin) {
@@ -214,5 +215,5 @@ public class AutoSpawnTask implements Runnable {
         }
         return y;
     }
- 
+
 }

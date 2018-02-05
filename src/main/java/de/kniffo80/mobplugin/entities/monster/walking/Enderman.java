@@ -29,12 +29,12 @@ public class Enderman extends WalkingMonster {
 
     @Override
     public float getWidth() {
-        return 0.72f;
+        return 0.6f;
     }
 
     @Override
     public float getHeight() {
-        return 2.8f;
+        return 2.9f;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Enderman extends WalkingMonster {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience

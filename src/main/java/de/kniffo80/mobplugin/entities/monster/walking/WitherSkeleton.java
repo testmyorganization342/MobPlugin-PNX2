@@ -21,7 +21,7 @@ public class WitherSkeleton extends WalkingMonster {
     public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
-    
+
     @Override
     public String getName() {
         return "WitherSkeleton";
@@ -34,12 +34,12 @@ public class WitherSkeleton extends WalkingMonster {
 
     @Override
     public float getWidth() {
-        return 0.65f;
+        return 0.7f;
     }
 
     @Override
     public float getHeight() {
-        return 1.8f;
+        return 2.4f;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Silverfish extends WalkingMonster {
 
     @Override
     public float getWidth() {
-        return 0.45f;
+        return 0.4f;
     }
 
     @Override
@@ -98,11 +98,11 @@ public class Silverfish extends WalkingMonster {
     public Item[] getDrops() {
         return new Item[0];
     }
-    
+
     @Override
     public int getKillExperience () {
         return 5; // gain 5 experience
     }
-    
+
 
 }

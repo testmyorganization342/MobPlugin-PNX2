@@ -28,15 +28,18 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        return 0.9f;
+        if (this.isBaby()) {
+            return 0.2f;
+        }
+        return 0.45f;
     }
 
     @Override
     public float getHeight() {
         if (this.isBaby()) {
-            return 0.65f;
+            return 0.7f;
         }
-        return 1.3f;
+        return 1.4f;
     }
 
     @Override
@@ -92,5 +95,5 @@ public class Cow extends WalkingAnimal {
     public int getKillExperience() {
         return Utils.rand(1, 4);
     }
-    
+
 }

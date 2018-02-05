@@ -1,4 +1,4 @@
-package de.kniffo80.mobplugin.entities.animal.walking;
+package de.kniffo80.mobplugin.entities.animal.jumping;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;

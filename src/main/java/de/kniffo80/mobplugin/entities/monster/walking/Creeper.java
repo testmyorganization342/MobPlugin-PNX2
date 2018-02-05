@@ -42,12 +42,12 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public float getWidth() {
-        return 0.72f;
+        return 0.6f;
     }
 
     @Override
     public float getHeight() {
-        return 1.8f;
+        return 1.7f;
     }
 
     @Override

@@ -38,12 +38,12 @@ public class Wolf extends TameableMonster {
 
     @Override
     public float getWidth() {
-        return 0.72f;
+        return 0.6f;
     }
 
     @Override
     public float getHeight() {
-        return 0.9f;
+        return 0.85f;
     }
 
     @Override
@@ -159,7 +159,7 @@ public class Wolf extends TameableMonster {
 
     /**
      * Sets the color of the wolves collar (default is 14)
-     * 
+     *
      * @param color the color to be set (when tamed it should be RED)
      */
     public void setCollarColor(DyeColor color) {
