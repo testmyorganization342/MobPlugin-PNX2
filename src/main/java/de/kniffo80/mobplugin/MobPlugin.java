@@ -84,7 +84,7 @@ public class MobPlugin extends PluginBase implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
 
         if (spawnDelay > 0) {
-            this.getServer().getScheduler().scheduleRepeatingTask(new AutoSpawnTask(this), spawnDelay, true);
+            this.getServer().getScheduler().scheduleRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, true);
         }
 
         Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
