@@ -1,8 +1,3 @@
-/**
- * Horse.java
- *
- * Created on 09:40:15
- */
 package de.kniffo80.mobplugin.entities.animal.walking;
 
 import cn.nukkit.Player;
@@ -98,9 +93,6 @@ public class Mule extends WalkingAnimal {
         return drops.toArray(new Item[drops.size()]);
     }
 
-    /* (@Override)
-     * @see de.kniffo80.mobplugin.entities.BaseEntity#getKillExperience()
-     */
     @Override
     public int getKillExperience() {
         return Utils.rand(1, 4);

@@ -1,8 +1,3 @@
-/**
- * CreeperSpawner.java
- *
- * Created on 10:39:49
- */
 package de.kniffo80.mobplugin.entities.spawners;
 
 import cn.nukkit.IPlayer;
@@ -41,7 +36,7 @@ public class SheepSpawner extends AbstractEntitySpawner {
 //            result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
-        } else { // creeper is spawned
+        } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
         }
 

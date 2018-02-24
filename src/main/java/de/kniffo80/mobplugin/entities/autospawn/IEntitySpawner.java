@@ -1,8 +1,3 @@
-/**
- * EntitySpawner.java
- * 
- * Created on 10:38:53
- */
 package de.kniffo80.mobplugin.entities.autospawn;
 
 import cn.nukkit.IPlayer;
@@ -20,9 +15,9 @@ public interface IEntitySpawner {
     public void spawn(List<Player> onlinePlayers);
 
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level);
-    
+
     public int getEntityNetworkId ();
-    
+
     public String getEntityName ();
 
 }

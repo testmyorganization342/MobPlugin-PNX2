@@ -101,7 +101,7 @@ public class IronGolem extends WalkingMonster {
     public boolean targetOption(EntityCreature creature, double distance) {
         return !(creature instanceof Player) && creature.isAlive() && distance <= 60;
     }
-    
+
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
@@ -117,10 +117,10 @@ public class IronGolem extends WalkingMonster {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-    
+
     @Override
     public int getKillExperience () {
-        return 0; // gain 0 experience
+        return 0;
     }
 
 

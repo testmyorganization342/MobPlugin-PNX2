@@ -1,8 +1,3 @@
-/**
- * MobPlugin.java
- *
- * Created on 17:46:07
- */
 package de.kniffo80.mobplugin;
 
 import cn.nukkit.IPlayer;

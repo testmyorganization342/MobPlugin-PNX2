@@ -66,8 +66,7 @@ public class Stray extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = new ItemBow();
-        pk.hotbarSlot = 10;
-        pk.inventorySlot = 10;
+        pk.hotbarSlot = 9;
         player.dataPacket(pk);
     }
 
@@ -78,7 +77,7 @@ public class Stray extends WalkingMonster {
         hasUpdate = super.entityBaseTick(tickDiff);
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && !(time > Level.TIME_SUNSET && time >= Level.TIME_NIGHT && time < Level.TIME_SUNRISE)) {
+        if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {
             this.setOnFire(100);
         }
 

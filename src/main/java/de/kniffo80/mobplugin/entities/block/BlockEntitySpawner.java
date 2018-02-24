@@ -41,15 +41,15 @@ public class BlockEntitySpawner extends BlockEntitySpawnable{
         }
 
         if(!this.namedTag.contains("MaxSpawnDelay") || !(this.namedTag.get("MaxSpawnDelay") instanceof ShortTag)){
-            this.namedTag.putShort("MaxSpawnDelay", 8000);
+            this.namedTag.putShort("MaxSpawnDelay", 5000);
         }
 
         if(!this.namedTag.contains("MaxNearbyEntities") || !(this.namedTag.get("MaxNearbyEntities") instanceof ShortTag)){
-            this.namedTag.putShort("MaxNearbyEntities", 25);
+            this.namedTag.putShort("MaxNearbyEntities", 20);
         }
 
         if(!this.namedTag.contains("RequiredPlayerRange") || !(this.namedTag.get("RequiredPlayerRange") instanceof ShortTag)){
-            this.namedTag.putShort("RequiredPlayerRange", 20);
+            this.namedTag.putShort("RequiredPlayerRange", 16);
         }
 
         this.spawnRange = this.namedTag.getShort("SpawnRange");

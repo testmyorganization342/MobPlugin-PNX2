@@ -1,8 +1,3 @@
-/**
- * CreeperSpawner.java
- *
- * Created on 10:39:49
- */
 package de.kniffo80.mobplugin.entities.spawners;
 
 import cn.nukkit.IPlayer;
@@ -41,7 +36,7 @@ public class RabbitSpawner extends AbstractEntitySpawner {
             result = SpawnResult.POSITION_MISMATCH;
 //        } else if (blockLightLevel < 9) { // uncommented because lightlevel doesn't work now
 //            result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else { // creeper is spawned
+        } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.75, 0));
         }
 

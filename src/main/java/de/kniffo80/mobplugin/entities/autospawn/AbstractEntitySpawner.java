@@ -1,8 +1,3 @@
-/**
- * AbstractEntitySpawner.java
- * 
- * Created on 10:40:29
- */
 package de.kniffo80.mobplugin.entities.autospawn;
 
 import cn.nukkit.IPlayer;
@@ -61,7 +56,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         }
 
     }
-    
+
     /**
      * Checks if the given level's name is on blacklist for auto spawn
      * @param level the level to be checked
@@ -109,7 +104,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     /**
      * A simple method that evaluates based on the difficulty set in server if a spawn is allowed or not
-     * 
+     *
      * @return
      */
     protected boolean isSpawnAllowedByDifficulty() {
@@ -132,13 +127,13 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     /**
      * Returns currently set difficulty as en {@link Enum}
-     * 
+     *
      * @return a {@link Difficulty} instance
      */
     protected Difficulty getCurrentDifficulty() {
         return Difficulty.getByDiffculty(this.server.getDifficulty());
     }
-    
+
     protected abstract String getLogprefix ();
 
 }

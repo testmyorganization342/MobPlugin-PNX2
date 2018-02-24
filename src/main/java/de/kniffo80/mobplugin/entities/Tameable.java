@@ -1,15 +1,10 @@
-/**
- * Tameable.java
- * 
- * Created on 09:59:43
- */
 package de.kniffo80.mobplugin.entities;
 
 import cn.nukkit.Player;
 
 /**
  * Interface that is implemented in tameable entities
- * 
+ *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public interface Tameable {

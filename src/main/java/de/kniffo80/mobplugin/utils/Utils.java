@@ -1,8 +1,3 @@
-/**
- * Utils.java
- * 
- * Created on 10:18:38
- */
 package de.kniffo80.mobplugin.utils;
 
 import cn.nukkit.Server;
@@ -15,18 +10,18 @@ import java.util.Random;
  *
  */
 public class Utils {
-    
+
     private static final Server SERVER = Server.getInstance();
-    
+
     public static final void logServerInfo (String text) {
         SERVER.getLogger().info(TextFormat.GOLD + "[MobPlugin] " + text);
     }
-    
+
     private static final Random random = new Random(System.currentTimeMillis());
 
     /**
      * Returns a random number between min (inkl.) and max (excl.) If you want a number between 1 and 4 (inkl) you need to call rand (1, 5)
-     * 
+     *
      * @param min min inklusive value
      * @param max max exclusive value
      * @return

@@ -112,7 +112,7 @@ public class SnowGolem extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 0; // gain 0 experience
+        return 0;
     }
 
 }

@@ -1,8 +1,3 @@
-/**
- * CreeperSpawner.java
- * 
- * Created on 10:39:49
- */
 package de.kniffo80.mobplugin.entities.spawners;
 
 import cn.nukkit.IPlayer;
@@ -17,7 +12,7 @@ import de.kniffo80.mobplugin.entities.autospawn.SpawnResult;
 
 /**
  * Each entity get it's own spawner class.
- * 
+ *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class BatSpawner extends AbstractEntitySpawner {
@@ -47,7 +42,7 @@ public class BatSpawner extends AbstractEntitySpawner {
 
         return result;
     }
-    
+
     /* (@Override)
      * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityNetworkId()
      */
