@@ -35,6 +35,7 @@ import cn.nukkit.utils.DyeColor;
 import de.kniffo80.mobplugin.entities.BaseEntity;
 import de.kniffo80.mobplugin.entities.animal.flying.*;
 import de.kniffo80.mobplugin.entities.animal.jumping.*;
+import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
 import de.kniffo80.mobplugin.entities.animal.swimming.*;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
 import de.kniffo80.mobplugin.entities.block.BlockEntitySpawner;
@@ -59,6 +60,7 @@ public class MobPlugin extends PluginBase implements Listener {
     private int counter = 0;
 
     private Config pluginConfig = null;
+
 
     @Override
     public void onLoad() {
