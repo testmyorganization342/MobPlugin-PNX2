@@ -16,6 +16,6 @@ commands:
     permission: mobplugin.command  
     
 permissions:
-  novamobs.mob:
+  mobplugin.command:
     description: ""
     default: op
