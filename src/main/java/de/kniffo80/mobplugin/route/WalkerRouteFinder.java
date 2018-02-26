@@ -63,12 +63,17 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         this.success = false;
         this.searching = true;
 
-        if(this.start == null || this.destination == null){
+        if(this.destination == null){
             this.searching = false;
             this.success = false;
             return false;
         }
+
         this.resetNodes();
+
+        if(this.start == null){
+            this.start = this.entity.getDirectionVector();
+        }
 
 
         Node presentNode = new Node(start);
@@ -89,6 +94,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 searchLimit = 0;
                 this.searching = false;
                 this.success = true;
+                println(this.entity.getId()+":"+this.entity.getNameTag()+"寻路以中断");
             }
         }
 

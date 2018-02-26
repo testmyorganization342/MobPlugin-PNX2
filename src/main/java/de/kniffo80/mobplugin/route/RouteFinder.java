@@ -47,7 +47,6 @@ public abstract class RouteFinder {
 
     public void setStart(Vector3 start){
         if(!this.isSearching()) {
-            Objects.requireNonNull(start, "start can not be null");
             this.start = start;
         }
     }
@@ -58,7 +57,6 @@ public abstract class RouteFinder {
 
     public void setDestination(Vector3 destination){
         if(!this.isSearching()) {
-            Objects.requireNonNull(destination, "destination can not be null");
             this.destination = destination;
         }
     }
@@ -88,6 +86,7 @@ public abstract class RouteFinder {
         return nodes.get(current);
     }
 
+
     public Level getLevel(){
         return this.level;
     }
@@ -100,10 +99,13 @@ public abstract class RouteFinder {
         return this.current;
     }
 
-    public boolean hasReachedNode(Vector3 vec){
-        Vector3 cur = this.getCurrentNode().getVector3();
+    public boolean hasArrivedNode(Vector3 vec){
+        if(getCurrentNode()!=null) {
+            Vector3 cur = this.getCurrentNode().getVector3();
 
-        return vec.getX() == cur.getX() && vec.getZ() == cur.getZ() && vec.getFloorY() == cur.getFloorY();
+            return vec.getX() == cur.getX() && vec.getZ() == cur.getZ() && vec.getFloorY() == cur.getFloorY();
+        }
+        return false;
     }
 
     public void arrived(){
@@ -121,7 +123,6 @@ public abstract class RouteFinder {
         this.current = 0;
         this.interrupt = false;
         this.arrived = false;
-
     }
 
     public abstract boolean search();
@@ -133,12 +134,12 @@ public abstract class RouteFinder {
     }
 
     public boolean hasNext(){
-        return this.current +1 < nodes.size() && this.nodes.get(this.current)!= null;
+        return this.current + 1 < nodes.size() && this.nodes.get(this.current)!= null;
     }
 
     public Vector3 next(){
         if(this.hasNext()){
-            return this.nodes.get(++current).getVector3();
+            return this.nodes.get(++current).getVector3();//包括了起点所以直接从1开始
         }
         return null;
     }
@@ -148,6 +149,6 @@ public abstract class RouteFinder {
     }
 
     public boolean interrupt(){
-        return this.interrupt = true;
+        return this.interrupt ^= true;
     }
 }
