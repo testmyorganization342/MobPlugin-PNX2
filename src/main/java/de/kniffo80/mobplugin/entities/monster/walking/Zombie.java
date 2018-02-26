@@ -1,6 +1,7 @@
 package de.kniffo80.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -11,6 +12,8 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import co.aikar.timings.Timings;
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
+import de.kniffo80.mobplugin.route.RouteFinder;
+import de.kniffo80.mobplugin.route.WalkerRouteFinder;
 import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -20,6 +23,8 @@ import java.util.List;
 public class Zombie extends WalkingMonster implements EntityAgeable {
 
     public static final int NETWORK_ID = 32;
+
+    public RouteFinder route = new WalkerRouteFinder(this);
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -126,12 +131,19 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
         }
     }
 
+
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = false;
         Timings.entityBaseTickTimer.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);
+
+        if(Server.getInstance().getTick() % 20 == 0 && this.target!=null){
+            route.setStart(this);
+            route.setDestination(this.target);
+            route.research();
+        }
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
         if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {

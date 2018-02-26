@@ -46,8 +46,10 @@ public abstract class RouteFinder {
     }
 
     public void setStart(Vector3 start){
-        Objects.requireNonNull(start,"start can not be null");
-        this.start = start;
+        if(!this.isSearching()) {
+            Objects.requireNonNull(start, "start can not be null");
+            this.start = start;
+        }
     }
 
     public Vector3 getDestination(){
@@ -55,8 +57,10 @@ public abstract class RouteFinder {
     }
 
     public void setDestination(Vector3 destination){
-        Objects.requireNonNull(destination,"destination can not be null");
-        this.destination = destination;
+        if(!this.isSearching()) {
+            Objects.requireNonNull(destination, "destination can not be null");
+            this.destination = destination;
+        }
     }
 
     public boolean isSuccess(){
