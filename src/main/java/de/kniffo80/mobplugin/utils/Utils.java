@@ -70,10 +70,10 @@ public class Utils {
         }else{
             if(type == ACCORDING_X_OBTAIN_Y){
                 //Y = [(x-x1)(y1-y2)/(x1-x2) ] + y1
-                return (element-pos1.getX())*(pos1.getZ()-pos2.getZ())/(pos1.getX()-pos2.getX()) + pos1.getZ();
+                return (element-pos1.getX()) * (pos1.getZ()-pos2.getZ()) / (pos1.getX()-pos2.getX()) + pos1.getZ();
             }else{//ACCORDING_Y_OBTAIN_X
                 //X = [(y-y1)(x1-x2)]/(y1-y2) + x1
-                return (element-pos1.getZ())*(pos1.getX()-pos2.getX())/(pos1.getZ()-pos2.getZ()) + pos1.getX();
+                return (element-pos1.getZ()) * (pos1.getX()-pos2.getX()) / (pos1.getZ()-pos2.getZ()) + pos1.getX();
             }
         }
     }

@@ -106,12 +106,21 @@ public abstract class BaseEntity extends EntityCreature {
         return this.age;
     }
 
-    public Entity getTarget() {
+    public Vector3 getTarget(){
+        return this.target;
+    }
+
+    public void setTarget(Vector3 vec){
+        this.target = vec;
+    }
+
+    public Entity getFollowTarget() {
         return this.followTarget != null ? this.followTarget : (this.target instanceof Entity ? (Entity) this.target : null);
     }
 
     // TODO
-    public void setTarget(Entity target) {
+    //FIXME 2018.2.27 zzz1999 : followTarget is different from target.
+    public void setFollowTarget(Entity target) {
         this.followTarget = target;
 
         this.moveTime = 0;

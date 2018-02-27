@@ -1,5 +1,6 @@
 package de.kniffo80.mobplugin.route;
 
+import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
 import de.kniffo80.mobplugin.entities.WalkingEntity;
@@ -32,7 +33,7 @@ public abstract class RouteFinder {
     public boolean arrived = false;
 
     RouteFinder(WalkingEntity entity){
-        Objects.requireNonNull(entity,"RouteSeeker: entity can not be null");
+        Objects.requireNonNull(entity,"RouteFinder: entity can not be null");
         this.entity = entity;
         this.level = entity.getLevel();
     }
@@ -82,8 +83,13 @@ public abstract class RouteFinder {
     }
 
     public Node getCurrentNode(){
-        if(nodes.isEmpty())return null;
-        return nodes.get(current);
+        if(this.hasCurrentNode()) {
+            return nodes.get(current);
+        }
+        return null;
+    }
+    public boolean hasCurrentNode(){
+        return current < this.nodes.size();
     }
 
 
@@ -100,10 +106,10 @@ public abstract class RouteFinder {
     }
 
     public boolean hasArrivedNode(Vector3 vec){
-        if(getCurrentNode()!=null) {
+        if(this.getCurrentNode() != null) {
             Vector3 cur = this.getCurrentNode().getVector3();
-
-            return vec.getX() == cur.getX() && vec.getZ() == cur.getZ() && vec.getFloorY() == cur.getFloorY();
+            //this.nodes.forEach(n->Server.getInstance().getLogger().info(n.toString()));
+            return vec.getX() == cur.getX() && vec.getZ() == cur.getZ()/* && vec.getFloorY() == cur.getFloorY()*/;
         }
         return false;
     }
@@ -134,12 +140,12 @@ public abstract class RouteFinder {
     }
 
     public boolean hasNext(){
-        return this.current + 1 < nodes.size() && this.nodes.get(this.current)!= null;
+        return this.current + 1 < nodes.size() && this.nodes.get(this.current+1)!= null && !this.arrived;
     }
 
     public Vector3 next(){
         if(this.hasNext()){
-            return this.nodes.get(++current).getVector3();//包括了起点所以直接从1开始
+            return this.nodes.get(++current).getVector3();
         }
         return null;
     }

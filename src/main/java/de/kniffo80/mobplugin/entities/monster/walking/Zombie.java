@@ -24,10 +24,10 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
     public static final int NETWORK_ID = 32;
 
-    public RouteFinder route = new WalkerRouteFinder(this);
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -138,12 +138,6 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
         Timings.entityBaseTickTimer.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);
-
-        if(Server.getInstance().getTick() % 20 == 0 && this.target!=null){
-            route.setStart(this);
-            route.setDestination(this.target);
-            route.research();
-        }
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
         if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {

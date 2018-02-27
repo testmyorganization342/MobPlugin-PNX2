@@ -132,7 +132,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         Vector3 before = this.target;
         this.checkTarget();
 
-        if (this.target instanceof EntityCreature || before != this.target) {
+        if ((this.followTarget instanceof EntityCreature && this.target instanceof Vector3) || before != this.target) {
             double x = this.target.x - this.x;
             double y = this.target.y - this.y;
             double z = this.target.z - this.z;

@@ -26,12 +26,12 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
     }
 
     @Override
-    public void setTarget(Entity target) {
+    public void setFollowTarget(Entity target) {
         this.setTarget(target, true);
     }
 
     public void setTarget(Entity target, boolean attack) {
-        super.setTarget(target);
+        super.setFollowTarget(target);
         this.canAttack = attack;
     }
 

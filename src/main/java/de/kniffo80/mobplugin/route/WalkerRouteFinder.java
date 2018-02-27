@@ -59,43 +59,51 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
     @Override
     public boolean search() {
+        //TODO 加入点强行规整 如果点太偏则将其调整为方块中心
+        //TODO getHighestUnder 判断两格 将 N E S W 赋值判断条件更改为方向可以通过而不是点可以通过
 
         this.success = false;
         this.searching = true;
 
+        if(this.start == null){
+            this.start = this.entity;
+        }
+
         if(this.destination == null){
-            this.searching = false;
-            this.success = false;
-            return false;
+            if(entity.getFollowTarget()!= null){
+                this.destination = entity.getFollowTarget();
+            }else{
+                this.searching = false;
+                this.success = false;
+                return false;
+            }
         }
 
         this.resetNodes();
 
-        if(this.start == null){
-            this.start = this.entity.getDirectionVector();
-        }
-
-
         Node presentNode = new Node(start);
-        openList.add(presentNode);
+        closeList.add(new Node(start));
+
 
         while(!isPositionOverlap(presentNode.getVector3(),destination)) {
-            putNeighborNodeIntoOpen(presentNode);
-            if (openList.peek() != null && searchLimit-- > 0) {
-                closeList.add(presentNode = openList.poll());
-
-            }else{
-                //无可用路径
-                this.nodes.add(new Node(destination));
-                this.reachable = false;
-                return false;
-            }
             if(this.isInterrupted()){
                 searchLimit = 0;
                 this.searching = false;
                 this.success = true;
                 println(this.entity.getId()+":"+this.entity.getNameTag()+"寻路以中断");
+                return false;
             }
+            putNeighborNodeIntoOpen(presentNode);
+            if (openList.peek() != null && searchLimit-- > 0) {
+                closeList.add(presentNode = openList.poll());
+
+            }else{
+                //Server.getInstance().getLogger().info("无可用路径 limit:"+searchLimit);
+                this.reachable = false;
+                //this.addNode(new Node(destination));
+                return false;
+            }
+
         }
 
         if(!presentNode.getVector3().equals(destination)){
@@ -103,6 +111,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         }
         ArrayList<Node> findingPath = getPathRoute();
 
+        //findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.REDSTONE_BLOCK_COLOR)));
 
         findingPath = FloydSmooth(findingPath);
         findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.DIAMOND_BLOCK_COLOR)));
@@ -115,21 +124,21 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
     private Block getHighestUnder(Vector3 vector3, int limit){
         if(limit > 0){
-            for(int y = (int)Math.ceil(vector3.getY()) ; y >= vector3.getFloorY() - limit ; y--){
+            for(int y = vector3.getFloorY() ; y >= vector3.getFloorY() - limit ; y--){
                 Block block = this.level.getBlock(vector3.getFloorX(),y,vector3.getFloorZ());
-                if(isWalkable(block))return block;
+                if(isWalkable(block) && level.getBlock(block.add(0,1,0)).canPassThrough())return block;
             }
             return null;
         }
-        for(int y = (int)Math.ceil(vector3.getY()) ; y >= 0 ; y--){
+        for(int y = vector3.getFloorY() ; y >= 0 ; y--){
             Block block = this.level.getBlock(vector3.getFloorX(),y,vector3.getFloorZ());
-            if(isWalkable(block))return block;
+            if(isWalkable(block) && level.getBlock(block.add(0,1,0)).canPassThrough())return block;
         }
         return null;
     }
 
     private boolean canWalkOn(Block block){
-        return !(block.getId() == Block.LAVA || block.getId() == Block.STILL_LAVA);
+        return !(block.getId() == Block.LAVA || block.getId() == Block.STILL_LAVA || block.getId() == Block.CACTUS);
     }
 
     private boolean isWalkable(Vector3 vector3){
@@ -138,11 +147,14 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     private boolean isPassable(Vector3 vector3){
-        return level.getBlock(vector3).canPassThrough();
+        double radius = (this.entity.getWidth() * this.entity.getScale()) / 2;
+        double height = this.entity.getHeight() * this.entity.getScale();
+        AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius,vector3.getY(),vector3.getZ() - radius,vector3.getX() + radius,vector3.getY() + height,vector3.getZ() + radius);
+        return this.level.getCollisionBlocks(bb,true).length == 0 && !this.level.getBlock(vector3.add(0,-1,0)).canPassThrough() ;
     }
 
     private double getWalkableHorizontalOffset(Vector3 vector3){
-        Block block = getHighestUnder(vector3.add(0,0,0),4);
+        Block block = getHighestUnder(vector3,4);
         if(block!=null){
             return (block.getY() - vector3.getY()) + 1;
         }
@@ -166,7 +178,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
          * Z
          */
 
-        Vector3 vector3 = node.getVector3();
+        Vector3 vector3 = new Vector3(node.getVector3().getFloorX() + 0.5,node.getVector3().getY(),node.getVector3().getFloorZ() + 0.5);
 
         double y;
         if(E = ((y = getWalkableHorizontalOffset(vector3.add(1,0,0))) != -256)){
@@ -359,40 +371,54 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
 
     private boolean hasBlocksAround(ArrayList<Vector3> list){
-        double halfX = (entity.getBoundingBox().getMaxX() - entity.getBoundingBox().getMinX()) / 2;
-        double halfZ = (entity.getBoundingBox().getMaxZ() - entity.getBoundingBox().getMinZ()) / 2;
+        double radius = (this.entity.getWidth() * this.entity.getScale()) / 2 + 0.1;
+        double height = this.entity.getHeight() * this.entity.getScale();
         for(Vector3 vector3 : list){
-            AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - halfX,vector3.getY(),vector3.getZ() - halfZ,vector3.getX() + halfX,vector3.getY() + entity.getHeight(),vector3.getZ() + halfZ);
-            if(this.level.getCollisionBlocks(bb,true).length != 0){
-                return true;
+            AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius,vector3.getY(),vector3.getZ() - radius,vector3.getX() + radius,vector3.getY() + height,vector3.getZ() + radius);
+            if(this.level.getCollisionBlocks(bb,true).length != 0)return true;
+
+            boolean xIsInt = vector3.getX() % 1 == 0;
+            boolean zIsInt = vector3.getZ() % 1 == 0;
+            if(xIsInt && zIsInt){
+                if(level.getBlock(new Vector3(vector3.getX(),vector3.getY()-1,vector3.getZ())).canPassThrough() ||
+                   level.getBlock(new Vector3(vector3.getX()-1,vector3.getY()-1,vector3.getZ())).canPassThrough() ||
+                   level.getBlock(new Vector3(vector3.getX()-1,vector3.getY()-1,vector3.getZ()-1)).canPassThrough() ||
+                   level.getBlock(new Vector3(vector3.getX(),vector3.getY()-1,vector3.getZ()-1)).canPassThrough())return true;
+            }else if(xIsInt /*&& !zIsInt*/){
+                if(level.getBlock(new Vector3(vector3.getX(),vector3.getY()-1,vector3.getZ())).canPassThrough() ||
+                   level.getBlock(new Vector3(vector3.getX()-1,vector3.getY()-1,vector3.getZ())).canPassThrough())return true;
+            }else if(/*!xIsInt &&*/ zIsInt){
+                if(level.getBlock(new Vector3(vector3.getX(),vector3.getY()-1,vector3.getZ())).canPassThrough() ||
+                   level.getBlock(new Vector3(vector3.getX(),vector3.getY()-1,vector3.getZ()-1)).canPassThrough())return true;
+            }else{
+                if(level.getBlock(new Vector3(vector3.getX(),vector3.getY()-1,vector3.getZ())).canPassThrough())return true;
             }
-            if(!canWalkOn(level.getBlock(vector3.add(0,-1,0))))return true;
         }
         return false;
     }
 
-    /*private HashSet<Vector3> getNodesUnderPoints(ArrayList<Vector3> list){
+    private HashSet<Vector3> getNodesUnderPoints(ArrayList<Vector3> list){
         HashSet<Vector3> set = new HashSet<>();
         for(Vector3 vector3 : list){
             boolean xIsInt = vector3.getX() % 1 == 0;
             boolean zIsInt = vector3.getZ() % 1 == 0;
             if(xIsInt && zIsInt){
-                set.add(new Vector3(Math.floor(vector3.getX()),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX())-1,Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX())-1,Math.floor(vector3.getZ())-1));
-                set.add(new Vector3(Math.floor(vector3.getX()),Math.floor(vector3.getZ())-1));
+                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
+                set.add(new Vector3(Math.floor(vector3.getX())-1,vector3.getY(),Math.floor(vector3.getZ())));
+                set.add(new Vector3(Math.floor(vector3.getX())-1,vector3.getY(),Math.floor(vector3.getZ())-1));
+                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())-1));
             }else if(xIsInt && !zIsInt){
-                set.add(new Vector3(Math.floor(vector3.getX()),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX()-1),Math.floor(vector3.getZ())));
+                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
+                set.add(new Vector3(Math.floor(vector3.getX()-1),vector3.getY(),Math.floor(vector3.getZ())));
             }else if(!xIsInt && zIsInt){
-                set.add(new Vector3(Math.floor(vector3.getX()),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX()),Math.floor(vector3.getZ())-1));
+                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
+                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())-1));
             }else{
-                set.add(new Vector3(Math.floor(vector3.getX()),Math.floor(vector3.getZ())));
+                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
             }
         }
         return set;
-    }*/
+    }
 
 
     /**

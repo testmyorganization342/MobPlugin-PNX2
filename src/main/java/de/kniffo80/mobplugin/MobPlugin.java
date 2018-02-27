@@ -422,8 +422,4 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
-    @EventHandler
-    public void dssad(PlayerJoinEvent event){
-        event.getPlayer().setAllowFlight(true);
-    }
 }
