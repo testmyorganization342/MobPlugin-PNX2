@@ -14,7 +14,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'target/MobPlugin-*-SNAPSHOT.jar', fingerprint: true
+                    archiveArtifacts artifacts: 'target/MobPlugin-1.0.jar', fingerprint: true
                 }
             }
         }
