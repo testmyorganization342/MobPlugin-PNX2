@@ -165,7 +165,7 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
     }
 
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate = false;
+        boolean hasUpdate;
         // Timings.timerEntityBaseTick.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);

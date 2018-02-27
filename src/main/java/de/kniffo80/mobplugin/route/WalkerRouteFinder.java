@@ -59,8 +59,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
     @Override
     public boolean search() {
-        //TODO 加入点强行规整 如果点太偏则将其调整为方块中心
-        //TODO getHighestUnder 判断两格 将 N E S W 赋值判断条件更改为方向可以通过而不是点可以通过
 
         this.success = false;
         this.searching = true;
@@ -90,7 +88,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 searchLimit = 0;
                 this.searching = false;
                 this.success = true;
-                println(this.entity.getId()+":"+this.entity.getNameTag()+"寻路以中断");
                 return false;
             }
             putNeighborNodeIntoOpen(presentNode);
@@ -98,7 +95,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 closeList.add(presentNode = openList.poll());
 
             }else{
-                //Server.getInstance().getLogger().info("无可用路径 limit:"+searchLimit);
                 this.reachable = false;
                 //this.addNode(new Node(destination));
                 return false;
@@ -111,7 +107,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         }
         ArrayList<Node> findingPath = getPathRoute();
 
-        //findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.REDSTONE_BLOCK_COLOR)));
 
         findingPath = FloydSmooth(findingPath);
         findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.DIAMOND_BLOCK_COLOR)));
@@ -397,7 +392,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         return false;
     }
 
-    private HashSet<Vector3> getNodesUnderPoints(ArrayList<Vector3> list){
+    /*private HashSet<Vector3> getNodesUnderPoints(ArrayList<Vector3> list){
         HashSet<Vector3> set = new HashSet<>();
         for(Vector3 vector3 : list){
             boolean xIsInt = vector3.getX() % 1 == 0;
@@ -418,7 +413,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             }
         }
         return set;
-    }
+    }*/
 
 
     /**
@@ -439,8 +434,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                     total++;
                 }
             }
-            //total = array.size()-1;
-            //array.get(total).setParent(array.get(current));
 
             Node temp = array.get(array.size()-1);
             ArrayList<Node> tempL = new ArrayList<>();
@@ -478,8 +471,5 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         this.openList.clear();
         this.closeList.clear();
         this.searchLimit = 100;
-    }
-    public void println(String s){
-        Server.getInstance().getLogger().info(s);
     }
 }

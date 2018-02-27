@@ -72,7 +72,6 @@ public abstract class WalkingEntity extends BaseEntity {
         if (this.followTarget instanceof EntityCreature && !((EntityCreature) this.followTarget).closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
             return;
         }
-        //随便走 没有followTarget 没有target时
 
         int x, z;
         if (this.stayTime > 0) {
@@ -151,7 +150,7 @@ public abstract class WalkingEntity extends BaseEntity {
 
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
                 double dx = this.followTarget.x - this.x;
-                double dy = this.followTarget.y - this.y;
+                //double dy = this.followTarget.y - this.y;
                 double dz = this.followTarget.z - this.z;
 
                 double x = this.target.x - this.x;

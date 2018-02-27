@@ -118,8 +118,6 @@ public abstract class BaseEntity extends EntityCreature {
         return this.followTarget != null ? this.followTarget : (this.target instanceof Entity ? (Entity) this.target : null);
     }
 
-    // TODO
-    //FIXME 2018.2.27 zzz1999 : followTarget is different from target.
     public void setFollowTarget(Entity target) {
         this.followTarget = target;
 

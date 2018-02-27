@@ -6,6 +6,7 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemDye;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.DyeColor;
@@ -20,6 +21,7 @@ public class Sheep extends WalkingAnimal {
 
     public static final int NETWORK_ID = 13;
 
+    public boolean sheared = false;
     public int color = 0;
 
     public Sheep(FullChunk chunk, CompoundTag nbt) {
@@ -65,16 +67,47 @@ public class Sheep extends WalkingAnimal {
         this.setMaxHealth(8);
 
         if (!this.namedTag.contains("Color")) {
-            this.setColor(this.randomColor());
+            this.setColor(randomColor());
         } else {
             this.setColor(this.namedTag.getByte("Color"));
         }
+
+        if (!this.namedTag.contains("Sheared")) {
+            this.namedTag.putByte("Sheared", 0);
+        } else {
+            this.sheared = this.namedTag.getBoolean("Sheared");
+        }
+
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, this.sheared);
     }
 
-    @Override
     public void saveNBT() {
         super.saveNBT();
         this.namedTag.putByte("Color", this.color);
+        this.namedTag.putBoolean("Sheared", this.sheared);
+    }
+
+    @Override
+    public boolean onInteract(Player player, Item item) {
+        if (item.getId() == Item.DYE) {
+            this.setColor(((ItemDye) item).getDyeColor().getWoolData());
+            return true;
+        }
+
+        return item.getId() == Item.SHEARS && shear();
+    }
+
+    public boolean shear() {
+        if(this.isBaby())return false;
+        if (sheared) {
+            return false;
+        }
+
+        this.sheared = true;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, true);
+
+        this.level.dropItem(this, Item.get(Item.WOOL, getColor(), ThreadLocalRandom.current().nextInt(2) + 1));
+        return true;
     }
 
     @Override
@@ -90,7 +123,7 @@ public class Sheep extends WalkingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            drops.add(Item.get(Item.WOOL, 0, 1)); // each time drops 1 wool
+            drops.add(Item.get(Item.WOOL, this.namedTag.getByte("Color"), 1)); // each time drops 1 wool
             int muttonDrop = Utils.rand(1, 3); // drops 1-2 muttons / cooked muttons
             for (int i = 0; i < muttonDrop; i++) {
                 drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
@@ -98,6 +131,7 @@ public class Sheep extends WalkingAnimal {
         }
         return drops.toArray(new Item[drops.size()]);
     }
+
 
     public void setColor(int color) {
         this.color = color;
