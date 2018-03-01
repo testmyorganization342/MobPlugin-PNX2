@@ -1,6 +1,5 @@
 package de.kniffo80.mobplugin.entities;
 
-import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockFence;
 import cn.nukkit.block.BlockFenceGate;
@@ -14,17 +13,16 @@ import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.MobPlugin;
+import de.kniffo80.mobplugin.RouteFinderThreadPool;
 import de.kniffo80.mobplugin.entities.animal.Animal;
 import de.kniffo80.mobplugin.route.RouteFinder;
-import de.kniffo80.mobplugin.route.SimpleRouteFinder;
 import de.kniffo80.mobplugin.route.WalkerRouteFinder;
+import de.kniffo80.mobplugin.runnable.RouteFinderSearchTask;
 import de.kniffo80.mobplugin.utils.Utils;
-
-import java.text.SimpleDateFormat;
 
 public abstract class WalkingEntity extends BaseEntity {
 
-    protected RouteFinder route = null;
+    protected RouteFinder route = new WalkerRouteFinder(this);
 
     public WalkingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -39,6 +37,8 @@ public abstract class WalkingEntity extends BaseEntity {
         if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget))){
             return;
         }
+
+        this.followTarget = null;
 
         //Vector3 target = this.target;
         //if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
@@ -133,11 +133,10 @@ public abstract class WalkingEntity extends BaseEntity {
             if (!this.isMovement()) {
                 return null;
             }
-            if(this.age % 10 == 0) {
-                if (this.route!=null && this.route.research()) {
-                    if (this.route.hasNext()) {
-                        this.target = this.route.next();
-                    }
+            if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
+                RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
+                if(this.route.hasNext()) {
+                    this.target = this.route.next();
                 }
             }
 
@@ -149,21 +148,18 @@ public abstract class WalkingEntity extends BaseEntity {
             }
 
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
-                double dx = this.followTarget.x - this.x;
-                //double dy = this.followTarget.y - this.y;
-                double dz = this.followTarget.z - this.z;
 
                 double x = this.target.x - this.x;
                 double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
 
-                double diff = Math.abs(dx) + Math.abs(dz);
+                double diff = Math.abs(x) + Math.abs(z);
                 if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
                     this.motionX = 0;
                     this.motionZ = 0;
                 } else {
-                    this.motionX = this.getSpeed() * 0.15 * (dx / diff);
-                    this.motionZ = this.getSpeed() * 0.15 * (dz / diff);
+                    this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
                 this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
@@ -217,8 +213,9 @@ public abstract class WalkingEntity extends BaseEntity {
                 }
             }
             this.updateMovement();
-            if(this.age % 2 == 0 &&this.route != null){
-                if(this.route.hasCurrentNode() && this.route.getCurrentNode().getVector3() != null && this.route.hasArrivedNode(this)) {
+            if(this.route != null){
+                if(this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
+                    this.target = null;
                     if (this.route.hasNext()) {
                         this.target = this.route.next();
                     }
@@ -227,6 +224,14 @@ public abstract class WalkingEntity extends BaseEntity {
             return this.followTarget !=null ? this.followTarget : this.target ;
         }
         return null;
+    }
+
+    public RouteFinder getRoute(){
+        return this.route;
+    }
+
+    public void setRoute(RouteFinder route){
+        this.route = route;
     }
 
 }

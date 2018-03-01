@@ -17,9 +17,7 @@ import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
-import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
@@ -36,7 +34,6 @@ import cn.nukkit.utils.Config;
 import cn.nukkit.utils.DyeColor;
 import de.kniffo80.mobplugin.entities.BaseEntity;
 import de.kniffo80.mobplugin.entities.animal.flying.*;
-import de.kniffo80.mobplugin.entities.animal.jumping.*;
 import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
 import de.kniffo80.mobplugin.entities.animal.swimming.*;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
@@ -48,7 +45,6 @@ import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.projectile.EntityFireBall;
 import de.kniffo80.mobplugin.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,16 +59,24 @@ public class MobPlugin extends PluginBase implements Listener {
 
     private Config pluginConfig = null;
 
+    public static MobPlugin instance;
+
+    public static MobPlugin getInstance(){
+        return instance;
+    }
 
     @Override
     public void onLoad() {
+        instance = this;
         registerEntities();
     }
 
     @Override
     public void onEnable() {
         // Config reading and writing
+        this.saveResource("config.yml");
         this.saveDefaultConfig();
+
         pluginConfig = getConfig();
 
         // we need this flag as it's controlled by the plugin's entities
@@ -87,10 +91,12 @@ public class MobPlugin extends PluginBase implements Listener {
         }
 
         Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
+
     }
 
     @Override
     public void onDisable() {
+        RouteFinderThreadPool.shutDownNow();
         Utils.logServerInfo("Plugin disabled successful.");
     }
 
@@ -421,5 +427,6 @@ public class MobPlugin extends PluginBase implements Listener {
             counter++;
         }
     }
+
 
 }

@@ -4,7 +4,7 @@ version: "1.0.0"
 api: ["1.0.0"]
 
 load: STARTUP
-author: kniffo80, matt404, augesrob, PetteriM1, PikyCZ, zzz1999
+author: kniffo80, matt404, augesrob, PetteriM1, zzz1999
 description: Mob plugin for Nukkit
 website: https://github.com/Nukkit-coders/mob-plugin
 
@@ -14,7 +14,7 @@ commands:
   aliases: ["mob"]
   usage: /mob
   permission: mobplugin.command
-    
+
 permissions:
  mobplugin.command:
   description: ""

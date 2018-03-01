@@ -1,11 +1,8 @@
 package de.kniffo80.mobplugin.route;
 
-import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.level.particle.RedstoneParticle;
-import cn.nukkit.level.particle.SmokeParticle;
+import cn.nukkit.block.BlockSlab;
 import cn.nukkit.level.particle.SpellParticle;
-import cn.nukkit.level.particle.WaterParticle;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.math.Vector3;
@@ -15,7 +12,6 @@ import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.PriorityQueue;
 
 /**
@@ -25,6 +21,8 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
     public final static int DIRECT_MOVE_COST = 10;
     public final static int OBLIQUE_MOVE_COST = 14;
+
+    public final static int MAX_JUMP_HEIGHT = 1;
 
     private PriorityQueue<Node> openList = new PriorityQueue<>();
     private ArrayList<Node> closeList = new ArrayList<>();
@@ -60,7 +58,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     @Override
     public boolean search() {
 
-        this.success = false;
+        this.finished = false;
         this.searching = true;
 
         if(this.start == null){
@@ -72,7 +70,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 this.destination = entity.getFollowTarget();
             }else{
                 this.searching = false;
-                this.success = false;
+                this.finished = true;
                 return false;
             }
         }
@@ -87,7 +85,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if(this.isInterrupted()){
                 searchLimit = 0;
                 this.searching = false;
-                this.success = true;
+                this.finished = true;
                 return false;
             }
             putNeighborNodeIntoOpen(presentNode);
@@ -95,8 +93,10 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 closeList.add(presentNode = openList.poll());
 
             }else{
+                this.searching = false;
+                this.finished = true;
                 this.reachable = false;
-                //this.addNode(new Node(destination));
+                this.addNode(new Node(destination));
                 return false;
             }
 
@@ -109,9 +109,11 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
 
         findingPath = FloydSmooth(findingPath);
-        findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.DIAMOND_BLOCK_COLOR)));
+        //findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.DIAMOND_BLOCK_COLOR)));
 
         this.addNode(findingPath);
+        this.finished = true;
+        this.searching = false;
 
         return true;
     }
@@ -121,13 +123,13 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         if(limit > 0){
             for(int y = vector3.getFloorY() ; y >= vector3.getFloorY() - limit ; y--){
                 Block block = this.level.getBlock(vector3.getFloorX(),y,vector3.getFloorZ());
-                if(isWalkable(block) && level.getBlock(block.add(0,1,0)).canPassThrough())return block;
+                if(isWalkable(block) && level.getBlock(block.add(0,1,0)).getId() == Block.AIR)return block;
             }
             return null;
         }
         for(int y = vector3.getFloorY() ; y >= 0 ; y--){
             Block block = this.level.getBlock(vector3.getFloorX(),y,vector3.getFloorZ());
-            if(isWalkable(block) && level.getBlock(block.add(0,1,0)).canPassThrough())return block;
+            if(isWalkable(block) && level.getBlock(block.add(0,1,0)).getId() == Block.AIR)return block;
         }
         return null;
     }
@@ -174,8 +176,12 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
          */
 
         Vector3 vector3 = new Vector3(node.getVector3().getFloorX() + 0.5,node.getVector3().getY(),node.getVector3().getFloorZ() + 0.5);
-
+        Block block = level.getBlock(vector3);
+        boolean isSlab = block instanceof BlockSlab;
+        double offsetY = 0.0;//TODO 修Slab
+        //FIXME 等待NK把椅子碰撞箱改正常
         double y;
+
         if(E = ((y = getWalkableHorizontalOffset(vector3.add(1,0,0))) != -256)){
             Vector3 vec = vector3.add(1,y,0);
             if(isPassable(vec) && !isContainsInClose(vec)){
@@ -392,36 +398,12 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         return false;
     }
 
-    /*private HashSet<Vector3> getNodesUnderPoints(ArrayList<Vector3> list){
-        HashSet<Vector3> set = new HashSet<>();
-        for(Vector3 vector3 : list){
-            boolean xIsInt = vector3.getX() % 1 == 0;
-            boolean zIsInt = vector3.getZ() % 1 == 0;
-            if(xIsInt && zIsInt){
-                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX())-1,vector3.getY(),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX())-1,vector3.getY(),Math.floor(vector3.getZ())-1));
-                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())-1));
-            }else if(xIsInt && !zIsInt){
-                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX()-1),vector3.getY(),Math.floor(vector3.getZ())));
-            }else if(!xIsInt && zIsInt){
-                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
-                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())-1));
-            }else{
-                set.add(new Vector3(Math.floor(vector3.getX()),vector3.getY(),Math.floor(vector3.getZ())));
-            }
-        }
-        return set;
-    }*/
-
-
     /**
      * 弗洛伊德路径平滑
      * @param array 路径
      * @return 平滑后的路径
      */
-    private synchronized ArrayList<Node> FloydSmooth(ArrayList<Node> array){
+    private ArrayList<Node> FloydSmooth(ArrayList<Node> array){
         int current = 0;
         int total = 2;
         if(array.size() > 2){

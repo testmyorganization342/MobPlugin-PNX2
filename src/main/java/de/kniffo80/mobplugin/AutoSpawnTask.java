@@ -112,10 +112,7 @@ public class AutoSpawnTask implements Runnable {
 
     public boolean entitySpawnAllowed(Level level, int networkId, String entityName) {
         int count = countEntity(level, networkId);
-        if (count < maxSpawns.getOrDefault(networkId,0)) {
-            return true;
-        }
-        return false;
+        return count < maxSpawns.getOrDefault(networkId, 0);
     }
 
     private int countEntity(Level level, int networkId) {

@@ -1,6 +1,5 @@
 package de.kniffo80.mobplugin.route;
 
-import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
 import de.kniffo80.mobplugin.entities.WalkingEntity;
@@ -13,7 +12,7 @@ import java.util.Objects;
  */
 public abstract class RouteFinder {
     protected ArrayList<Node> nodes = new ArrayList<>();
-    protected boolean success = false;
+    protected boolean finished = false;
     protected boolean searching = false;
 
     protected int current = 0;
@@ -62,8 +61,8 @@ public abstract class RouteFinder {
         }
     }
 
-    public boolean isSuccess(){
-        return success;
+    public boolean isFinished(){
+        return finished;
     }
 
     public boolean isSearching(){
@@ -106,9 +105,8 @@ public abstract class RouteFinder {
     }
 
     public boolean hasArrivedNode(Vector3 vec){
-        if(this.getCurrentNode() != null) {
+        if(this.isFinished() && this.hasNext() &&  this.getCurrentNode().getVector3()!=null) {
             Vector3 cur = this.getCurrentNode().getVector3();
-            //this.nodes.forEach(n->Server.getInstance().getLogger().info(n.toString()));
             return vec.getX() == cur.getX() && vec.getZ() == cur.getZ()/* && vec.getFloorY() == cur.getFloorY()*/;
         }
         return false;
@@ -124,27 +122,27 @@ public abstract class RouteFinder {
 
     public void resetNodes(){
         this.nodes.clear();
-        this.searching = false;
-        this.success = false;
         this.current = 0;
+        this.searching = false;
+        this.finished = false;
         this.interrupt = false;
         this.arrived = false;
     }
 
     public abstract boolean search();
 
-    public boolean research(){
+    public synchronized void research(){
         this.resetNodes();
         this.reachable = true;
-        return this.success = this.search();
+        this.search();
     }
 
     public boolean hasNext(){
-        return this.current + 1 < nodes.size() && this.nodes.get(this.current+1)!= null && !this.arrived;
+        return this.current + 1 < nodes.size() && this.nodes.get(this.current+1)!= null;
     }
 
     public Vector3 next(){
-        if(this.hasNext()){
+        if(this.isFinished() && this.hasNext()){
             return this.nodes.get(++current).getVector3();
         }
         return null;
