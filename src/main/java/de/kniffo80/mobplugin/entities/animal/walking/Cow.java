@@ -61,6 +61,16 @@ public class Cow extends WalkingAnimal {
     }
 
     @Override
+    public boolean onInteract(Player player, Item item) {
+        if (item.getId() == Item.BUCKET) {
+            player.getInventory().removeItem(Item.get(Item.BUCKET,0,1));
+            player.getInventory().addItem(Item.get(Item.BUCKET,1,1));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
