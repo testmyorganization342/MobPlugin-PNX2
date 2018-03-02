@@ -75,7 +75,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             }
         }
 
-        this.resetNodes();
+        this.resetTemporary();
 
         Node presentNode = new Node(start);
         closeList.add(new Node(start));
@@ -110,6 +110,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
         findingPath = FloydSmooth(findingPath);
         //findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.DIAMOND_BLOCK_COLOR)));
+        this.resetNodes();
 
         this.addNode(findingPath);
         this.finished = true;
@@ -448,8 +449,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 && (int)vector2.getY() == (int)vector2_.getY();
     }
 
-    public void resetNodes(){
-        super.resetNodes();
+    public void resetTemporary(){
         this.openList.clear();
         this.closeList.clear();
         this.searchLimit = 100;

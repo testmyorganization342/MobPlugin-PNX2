@@ -66,6 +66,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     public boolean isBaby() {
         return false;
 //        return this.getDataFlag(DATA_AGEABLE_FLAGS, DATA_FLAG_BABY);
+
     }
 
     @Override

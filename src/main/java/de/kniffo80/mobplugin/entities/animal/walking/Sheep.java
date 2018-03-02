@@ -106,7 +106,7 @@ public class Sheep extends WalkingAnimal {
         this.sheared = true;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, true);
 
-        this.level.dropItem(this, Item.get(Item.WOOL, getColor(), ThreadLocalRandom.current().nextInt(2) + 1));
+        this.level.dropItem(this, Item.get(Item.WOOL, getColor(), Utils.rand(0,4)));
         return true;
     }
 
@@ -135,6 +135,7 @@ public class Sheep extends WalkingAnimal {
 
     public void setColor(int color) {
         this.color = color;
+        this.namedTag.putByte("Color",color);
         this.setDataProperty(new ByteEntityData(DATA_COLOUR, color));
     }
 
@@ -144,11 +145,11 @@ public class Sheep extends WalkingAnimal {
 
     private int randomColor() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        double rand = random.nextDouble(1, 100);
+        int rand = random.nextInt(0, 100);
 
-        if (rand <= 15) {
-            return random.nextBoolean() ? DyeColor.BLACK.getDyeData() : random.nextBoolean() ? DyeColor.GRAY.getDyeData() : DyeColor.LIGHT_GRAY.getDyeData();
-        }
+        if(rand > 5 && 0 < rand)return DyeColor.BLACK.getDyeData();
+        if(rand > 10 && 5 < rand)return DyeColor.GRAY.getDyeData();
+        if(rand > 15 && 10 < rand)return DyeColor.LIGHT_GRAY.getDyeData();
 
         return DyeColor.WHITE.getDyeData();
     }

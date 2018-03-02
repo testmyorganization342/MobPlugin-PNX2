@@ -151,7 +151,7 @@ public class PigZombie extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = new ItemSwordGold();
-        pk.inventorySlot = 9;
+        pk.inventorySlot = 10;
         player.dataPacket(pk);
     }
 

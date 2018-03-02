@@ -34,6 +34,7 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
+
         if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget))){
             return;
         }
