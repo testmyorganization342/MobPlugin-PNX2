@@ -26,12 +26,12 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
     }
 
     @Override
-    public void setTarget(Entity target) {
+    public void setFollowTarget(Entity target) {
         this.setTarget(target, true);
     }
 
     public void setTarget(Entity target, boolean attack) {
-        super.setTarget(target);
+        super.setFollowTarget(target);
         this.canAttack = attack;
     }
 
@@ -165,7 +165,7 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
     }
 
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate = false;
+        boolean hasUpdate;
         // Timings.timerEntityBaseTick.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);

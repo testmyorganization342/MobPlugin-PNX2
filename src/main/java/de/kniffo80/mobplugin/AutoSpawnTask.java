@@ -9,6 +9,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import de.kniffo80.mobplugin.entities.animal.flying.*;
 import de.kniffo80.mobplugin.entities.animal.jumping.*;
+import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
 import de.kniffo80.mobplugin.entities.autospawn.IEntitySpawner;
 import de.kniffo80.mobplugin.entities.monster.flying.*;
@@ -111,10 +112,7 @@ public class AutoSpawnTask implements Runnable {
 
     public boolean entitySpawnAllowed(Level level, int networkId, String entityName) {
         int count = countEntity(level, networkId);
-        if (count < maxSpawns.get(networkId)) {
-            return true;
-        }
-        return false;
+        return count < maxSpawns.getOrDefault(networkId, 0);
     }
 
     private int countEntity(Level level, int networkId) {

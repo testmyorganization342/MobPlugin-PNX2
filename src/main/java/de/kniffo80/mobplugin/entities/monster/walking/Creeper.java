@@ -33,6 +33,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.route = null;
     }
 
     @Override

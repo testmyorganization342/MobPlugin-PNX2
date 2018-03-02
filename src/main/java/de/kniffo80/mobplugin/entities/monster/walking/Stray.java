@@ -66,7 +66,7 @@ public class Stray extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = new ItemBow();
-        pk.hotbarSlot = 9;
+        pk.hotbarSlot = 0;
         player.dataPacket(pk);
     }
 
