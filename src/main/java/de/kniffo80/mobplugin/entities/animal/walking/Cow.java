@@ -62,7 +62,7 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item) {
-        if (item.getId() == Item.BUCKET) {
+        if (item.equals(Item.get(Item.BUCKET,0),true)) {
             player.getInventory().removeItem(Item.get(Item.BUCKET,0,1));
             player.getInventory().addItem(Item.get(Item.BUCKET,1,1));
             return true;
