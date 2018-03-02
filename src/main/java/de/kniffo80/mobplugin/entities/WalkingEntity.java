@@ -22,7 +22,7 @@ import de.kniffo80.mobplugin.utils.Utils;
 
 public abstract class WalkingEntity extends BaseEntity {
 
-    protected RouteFinder route = new WalkerRouteFinder(this);
+    protected RouteFinder route = null;
 
     public WalkingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);

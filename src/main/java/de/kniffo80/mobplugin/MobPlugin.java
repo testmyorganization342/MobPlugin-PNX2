@@ -74,7 +74,6 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public void onEnable() {
         // Config reading and writing
-        this.saveResource("config.yml");
         this.saveDefaultConfig();
 
         pluginConfig = getConfig();

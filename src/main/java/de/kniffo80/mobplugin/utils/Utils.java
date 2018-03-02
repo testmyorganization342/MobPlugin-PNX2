@@ -50,15 +50,6 @@ public class Utils {
     public static final int ACCORDING_X_OBTAIN_Y = 0;
     public static final int ACCORDING_Y_OBTAIN_X = 1;
 
-    /**
-     * 一次函数求解 根据X求Y或根据Y求X<br>
-     *     如果两个{@code Vector3} 的 {@link Vector3#getY()} 不同则返回 {@link Double#MAX_VALUE}
-     * @param pos1 坐标1
-     * @param pos2 坐标2
-     * @param element 输入的X或者Y
-     * @param type {@link Utils#ACCORDING_X_OBTAIN_Y} 或者 {@link Utils#ACCORDING_Y_OBTAIN_X}
-     * @return 结果 如果无法得出结果则返回{@link Double#MAX_VALUE}
-     */
     public static double calLinearFunction(Vector3 pos1, Vector3 pos2, double element, int type) {
         if(pos1.getFloorY() != pos2.getFloorY())return Double.MAX_VALUE;
         if(pos1.getX() == pos2.getX()){
