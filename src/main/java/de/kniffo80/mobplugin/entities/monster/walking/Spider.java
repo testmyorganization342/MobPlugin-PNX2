@@ -68,7 +68,6 @@ public class Spider extends WalkingMonster {
             this.close();
             return false;
         }
-        MobPlugin.getInstance().getServer().getLogger().info("Target"+this.target+"followTarget:"+this.followTarget);
 
         if (!this.isAlive()) {
             if (++this.deadTicks >= 23) {

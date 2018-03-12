@@ -395,9 +395,16 @@ public class MobPlugin extends PluginBase implements Listener {
 
         Block block = ev.getBlock();
         if ((block.getId() == Block.MONSTER_EGG)
-            && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
+                && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
-              Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5)); if(entity != null){ entity.spawnToAll(); }
+            Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5));
+            if(entity != null){
+                entity.spawnToAll();
+                EntityEventPacket pk = new EntityEventPacket();
+                pk.eid = entity.getId();
+                pk.event = 27;
+                entity.getLevel().addChunkPacket(entity.getChunkX() >> 4, entity.getChunkZ() >> 4,pk);
+            }
         }
     }
 

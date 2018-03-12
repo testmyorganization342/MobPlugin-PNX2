@@ -9,6 +9,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.HeartParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.potion.Effect;
 import co.aikar.timings.Timings;
 import de.kniffo80.mobplugin.entities.WalkingEntity;
@@ -22,6 +23,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     public WalkingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.route = null;
     }
 
     @Override
@@ -57,6 +59,10 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
                 for (int i = 0; i < 3; i++) {
                     this.level.addParticle(new HeartParticle(this.add(Utils.rand(-1.0,1.0),this.getMountedYOffset()+ Utils.rand(-1.0,1.0),Utils.rand(-1.0,1.0))));
                 }
+                /*EntityEventPacket pk = new EntityEventPacket();
+                pk.eid = this.getId();
+                pk.event = 21;
+                this.getLevel().addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4,pk);*/
             }
         }
 

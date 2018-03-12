@@ -5,6 +5,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.data.ByteEntityData;
+import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.item.Item;
@@ -15,8 +16,10 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import de.kniffo80.mobplugin.RouteFinderThreadPool;
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
 import de.kniffo80.mobplugin.route.WalkerRouteFinder;
+import de.kniffo80.mobplugin.runnable.RouteFinderSearchTask;
 import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -34,8 +37,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        //this.route = new WalkerRouteFinder(this);
-        this.route = null;
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -124,6 +126,12 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         if (!this.isMovement()) {
             return true;
         }
+        if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
+            RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
+            if(this.route.hasNext()) {
+                this.target = this.route.next();
+            }
+        }
 
         if (this.isKnockback()) {
             this.move(this.motionX * tickDiff, this.motionY, this.motionZ * tickDiff);
@@ -135,17 +143,18 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         Vector3 before = this.target;
         this.checkTarget();
 
-        if (this.target instanceof EntityCreature || before != this.target) {
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
             double x = this.target.x - this.x;
             double y = this.target.y - this.y;
             double z = this.target.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
-            double distance = target.distance(this);
+            double distance = followTarget.distance(this);
             if (distance <= 4.5) {
-                if (target instanceof EntityCreature) {
-                    if (bombTime == 0) {
+                if (followTarget instanceof EntityCreature) {
+                    if (bombTime >= 0) {
                         this.level.addSound(this, Sound.RANDOM_FUSE);
+                        this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH,bombTime));
                     }
                     this.bombTime += tickDiff;
                     if (this.bombTime >= 64) {
@@ -196,6 +205,14 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             }
         }
         this.updateMovement();
+        if(this.route != null){
+            if(this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
+                this.target = null;
+                if (this.route.hasNext()) {
+                    this.target = this.route.next();
+                }
+            }
+        }
         return true;
     }
 
