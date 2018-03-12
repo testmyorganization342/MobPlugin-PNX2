@@ -151,12 +151,13 @@ public class Sheep extends WalkingAnimal {
 
     private int randomColor() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        int rand = random.nextInt(0, 100);
+        int rand = random.nextInt(0, 2500);
 
-        if(rand < 5 && 0 >= rand)return DyeColor.BLACK.getDyeData();
-        else if(rand < 10 && 5 >= rand)return DyeColor.GRAY.getDyeData();
-        else if(rand < 15 && 10 >= rand)return DyeColor.LIGHT_GRAY.getDyeData();
-        else if(rand < 18 && 15 >= rand)return DyeColor.GRAY.getDyeData();
+        if(rand < 125 && 0 <= rand)return DyeColor.BLACK.getDyeData();
+        else if(rand < 250 && 125 <= rand)return DyeColor.GRAY.getDyeData();
+        else if(rand < 375 && 250 <= rand)return DyeColor.LIGHT_GRAY.getDyeData();
+        else if(rand < 500 && 375 <= rand)return DyeColor.GRAY.getDyeData();
+        else if(rand < 541 && 500 <= rand)return DyeColor.PINK.getDyeData();
         else return DyeColor.WHITE.getDyeData();
     }
 
