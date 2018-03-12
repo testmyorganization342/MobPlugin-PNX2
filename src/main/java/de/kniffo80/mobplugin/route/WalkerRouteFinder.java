@@ -2,6 +2,7 @@ package de.kniffo80.mobplugin.route;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockSlab;
+import cn.nukkit.level.particle.RedstoneParticle;
 import cn.nukkit.level.particle.SpellParticle;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.SimpleAxisAlignedBB;
@@ -21,8 +22,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
     public final static int DIRECT_MOVE_COST = 10;
     public final static int OBLIQUE_MOVE_COST = 14;
-
-    public final static int MAX_JUMP_HEIGHT = 1;
 
     private PriorityQueue<Node> openList = new PriorityQueue<>();
     private ArrayList<Node> closeList = new ArrayList<>();
@@ -61,9 +60,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         this.finished = false;
         this.searching = true;
 
-        if(this.start == null){
-            this.start = this.entity;
-        }
+
 
         if(this.destination == null){
             if(entity.getFollowTarget()!= null){
@@ -73,6 +70,10 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 this.finished = true;
                 return false;
             }
+        }
+
+        if(this.start == null){
+            this.start = this.entity;
         }
 
         this.resetTemporary();
@@ -106,6 +107,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             closeList.add(new Node(destination,presentNode,0,0));
         }
         ArrayList<Node> findingPath = getPathRoute();
+        //findingPath.forEach(n->level.addParticle(new RedstoneParticle(n.getVector3().add(0,0.2,0))));
 
 
         findingPath = FloydSmooth(findingPath);
@@ -177,9 +179,9 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
          */
 
         Vector3 vector3 = new Vector3(node.getVector3().getFloorX() + 0.5,node.getVector3().getY(),node.getVector3().getFloorZ() + 0.5);
-        Block block = level.getBlock(vector3);
-        boolean isSlab = block instanceof BlockSlab;
-        double offsetY = 0.0;//TODO 修Slab
+        //Block block = level.getBlock(vector3);
+        //boolean isSlab = block instanceof BlockSlab;
+        //double offsetY = 0.0;//TODO 修Slab
         //FIXME 等待NK把椅子碰撞箱改正常
         double y;
 

@@ -133,7 +133,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
             EntityEventPacket pk = new EntityEventPacket();
             pk.eid = this.getId();
             pk.event = 4;
-            Server.broadcastPacket(this.getViewers().values(), pk);
+            this.level.addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4, pk);
         }
     }
 

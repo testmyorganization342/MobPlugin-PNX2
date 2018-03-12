@@ -29,7 +29,7 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
+        //this.route = new WalkerRouteFinder(this);
     }
 
     @Override

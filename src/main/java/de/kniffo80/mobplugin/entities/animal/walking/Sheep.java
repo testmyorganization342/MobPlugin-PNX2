@@ -92,28 +92,28 @@ public class Sheep extends WalkingAnimal {
     @Override
     public boolean onInteract(Player player, Item item) {
         if (item.getId() == Item.DYE) {
-            this.setColor(((ItemDye) item).getDyeColor().getWoolData());
+            this.setColor(((ItemDye) item).getDyeColor().getWoolData());;
             return true;
         }else if(item.equals(Item.get(Item.WHEAT,0,1)) && !this.isBaby()){
             player.getInventory().removeItem(Item.get(Item.WHEAT,0,1));
+            this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.WHEAT)));
             this.setInLove();
+            return true;
+        }else if(item.equals(Item.get(Item.SHEARS,0,1),false) && !isBaby() && !this.sheared){
+            this.shear();
+            this.level.addSound(this,Sound.MOB_SHEEP_SHEAR);
+            player.getInventory().getItemInHand().setDamage(item.getDamage() + 1);
+            return true;
         }
+        return false;
 
-        return item.getId() == Item.SHEARS && shear();
     }
 
-    public boolean shear() {
-        if(this.isBaby())return false;
-        if (sheared) {
-            return false;
-        }
-
+    public void shear() {
         this.sheared = true;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, true);
-        this.level.addSound(this,Sound.MOB_SHEEP_SHEAR);
         this.level.dropItem(this, Item.get(Item.WOOL, getColor(), Utils.rand(0,4)));
-        return true;
     }
 
     @Override
@@ -153,11 +153,11 @@ public class Sheep extends WalkingAnimal {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int rand = random.nextInt(0, 100);
 
-        if(rand > 5 && 0 <= rand)return DyeColor.BLACK.getDyeData();
-        if(rand > 10 && 5 <= rand)return DyeColor.GRAY.getDyeData();
-        if(rand > 15 && 10 <= rand)return DyeColor.LIGHT_GRAY.getDyeData();
-
-        return DyeColor.WHITE.getDyeData();
+        if(rand < 5 && 0 >= rand)return DyeColor.BLACK.getDyeData();
+        else if(rand < 10 && 5 >= rand)return DyeColor.GRAY.getDyeData();
+        else if(rand < 15 && 10 >= rand)return DyeColor.LIGHT_GRAY.getDyeData();
+        else if(rand < 18 && 15 >= rand)return DyeColor.GRAY.getDyeData();
+        else return DyeColor.WHITE.getDyeData();
     }
 
     @Override

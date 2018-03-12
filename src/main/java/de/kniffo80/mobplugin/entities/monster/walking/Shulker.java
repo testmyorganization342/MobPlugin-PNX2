@@ -5,6 +5,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
+import de.kniffo80.mobplugin.route.WalkerRouteFinder;
 
 public class Shulker extends WalkingMonster {
 
@@ -12,6 +13,7 @@ public class Shulker extends WalkingMonster {
 
     public Shulker(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        //this.route = new WalkerRouteFinder(this);
     }
 
     @Override

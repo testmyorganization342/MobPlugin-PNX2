@@ -35,11 +35,11 @@ public abstract class WalkingEntity extends BaseEntity {
         }
 
 
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget))){
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget)) && this.target!=null){
             return;
         }
 
-        this.followTarget = null;
+        //this.followTarget = null;
 
         //Vector3 target = this.target;
         //if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {

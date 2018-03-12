@@ -14,6 +14,7 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import de.kniffo80.mobplugin.MobPlugin;
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
 import de.kniffo80.mobplugin.utils.Utils;
 
@@ -67,6 +68,7 @@ public class Spider extends WalkingMonster {
             this.close();
             return false;
         }
+        MobPlugin.getInstance().getServer().getLogger().info("Target"+this.target+"followTarget:"+this.followTarget);
 
         if (!this.isAlive()) {
             if (++this.deadTicks >= 23) {
