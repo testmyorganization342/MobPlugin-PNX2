@@ -181,8 +181,8 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         Vector3 vector3 = new Vector3(node.getVector3().getFloorX() + 0.5,node.getVector3().getY(),node.getVector3().getFloorZ() + 0.5);
         //Block block = level.getBlock(vector3);
         //boolean isSlab = block instanceof BlockSlab;
-        //double offsetY = 0.0;//TODO 修Slab
-        //FIXME 等待NK把椅子碰撞箱改正常
+        //double offsetY = 0.0;//TODO
+        //FIXME
         double y;
 
         if(E = ((y = getWalkableHorizontalOffset(vector3.add(1,0,0))) != -256)){
@@ -347,8 +347,8 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     private boolean hasBarrier(Vector3 pos1, Vector3 pos2){
         if(pos1.equals(pos2))return false;
         if(pos1.getFloorY() != pos2.getFloorY())return true;
-        boolean traverseDirection = Math.abs(pos1.getX() - pos2.getX()) > Math.abs(pos1.getZ() - pos2.getZ());//true为横向遍历 false为纵向遍历
-        if(traverseDirection){//横向遍历
+        boolean traverseDirection = Math.abs(pos1.getX() - pos2.getX()) > Math.abs(pos1.getZ() - pos2.getZ());
+        if(traverseDirection){
             double loopStart = Math.min(pos1.getX(),pos2.getX());
             double loopEnd = Math.max(pos1.getX(),pos2.getX());
             ArrayList<Vector3> list = new ArrayList<>();
@@ -358,7 +358,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 list.add(new Vector3(i,pos1.getY(),result));
             }
             return hasBlocksAround(list);
-        }else{//纵向遍历
+        }else{
             double loopStart = Math.min(pos1.getZ(),pos2.getZ());
             double loopEnd = Math.max(pos1.getZ(),pos2.getZ());
             ArrayList<Vector3> list = new ArrayList<>();
@@ -401,11 +401,6 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         return false;
     }
 
-    /**
-     * 弗洛伊德路径平滑
-     * @param array 路径
-     * @return 平滑后的路径
-     */
     private ArrayList<Node> FloydSmooth(ArrayList<Node> array){
         int current = 0;
         int total = 2;

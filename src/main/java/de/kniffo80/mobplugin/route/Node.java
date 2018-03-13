@@ -9,9 +9,9 @@ import java.util.Objects;
  */
 public class Node implements Comparable<Node> {
     private Vector3 vector3;
-    private Node parent;//指向父节点
-    private int G;//移动代价
-    private int H;//估算值
+    private Node parent;
+    private int G;
+    private int H;
     private int F;
 
     Node(Vector3 vector3, Node parent,int G,int H){
@@ -65,7 +65,7 @@ public class Node implements Comparable<Node> {
             return this.getF() - o.getF();
         }
         //Breaking ties
-        //0.1 = 10.0/100(期望不超过100步)
+        //0.1 = 10.0/100
         double breaking;
         if((breaking = this.getG()+(this.getH()*0.1) - (o.getG()+(this.getH()*0.1))) > 0){
             return 1;
