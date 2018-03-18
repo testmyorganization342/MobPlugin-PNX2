@@ -114,7 +114,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     case "spawn":
 
                         if (args.length == 1) {
-                            commandSender.sendMessage("Usage: /mob spawn <mob> <opt:player>");
+                            sender.sendMessage("Usage: /mob spawn <mob> <opt:player>");
                             break;
                         }
 
