@@ -1,12 +1,14 @@
 package de.kniffo80.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.EntityEventPacket;
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
 import de.kniffo80.mobplugin.route.WalkerRouteFinder;
 import de.kniffo80.mobplugin.utils.Utils;
@@ -96,6 +98,10 @@ public class ZombieVillager extends WalkingMonster {
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
+            EntityEventPacket pk = new EntityEventPacket();
+            pk.eid = this.getId();
+            pk.event = 4;
+            Server.broadcastPacket(this.getViewers().values(), pk);
         }
     }
 

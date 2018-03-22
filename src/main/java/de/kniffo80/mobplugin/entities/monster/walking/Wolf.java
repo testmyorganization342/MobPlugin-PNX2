@@ -68,8 +68,7 @@ public class Wolf extends TameableMonster {
         }
 
         this.setMaxHealth(8);
-        this.fireProof = true;
-        // this.setDamage(new int[] { 0, 3, 4, 6 });
+        this.setDamage(new int[] { 0, 3, 4, 6 });
     }
 
     @Override

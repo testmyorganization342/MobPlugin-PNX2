@@ -2,6 +2,9 @@ package de.kniffo80.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemSwordStone;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -9,6 +12,10 @@ import cn.nukkit.network.protocol.MobEquipmentPacket;
 
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
 import de.kniffo80.mobplugin.route.WalkerRouteFinder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class WitherSkeleton extends WalkingMonster {
 
@@ -32,6 +39,7 @@ public class WitherSkeleton extends WalkingMonster {
     @Override
     protected void initEntity() {
         super.initEntity();
+        this.setDamage(new int[] { 0, 3, 4, 6 });
     }
 
     @Override
@@ -46,6 +54,10 @@ public class WitherSkeleton extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
+      if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
+            this.attackDelay = 0;
+            player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, getDamage()));
+        }
     }
 
     @Override
