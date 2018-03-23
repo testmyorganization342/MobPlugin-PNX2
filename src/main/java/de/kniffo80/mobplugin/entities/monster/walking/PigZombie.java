@@ -10,8 +10,8 @@ import cn.nukkit.item.ItemSwordGold;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
-import de.kniffo80.mobplugin.MobPlugin;
 import de.kniffo80.mobplugin.entities.monster.WalkingMonster;
+import de.kniffo80.mobplugin.route.WalkerRouteFinder;
 import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -22,10 +22,11 @@ public class PigZombie extends WalkingMonster {
 
     public static final int NETWORK_ID = 36;
 
-    int angry = 0;
+    int                     angry      = 0;
 
     public PigZombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class PigZombie extends WalkingMonster {
         }
 
         this.fireProof = true;
-        this.setDamage(new int[]{0, 5, 9, 13});
+        this.setDamage(new int[] { 0, 5, 9, 13 });
         setMaxHealth(20);
     }
 
@@ -88,7 +89,37 @@ public class PigZombie extends WalkingMonster {
             damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
 
             if (player instanceof Player) {
+                @SuppressWarnings("serial")
+                HashMap<Integer, Float> armorValues = new HashMap<Integer, Float>() {
+
+                    {
+                        put(Item.LEATHER_CAP, 1f);
+                        put(Item.LEATHER_TUNIC, 3f);
+                        put(Item.LEATHER_PANTS, 2f);
+                        put(Item.LEATHER_BOOTS, 1f);
+                        put(Item.CHAIN_HELMET, 1f);
+                        put(Item.CHAIN_CHESTPLATE, 5f);
+                        put(Item.CHAIN_LEGGINGS, 4f);
+                        put(Item.CHAIN_BOOTS, 1f);
+                        put(Item.GOLD_HELMET, 1f);
+                        put(Item.GOLD_CHESTPLATE, 5f);
+                        put(Item.GOLD_LEGGINGS, 3f);
+                        put(Item.GOLD_BOOTS, 1f);
+                        put(Item.IRON_HELMET, 2f);
+                        put(Item.IRON_CHESTPLATE, 6f);
+                        put(Item.IRON_LEGGINGS, 5f);
+                        put(Item.IRON_BOOTS, 2f);
+                        put(Item.DIAMOND_HELMET, 3f);
+                        put(Item.DIAMOND_CHESTPLATE, 8f);
+                        put(Item.DIAMOND_LEGGINGS, 6f);
+                        put(Item.DIAMOND_BOOTS, 3f);
+                    }
+                };
+
                 float points = 0;
+                for (Item i : ((Player) player).getInventory().getArmorContents()) {
+                    points += armorValues.getOrDefault(i.getId(), 0f);
+                }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
@@ -122,8 +153,7 @@ public class PigZombie extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = new ItemSwordGold();
-        pk.inventorySlot = 10;
-        pk.inventorySlot = 10;
+        pk.inventorySlot = 0;
         player.dataPacket(pk);
     }
 
@@ -134,13 +164,13 @@ public class PigZombie extends WalkingMonster {
             int rottenFlesh = Utils.rand(0, 2); // drops 0-1 rotten flesh
             int goldNuggets = Utils.rand(0, 101) <= 3 ? 1 : 0; // with a 2,5% chance a gold nugget is dropped
             int goldSword = Utils.rand(0, 101) <= 9 ? 1 : 0; // with a 8,5% chance it's gold sword is dropped
-            for (int i = 0; i < rottenFlesh; i++) {
+            for (int i=0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
-            for (int i = 0; i < goldNuggets; i++) {
+            for (int i=0; i < goldNuggets; i++) {
                 drops.add(Item.get(Item.GOLD_NUGGET, 0, 1));
             }
-            for (int i = 0; i < goldSword; i++) {
+            for (int i=0; i < goldSword; i++) {
                 drops.add(Item.get(Item.GOLD_SWORD, 0, 1));
             }
         }
@@ -148,7 +178,7 @@ public class PigZombie extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience() {
+    public int getKillExperience () {
         return 5; // gain 5 experience
     }
 

@@ -19,31 +19,44 @@ import cn.nukkit.potion.Effect;
 import co.aikar.timings.Timings;
 import de.kniffo80.mobplugin.MobPlugin;
 import de.kniffo80.mobplugin.entities.monster.Monster;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public abstract class BaseEntity extends EntityCreature {
 
-    public double moveMultifier = 1.0d;
-    public boolean inWater = false;
-    public boolean inLava = false;
-    public boolean onClimbable = false;
-    public float jumpMovementFactor = 0.02F;
     protected int stayTime = 0;
+
     protected int moveTime = 0;
+
+    public double moveMultifier = 1.0d;
+
     protected Vector3 target = null;
+
     protected Entity followTarget = null;
+
+    public boolean inWater = false;
+
+    public boolean inLava = false;
+
+    public boolean onClimbable = false;
+
     protected boolean fireProof = false;
-    protected List<Block> blocksAround = new ArrayList<>();
-    protected List<Block> collisionBlocks = new ArrayList<>();
-    protected boolean isJumping;
+
     private boolean movement = true;
+
     private boolean friendly = false;
+
     private boolean wallcheck = true;
+
+    protected List<Block> blocksAround = new ArrayList<>();
+
+    protected List<Block> collisionBlocks = new ArrayList<>();
+
     ///Jump
     private int maxJumpHeight = 1; // default: 1 block jump height - this should be 2 for horses e.g.
+    protected boolean isJumping;
+    public float jumpMovementFactor = 0.02F;
 
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -57,16 +70,8 @@ public abstract class BaseEntity extends EntityCreature {
         return this.friendly;
     }
 
-    public void setFriendly(boolean bool) {
-        this.friendly = bool;
-    }
-
     public boolean isMovement() {
         return this.movement;
-    }
-
-    public void setMovement(boolean value) {
-        this.movement = value;
     }
 
     public boolean isKnockback() {
@@ -75,6 +80,14 @@ public abstract class BaseEntity extends EntityCreature {
 
     public boolean isWallCheck() {
         return this.wallcheck;
+    }
+
+    public void setFriendly(boolean bool) {
+        this.friendly = bool;
+    }
+
+    public void setMovement(boolean value) {
+        this.movement = value;
     }
 
     public void setWallCheck(boolean value) {
@@ -93,12 +106,19 @@ public abstract class BaseEntity extends EntityCreature {
         return this.age;
     }
 
-    public Entity getTarget() {
+    public Vector3 getTarget(){
+        return this.target;
+    }
+
+    public void setTarget(Vector3 vec){
+        this.target = vec;
+    }
+
+    public Entity getFollowTarget() {
         return this.followTarget != null ? this.followTarget : (this.target instanceof Entity ? (Entity) this.target : null);
     }
 
-    // TODO
-    public void setTarget(Entity target) {
+    public void setFollowTarget(Entity target) {
         this.followTarget = target;
 
         this.moveTime = 0;

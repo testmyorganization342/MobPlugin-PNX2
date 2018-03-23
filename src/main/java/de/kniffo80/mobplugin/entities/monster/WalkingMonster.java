@@ -14,54 +14,36 @@ import cn.nukkit.potion.Effect;
 import co.aikar.timings.Timings;
 import de.kniffo80.mobplugin.entities.WalkingEntity;
 import de.kniffo80.mobplugin.entities.monster.walking.Enderman;
+import de.kniffo80.mobplugin.route.WalkerRouteFinder;
 import de.kniffo80.mobplugin.utils.Utils;
 
 public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
-    protected int attackDelay = 0;
-    private int[] minDamage;
-    private int[] maxDamage;
-    private boolean canAttack = true;
+    private int[]   minDamage;
+
+    private int[]   maxDamage;
+
+    protected int   attackDelay = 0;
+
+    private boolean canAttack   = true;
 
     public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        //this.route = new WalkerRouteFinder(this);
     }
 
     @Override
-    public void setTarget(Entity target) {
-        this.setTarget(target, true);
+    public void setFollowTarget(Entity target) {
+        this.setFollowTarget(target, true);
     }
 
-    public void setTarget(Entity target, boolean attack) {
-        super.setTarget(target);
+    public void setFollowTarget(Entity target, boolean attack) {
+        super.setFollowTarget(target);
         this.canAttack = attack;
     }
 
     public int getDamage() {
         return getDamage(null);
-    }
-
-    public void setDamage(int damage) {
-        this.setDamage(damage, Server.getInstance().getDifficulty());
-    }
-
-    public void setDamage(int[] damage) {
-        if (damage.length < 4) {
-            return;
-        }
-
-        if (minDamage == null || minDamage.length < 4) {
-            minDamage = new int[]{0, 0, 0, 0};
-        }
-
-        if (maxDamage == null || maxDamage.length < 4) {
-            maxDamage = new int[]{0, 0, 0, 0};
-        }
-
-        for (int i = 0; i < 4; i++) {
-            this.minDamage[i] = damage[i];
-            this.maxDamage[i] = damage[i];
-        }
     }
 
     public int getDamage(Integer difficulty) {
@@ -70,6 +52,54 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     public int getMinDamage() {
         return getMinDamage(null);
+    }
+
+    public int getMinDamage(Integer difficulty) {
+        if (difficulty == null || difficulty > 3 || difficulty < 0) {
+            difficulty = Server.getInstance().getDifficulty();
+        }
+        return this.minDamage[difficulty];
+    }
+
+    public int getMaxDamage() {
+        return getMaxDamage(null);
+    }
+
+    public int getMaxDamage(Integer difficulty) {
+        if (difficulty == null || difficulty > 3 || difficulty < 0) {
+            difficulty = Server.getInstance().getDifficulty();
+        }
+        return this.maxDamage[difficulty];
+    }
+
+    public void setDamage(int damage) {
+        this.setDamage(damage, Server.getInstance().getDifficulty());
+    }
+
+    public void setDamage(int damage, int difficulty) {
+        if (difficulty >= 1 && difficulty <= 3) {
+            this.minDamage[difficulty] = damage;
+            this.maxDamage[difficulty] = damage;
+        }
+    }
+
+    public void setDamage(int[] damage) {
+        if (damage.length < 4) {
+            return;
+        }
+
+        if (minDamage == null || minDamage.length < 4) {
+            minDamage = new int[] { 0, 0, 0, 0 };
+        }
+
+        if (maxDamage == null || maxDamage.length < 4) {
+            maxDamage = new int[] { 0, 0, 0, 0 };
+        }
+
+        for (int i = 0; i < 4; i++) {
+            this.minDamage[i] = damage[i];
+            this.maxDamage[i] = damage[i];
+        }
     }
 
     public void setMinDamage(int[] damage) {
@@ -86,15 +116,10 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         this.setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
-    public int getMinDamage(Integer difficulty) {
-        if (difficulty == null || difficulty > 3 || difficulty < 0) {
-            difficulty = Server.getInstance().getDifficulty();
+    public void setMinDamage(int damage, int difficulty) {
+        if (difficulty >= 1 && difficulty <= 3) {
+            this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
         }
-        return this.minDamage[difficulty];
-    }
-
-    public int getMaxDamage() {
-        return getMaxDamage(null);
     }
 
     public void setMaxDamage(int[] damage) {
@@ -108,26 +133,6 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     public void setMaxDamage(int damage) {
         setMinDamage(damage, Server.getInstance().getDifficulty());
-    }
-
-    public int getMaxDamage(Integer difficulty) {
-        if (difficulty == null || difficulty > 3 || difficulty < 0) {
-            difficulty = Server.getInstance().getDifficulty();
-        }
-        return this.maxDamage[difficulty];
-    }
-
-    public void setDamage(int damage, int difficulty) {
-        if (difficulty >= 1 && difficulty <= 3) {
-            this.minDamage[difficulty] = damage;
-            this.maxDamage[difficulty] = damage;
-        }
-    }
-
-    public void setMinDamage(int damage, int difficulty) {
-        if (difficulty >= 1 && difficulty <= 3) {
-            this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
-        }
     }
 
     public void setMaxDamage(int damage, int difficulty) {
@@ -171,17 +176,18 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
-
-        boolean hasUpdate = false;
-
+        
+        boolean hasUpdate;
+        
         Timings.entityBaseTickTimer.startTiming();
-
+        
         hasUpdate = super.entityBaseTick(tickDiff);
 
         this.attackDelay += tickDiff;
         if (this instanceof Enderman) {
             if (this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z))) instanceof BlockWater) {
                 this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
+                this.move(Utils.rand(-20, 20), Utils.rand(-20, 20), Utils.rand(-20, 20));
             }
         } else {
             if (!this.hasEffect(Effect.WATER_BREATHING) && this.isInsideOfWater()) {

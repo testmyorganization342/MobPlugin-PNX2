@@ -69,10 +69,6 @@ public class Witch extends WalkingMonster {
         return true;
     }
 
-    /*
-     * (@Override)
-     * @see net.twoptwoe.mobplugin.entities.monster.Monster#attackEntity(cn.nukkit.entity.Entity)
-     */
     @Override
     public void attackEntity(Entity player) {
         if (MobPlugin.MOB_AI_ENABLED) {

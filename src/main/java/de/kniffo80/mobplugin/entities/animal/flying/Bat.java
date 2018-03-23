@@ -46,9 +46,6 @@ public class Bat extends FlyingAnimal {
         return new Item[0];
     }
 
-    /* (@Override)
-     * @see net.twoptwoe.mobplugin.entities.BaseEntity#getKillExperience()
-     */
     @Override
     public int getKillExperience() {
         return 0;

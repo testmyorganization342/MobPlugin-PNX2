@@ -1,8 +1,3 @@
-/**
- * Horse.java
- * <p>
- * Created on 09:40:15
- */
 package de.kniffo80.mobplugin.entities.animal.walking;
 
 import cn.nukkit.Player;
@@ -23,7 +18,7 @@ import java.util.List;
  *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
-public class Donkey extends WalkingAnimal {
+public class Donkey extends Horse {
 
     public static final int NETWORK_ID = 24;
 
@@ -98,9 +93,6 @@ public class Donkey extends WalkingAnimal {
         return drops.toArray(new Item[drops.size()]);
     }
 
-    /* (@Override)
-     * @see net.twoptwoe.mobplugin.entities.BaseEntity#getKillExperience()
-     */
     @Override
     public int getKillExperience() {
         return Utils.rand(1, 4);

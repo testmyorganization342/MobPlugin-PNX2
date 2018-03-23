@@ -13,52 +13,30 @@ import de.kniffo80.mobplugin.utils.Utils;
 
 public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
-    protected int[] minDamage;
+    protected int[]   minDamage;
 
-    protected int[] maxDamage;
+    protected int[]   maxDamage;
 
-    protected int attackDelay = 0;
+    protected int     attackDelay = 0;
 
-    protected boolean canAttack = true;
+    protected boolean canAttack   = true;
 
     public FlyingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 
     @Override
-    public void setTarget(Entity target) {
+    public void setFollowTarget(Entity target) {
         this.setTarget(target, true);
     }
 
     public void setTarget(Entity target, boolean attack) {
-        super.setTarget(target);
+        super.setFollowTarget(target);
         this.canAttack = attack;
     }
 
     public int getDamage() {
         return getDamage(null);
-    }
-
-    public void setDamage(int damage) {
-        this.setDamage(damage, Server.getInstance().getDifficulty());
-    }
-
-    public void setDamage(int[] damage) {
-        if (damage.length < 4)
-            return;
-
-        if (minDamage == null || minDamage.length < 4) {
-            minDamage = new int[]{0, 0, 0, 0};
-        }
-
-        if (maxDamage == null || maxDamage.length < 4) {
-            maxDamage = new int[]{0, 0, 0, 0};
-        }
-
-        for (int i = 0; i < 4; i++) {
-            this.minDamage[i] = damage[i];
-            this.maxDamage[i] = damage[i];
-        }
     }
 
     public int getDamage(Integer difficulty) {
@@ -67,6 +45,53 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
     public int getMinDamage() {
         return getMinDamage(null);
+    }
+
+    public int getMinDamage(Integer difficulty) {
+        if (difficulty == null || difficulty > 3 || difficulty < 0) {
+            difficulty = Server.getInstance().getDifficulty();
+        }
+        return this.minDamage[difficulty];
+    }
+
+    public int getMaxDamage() {
+        return getMaxDamage(null);
+    }
+
+    public int getMaxDamage(Integer difficulty) {
+        if (difficulty == null || difficulty > 3 || difficulty < 0) {
+            difficulty = Server.getInstance().getDifficulty();
+        }
+        return this.maxDamage[difficulty];
+    }
+
+    public void setDamage(int damage) {
+        this.setDamage(damage, Server.getInstance().getDifficulty());
+    }
+
+    public void setDamage(int damage, int difficulty) {
+        if (difficulty >= 1 && difficulty <= 3) {
+            this.minDamage[difficulty] = damage;
+            this.maxDamage[difficulty] = damage;
+        }
+    }
+
+    public void setDamage(int[] damage) {
+        if (damage.length < 4)
+            return;
+
+        if (minDamage == null || minDamage.length < 4) {
+            minDamage = new int[] { 0, 0, 0, 0 };
+        }
+
+        if (maxDamage == null || maxDamage.length < 4) {
+            maxDamage = new int[] { 0, 0, 0, 0 };
+        }
+
+        for (int i = 0; i < 4; i++) {
+            this.minDamage[i] = damage[i];
+            this.maxDamage[i] = damage[i];
+        }
     }
 
     public void setMinDamage(int[] damage) {
@@ -83,15 +108,10 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
         this.setDamage(damage, Server.getInstance().getDifficulty());
     }
 
-    public int getMinDamage(Integer difficulty) {
-        if (difficulty == null || difficulty > 3 || difficulty < 0) {
-            difficulty = Server.getInstance().getDifficulty();
+    public void setMinDamage(int damage, int difficulty) {
+        if (difficulty >= 1 && difficulty <= 3) {
+            this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
         }
-        return this.minDamage[difficulty];
-    }
-
-    public int getMaxDamage() {
-        return getMaxDamage(null);
     }
 
     public void setMaxDamage(int[] damage) {
@@ -106,26 +126,6 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
     public void setMaxDamage(int damage) {
         setMinDamage(damage, Server.getInstance().getDifficulty());
-    }
-
-    public int getMaxDamage(Integer difficulty) {
-        if (difficulty == null || difficulty > 3 || difficulty < 0) {
-            difficulty = Server.getInstance().getDifficulty();
-        }
-        return this.maxDamage[difficulty];
-    }
-
-    public void setDamage(int damage, int difficulty) {
-        if (difficulty >= 1 && difficulty <= 3) {
-            this.minDamage[difficulty] = damage;
-            this.maxDamage[difficulty] = damage;
-        }
-    }
-
-    public void setMinDamage(int damage, int difficulty) {
-        if (difficulty >= 1 && difficulty <= 3) {
-            this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
-        }
     }
 
     public void setMaxDamage(int damage, int difficulty) {
@@ -165,7 +165,7 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
     }
 
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate = false;
+        boolean hasUpdate;
         // Timings.timerEntityBaseTick.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);
