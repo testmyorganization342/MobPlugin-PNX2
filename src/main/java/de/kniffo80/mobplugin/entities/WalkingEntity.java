@@ -13,20 +13,13 @@ import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import de.kniffo80.mobplugin.MobPlugin;
-import de.kniffo80.mobplugin.RouteFinderThreadPool;
 import de.kniffo80.mobplugin.entities.animal.Animal;
-import de.kniffo80.mobplugin.route.RouteFinder;
-import de.kniffo80.mobplugin.route.WalkerRouteFinder;
-import de.kniffo80.mobplugin.runnable.RouteFinderSearchTask;
 import de.kniffo80.mobplugin.utils.Utils;
 
 public abstract class WalkingEntity extends BaseEntity {
 
-    protected RouteFinder route = null;
-
     public WalkingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        //TODO flying
     }
 
     protected void checkTarget() {
@@ -34,43 +27,38 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
-
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget)) && this.target!=null){
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
             return;
         }
 
-        //this.followTarget = null;
+        Vector3 target = this.target;
+        if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
+            double near = Integer.MAX_VALUE;
 
-        //Vector3 target = this.target;
-        //if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
-        double near = Integer.MAX_VALUE;
+            for (Entity entity : this.getLevel().getEntities()) {
+                if (entity == this || !(entity instanceof EntityCreature) || entity instanceof Animal) {
+                    continue;
+                }
 
-        for (Entity entity : this.getLevel().getEntities()) {
-            if (entity == this || !(entity instanceof EntityCreature) || entity instanceof Animal) {
-                continue;
+                EntityCreature creature = (EntityCreature) entity;
+                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
+                    continue;
+                }
+
+                double distance = this.distanceSquared(creature);
+                if (distance > near || !this.targetOption(creature, distance)) {
+                    continue;
+                }
+                near = distance;
+
+                this.stayTime = 0;
+                this.moveTime = 0;
+                this.target = creature;
             }
-
-            EntityCreature creature = (EntityCreature) entity;
-            if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
-                continue;
-            }
-
-            double distance = this.distanceSquared(creature);
-            if (distance > near || !this.targetOption(creature, distance)) {
-                continue;
-            }
-            near = distance;
-
-            this.stayTime = 0;
-            this.moveTime = 0;
-            this.followTarget = creature;
-            this.target = creature;
-
         }
-        //}
 
         // (Spitz4478) this.target must be EntityCreature, open, alive AND meet criteria of targetOption() for this Entity before returning
-        if (this.followTarget instanceof EntityCreature && !((EntityCreature) this.followTarget).closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
+        if (this.target instanceof EntityCreature && !((EntityCreature) this.target).closed && ((EntityCreature) this.target).isAlive() && this.targetOption((EntityCreature) this.target, this.distanceSquared(this.target))) {
             return;
         }
 
@@ -130,15 +118,9 @@ public abstract class WalkingEntity extends BaseEntity {
     }
 
     public Vector3 updateMove(int tickDiff) {
-        if (MobPlugin.MOB_AI_ENABLED && !isImmobile()) {
+        if (MobPlugin.MOB_AI_ENABLED) {
             if (!this.isMovement()) {
                 return null;
-            }
-            if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
-                RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
-                if(this.route.hasNext()) {
-                    this.target = this.route.next();
-                }
             }
 
             if (this.isKnockback()) {
@@ -148,11 +130,10 @@ public abstract class WalkingEntity extends BaseEntity {
                 return null;
             }
 
-            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
-
-                double x = this.target.x - this.x;
-                double y = this.target.y - this.y;
-                double z = this.target.z - this.z;
+            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
+                double x = this.followTarget.x - this.x;
+                double y = this.followTarget.y - this.y;
+                double z = this.followTarget.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
                 if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
@@ -164,12 +145,12 @@ public abstract class WalkingEntity extends BaseEntity {
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
                 this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
-                //return this.followTarget;
+                return this.followTarget;
             }
 
             Vector3 before = this.target;
             this.checkTarget();
-            if (this.target instanceof Vector3 || before != this.target) {
+            if (this.target instanceof EntityCreature || before != this.target) {
                 double x = this.target.x - this.x;
                 double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
@@ -214,25 +195,9 @@ public abstract class WalkingEntity extends BaseEntity {
                 }
             }
             this.updateMovement();
-            if(this.route != null){
-                if(this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
-                    this.target = null;
-                    if (this.route.hasNext()) {
-                        this.target = this.route.next();
-                    }
-                }
-            }
-            return this.followTarget !=null ? this.followTarget : this.target ;
+            return this.target;
         }
         return null;
-    }
-
-    public RouteFinder getRoute(){
-        return this.route;
-    }
-
-    public void setRoute(RouteFinder route){
-        this.route = route;
     }
 
 }

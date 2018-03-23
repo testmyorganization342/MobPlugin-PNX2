@@ -54,7 +54,7 @@ public class Skeleton extends WalkingMonster {
     }
 
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 30 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 55) {
+        if (this.attackDelay > 40 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 70) {
             this.attackDelay = 0;
 
             double f = 1.2;
@@ -97,7 +97,7 @@ public class Skeleton extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = new ItemBow();
-        pk.hotbarSlot = 0;
+        pk.hotbarSlot = 9;
         player.dataPacket(pk);
     }
 
@@ -109,7 +109,7 @@ public class Skeleton extends WalkingMonster {
         hasUpdate = super.entityBaseTick(tickDiff);
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {
+        if (!this.isOnFire() && !this.level.isRaining() && (time < 13184 || time > 22800)) {
             this.setOnFire(100);
         }
 

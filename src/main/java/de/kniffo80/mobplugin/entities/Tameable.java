@@ -1,3 +1,8 @@
+/**
+ * Tameable.java
+ * <p>
+ * Created on 09:59:43
+ */
 package de.kniffo80.mobplugin.entities;
 
 import cn.nukkit.Player;
@@ -9,22 +14,14 @@ import cn.nukkit.Player;
  */
 public interface Tameable {
 
-    public static final String NAMED_TAG_OWNER      = "Owner";
+    public static final String NAMED_TAG_OWNER = "Owner";
 
     public static final String NAMED_TAG_OWNER_UUID = "OwnerUUID";
 
-    public static final String NAMED_TAG_SITTING    = "Sitting";
+    public static final String NAMED_TAG_SITTING = "Sitting";
 
     Player getOwner();
 
     void setOwner(Player player);
-
-    String getOwnerUUID();
-
-    void setOwnerUUID(String uuid);
-
-    boolean isSitting();
-
-    void setSitting(boolean sitting);
 
 }

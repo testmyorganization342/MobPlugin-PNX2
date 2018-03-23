@@ -1,3 +1,8 @@
+/**
+ * MobPlugin.java
+ * <p>
+ * Created on 17:46:07
+ */
 package de.kniffo80.mobplugin;
 
 import cn.nukkit.IPlayer;
@@ -16,6 +21,7 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.level.ChunkPopulateEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
 import cn.nukkit.item.Item;
@@ -30,22 +36,28 @@ import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.Config;
 import cn.nukkit.utils.DyeColor;
 import de.kniffo80.mobplugin.entities.BaseEntity;
-import de.kniffo80.mobplugin.entities.animal.flying.*;
+import de.kniffo80.mobplugin.entities.animal.flying.Bat;
+import de.kniffo80.mobplugin.entities.animal.flying.Parrot;
 import de.kniffo80.mobplugin.entities.animal.jumping.Rabbit;
-import de.kniffo80.mobplugin.entities.animal.swimming.*;
+import de.kniffo80.mobplugin.entities.animal.swimming.Squid;
 import de.kniffo80.mobplugin.entities.animal.walking.*;
 import de.kniffo80.mobplugin.entities.block.BlockEntitySpawner;
-import de.kniffo80.mobplugin.entities.monster.flying.*;
-import de.kniffo80.mobplugin.entities.monster.jumping.*;
-import de.kniffo80.mobplugin.entities.monster.swimming.*;
+import de.kniffo80.mobplugin.entities.monster.flying.Blaze;
+import de.kniffo80.mobplugin.entities.monster.flying.EnderDragon;
+import de.kniffo80.mobplugin.entities.monster.flying.Ghast;
+import de.kniffo80.mobplugin.entities.monster.flying.Wither;
+import de.kniffo80.mobplugin.entities.monster.jumping.MagmaCube;
+import de.kniffo80.mobplugin.entities.monster.jumping.Slime;
+import de.kniffo80.mobplugin.entities.monster.swimming.ElderGuardian;
+import de.kniffo80.mobplugin.entities.monster.swimming.Guardian;
 import de.kniffo80.mobplugin.entities.monster.walking.*;
 import de.kniffo80.mobplugin.entities.projectile.EntityFireBall;
 import de.kniffo80.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -54,47 +66,199 @@ import java.util.List;
 public class MobPlugin extends PluginBase implements Listener {
 
     public static boolean MOB_AI_ENABLED = true;
-
+    private static Class<? extends Entity>[]
+            animals = new Class[]{
+            Rabbit.class,
+            Chicken.class,
+            Cow.class,
+            Chicken.class,
+            Cow.class,
+            Chicken.class,
+            Cow.class,
+            Horse.class,
+            Pig.class,
+            Sheep.class,
+            Pig.class,
+            Sheep.class,
+            Pig.class,
+            Sheep.class
+    },
+            monsters_ow = new Class[]{
+                    Creeper.class,
+                    Enderman.class,
+                    Skeleton.class,
+                    Skeleton.class,
+                    Zombie.class,
+                    Zombie.class,
+                    ZombieVillager.class,
+                    Spider.class,
+                    Spider.class
+            },
+            monsters_nether = new Class[]{
+                    Blaze.class,
+                    Ghast.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class,
+                    PigZombie.class
+            },
+            monsters_end = new Class[]{
+                    Enderman.class
+            };
     private int counter = 0;
 
-    private Config pluginConfig = null;
+    /**
+     * @param type
+     * @param source
+     * @param args
+     * @return
+     */
+    public static Entity create(Object type, Position source, Object... args) {
+        FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
+        if (!chunk.isGenerated()) {
+            chunk.setGenerated();
+        }
 
-    public static MobPlugin instance;
+        CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
+                .putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0)))
+                .putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", source instanceof Location ? (float) ((Location) source).yaw : 0))
+                        .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
 
-    public static MobPlugin getInstance(){
-        return instance;
+        return Entity.createEntity(type.toString(), chunk, nbt, args);
+    }
+
+    public static void ChunkPopulateEvent(ChunkPopulateEvent event) {
+        if (Utils.rand(0, 12) != 2) {
+            return;
+        }
+
+        switch (EnumDimension.getFromWorld(event.getLevel())) {
+            case OVERWORLD:
+                //spawn random pack of animals
+                Class<? extends Entity> entity = animals[Utils.rand(0, animals.length)];
+                FullChunk chunk = event.getChunk();
+                int count = Utils.rand(3, 6);
+                for (int i = 0; i < count; i++) {
+                    int xPos = (chunk.getX() << 4) | Utils.rand(0, 15);
+                    int zPos = (chunk.getZ() << 4) | Utils.rand(0, 15);
+                    int yPos = chunk.getHighestBlockAt(xPos & 0xF, zPos & 0xF);
+                    if (yPos <= 64) {
+                        return;
+                    }
+                    Entity entityObj = create(entity.getSimpleName(), new Position(xPos, yPos, zPos, event.getLevel()));
+                    event.getLevel().addEntity(entityObj);
+                }
+                break;
+            case NETHER:
+                FullChunk chunk2 = event.getChunk();
+                int count2 = Utils.rand(3, 6);
+                for (int i = 0; i < count2; i++) {
+                    int xPos = (chunk2.getX() << 4) | Utils.rand(0, 15);
+                    int zPos = (chunk2.getZ() << 4) | Utils.rand(0, 15);
+                    int yPos;
+                    DUMMY_BLOCK:
+                    {
+                        int y = 126;
+                        int relX = xPos & 0xF;
+                        int relZ = zPos & 0xF;
+                        for (; y > 2; y--) {
+                            if (chunk2.getBlockId(relX, y + 1, relZ) == Block.AIR
+                                    && chunk2.getBlockId(relX, y, relZ) == Block.AIR
+                                    && !RandomSpawn.isUnafe(chunk2.getBlockId(relX, y - 1, relZ))) {
+                                yPos = y;
+                                break DUMMY_BLOCK;
+                            }
+                        }
+                        continue;
+                    }
+                    Entity entityObj = create("PigZombie", new Position(xPos, yPos, zPos, event.getLevel()));
+                    event.getLevel().addEntity(entityObj);
+                }
+                break;
+        }
+    }
+
+    private static ThreadLocal<HashSet<FullChunk>> spawnChunks = ThreadLocal.withInitial(HashSet::new);
+
+    public static void spawnMobs() {
+        Server server = Server.getInstance();
+        HashSet<FullChunk> chunks = spawnChunks.get();
+        server.getLevels().values().forEach(level -> {
+            LEVEL:
+            {
+                Class<? extends Entity>[] arr = null;
+                EnumDimension dimension = EnumDimension.getFromWorld(level);
+                switch (dimension) {
+                    case OVERWORLD:
+                        int time = level.getTime() % Level.TIME_FULL;
+                        if (!(time > 13184 && time < 22800)) {
+                            break LEVEL;
+                        }
+                        arr = monsters_ow;
+                        break;
+                    case NETHER:
+                        arr = monsters_nether;
+                        break;
+                    case THE_END:
+                        arr = monsters_end;
+                }
+                final Class<? extends Entity>[] a = arr;
+
+                chunks.addAll(level.getChunks().values());
+                chunks.forEach(chunk -> {
+                    CHUNK:
+                    if (chunk.getEntities().size() < 5 && Utils.rand(0, 200) == 0) {
+                        Class<? extends Entity> clazz = a[Utils.rand(0, a.length)];
+                        int xPos = Utils.rand(0, 15) | (chunk.getX() << 4);
+                        int zPos = Utils.rand(0, 15) | (chunk.getZ() << 4);
+                        int yPos;
+                        NETHER_Y:
+                        if (dimension == EnumDimension.NETHER) {
+                            int y = 126;
+                            int relX = xPos & 0xF;
+                            int relZ = zPos & 0xF;
+                            for (; y > 2; y--) {
+                                if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
+                                        && chunk.getBlockId(relX, y, relZ) == Block.AIR
+                                        && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
+                                    yPos = y;
+                                    break NETHER_Y;
+                                }
+                            }
+                            break CHUNK;
+                        } else {
+                            yPos = level.getHighestBlockAt(xPos, zPos);
+                            if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF))) {
+                                break CHUNK;
+                            }
+                        }
+                        Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
+                        level.addEntity(entity);
+                    }
+                });
+                chunks.clear();
+            }
+        });
     }
 
     @Override
     public void onLoad() {
-        instance = this;
         registerEntities();
     }
 
     @Override
     public void onEnable() {
-        // Config reading and writing
-        this.saveDefaultConfig();
-
-        pluginConfig = getConfig();
-
-        // we need this flag as it's controlled by the plugin's entities
-        int spawnDelay = pluginConfig.getInt("entities.auto-spawn-tick", 0);
-
         // register as listener to plugin events
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.getServer().getScheduler().scheduleRepeatingTask(this, new AutoSpawnTask(), 300, true);
 
-        if (spawnDelay > 0) {
-            this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
-        }
-
-        Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
-
+        Utils.logServerInfo(String.format("Plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, 300));
     }
 
     @Override
     public void onDisable() {
-        RouteFinderThreadPool.shutDownNow();
         Utils.logServerInfo("Plugin disabled successful.");
     }
 
@@ -111,12 +275,6 @@ public class MobPlugin extends PluginBase implements Listener {
                 switch (args[0]) {
 
                     case "spawn":
-
-                        if (args.length == 1) {
-                            sender.sendMessage("Usage: /mob spawn <mob> <opt:player>");
-                            break;
-                        }
-
                         String mob = args[1];
                         Player playerThatSpawns = null;
 
@@ -171,17 +329,9 @@ public class MobPlugin extends PluginBase implements Listener {
             }
         }
         return true;
-
     }
 
-    /**
-     * Returns plugin specific yml configuration
-     *
-     * @return a {@link Config} instance
-     */
-    public Config getPluginConfig() {
-        return this.pluginConfig;
-    }
+    // --- event listeners ---
 
     private void registerEntities() {
         // register living entities
@@ -213,7 +363,6 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(EnderDragon.class.getSimpleName(), EnderDragon.class);
         Entity.registerEntity(Enderman.class.getSimpleName(), Enderman.class);
         Entity.registerEntity(Endermite.class.getSimpleName(), Endermite.class);
-        Entity.registerEntity(Evoker.class.getSimpleName(), Evoker.class);
         Entity.registerEntity(Guardian.class.getSimpleName(), Guardian.class);
         Entity.registerEntity(Husk.class.getSimpleName(), Husk.class);
         Entity.registerEntity(IronGolem.class.getSimpleName(), IronGolem.class);
@@ -225,8 +374,6 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(SnowGolem.class.getSimpleName(), SnowGolem.class);
         Entity.registerEntity(Spider.class.getSimpleName(), Spider.class);
         Entity.registerEntity(Stray.class.getSimpleName(), Stray.class);
-        Entity.registerEntity(Vex.class.getSimpleName(), Vex.class);
-        Entity.registerEntity(Vindicator.class.getSimpleName(), Vindicator.class);
         Entity.registerEntity(Witch.class.getSimpleName(), Witch.class);
         Entity.registerEntity(Wither.class.getSimpleName(), Wither.class);
         Entity.registerEntity(WitherSkeleton.class.getSimpleName(), WitherSkeleton.class);
@@ -239,29 +386,6 @@ public class MobPlugin extends PluginBase implements Listener {
 
         // register the mob spawner (which is probably not needed anymore)
         BlockEntity.registerBlockEntity("MobSpawner", BlockEntitySpawner.class);
-    }
-
-    /**
-     * @param type
-     * @param source
-     * @param args
-     * @return
-     */
-    public static Entity create(Object type, Position source, Object... args) {
-        FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
-        if (!chunk.isGenerated()) {
-            chunk.setGenerated();
-        }
-        if (!chunk.isPopulated()) {
-            chunk.setPopulated();
-        }
-
-        CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
-                .putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0)))
-                .putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", source instanceof Location ? (float) ((Location) source).yaw : 0))
-                        .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
-
-        return Entity.createEntity(type.toString(), chunk, nbt, args);
     }
 
     /**
@@ -282,7 +406,7 @@ public class MobPlugin extends PluginBase implements Listener {
      * checks if a given player name's player instance is already in the given
      * list
      *
-     * @param name the name of the player to be checked
+     * @param name       the name of the player to be checked
      * @param playerList the existing entries
      * @return <code>true</code> if the player is already in the list
      */
@@ -295,7 +419,6 @@ public class MobPlugin extends PluginBase implements Listener {
         return false;
     }
 
-    // --- event listeners ---
     /**
      * This event is called when an entity dies. We need this for experience
      * gain.
@@ -404,17 +527,13 @@ public class MobPlugin extends PluginBase implements Listener {
                 && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
             Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5));
-            if(entity != null){
+            if (entity != null) {
                 entity.spawnToAll();
-                EntityEventPacket pk = new EntityEventPacket();
-                pk.eid = entity.getId();
-                pk.event = 27;
-                entity.getLevel().addChunkPacket(entity.getChunkX() >> 4, entity.getChunkZ() >> 4,pk);
             }
         }
     }
 
-    /*@EventHandler
+    @EventHandler
     public void PlayerMouseOverEntityEvent(PlayerMouseOverEntityEvent ev) {
         if (this.counter > 10) {
             counter = 0;
@@ -438,8 +557,5 @@ public class MobPlugin extends PluginBase implements Listener {
         } else {
             counter++;
         }
-    }*/
-
-
-
+    }
 }
