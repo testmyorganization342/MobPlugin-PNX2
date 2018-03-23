@@ -165,8 +165,7 @@ public class MobPlugin extends PluginBase implements Listener {
                         int relZ = zPos & 0xF;
                         for (; y > 2; y--) {
                             if (chunk2.getBlockId(relX, y + 1, relZ) == Block.AIR
-                                    && chunk2.getBlockId(relX, y, relZ) == Block.AIR
-                                    && !RandomSpawn.isUnafe(chunk2.getBlockId(relX, y - 1, relZ))) {
+                                    && chunk2.getBlockId(relX, y, relZ) == Block.AIR) {
                                 yPos = y;
                                 break DUMMY_BLOCK;
                             }
@@ -221,8 +220,7 @@ public class MobPlugin extends PluginBase implements Listener {
                             int relZ = zPos & 0xF;
                             for (; y > 2; y--) {
                                 if (chunk.getBlockId(relX, y + 1, relZ) == Block.AIR
-                                        && chunk.getBlockId(relX, y, relZ) == Block.AIR
-                                        && !RandomSpawn.isUnafe(chunk.getBlockId(relX, y - 1, relZ))) {
+                                        && chunk.getBlockId(relX, y, relZ) == Block.AIR) {
                                     yPos = y;
                                     break NETHER_Y;
                                 }
@@ -230,9 +228,6 @@ public class MobPlugin extends PluginBase implements Listener {
                             break CHUNK;
                         } else {
                             yPos = level.getHighestBlockAt(xPos, zPos);
-                            if (RandomSpawn.isUnafe(chunk.getBlockId(xPos & 0xF, yPos, zPos & 0xF))) {
-                                break CHUNK;
-                            }
                         }
                         Entity entity = create(clazz.getSimpleName(), new Location(xPos, yPos, zPos, level));
                         level.addEntity(entity);
