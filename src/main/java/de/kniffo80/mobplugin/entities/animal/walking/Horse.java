@@ -63,20 +63,20 @@ public class Horse extends WalkingAnimal {
         super.initEntity();
         this.setMaxHealth(15);
         if(this instanceof Donkey){
-            this.Type = 1;
+            this.namedTag.putInt("Type",this.Type = 1);
         }else if(this instanceof Mule){
-            this.Type = 2;
+            this.namedTag.putInt("Type",this.Type = 2);
         }else if(this instanceof ZombieHorse){
-            this.Type = 3;
+            this.namedTag.putInt("Type",this.Type = 3);
         }else if(this instanceof SkeletonHorse){
-            this.Type = 4;
+            this.namedTag.putInt("Type",this.Type = 4);
         }else{
-            this.Type = 0;
+            this.namedTag.putInt("Type",this.Type = 0);
         }
         if(this.namedTag.contains("Variant")){
             this.Variant = this.namedTag.getInt("Variant");
         }else{
-            this.Variant = this.getRandomVariant();
+            this.namedTag.putInt("Variant",this.Variant = this.getRandomVariant());
         }
 
 
@@ -128,21 +128,6 @@ public class Horse extends WalkingAnimal {
         return Utils.rand(1, 4);
     }
 
-    public int getType() {
-        return Type;
-    }
-
-    public void setType(int type) {
-        Type = type;
-    }
-
-    public int getVariant() {
-        return Variant;
-    }
-
-    public void setVariant(int variant) {
-        Variant = variant;
-    }
 
     private int getRandomVariant(){
         int VariantList[] = {

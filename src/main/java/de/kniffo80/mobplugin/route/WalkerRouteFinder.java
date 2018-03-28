@@ -111,7 +111,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
 
         findingPath = FloydSmooth(findingPath);
-        //findingPath.forEach(c->level.addParticle(new SpellParticle(c.getVector3(), BlockColor.DIAMOND_BLOCK_COLOR)));
+        findingPath.forEach(c->level.addParticle(new RedstoneParticle(c.getVector3().add(0,0.2,0))));
         this.resetNodes();
 
         this.addNode(findingPath);
@@ -126,13 +126,13 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         if(limit > 0){
             for(int y = vector3.getFloorY() ; y >= vector3.getFloorY() - limit ; y--){
                 Block block = this.level.getBlock(vector3.getFloorX(),y,vector3.getFloorZ());
-                if(isWalkable(block) && level.getBlock(block.add(0,1,0)).getId() == Block.AIR)return block;
+                if(isWalkable(block) && isPassable(block.add(0,1,0)))return block;
             }
             return null;
         }
         for(int y = vector3.getFloorY() ; y >= 0 ; y--){
             Block block = this.level.getBlock(vector3.getFloorX(),y,vector3.getFloorZ());
-            if(isWalkable(block) && level.getBlock(block.add(0,1,0)).getId() == Block.AIR)return block;
+            if(isWalkable(block) && isPassable(block.add(0,1,0)))return block;
         }
         return null;
     }
@@ -150,7 +150,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         double radius = (this.entity.getWidth() * this.entity.getScale()) / 2;
         double height = this.entity.getHeight() * this.entity.getScale();
         AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius,vector3.getY(),vector3.getZ() - radius,vector3.getX() + radius,vector3.getY() + height,vector3.getZ() + radius);
-        return this.level.getCollisionBlocks(bb,true).length == 0 && !this.level.getBlock(vector3.add(0,-1,0)).canPassThrough() ;
+        return this.level.getCollisionBlocks(bb,true).length == 0 && isWalkable(vector3.add(0,-1,0)) ;
     }
 
     private double getWalkableHorizontalOffset(Vector3 vector3){

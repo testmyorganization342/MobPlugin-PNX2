@@ -39,7 +39,7 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
-        //this.followTarget = null;
+        this.followTarget = null;
 
         //Vector3 target = this.target;
         //if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
@@ -64,7 +64,7 @@ public abstract class WalkingEntity extends BaseEntity {
             this.stayTime = 0;
             this.moveTime = 0;
             this.followTarget = creature;
-            this.target = creature;
+            if(this.route!=null)this.target = creature;
 
         }
         //}
