@@ -17,7 +17,6 @@ import de.kniffo80.mobplugin.MobPlugin;
 import de.kniffo80.mobplugin.RouteFinderThreadPool;
 import de.kniffo80.mobplugin.entities.animal.Animal;
 import de.kniffo80.mobplugin.route.RouteFinder;
-import de.kniffo80.mobplugin.route.WalkerRouteFinder;
 import de.kniffo80.mobplugin.runnable.RouteFinderSearchTask;
 import de.kniffo80.mobplugin.utils.Utils;
 
