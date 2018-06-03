@@ -219,9 +219,7 @@ public abstract class BaseEntity extends EntityCreature {
                 for (int x = minX; x <= maxX; ++x) {
                     for (int y = minY; y <= maxY; ++y) {
                         Block block = this.level.getBlock(this.temporalVector.setComponents(x, y, z));
-                        if (block.hasEntityCollision()) {
-                            this.blocksAround.add(block);
-                        }
+                        this.blocksAround.add(block);
                     }
                 }
             }
@@ -233,7 +231,7 @@ public abstract class BaseEntity extends EntityCreature {
     @Override
     protected void checkBlockCollision() {
         Vector3 vector = new Vector3(0.0D, 0.0D, 0.0D);
-        Iterator d = this.getBlocksAround().iterator();
+        Iterator<Block> d = this.getBlocksAround().iterator();
 
         inWater = false;
         inLava = false;
