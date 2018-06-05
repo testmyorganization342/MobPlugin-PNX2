@@ -1,5 +1,6 @@
 package de.kniffo80.mobplugin.entities;
 
+import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockFence;
 import cn.nukkit.block.BlockFenceGate;
@@ -35,15 +36,12 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
-
         if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget)) && this.target!=null){
             return;
         }
 
         this.followTarget = null;
 
-        //Vector3 target = this.target;
-        //if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
         double near = Integer.MAX_VALUE;
 
         for (Entity entity : this.getLevel().getEntities()) {
@@ -65,7 +63,7 @@ public abstract class WalkingEntity extends BaseEntity {
             this.stayTime = 0;
             this.moveTime = 0;
             this.followTarget = creature;
-            if(this.route!=null)this.target = creature;
+            if(this.route==null)this.target = creature;
 
         }
         //}
@@ -139,6 +137,7 @@ public abstract class WalkingEntity extends BaseEntity {
             if (!this.isMovement()) {
                 return null;
             }
+
             if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
                 RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
                 if(this.route.hasNext()) {
