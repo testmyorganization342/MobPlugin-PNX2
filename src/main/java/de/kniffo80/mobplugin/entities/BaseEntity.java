@@ -196,9 +196,9 @@ public abstract class BaseEntity extends EntityCreature {
         if (this instanceof Monster) {
             if (creature instanceof Player) {
                 Player player = (Player) creature;
-                return !player.closed && player.spawned && player.isAlive() && player.isSurvival() && distance <= 80;
+                return (!player.closed) && player.spawned && player.isAlive() && player.isSurvival() && distance <= 80;
             }
-            return creature.isAlive() && !creature.closed && distance <= 81;
+            return creature.isAlive() && (!creature.closed) && distance <= 81;
         }
         return false;
     }
@@ -297,6 +297,7 @@ public abstract class BaseEntity extends EntityCreature {
             hasUpdate = true;
             this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.VOID, 10));
         }
+
 
         if (this.fireTicks > 0) {
             if (this.fireProof) {

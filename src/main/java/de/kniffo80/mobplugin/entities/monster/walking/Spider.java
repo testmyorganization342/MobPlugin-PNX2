@@ -59,6 +59,7 @@ public class Spider extends WalkingMonster {
 
         this.setMaxHealth(16);
         this.setDamage(new float[] { 0, 2, 2, 3 });
+        //this.setDataFlag(DATA_FLAGS,DATA_FLAG_CAN_CLIMB);
     }
 
     @Override

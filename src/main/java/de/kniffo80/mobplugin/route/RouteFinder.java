@@ -144,6 +144,7 @@ public abstract class RouteFinder {
             this.nodes.clear();
             this.current = 0;
             this.interrupt = false;
+            this.destination = null;
         }finally {
             this.lock.writeLock().unlock();
         }
@@ -152,8 +153,7 @@ public abstract class RouteFinder {
     public abstract boolean search();
 
     public void research(){
-        //this.resetNodes();
-        this.reachable = true;
+        this.resetNodes();
         this.search();
     }
 

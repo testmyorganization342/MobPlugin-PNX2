@@ -1,12 +1,9 @@
 package de.kniffo80.mobplugin.route;
 
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockSlab;
-import cn.nukkit.level.particle.SpellParticle;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.math.Vector3;
-import cn.nukkit.utils.BlockColor;
 import de.kniffo80.mobplugin.entities.WalkingEntity;
 import de.kniffo80.mobplugin.utils.Utils;
 
@@ -441,9 +438,9 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     private boolean isPositionOverlap(Vector3 vector2, Vector3 vector2_) {
-        return (int) vector2.getX() == (int) vector2_.getX()
-                && (int) vector2.getZ() == (int) vector2_.getZ()
-                && (int) vector2.getY() == (int) vector2_.getY();
+        return vector2.getFloorX() == vector2_.getFloorX()
+                && vector2.getFloorZ() == vector2_.getFloorZ()
+                && vector2.getFloorY() == vector2_.getFloorY();
     }
 
     public void resetTemporary() {
