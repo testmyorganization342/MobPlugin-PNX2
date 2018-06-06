@@ -238,7 +238,7 @@ public abstract class BaseEntity extends EntityCreature {
         onClimbable = false;
 
         while (d.hasNext()) {
-            Block block = (Block) d.next();
+            Block block = d.next();
 
             if (block.hasEntityCollision()) {
                 block.onEntityCollide(this);

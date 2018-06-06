@@ -18,9 +18,9 @@ import de.kniffo80.mobplugin.utils.Utils;
 
 public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
-    private int[]   minDamage;
+    private float[]   minDamage;
 
-    private int[]   maxDamage;
+    private float[]   maxDamage;
 
     protected int   attackDelay = 0;
 
@@ -41,58 +41,58 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         this.canAttack = attack;
     }
 
-    public int getDamage() {
+    public float getDamage() {
         return getDamage(null);
     }
 
-    public int getDamage(Integer difficulty) {
+    public float getDamage(Integer difficulty) {
         return Utils.rand(this.getMinDamage(difficulty), this.getMaxDamage(difficulty));
     }
 
-    public int getMinDamage() {
+    public float getMinDamage() {
         return getMinDamage(null);
     }
 
-    public int getMinDamage(Integer difficulty) {
+    public float getMinDamage(Integer difficulty) {
         if (difficulty == null || difficulty > 3 || difficulty < 0) {
             difficulty = Server.getInstance().getDifficulty();
         }
         return this.minDamage[difficulty];
     }
 
-    public int getMaxDamage() {
+    public float getMaxDamage() {
         return getMaxDamage(null);
     }
 
-    public int getMaxDamage(Integer difficulty) {
+    public float getMaxDamage(Integer difficulty) {
         if (difficulty == null || difficulty > 3 || difficulty < 0) {
             difficulty = Server.getInstance().getDifficulty();
         }
         return this.maxDamage[difficulty];
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(float damage) {
         this.setDamage(damage, Server.getInstance().getDifficulty());
     }
 
-    public void setDamage(int damage, int difficulty) {
+    public void setDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
             this.minDamage[difficulty] = damage;
             this.maxDamage[difficulty] = damage;
         }
     }
 
-    public void setDamage(int[] damage) {
+    public void setDamage(float[] damage) {
         if (damage.length < 4) {
             return;
         }
 
         if (minDamage == null || minDamage.length < 4) {
-            minDamage = new int[] { 0, 0, 0, 0 };
+            minDamage = new float[] { 0, 0, 0, 0 };
         }
 
         if (maxDamage == null || maxDamage.length < 4) {
-            maxDamage = new int[] { 0, 0, 0, 0 };
+            maxDamage = new float[] { 0, 0, 0, 0 };
         }
 
         for (int i = 0; i < 4; i++) {
@@ -101,7 +101,7 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         }
     }
 
-    public void setMinDamage(int[] damage) {
+    public void setMinDamage(float[] damage) {
         if (damage.length < 4) {
             return;
         }
@@ -111,17 +111,17 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         }
     }
 
-    public void setMinDamage(int damage) {
+    public void setMinDamage(float damage) {
         this.setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
-    public void setMinDamage(int damage, int difficulty) {
+    public void setMinDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
             this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
         }
     }
 
-    public void setMaxDamage(int[] damage) {
+    public void setMaxDamage(float[] damage) {
         if (damage.length < 4)
             return;
 
@@ -130,11 +130,11 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         }
     }
 
-    public void setMaxDamage(int damage) {
+    public void setMaxDamage(float damage) {
         setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
-    public void setMaxDamage(int damage, int difficulty) {
+    public void setMaxDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
             this.maxDamage[difficulty] = Math.max(damage, this.getMinDamage(difficulty));
         }
