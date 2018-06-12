@@ -158,7 +158,7 @@ public abstract class BaseEntity extends EntityCreature {
 
     @Override
     public void spawnTo(Player player) {
-        if (!this.hasSpawned.containsKey(player.getLoaderId()) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
+        if (!this.hasSpawned.containsKey(new Integer(player.getLoaderId())) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
             AddEntityPacket pk = new AddEntityPacket();
             pk.entityRuntimeId = this.getId();
             pk.entityUniqueId = this.getId();
@@ -173,7 +173,7 @@ public abstract class BaseEntity extends EntityCreature {
 
             player.dataPacket(pk);
 
-            this.hasSpawned.put(player.getLoaderId(), player);
+            this.hasSpawned.put(new Integer(player.getLoaderId()) , player);
         }
     }
 
