@@ -8,7 +8,7 @@ import java.util.concurrent.*;
  * @author zzz1999 @ MobPlugin
  */
 public class RouteFinderThreadPool{
-    public static ThreadPoolExecutor executor = new ThreadPoolExecutor(2,10,1,TimeUnit.SECONDS,new LinkedBlockingQueue<>());
+    public static ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1,10,1,TimeUnit.SECONDS,new LinkedBlockingQueue<>());
 
     public static void executeRouteFinderThread(RouteFinderSearchTask t){
         executor.execute(t);
