@@ -350,14 +350,14 @@ public abstract class BaseEntity extends EntityCreature {
 
     @Override
     public boolean attack(EntityDamageEvent source) {
-        if (this.isKnockback() && source instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
+        if (this.isKnockback()) {
             return false;
+        }else if(source instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
+            this.target = null;
+            this.attackTime = 7;
+            return true;
         }
-
         super.attack(source);
-
-        this.target = null;
-        this.attackTime = 7;
         return true;
     }
 
