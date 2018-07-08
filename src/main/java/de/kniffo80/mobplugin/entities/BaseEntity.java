@@ -51,6 +51,10 @@ public abstract class BaseEntity extends EntityCreature {
     protected List<Block> blocksAround = new ArrayList<>();
 
     protected List<Block> collisionBlocks = new ArrayList<>();
+    
+    private boolean despawnEntities;
+    
+    private int despawnTicks;
 
     ///Jump
     private int maxJumpHeight = 1; // default: 1 block jump height - this should be 2 for horses e.g.
@@ -59,6 +63,9 @@ public abstract class BaseEntity extends EntityCreature {
 
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        
+        this.despawnEntities = MobPlugin.getInstance().getConfig().getBoolean("entities.despawn-entities", true);
+        this.despawnTicks = MobPlugin.getInstance().getConfig().getInt("entities.despawn-ticks", 12000);
     }
 
     public abstract Vector3 updateMove(int tickDiff);
@@ -267,6 +274,11 @@ public abstract class BaseEntity extends EntityCreature {
     public boolean entityBaseTick(int tickDiff) {
 
         Timings.entityMoveTimer.startTiming();
+
+        if (this.despawnEntities && this.age > this.despawnTicks) {
+            this.close();
+            return true;
+        }
 
         boolean hasUpdate = false;
 
