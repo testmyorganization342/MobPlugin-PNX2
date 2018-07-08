@@ -165,7 +165,7 @@ public abstract class BaseEntity extends EntityCreature {
 
     @Override
     public void spawnTo(Player player) {
-        if (!this.hasSpawned.containsKey(new Integer(player.getLoaderId())) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
+        if (!this.hasSpawned.containsKey(player.getLoaderId()) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
             AddEntityPacket pk = new AddEntityPacket();
             pk.entityRuntimeId = this.getId();
             pk.entityUniqueId = this.getId();
@@ -180,7 +180,7 @@ public abstract class BaseEntity extends EntityCreature {
 
             player.dataPacket(pk);
 
-            this.hasSpawned.put(new Integer(player.getLoaderId()) , player);
+            this.hasSpawned.put(player.getLoaderId(), player);
         }
     }
 
@@ -210,7 +210,7 @@ public abstract class BaseEntity extends EntityCreature {
         return false;
     }
 
-    @Override
+    /*@Override
     public List<Block> getBlocksAround() {
         if (this.blocksAround == null) {
             int minX = NukkitMath.floorDouble(this.boundingBox.getMinX());
@@ -233,7 +233,7 @@ public abstract class BaseEntity extends EntityCreature {
         }
 
         return this.blocksAround;
-    }
+    }*/
 
     @Override
     protected void checkBlockCollision() {
@@ -270,7 +270,7 @@ public abstract class BaseEntity extends EntityCreature {
         }
     }
 
-    @Override
+    /*@Override
     public boolean entityBaseTick(int tickDiff) {
 
         Timings.entityMoveTimer.startTiming();
@@ -351,7 +351,7 @@ public abstract class BaseEntity extends EntityCreature {
         Timings.entityMoveTimer.stopTiming();
 
         return hasUpdate;
-    }
+    }*/
 
     @Override
     public boolean isInsideOfSolid() {
@@ -369,7 +369,7 @@ public abstract class BaseEntity extends EntityCreature {
         super.attack(source);
 
         this.target = null;
-        this.attackTime = 7;
+        //this.attackTime = 7;
         return true;
     }
 

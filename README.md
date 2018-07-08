@@ -11,8 +11,6 @@ MobPlugin is a plugin that implements mobs and animals for Nukkit servers includ
 ## Notice
 This plugin is in development. Therefore, It is possible to function abnormally.
 
-[![Nukkit.io](https://img.shields.io/badge/Nukkit%20MobPlugin-Download-yellow.svg)](https://potestas.xyz/resources/mob-plugin.3/)
-[![Discord](https://discordapp.com/api/guilds/386601650963349504/widget.png)](https://discord.gg/rBew6kc)
-[![Github All Releases](https://img.shields.io/github/downloads/Nukkit-coders/mob-plugin/total.svg)](https://github.com/Nukkit-coders/mob-plugin/releases)
+[![NukkitX.com](https://img.shields.io/badge/MobPlugin-Download-brightgreen.svg)](https://nukkitx.com/resources/mob-plugin.3/)
 [![GitHub release](https://img.shields.io/github/release/Nukkit-coders/mob-plugin.svg)](https://github.com/Nukkit-coders/mob-plugin/releases/latest)
-[![CircleCI builds](https://img.shields.io/circleci/project/github/Nukkit-coders/MobPlugin.svg)](https://circleci.com/gh/Nukkit-coders/mob-plugin)
+[![CircleCI builds](https://img.shields.io/circleci/project/github/Nukkit-coders/MobPlugin.svg)](https://circleci.com/gh/Nukkit-coders/MobPlugin)
