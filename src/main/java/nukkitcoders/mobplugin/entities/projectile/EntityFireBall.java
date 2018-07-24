@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockCobblestone;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
@@ -72,6 +73,9 @@ public class EntityFireBall extends EntityProjectile {
         if (this.closed) {
             return false;
         }
+        if (this.shootingEntity.getLevelBlock() instanceof BlockCobblestone) {
+            return false;
+        }
 
         // this.timings.startTiming();
         boolean hasUpdate = super.onUpdate(currentTick);
@@ -89,9 +93,6 @@ public class EntityFireBall extends EntityProjectile {
                 this.server.getPluginManager().callEvent(ev);
                 if (!ev.isCancelled()) {
                     Explosion explosion = new Explosion(this, (float) ev.getForce(), this.shootingEntity);
-                    if (this.shootingEntity.getLevelBlock() instanceof BlockCobblestone) {
-                        return false;
-                    }
                     if (ev.isBlockBreaking()) {
                         explosion.explodeA();
                     }
