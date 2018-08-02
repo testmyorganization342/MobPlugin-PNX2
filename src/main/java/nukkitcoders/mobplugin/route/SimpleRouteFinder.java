@@ -16,5 +16,4 @@ public class SimpleRouteFinder extends RouteFinder{
         this.addNode(new Node(this.destination));
         return true;
     }
-
 }

@@ -35,5 +35,4 @@ public interface Monster {
     void setMaxDamage(float[] damage);
 
     void setMaxDamage(float damage, int difficulty);
-
 }

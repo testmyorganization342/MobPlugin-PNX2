@@ -1,6 +1,5 @@
 package nukkitcoders.mobplugin.route;
 
-
 import nukkitcoders.mobplugin.entities.WalkingEntity;
 
 /**
@@ -11,6 +10,4 @@ public class FlierRouteFinder extends SimpleRouteFinder {
     public FlierRouteFinder(WalkingEntity entity) {
         super(entity);
     }
-
-
 }

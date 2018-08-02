@@ -24,7 +24,6 @@ public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable
         if (this.getDataFlag(DATA_FLAG_BABY, 0)) {
             this.setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
         }
-
     }
 
     @Override
@@ -85,5 +84,4 @@ public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable
         }
         return true;
     }
-
 }

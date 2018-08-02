@@ -161,5 +161,4 @@ public abstract class FlyingEntity extends BaseEntity {
         }
         return null;
     }
-
 }

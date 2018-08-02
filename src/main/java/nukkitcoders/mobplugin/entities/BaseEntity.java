@@ -14,7 +14,6 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
-import cn.nukkit.potion.Effect;
 import co.aikar.timings.Timings;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -147,8 +146,6 @@ public abstract class BaseEntity extends EntityCreature {
         if (this.namedTag.contains("Age")) {
             this.age = this.namedTag.getShort("Age");
         }
-
-        //this.setDataProperty(new ByteEntityData(DATA_FLAG_NO_AI, (byte) 1));
     }
 
     @Override
@@ -447,5 +444,4 @@ public abstract class BaseEntity extends EntityCreature {
         }
         return true;
     }
-
 }

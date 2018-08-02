@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockCobblestone;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;

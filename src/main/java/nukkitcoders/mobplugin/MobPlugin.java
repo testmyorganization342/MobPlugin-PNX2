@@ -53,7 +53,7 @@ import java.util.List;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 2; //change this when you add/remove something from config
+    private int configVersion = 2; // change this when big changes in config
 
     public static boolean MOB_AI_ENABLED = true;
 
@@ -73,31 +73,25 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
-        // Config reading and writing
+        // save default config
         this.saveDefaultConfig();
-
+        // intialize config
         pluginConfig = getConfig();
-
+        // check config version
         if (getConfig().getInt("config-version") != configVersion) this.getServer().getLogger().warning("MobPlugin's config file is outdated. Delete old config and reload server to update it.");
-
         // we need this flag as it's controlled by the plugin's entities
         int spawnDelay = pluginConfig.getInt("entities.auto-spawn-tick", 0);
-
-        // register as listener to plugin events
+        // register listener for plugin events
         this.getServer().getPluginManager().registerEvents(this, this);
-
+        // enable autospawn
         if (spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
         }
-
-        this.getServer().getLogger().info(String.format("\u00A76Mob plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
-
     }
 
     @Override
     public void onDisable() {
         RouteFinderThreadPool.shutDownNow();
-        this.getServer().getLogger().info("\u00A76Mob plugin disabled successful.");
     }
 
     @Override
@@ -105,7 +99,7 @@ public class MobPlugin extends PluginBase implements Listener {
         if (cmd.getName().toLowerCase().equals("mob")) {
 
             if (args.length == 0) {
-                sender.sendMessage("-- MobPlugin 1.0 --");
+                sender.sendMessage("-- MobPlugin 1.1 --");
                 sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
                 sender.sendMessage("/mob removeall - Remove all living mobs");
                 sender.sendMessage("/mob removeitems - Remove all items from ground");
@@ -427,6 +421,4 @@ public class MobPlugin extends PluginBase implements Listener {
             counter++;
         }
     }*/
-
-
 }

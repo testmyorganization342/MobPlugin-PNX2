@@ -129,5 +129,4 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
     public boolean isBreedingItem(Item item) {
         return item != null && item.getId() == Item.WHEAT;
     }
-
 }

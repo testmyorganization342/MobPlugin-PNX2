@@ -166,7 +166,6 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate;
-        // Timings.timerEntityBaseTick.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
@@ -183,8 +182,6 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
             this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
         }
 
-        // Timings.timerEntityBaseTick.stopTiming();
         return hasUpdate;
     }
-
 }

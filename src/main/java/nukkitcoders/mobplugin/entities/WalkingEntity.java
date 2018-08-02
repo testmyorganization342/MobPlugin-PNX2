@@ -1,6 +1,5 @@
 package nukkitcoders.mobplugin.entities;
 
-import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockFence;
 import cn.nukkit.block.BlockFenceGate;
@@ -250,5 +249,4 @@ public abstract class WalkingEntity extends BaseEntity {
     public void setRoute(RouteFinder route){
         this.route = route;
     }
-
 }
