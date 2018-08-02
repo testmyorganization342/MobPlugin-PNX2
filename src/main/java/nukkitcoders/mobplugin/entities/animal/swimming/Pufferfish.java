@@ -32,7 +32,7 @@ public class Pufferfish extends SwimmingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
-        this.setMaxHealth(3);
+        setMaxHealth(3);
     }
 
     @Override

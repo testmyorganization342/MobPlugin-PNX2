@@ -22,14 +22,14 @@ public class Stray extends WalkingMonster {
 
     public Stray(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
+        route = new WalkerRouteFinder(this);
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(20);
+        setMaxHealth(20);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Stray extends WalkingMonster {
         super.spawnTo(player);
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.eid = this.getId();
+        pk.eid = getId();
         pk.item = new ItemBow();
         pk.hotbarSlot = 0;
         player.dataPacket(pk);
@@ -69,9 +69,9 @@ public class Stray extends WalkingMonster {
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {
-            this.setOnFire(100);
+        int time = getLevel().getTime() % Level.TIME_FULL;
+        if (!isOnFire() && !level.isRaining() && (time < 12567 || time > 23450)) {
+            setOnFire(100);
         }
 
         return hasUpdate;
@@ -85,7 +85,7 @@ public class Stray extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int bones = Utils.rand(0, 3);
             int arrows = Utils.rand(0, 3);
             for (int i = 0; i < bones; i++) {

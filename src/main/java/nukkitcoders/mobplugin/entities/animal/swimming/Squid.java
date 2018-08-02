@@ -44,7 +44,7 @@ public class Squid extends SwimmingAnimal {
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(10);
+        setMaxHealth(10);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Squid extends SwimmingAnimal {
 
     @Override
     public Item[] getDrops() {
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
 
         }
         return new Item[]{new ItemDye(DyeColor.BLACK.getDyeData())};
@@ -73,10 +73,10 @@ public class Squid extends SwimmingAnimal {
         }
 
         EntityEventPacket pk0 = new EntityEventPacket();
-        pk0.eid = this.getId();
+        pk0.eid = getId();
         pk0.event = EntityEventPacket.SQUID_INK_CLOUD;
 
-        this.level.addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4,pk0);
+        level.addChunkPacket(getChunkX() >> 4,getChunkZ() >> 4,pk0);
         return att;
     }
 }

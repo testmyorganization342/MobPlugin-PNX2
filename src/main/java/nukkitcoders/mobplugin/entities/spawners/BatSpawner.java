@@ -37,7 +37,7 @@ public class BatSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.3, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 1.3, 0));
         }
 
         return result;
@@ -64,7 +64,7 @@ public class BatSpawner extends AbstractEntitySpawner {
      */
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
 }

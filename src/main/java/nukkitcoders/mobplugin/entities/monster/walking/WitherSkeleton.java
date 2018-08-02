@@ -28,7 +28,7 @@ public class WitherSkeleton extends WalkingMonster {
 
     public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
+        route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class WitherSkeleton extends WalkingMonster {
     @Override
     protected void initEntity() {
         super.initEntity();
-        this.setDamage(new float[] { 0, 3, 4, 6 });
+        setDamage(new float[] { 0, 3, 4, 6 });
     }
 
     @Override
@@ -54,8 +54,8 @@ public class WitherSkeleton extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-      if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
-            this.attackDelay = 0;
+      if (attackDelay > 10 && player.distanceSquared(this) <= 1) {
+            attackDelay = 0;
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, getDamage()));
         }
     }
@@ -65,7 +65,7 @@ public class WitherSkeleton extends WalkingMonster {
         super.spawnTo(player);
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.eid = this.getId();
+        pk.eid = getId();
         pk.item = new ItemSwordStone();
         pk.hotbarSlot = 0;
         player.dataPacket(pk);

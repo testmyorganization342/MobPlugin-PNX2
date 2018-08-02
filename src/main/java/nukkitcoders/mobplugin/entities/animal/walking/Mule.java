@@ -33,7 +33,7 @@ public class Mule extends Horse {
 
     @Override
     public float getWidth() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.6982f;
         }
         return 1.3965f;
@@ -41,7 +41,7 @@ public class Mule extends Horse {
 
     @Override
     public float getHeight() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.8f;
         }
         return 1.6f;
@@ -54,13 +54,13 @@ public class Mule extends Horse {
 
     @Override
     public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
-        this.setMaxHealth(15);
+        setMaxHealth(15);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Mule extends Horse {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int leather = Utils.rand(0, 3); // drops 0-2 leather
 
             for (int i = 0; i < leather; i++) {

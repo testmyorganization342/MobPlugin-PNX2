@@ -6,7 +6,6 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -17,149 +16,148 @@ public abstract class FlyingEntity extends BaseEntity {
     }
 
     protected void checkTarget() {
-        if (this.isKnockback()) {
+        if (isKnockback()) {
             return;
         }
 
-        Vector3 target = this.target;
-        if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
+        Vector3 target = target;
+        if (!(target instanceof EntityCreature) || !targetOption((EntityCreature) target, distanceSquared(target))) {
             double near = Integer.MAX_VALUE;
 
-            for (Entity entity : this.getLevel().getEntities()) {
+            for (Entity entity : getLevel().getEntities()) {
                 if (entity == this || !(entity instanceof EntityCreature) || entity instanceof Animal) {
                     continue;
                 }
 
                 EntityCreature creature = (EntityCreature) entity;
-                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
+                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == isFriendly()) {
                     continue;
                 }
 
-                double distance = this.distanceSquared(creature);
-                if (distance > near || !this.targetOption(creature, distance)) {
+                double distance = distanceSquared(creature);
+                if (distance > near || !targetOption(creature, distance)) {
                     continue;
                 }
                 near = distance;
 
-                this.moveTime = 0;
-                this.target = creature;
+                moveTime = 0;
+                target = creature;
             }
         }
 
-        if (this.target instanceof EntityCreature && ((EntityCreature) this.target).isAlive()) {
+        if (target instanceof EntityCreature && ((EntityCreature) target).isAlive()) {
             return;
         }
 
         int x, y, z;
-        int maxY = Math.max(this.getLevel().getHighestBlockAt((int) this.x, (int) this.z) + 15, 120);
-        if (this.stayTime > 0) {
+        int maxY = Math.max(getLevel().getHighestBlockAt((int) x, (int) z) + 15, 120);
+        if (stayTime > 0) {
             if (Utils.rand(1, 100) > 5) {
                 return;
             }
 
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            if (this.y > maxY) {
+            if (y > maxY) {
                 y = Utils.rand(-12, -4);
             } else {
                 y = Utils.rand(-10, 10);
             }
-            this.target = this.add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
+            target = add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
         } else if (Utils.rand(1, 410) == 1) {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            if (this.y > maxY) {
+            if (y > maxY) {
                 y = Utils.rand(-12, -4);
             } else {
                 y = Utils.rand(-10, 10);
             }
-            this.stayTime = Utils.rand(90, 400);
-            this.target = this.add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
-        } else if (this.moveTime <= 0 || !(this.target instanceof Vector3)) {
+            stayTime = Utils.rand(90, 400);
+            target = add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
+        } else if (moveTime <= 0 || !(target instanceof Vector3)) {
             x = Utils.rand(20, 100);
             z = Utils.rand(20, 100);
-            if (this.y > maxY) {
+            if (y > maxY) {
                 y = Utils.rand(-12, -4);
             } else {
                 y = Utils.rand(-10, 10);
             }
-            this.stayTime = 0;
-            this.moveTime = Utils.rand(300, 1200);
-            this.target = this.add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
+            stayTime = 0;
+            moveTime = Utils.rand(300, 1200);
+            target = add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
         }
     }
 
     @Override
     public Vector3 updateMove(int tickDiff) {
-        if (MobPlugin.MOB_AI_ENABLED && !isImmobile()) {
-            if (!this.isMovement()) {
+        if (!isImmobile()) {
+            if (!isMovement()) {
                 return null;
             }
     
-            if (this.isKnockback()) {
-                this.move(this.motionX * tickDiff, this.motionY * tickDiff, this.motionZ * tickDiff);
-                this.updateMovement();
+            if (isKnockback()) {
+                move(motionX * tickDiff, motionY * tickDiff, motionZ * tickDiff);
+                updateMovement();
                 return null;
             }
     
-            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
-                double x = this.followTarget.x - this.x;
-                double y = this.followTarget.y - this.y;
-                double z = this.followTarget.z - this.z;
+            if (followTarget != null && !followTarget.closed && followTarget.isAlive()) {
+                double x = followTarget.x - x;
+                double y = followTarget.y - y;
+                double z = followTarget.z - z;
     
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
-                    this.motionX = 0;
-                    this.motionZ = 0;
+                if (stayTime > 0 || distance(followTarget) <= (getWidth() + 0.0d) / 2 + 0.05) {
+                    motionX = 0;
+                    motionZ = 0;
                 } else {
-                    this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
-                    this.motionY = this.getSpeed() * 0.27 * (y / diff);
+                    motionX = getSpeed() * 0.15 * (x / diff);
+                    motionZ = getSpeed() * 0.15 * (z / diff);
+                    motionY = getSpeed() * 0.27 * (y / diff);
                 }
-                this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-                this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
+                yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
             }
     
-            Vector3 before = this.target;
-            this.checkTarget();
-            if (this.target instanceof EntityCreature || before != this.target) {
-                double x = this.target.x - this.x;
-                double y = this.target.y - this.y;
-                double z = this.target.z - this.z;
+            Vector3 before = target;
+            checkTarget();
+            if (target instanceof EntityCreature || before != target) {
+                double x = target.x - x;
+                double y = target.y - y;
+                double z = target.z - z;
     
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.target) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
-                    this.motionX = 0;
-                    this.motionZ = 0;
+                if (stayTime > 0 || distance(target) <= (getWidth() + 0.0d) / 2 + 0.05) {
+                    motionX = 0;
+                    motionZ = 0;
                 } else {
-                    this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
-                    this.motionY = this.getSpeed() * 0.27 * (y / diff);
+                    motionX = getSpeed() * 0.15 * (x / diff);
+                    motionZ = getSpeed() * 0.15 * (z / diff);
+                    motionY = getSpeed() * 0.27 * (y / diff);
                 }
-                this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-                this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
+                yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
             }
     
-            double dx = this.motionX * tickDiff;
-            double dy = this.motionY * tickDiff;
-            double dz = this.motionZ * tickDiff;
-            Vector3 target = this.target;
-            if (this.stayTime > 0) {
-                this.stayTime -= tickDiff;
-                this.move(0, dy, 0);
+            double dx = motionX * tickDiff;
+            double dy = motionY * tickDiff;
+            double dz = motionZ * tickDiff;
+            Vector3 target = target;
+            if (stayTime > 0) {
+                stayTime -= tickDiff;
+                move(0, dy, 0);
             } else {
-                Vector2 be = new Vector2(this.x + dx, this.z + dz);
-                this.move(dx, dy, dz);
-                Vector2 af = new Vector2(this.x, this.z);
+                Vector2 be = new Vector2(x + dx, z + dz);
+                move(dx, dy, dz);
+                Vector2 af = new Vector2(x, z);
     
                 if (be.x != af.x || be.y != af.y) {
-                    this.moveTime -= 90 * tickDiff;
+                    moveTime -= 90 * tickDiff;
                 }
             }
-            this.updateMovement();
+            updateMovement();
             return target;
         }
         return null;
     }
-
 }

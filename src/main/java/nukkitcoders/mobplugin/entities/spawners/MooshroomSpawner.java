@@ -21,7 +21,7 @@ public class MooshroomSpawner extends AbstractEntitySpawner {
 
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MooshroomSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
         }
 
         return result;

@@ -31,7 +31,7 @@ public class Llama extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.45f;
         }
         return 0.9f;
@@ -39,7 +39,7 @@ public class Llama extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.935f;
         }
         return 1.87f;
@@ -47,7 +47,7 @@ public class Llama extends WalkingAnimal {
 
     @Override
     public float getEyeHeight() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.65f;
         }
         return 1.2f;
@@ -55,19 +55,19 @@ public class Llama extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
-        this.setMaxHealth(15);
+        setMaxHealth(15);
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int leather = Utils.rand(1, 3);
 
             for (int i = 0; i < leather; i++) {

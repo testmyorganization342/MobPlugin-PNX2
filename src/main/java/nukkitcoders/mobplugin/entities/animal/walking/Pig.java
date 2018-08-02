@@ -31,7 +31,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public float getWidth() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.45f;
         }
         return 0.9f;
@@ -39,7 +39,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public float getHeight() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.45f;
         }
         return 0.9f;
@@ -47,7 +47,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public float getEyeHeight() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.45f;
         }
         return 0.9f;
@@ -55,13 +55,13 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     public void initEntity() {
         super.initEntity();
-        this.fireProof = false;
-        this.setMaxHealth(10);
+        fireProof = false;
+        setMaxHealth(10);
     }
 
     @Override
@@ -79,23 +79,23 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public boolean onInteract(Player player, Item item) {
-        if (item.equals(Item.get(Item.CARROT,0)) && !this.isBaby()) {
+        if (item.equals(Item.get(Item.CARROT,0)) && !isBaby()) {
             player.getInventory().removeItem(Item.get(Item.CARROT,0,1));
-            this.level.addSound(this, Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.CARROT)));
-            this.setInLove();
+            level.addSound(this, Sound.RANDOM_EAT);
+            level.addParticle(new ItemBreakParticle(add(0,getMountedYOffset(),0),Item.get(Item.CARROT)));
+            setInLove();
             return true;
-        }else if (item.equals(Item.get(Item.POTATO,0)) && !this.isBaby()) {
+        }else if (item.equals(Item.get(Item.POTATO,0)) && !isBaby()) {
             player.getInventory().removeItem(Item.get(Item.POTATO,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.POTATO)));
-            this.setInLove();
+            level.addSound(this,Sound.RANDOM_EAT);
+            level.addParticle(new ItemBreakParticle(add(0,getMountedYOffset(),0),Item.get(Item.POTATO)));
+            setInLove();
             return true;
-        }else if (item.equals(Item.get(Item.BEETROOT,0)) && !this.isBaby()) {
+        }else if (item.equals(Item.get(Item.BEETROOT,0)) && !isBaby()) {
             player.getInventory().removeItem(Item.get(Item.BEETROOT,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.BEETROOT)));
-            this.setInLove();
+            level.addSound(this,Sound.RANDOM_EAT);
+            level.addParticle(new ItemBreakParticle(add(0,getMountedYOffset(),0),Item.get(Item.BEETROOT)));
+            setInLove();
             return true;
         }
         return false;
@@ -103,10 +103,10 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int drop = Utils.rand(1, 4); // drops 1-3 raw porkchop / cooked porkchop when on fire
             for (int i = 0; i < drop; i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
+                drops.add(Item.get(isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);

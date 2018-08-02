@@ -35,8 +35,8 @@ public abstract class RouteFinder {
 
     RouteFinder(WalkingEntity entity){
         Objects.requireNonNull(entity,"RouteFinder: entity can not be null");
-        this.entity = entity;
-        this.level = entity.getLevel();
+        entity = entity;
+        level = entity.getLevel();
     }
 
     public WalkingEntity getEntity(){
@@ -44,24 +44,24 @@ public abstract class RouteFinder {
     }
 
     public Vector3 getStart(){
-        return this.start;
+        return start;
     }
 
     public void setStart(Vector3 start){
-        if(!this.isSearching()) {
-            this.start = start;
+        if(!isSearching()) {
+            start = start;
         }
     }
 
     public Vector3 getDestination(){
-        return this.destination;
+        return destination;
     }
 
     public void setDestination(Vector3 destination){
-        this.destination = destination;
-        if(this.isSearching()){
-            this.interrupt = true;
-            this.research();
+        destination = destination;
+        if(isSearching()){
+            interrupt = true;
+            research();
         }
     }
 
@@ -99,7 +99,7 @@ public abstract class RouteFinder {
     public Node getCurrentNode(){
         try{
             lock.readLock().lock();
-            if(this.hasCurrentNode()) {
+            if(hasCurrentNode()) {
                 return nodes.get(current);
             }
             return null;
@@ -109,27 +109,27 @@ public abstract class RouteFinder {
 
     }
     public boolean hasCurrentNode(){
-        return current < this.nodes.size();
+        return current < nodes.size();
     }
 
 
     public Level getLevel(){
-        return this.level;
+        return level;
     }
 
     public void setLevel(Level level){
-        this.level = level;
+        level = level;
     }
 
     public int getCurrent(){
-        return this.current;
+        return current;
     }
 
     public boolean hasArrivedNode(Vector3 vec){
         try{
             lock.readLock().lock();
-            if(this.hasNext() &&  this.getCurrentNode().getVector3()!=null) {
-                Vector3 cur = this.getCurrentNode().getVector3();
+            if(hasNext() &&  getCurrentNode().getVector3()!=null) {
+                Vector3 cur = getCurrentNode().getVector3();
                 return vec.getX() == cur.getX() && vec.getZ() == cur.getZ()/* && vec.getFloorY() == cur.getFloorY()*/;
             }
             return false;
@@ -140,32 +140,32 @@ public abstract class RouteFinder {
 
     public void resetNodes(){
         try{
-            this.lock.writeLock().lock();
-            this.nodes.clear();
-            this.current = 0;
-            this.interrupt = false;
-            this.destination = null;
+            lock.writeLock().lock();
+            nodes.clear();
+            current = 0;
+            interrupt = false;
+            destination = null;
         }finally {
-            this.lock.writeLock().unlock();
+            lock.writeLock().unlock();
         }
     }
 
     public abstract boolean search();
 
     public void research(){
-        this.resetNodes();
-        this.search();
+        resetNodes();
+        search();
     }
 
     public boolean hasNext(){
-        return this.current + 1 < nodes.size() && this.nodes.get(this.current+1)!= null;
+        return current + 1 < nodes.size() && nodes.get(current+1)!= null;
     }
 
     public Vector3 next(){
         try{
             lock.readLock().lock();
-            if(this.hasNext()){
-                return this.nodes.get(++current).getVector3();
+            if(hasNext()){
+                return nodes.get(++current).getVector3();
             }
             return null;
         }finally {
@@ -175,10 +175,10 @@ public abstract class RouteFinder {
     }
 
     public boolean isInterrupted(){
-        return this.interrupt;
+        return interrupt;
     }
 
     public boolean interrupt(){
-        return this.interrupt ^= true;
+        return interrupt ^= true;
     }
 }

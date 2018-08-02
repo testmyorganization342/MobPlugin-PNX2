@@ -40,7 +40,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
         } else if (Block.transparent[blockId]) { // only spawns on opaque blocks
             result = SpawnResult.WRONG_BLOCK;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.9, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 1.9, 0));
         }
 
         return result;
@@ -67,7 +67,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
      */
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
 }

@@ -32,7 +32,7 @@ public class EnderDragon extends FlyingMonster {
     @Override
     public void initEntity() {
         super.initEntity();
-        this.setMaxHealth(200);
+        setMaxHealth(200);
     }
 
     @Override

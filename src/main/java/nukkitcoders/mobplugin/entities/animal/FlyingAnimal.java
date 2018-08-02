@@ -21,15 +21,15 @@ public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable
     protected void initEntity() {
         super.initEntity();
 
-        if (this.getDataFlag(DATA_FLAG_BABY, 0)) {
-            this.setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
+        if (getDataFlag(DATA_FLAG_BABY, 0)) {
+            setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
         }
 
     }
 
     @Override
     public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAG_BABY, 0);
+        return getDataFlag(DATA_FLAG_BABY, 0);
     }
 
     @Override
@@ -41,16 +41,16 @@ public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        if (!this.hasEffect(Effect.WATER_BREATHING) && this.isInsideOfWater()) {
+        if (!hasEffect(Effect.WATER_BREATHING) && isInsideOfWater()) {
             hasUpdate = true;
-            int airTicks = this.getDataPropertyShort(DATA_AIR) - tickDiff;
+            int airTicks = getDataPropertyShort(DATA_AIR) - tickDiff;
             if (airTicks <= -20) {
                 airTicks = 0;
-                this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
+                attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
             }
-            this.setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
+            setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
         } else {
-            this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
+            setDataProperty(new ShortEntityData(DATA_AIR, 300));
         }
 
         Timings.entityBaseTickTimer.stopTiming();
@@ -60,30 +60,29 @@ public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable
 
     @Override
     public boolean onUpdate(int currentTick) {
-        if (!this.isAlive()) {
-            if (++this.deadTicks >= 23) {
-                this.close();
+        if (!isAlive()) {
+            if (++deadTicks >= 23) {
+                close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - this.lastUpdate;
-        this.lastUpdate = currentTick;
-        this.entityBaseTick(tickDiff);
+        int tickDiff = currentTick - lastUpdate;
+        lastUpdate = currentTick;
+        entityBaseTick(tickDiff);
 
-        Vector3 target = this.updateMove(tickDiff);
+        Vector3 target = updateMove(tickDiff);
         if (target instanceof Player) {
-            if (this.distanceSquared(target) <= 2) {
-                this.pitch = 22;
-                this.x = this.lastX;
-                this.y = this.lastY;
-                this.z = this.lastZ;
+            if (distanceSquared(target) <= 2) {
+                pitch = 22;
+                x = lastX;
+                y = lastY;
+                z = lastZ;
             }
-        } else if (target != null && this.distanceSquared(target) <= 1) {
-            this.moveTime = 0;
+        } else if (target != null && distanceSquared(target) <= 1) {
+            moveTime = 0;
         }
         return true;
     }
-
 }

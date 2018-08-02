@@ -41,7 +41,7 @@ public class ZombieSpawner extends AbstractEntitySpawner {
         } else if (Block.transparent[blockId]) { // only spawns on opaque blocks
             result = SpawnResult.WRONG_BLOCK;
         } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }
 
         return result;
@@ -68,7 +68,7 @@ public class ZombieSpawner extends AbstractEntitySpawner {
      */
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
 }

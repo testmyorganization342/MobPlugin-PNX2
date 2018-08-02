@@ -43,16 +43,16 @@ public class Endermite extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(8);
-        this.setDamage(new float[] { 0, 1, 1, 1 });
+        setMaxHealth(8);
+        setDamage(new float[] { 0, 1, 1, 1 });
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 10 && this.distanceSquared(player) < 1) {
-            this.attackDelay = 0;
+        if (attackDelay > 10 && distanceSquared(player) < 1) {
+            attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")

@@ -21,7 +21,7 @@ public class StraySpawner extends AbstractEntitySpawner {
 
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class StraySpawner extends AbstractEntitySpawner {
         } else if (biomeId != 12) { //ICE_PLAINS
             result = SpawnResult.WRONG_BLOCK;
         } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }
 
         return result;

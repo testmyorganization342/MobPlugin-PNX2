@@ -27,7 +27,7 @@ public class Dolphin extends SwimmingAnimal {
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(10);
+        setMaxHealth(10);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Dolphin extends SwimmingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int fish = Utils.rand(0, 2);
             for (int i = 0; i < fish; i++) {
                 drops.add(Item.get(Item.RAW_FISH, 0, 1));

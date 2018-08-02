@@ -21,7 +21,7 @@ public class BlazeSpawner extends AbstractEntitySpawner {
 
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class BlazeSpawner extends AbstractEntitySpawner {
         } else if (biomeId != 8) { //HELL
             result = SpawnResult.WRONG_BLOCK;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
         }
 
         return result;

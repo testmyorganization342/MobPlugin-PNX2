@@ -28,7 +28,7 @@ public class Rabbit extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.2f;
         }
         return 0.4f;
@@ -36,7 +36,7 @@ public class Rabbit extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.25f;
         }
         return 0.5f;
@@ -49,12 +49,12 @@ public class Rabbit extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     public void initEntity() {
         super.initEntity();
-        this.setMaxHealth(3);
+        setMaxHealth(3);
     }
 
     @Override
@@ -68,11 +68,11 @@ public class Rabbit extends WalkingAnimal {
 
     @Override
     public Item[] getDrops() {
-        if (this.isBaby()) {
+        if (isBaby()) {
 
         }
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rabbitHide = Utils.rand(0, 2); // drops 0-1 rabit hide
             int rawRabbit = Utils.rand(0, 2); // drops 0-1 raw rabit
             int rabbitfoot = Utils.rand(0, 101) <= 9 ? 1 : 0; //8.5%
@@ -83,7 +83,7 @@ public class Rabbit extends WalkingAnimal {
                 drops.add(Item.get(Item.RABBIT_FOOT, 0, 1));
             }
             for (int i = 0; i < rawRabbit; i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_RABBIT : Item.RAW_RABBIT, 0, 1));
+                drops.add(Item.get(isOnFire() ? Item.COOKED_RABBIT : Item.RAW_RABBIT, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);

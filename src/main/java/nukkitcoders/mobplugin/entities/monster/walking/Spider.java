@@ -59,132 +59,132 @@ public class Spider extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(16);
-        this.setDamage(new float[] { 0, 2, 2, 3 });
-        //this.setDataFlag(DATA_FLAGS,DATA_FLAG_CAN_CLIMB);
+        setMaxHealth(16);
+        setDamage(new float[] { 0, 2, 2, 3 });
+        //setDataFlag(DATA_FLAGS,DATA_FLAG_CAN_CLIMB);
     }
 
     @Override
     public boolean onUpdate(int currentTick) {
-        if (this.server.getDifficulty() < 1) {
-            this.close();
+        if (server.getDifficulty() < 1) {
+            close();
             return false;
         }
 
-        if (!this.isAlive()) {
-            if (++this.deadTicks >= 23) {
-                this.close();
+        if (!isAlive()) {
+            if (++deadTicks >= 23) {
+                close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - this.lastUpdate;
-        this.lastUpdate = currentTick;
-        this.entityBaseTick(tickDiff);
+        int tickDiff = currentTick - lastUpdate;
+        lastUpdate = currentTick;
+        entityBaseTick(tickDiff);
 
-        if (!this.isMovement()) {
+        if (!isMovement()) {
             return true;
         }
 
-        if (this.isKnockback()) {
-            this.move(this.motionX * tickDiff, this.motionY, this.motionZ * tickDiff);
-            this.motionY -= this.getGravity() * tickDiff;
-            this.updateMovement();
+        if (isKnockback()) {
+            move(motionX * tickDiff, motionY, motionZ * tickDiff);
+            motionY -= getGravity() * tickDiff;
+            updateMovement();
             return true;
         }
 
-        Vector3 before = this.target;
+        Vector3 before = target;
         boolean isJump = false;
-        this.checkTarget();
-        if (this.target instanceof EntityCreature || before != this.target) {
-            double x = this.target.x - this.x;
-            double y = this.target.y - this.y;
-            double z = this.target.z - this.z;
+        checkTarget();
+        if (target instanceof EntityCreature || before != target) {
+            double x = target.x - x;
+            double y = target.y - y;
+            double z = target.z - z;
 
-            Vector3 target = this.target;
+            Vector3 target = target;
             double diff = Math.abs(x) + Math.abs(z);
-            double distance = Math.sqrt(Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2));
+            double distance = Math.sqrt(Math.pow(x - target.x, 2) + Math.pow(z - target.z, 2));
             if (distance <= 2) {
                 if (target instanceof EntityCreature) {
-                    if (distance <= this.getWidth() && this.y - target.y > 1 && this.y - target.y < 3) {
-                        this.motionY = -this.getGravity() * 4;
-                        if (this.attackDelay < 20) {
-                            this.motionX = this.getSpeed() * 0.23 * (x / diff);
-                            this.motionZ = this.getSpeed() * 0.23 * (z / diff);
+                    if (distance <= getWidth() && y - target.y > 1 && y - target.y < 3) {
+                        motionY = -getGravity() * 4;
+                        if (attackDelay < 20) {
+                            motionX = getSpeed() * 0.23 * (x / diff);
+                            motionZ = getSpeed() * 0.23 * (z / diff);
                         } else {
-                            this.motionX = 0;
-                            this.motionZ = 0;
-                            this.attackEntity((Entity) target);
+                            motionX = 0;
+                            motionZ = 0;
+                            attackEntity((Entity) target);
                         }
                     } else {
-                        if (!this.isFriendly() && this.attackDelay >= 12) {
+                        if (!isFriendly() && attackDelay >= 12) {
                             y = 0;
                             isJump = true;
-                            this.motionY = 0.08;
+                            motionY = 0.08;
                         } else {
-                            isJump = this.checkJump(this.motionX * tickDiff, this.motionZ * tickDiff);
+                            isJump = checkJump(motionX * tickDiff, motionZ * tickDiff);
                         }
-                        this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                        this.motionZ = this.getSpeed() * 0.15 * (z / diff);
+                        motionX = getSpeed() * 0.15 * (x / diff);
+                        motionZ = getSpeed() * 0.15 * (z / diff);
                     }
-                } else if (this.distanceSquared(target) <= 1.2) {
-                    this.moveTime = 0;
+                } else if (distanceSquared(target) <= 1.2) {
+                    moveTime = 0;
                 }
             } else {
-                this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                this.motionZ = this.getSpeed() * 0.15 * (z / diff);
+                motionX = getSpeed() * 0.15 * (x / diff);
+                motionZ = getSpeed() * 0.15 * (z / diff);
 
-                isJump = this.checkJump(this.motionX * tickDiff, this.motionZ * tickDiff);
+                isJump = checkJump(motionX * tickDiff, motionZ * tickDiff);
             }
-            this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-            this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
+            yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+            pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
         }
 
-        double dx = this.motionX * tickDiff;
-        double dz = this.motionZ * tickDiff;
-        if (this.stayTime > 0) {
-            this.stayTime -= tickDiff;
-            this.move(0, this.motionY * tickDiff, 0);
+        double dx = motionX * tickDiff;
+        double dz = motionZ * tickDiff;
+        if (stayTime > 0) {
+            stayTime -= tickDiff;
+            move(0, motionY * tickDiff, 0);
         } else {
-            Vector2 be = new Vector2(this.x + dx, this.z + dz);
-            this.move(dx, this.motionY * tickDiff, dz);
-            Vector2 af = new Vector2(this.x, this.z);
+            Vector2 be = new Vector2(x + dx, z + dz);
+            move(dx, motionY * tickDiff, dz);
+            Vector2 af = new Vector2(x, z);
 
             if ((be.x != af.x || be.y != af.y) && !isJump) {
-                this.moveTime -= 90 * tickDiff;
+                moveTime -= 90 * tickDiff;
             }
         }
 
         if (!isJump) {
-            if (this.onGround) {
-                this.motionY = 0;
-            } else if (this.motionY > -this.getGravity() * 4
-                       && !(this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid)) {
-                this.motionY -= this.getGravity() * 1;
+            if (onGround) {
+                motionY = 0;
+            } else if (motionY > -getGravity() * 4
+                       && !(level.getBlock(new Vector3(NukkitMath.floorDouble(x), (int) (y + 0.8), NukkitMath.floorDouble(z))) instanceof BlockLiquid)) {
+                motionY -= getGravity() * 1;
             } else {
-                this.motionY -= this.getGravity() * tickDiff;
+                motionY -= getGravity() * tickDiff;
             }
         }
-        this.updateMovement();
+        updateMovement();
         return true;
     }
 
     @Override
     protected boolean checkJump(double dx, double dz) {
-        if (this.motionY == this.getGravity() * 2) {
-            return this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z))) instanceof BlockLiquid;
+        if (motionY == getGravity() * 2) {
+            return level.getBlock(new Vector3(NukkitMath.floorDouble(x), (int) y, NukkitMath.floorDouble(z))) instanceof BlockLiquid;
         } else {
-            if (this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid) {
-                this.motionY = this.getGravity() * 2;
+            if (level.getBlock(new Vector3(NukkitMath.floorDouble(x), (int) (y + 0.8), NukkitMath.floorDouble(z))) instanceof BlockLiquid) {
+                motionY = getGravity() * 2;
                 return true;
             }
         }
 
-        Block block = this.getLevel().getBlock(new Vector3(NukkitMath.floorDouble(this.x + dx), (int) this.y, NukkitMath.floorDouble(this.z + dz)));
-        Block directionBlock = block.getSide(this.getDirection());
+        Block block = getLevel().getBlock(new Vector3(NukkitMath.floorDouble(x + dx), (int) y, NukkitMath.floorDouble(z + dz)));
+        Block directionBlock = block.getSide(getDirection());
         if (!directionBlock.canPassThrough()) {
-            this.motionY = this.getGravity() * 3;
+            motionY = getGravity() * 3;
             return true;
         }
         return false;
@@ -198,11 +198,11 @@ public class Spider extends WalkingMonster {
     @Override
     public void attackEntity(Entity player) {
         int time = player.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isFriendly() || !(player instanceof Player)) {
+        if (!isFriendly() || !(player instanceof Player)) {
             if ((time > 13184 && time < 22800) || angry) {
-            this.attackDelay = 0;
+            attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -249,7 +249,7 @@ public class Spider extends WalkingMonster {
         super.attack(ev);
 
         if (!ev.isCancelled()) {
-            this.angry = true;
+            angry = true;
         }
         return true;
     }
@@ -257,7 +257,7 @@ public class Spider extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int strings = Utils.rand(0, 3); // drops 0-2 strings
             int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0; // with a 1/3 chance it drops a spider eye
             for (int i = 0; i < strings; i++) {

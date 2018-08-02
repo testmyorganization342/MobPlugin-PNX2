@@ -27,12 +27,12 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
     @Override
     public void setFollowTarget(Entity target) {
-        this.setTarget(target, true);
+        setTarget(target, true);
     }
 
     public void setTarget(Entity target, boolean attack) {
         super.setFollowTarget(target);
-        this.canAttack = attack;
+        canAttack = attack;
     }
 
     public float getDamage() {
@@ -40,7 +40,7 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
     }
 
     public float getDamage(Integer difficulty) {
-        return Utils.rand(this.getMinDamage(difficulty), this.getMaxDamage(difficulty));
+        return Utils.rand(getMinDamage(difficulty), getMaxDamage(difficulty));
     }
 
     public float getMinDamage() {
@@ -51,7 +51,7 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
         if (difficulty == null || difficulty > 3 || difficulty < 0) {
             difficulty = Server.getInstance().getDifficulty();
         }
-        return this.minDamage[difficulty];
+        return minDamage[difficulty];
     }
 
     public float getMaxDamage() {
@@ -62,17 +62,17 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
         if (difficulty == null || difficulty > 3 || difficulty < 0) {
             difficulty = Server.getInstance().getDifficulty();
         }
-        return this.maxDamage[difficulty];
+        return maxDamage[difficulty];
     }
 
     public void setDamage(float damage) {
-        this.setDamage(damage, Server.getInstance().getDifficulty());
+        setDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public void setDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
-            this.minDamage[difficulty] = damage;
-            this.maxDamage[difficulty] = damage;
+            minDamage[difficulty] = damage;
+            maxDamage[difficulty] = damage;
         }
     }
 
@@ -89,8 +89,8 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
         }
 
         for (int i = 0; i < 4; i++) {
-            this.minDamage[i] = damage[i];
-            this.maxDamage[i] = damage[i];
+            minDamage[i] = damage[i];
+            maxDamage[i] = damage[i];
         }
     }
 
@@ -100,17 +100,17 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
         }
 
         for (int i = 0; i < 4; i++) {
-            this.setDamage(Math.min(damage[i], this.getMaxDamage(i)), i);
+            setDamage(Math.min(damage[i], getMaxDamage(i)), i);
         }
     }
 
     public void setMinDamage(float damage) {
-        this.setDamage(damage, Server.getInstance().getDifficulty());
+        setDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public void setMinDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
-            this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
+            minDamage[difficulty] = Math.min(damage, getMaxDamage(difficulty));
         }
     }
 
@@ -120,7 +120,7 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
         }
 
         for (int i = 0; i < 4; i++) {
-            this.setMaxDamage(Math.max(damage[i], this.getMinDamage(i)), i);
+            setMaxDamage(Math.max(damage[i], getMinDamage(i)), i);
         }
     }
 
@@ -130,36 +130,36 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
     public void setMaxDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
-            this.maxDamage[difficulty] = Math.max(damage, this.getMinDamage(difficulty));
+            maxDamage[difficulty] = Math.max(damage, getMinDamage(difficulty));
         }
     }
 
     @Override
     public boolean onUpdate(int currentTick) {
-        if (this.server.getDifficulty() < 1) {
-            this.close();
+        if (server.getDifficulty() < 1) {
+            close();
             return false;
         }
 
-        if (!this.isAlive()) {
-            if (++this.deadTicks >= 23) {
-                this.close();
+        if (!isAlive()) {
+            if (++deadTicks >= 23) {
+                close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - this.lastUpdate;
-        this.lastUpdate = currentTick;
-        this.entityBaseTick(tickDiff);
+        int tickDiff = currentTick - lastUpdate;
+        lastUpdate = currentTick;
+        entityBaseTick(tickDiff);
 
-        Vector3 target = this.updateMove(tickDiff);
+        Vector3 target = updateMove(tickDiff);
         if (target instanceof Entity) {
-            if (target != this.followTarget || this.canAttack) {
-                this.attackEntity((Entity) target);
+            if (target != followTarget || canAttack) {
+                attackEntity((Entity) target);
             }
-        } else if (target != null && (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2)) <= 1) {
-            this.moveTime = 0;
+        } else if (target != null && (Math.pow(x - target.x, 2) + Math.pow(z - target.z, 2)) <= 1) {
+            moveTime = 0;
         }
         return true;
     }
@@ -170,21 +170,20 @@ public abstract class FlyingMonster extends FlyingEntity implements Monster {
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        this.attackDelay += tickDiff;
-        if (!this.hasEffect(Effect.WATER_BREATHING) && this.isInsideOfWater()) {
+        attackDelay += tickDiff;
+        if (!hasEffect(Effect.WATER_BREATHING) && isInsideOfWater()) {
             hasUpdate = true;
-            int airTicks = this.getDataPropertyInt(DATA_AIR) - tickDiff;
+            int airTicks = getDataPropertyInt(DATA_AIR) - tickDiff;
             if (airTicks <= -20) {
                 airTicks = 0;
-                this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
+                attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
             }
-            this.setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
+            setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
         } else {
-            this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
+            setDataProperty(new ShortEntityData(DATA_AIR, 300));
         }
 
         // Timings.timerEntityBaseTick.stopTiming();
         return hasUpdate;
     }
-
 }

@@ -37,7 +37,7 @@ public class Sheep extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (this.isBaby()) {
+        if (isBaby()) {
             return 0.45f;
         }
         return 0.9f;
@@ -61,48 +61,48 @@ public class Sheep extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     public void initEntity() {
-        this.setMaxHealth(8);
+        setMaxHealth(8);
 
-        if (!this.namedTag.contains("Color")) {
-            this.setColor(randomColor());
+        if (!namedTag.contains("Color")) {
+            setColor(randomColor());
         } else {
-            this.setColor(this.namedTag.getByte("Color"));
+            setColor(namedTag.getByte("Color"));
         }
 
-        if (!this.namedTag.contains("Sheared")) {
-            this.namedTag.putByte("Sheared", 0);
+        if (!namedTag.contains("Sheared")) {
+            namedTag.putByte("Sheared", 0);
         } else {
-            this.sheared = this.namedTag.getBoolean("Sheared");
+            sheared = namedTag.getBoolean("Sheared");
         }
 
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, this.sheared);
+        setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, sheared);
     }
 
     public void saveNBT() {
         super.saveNBT();
-        this.namedTag.putByte("Color", this.color);
-        this.namedTag.putBoolean("Sheared", this.sheared);
+        namedTag.putByte("Color", color);
+        namedTag.putBoolean("Sheared", sheared);
     }
 
     @Override
     public boolean onInteract(Player player, Item item) {
         if (item.getId() == Item.DYE) {
-            this.setColor(((ItemDye) item).getDyeColor().getWoolData());;
+            setColor(((ItemDye) item).getDyeColor().getWoolData());;
             return true;
-        }else if(item.equals(Item.get(Item.WHEAT,0,1)) && !this.isBaby()){
+        }else if(item.equals(Item.get(Item.WHEAT,0,1)) && !isBaby()){
             player.getInventory().removeItem(Item.get(Item.WHEAT,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.WHEAT)));
-            this.setInLove();
+            level.addSound(this,Sound.RANDOM_EAT);
+            level.addParticle(new ItemBreakParticle(add(0,getMountedYOffset(),0),Item.get(Item.WHEAT)));
+            setInLove();
             return true;
-        }else if(item.equals(Item.get(Item.SHEARS,0,1),false) && !isBaby() && !this.sheared){
-            this.shear();
-            this.level.addSound(this,Sound.MOB_SHEEP_SHEAR);
+        }else if(item.equals(Item.get(Item.SHEARS,0,1),false) && !isBaby() && !sheared){
+            shear();
+            level.addSound(this,Sound.MOB_SHEEP_SHEAR);
             player.getInventory().getItemInHand().setDamage(item.getDamage() + 1);
             return true;
         }
@@ -111,9 +111,9 @@ public class Sheep extends WalkingAnimal {
     }
 
     public void shear() {
-        this.sheared = true;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, true);
-        this.level.dropItem(this, Item.get(Item.WOOL, getColor(), Utils.rand(0,4)));
+        sheared = true;
+        setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, true);
+        level.dropItem(this, Item.get(Item.WOOL, getColor(), Utils.rand(0,4)));
     }
 
     @Override
@@ -128,11 +128,11 @@ public class Sheep extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            drops.add(Item.get(Item.WOOL, this.namedTag.getByte("Color"), 1)); // each time drops 1 wool
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+            drops.add(Item.get(Item.WOOL, namedTag.getByte("Color"), 1)); // each time drops 1 wool
             int muttonDrop = Utils.rand(1, 3); // drops 1-2 muttons / cooked muttons
             for (int i = 0; i < muttonDrop; i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
+                drops.add(Item.get(isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);
@@ -140,9 +140,9 @@ public class Sheep extends WalkingAnimal {
 
 
     public void setColor(int color) {
-        this.color = color;
-        this.namedTag.putByte("Color",color);
-        this.setDataProperty(new ByteEntityData(DATA_COLOUR, color));
+        color = color;
+        namedTag.putByte("Color",color);
+        setDataProperty(new ByteEntityData(DATA_COLOUR, color));
     }
 
     public int getColor() {

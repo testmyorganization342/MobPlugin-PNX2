@@ -38,7 +38,7 @@ public class CreeperSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }
 
         return result;
@@ -65,7 +65,7 @@ public class CreeperSpawner extends AbstractEntitySpawner {
      */
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
 }

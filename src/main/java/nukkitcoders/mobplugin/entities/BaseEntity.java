@@ -56,7 +56,6 @@ public abstract class BaseEntity extends EntityCreature {
     
     private int despawnTicks;
 
-    ///Jump
     private int maxJumpHeight = 1; // default: 1 block jump height - this should be 2 for horses e.g.
     protected boolean isJumping;
     public float jumpMovementFactor = 0.02F;
@@ -64,8 +63,8 @@ public abstract class BaseEntity extends EntityCreature {
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         
-        this.despawnEntities = MobPlugin.getInstance().getConfig().getBoolean("entities.despawn-entities", true);
-        this.despawnTicks = MobPlugin.getInstance().getConfig().getInt("entities.despawn-ticks", 12000);
+        despawnEntities = MobPlugin.getInstance().getConfig().getBoolean("entities.despawn-entities", true);
+        despawnTicks = MobPlugin.getInstance().getConfig().getInt("entities.despawn-ticks", 12000);
     }
 
     public abstract Vector3 updateMove(int tickDiff);
@@ -73,31 +72,31 @@ public abstract class BaseEntity extends EntityCreature {
     public abstract int getKillExperience();
 
     public boolean isFriendly() {
-        return this.friendly;
+        return friendly;
     }
 
     public boolean isMovement() {
-        return this.movement;
+        return movement;
     }
 
     public boolean isKnockback() {
-        return this.attackTime > 0;
+        return attackTime > 0;
     }
 
     public boolean isWallCheck() {
-        return this.wallcheck;
+        return wallcheck;
     }
 
     public void setFriendly(boolean bool) {
-        this.friendly = bool;
+        friendly = bool;
     }
 
     public void setMovement(boolean value) {
-        this.movement = value;
+        movement = value;
     }
 
     public void setWallCheck(boolean value) {
-        this.wallcheck = value;
+        wallcheck = value;
     }
 
     public double getSpeed() {
@@ -105,97 +104,95 @@ public abstract class BaseEntity extends EntityCreature {
     }
 
     public int getMaxJumpHeight() {
-        return this.maxJumpHeight;
+        return maxJumpHeight;
     }
 
     public int getAge() {
-        return this.age;
+        return age;
     }
 
     public Vector3 getTarget(){
-        return this.target;
+        return target;
     }
 
     public void setTarget(Vector3 vec){
-        this.target = vec;
+        target = vec;
     }
 
     public Entity getFollowTarget() {
-        return this.followTarget != null ? this.followTarget : (this.target instanceof Entity ? (Entity) this.target : null);
+        return followTarget != null ? followTarget : (target instanceof Entity ? (Entity) target : null);
     }
 
     public void setFollowTarget(Entity target) {
-        this.followTarget = target;
+        followTarget = target;
 
-        this.moveTime = 0;
-        this.stayTime = 0;
-        this.target = null;
+        moveTime = 0;
+        stayTime = 0;
+        target = null;
     }
 
     @Override
     protected void initEntity() {
         super.initEntity();
 
-        if (this.namedTag.contains("Movement")) {
-            this.setMovement(this.namedTag.getBoolean("Movement"));
+        if (namedTag.contains("Movement")) {
+            setMovement(namedTag.getBoolean("Movement"));
         }
 
-        if (this.namedTag.contains("WallCheck")) {
-            this.setWallCheck(this.namedTag.getBoolean("WallCheck"));
+        if (namedTag.contains("WallCheck")) {
+            setWallCheck(namedTag.getBoolean("WallCheck"));
         }
 
-        if (this.namedTag.contains("Age")) {
-            this.age = this.namedTag.getShort("Age");
+        if (namedTag.contains("Age")) {
+            age = namedTag.getShort("Age");
         }
 
-        //this.setDataProperty(new ByteEntityData(DATA_FLAG_NO_AI, (byte) 1));
+        //setDataProperty(new ByteEntityData(DATA_FLAG_NO_AI, (byte) 1));
     }
 
     @Override
     public String getName(){
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
     public void saveNBT() {
         super.saveNBT();
-        this.namedTag.putBoolean("Movement", this.isMovement());
-        this.namedTag.putBoolean("WallCheck", this.isWallCheck());
-        this.namedTag.putShort("Age", this.age);
+        namedTag.putBoolean("Movement", isMovement());
+        namedTag.putBoolean("WallCheck", isWallCheck());
+        namedTag.putShort("Age", age);
     }
 
     @Override
     public void spawnTo(Player player) {
-        if (!this.hasSpawned.containsKey(player.getLoaderId()) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
+        if (!hasSpawned.containsKey(player.getLoaderId()) && player.usedChunks.containsKey(Level.chunkHash(chunk.getX(), chunk.getZ()))) {
             AddEntityPacket pk = new AddEntityPacket();
-            pk.entityRuntimeId = this.getId();
-            pk.entityUniqueId = this.getId();
-            pk.type = this.getNetworkId();
-            pk.x = (float) this.x;
-            pk.y = (float) this.y;
-            pk.z = (float) this.z;
+            pk.entityRuntimeId = getId();
+            pk.entityUniqueId = getId();
+            pk.type = getNetworkId();
+            pk.x = (float) x;
+            pk.y = (float) y;
+            pk.z = (float) z;
             pk.speedX = pk.speedY = pk.speedZ = 0;
-            pk.yaw = (float) this.yaw;
-            pk.pitch = (float) this.pitch;
-            pk.metadata = this.dataProperties;
+            pk.yaw = (float) yaw;
+            pk.pitch = (float) pitch;
+            pk.metadata = dataProperties;
 
             player.dataPacket(pk);
 
-            this.hasSpawned.put(player.getLoaderId(), player);
+            hasSpawned.put(player.getLoaderId(), player);
         }
     }
 
     @Override
     protected void updateMovement() {
-        if (MobPlugin.MOB_AI_ENABLED) {
-            if (this.lastX != this.x || this.lastY != this.y || this.lastZ != this.z || this.lastYaw != this.yaw || this.lastPitch != this.pitch) {
-                this.lastX = this.x;
-                this.lastY = this.y;
-                this.lastZ = this.z;
-                this.lastYaw = this.yaw;
-                this.lastPitch = this.pitch;
+        if (lastX != x || lastY != y || lastZ != z || lastYaw != yaw || lastPitch != pitch) {
+            lastX = x;
+            lastY = y;
+            lastZ = z;
+            lastYaw = yaw;
+            lastPitch = pitch;
 
-                this.addMovement(this.x, this.y, this.z, this.yaw, this.pitch, this.yaw);
-            }
+            addMovement(x, y, z, yaw, pitch, yaw);
         }
     }
 
@@ -212,33 +209,33 @@ public abstract class BaseEntity extends EntityCreature {
 
     /*@Override
     public List<Block> getBlocksAround() {
-        if (this.blocksAround == null) {
-            int minX = NukkitMath.floorDouble(this.boundingBox.getMinX());
-            int minY = NukkitMath.floorDouble(this.boundingBox.getMinY());
-            int minZ = NukkitMath.floorDouble(this.boundingBox.getMinZ());
-            int maxX = NukkitMath.ceilDouble(this.boundingBox.getMaxX());
-            int maxY = NukkitMath.ceilDouble(this.boundingBox.getMaxY());
-            int maxZ = NukkitMath.ceilDouble(this.boundingBox.getMaxZ());
+        if (blocksAround == null) {
+            int minX = NukkitMath.floorDouble(boundingBox.getMinX());
+            int minY = NukkitMath.floorDouble(boundingBox.getMinY());
+            int minZ = NukkitMath.floorDouble(boundingBox.getMinZ());
+            int maxX = NukkitMath.ceilDouble(boundingBox.getMaxX());
+            int maxY = NukkitMath.ceilDouble(boundingBox.getMaxY());
+            int maxZ = NukkitMath.ceilDouble(boundingBox.getMaxZ());
 
-            this.blocksAround = new ArrayList<>();
+            blocksAround = new ArrayList<>();
 
             for (int z = minZ; z <= maxZ; ++z) {
                 for (int x = minX; x <= maxX; ++x) {
                     for (int y = minY; y <= maxY; ++y) {
-                        Block block = this.level.getBlock(this.temporalVector.setComponents(x, y, z));
-                        this.blocksAround.add(block);
+                        Block block = level.getBlock(temporalVector.setComponents(x, y, z));
+                        blocksAround.add(block);
                     }
                 }
             }
         }
 
-        return this.blocksAround;
+        return blocksAround;
     }*/
 
     @Override
     protected void checkBlockCollision() {
         Vector3 vector = new Vector3(0.0D, 0.0D, 0.0D);
-        Iterator<Block> d = this.getBlocksAround().iterator();
+        Iterator<Block> d = getBlocksAround().iterator();
 
         inWater = false;
         inLava = false;
@@ -264,9 +261,9 @@ public abstract class BaseEntity extends EntityCreature {
         if (vector.lengthSquared() > 0.0D) {
             vector = vector.normalize();
             double d1 = 0.014D;
-            this.motionX += vector.x * d1;
-            this.motionY += vector.y * d1;
-            this.motionZ += vector.z * d1;
+            motionX += vector.x * d1;
+            motionY += vector.y * d1;
+            motionZ += vector.z * d1;
         }
     }
 
@@ -275,78 +272,78 @@ public abstract class BaseEntity extends EntityCreature {
 
         Timings.entityMoveTimer.startTiming();
 
-        if (this.despawnEntities && this.age > this.despawnTicks) {
-            this.close();
+        if (despawnEntities && age > despawnTicks) {
+            close();
             return true;
         }
 
         boolean hasUpdate = false;
 
-        this.blocksAround = null;
-        this.justCreated = false;
+        blocksAround = null;
+        justCreated = false;
 
-        if (!this.effects.isEmpty()) {
-            for (Effect effect : this.effects.values()) {
+        if (!effects.isEmpty()) {
+            for (Effect effect : effects.values()) {
                 if (effect.canTick()) {
                     effect.applyEffect(this);
                 }
                 effect.setDuration(effect.getDuration() - tickDiff);
 
                 if (effect.getDuration() <= 0) {
-                    this.removeEffect(effect.getId());
+                    removeEffect(effect.getId());
                 }
             }
         }
 
-        this.checkBlockCollision();
+        checkBlockCollision();
 
-        if (this.isInsideOfSolid()) {
+        if (isInsideOfSolid()) {
             hasUpdate = true;
-            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.SUFFOCATION, 1));
+            attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.SUFFOCATION, 1));
         }
 
-        if (this.y <= -16 && this.isAlive()) {
+        if (y <= -16 && isAlive()) {
             hasUpdate = true;
-            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.VOID, 10));
+            attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.VOID, 10));
         }
 
 
-        if (this.fireTicks > 0) {
-            if (this.fireProof) {
-                this.fireTicks -= 4 * tickDiff;
+        if (fireTicks > 0) {
+            if (fireProof) {
+                fireTicks -= 4 * tickDiff;
             } else {
-                if (!this.hasEffect(Effect.FIRE_RESISTANCE) && (this.fireTicks % 20) == 0 || tickDiff > 20) {
+                if (!hasEffect(Effect.FIRE_RESISTANCE) && (fireTicks % 20) == 0 || tickDiff > 20) {
                     EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.DamageCause.FIRE_TICK, 1);
-                    this.attack(ev);
+                    attack(ev);
                 }
-                this.fireTicks -= tickDiff;
+                fireTicks -= tickDiff;
             }
 
-            if (this.fireTicks <= 0) {
-                this.extinguish();
+            if (fireTicks <= 0) {
+                extinguish();
             } else {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_ONFIRE, true);
+                setDataFlag(DATA_FLAGS, DATA_FLAG_ONFIRE, true);
                 hasUpdate = true;
             }
         }
 
-        if (this.moveTime > 0) {
-            this.moveTime -= tickDiff;
+        if (moveTime > 0) {
+            moveTime -= tickDiff;
         }
 
-        if (this.attackTime > 0) {
-            this.attackTime -= tickDiff;
+        if (attackTime > 0) {
+            attackTime -= tickDiff;
         }
 
-        if (this.noDamageTicks > 0) {
-            this.noDamageTicks -= tickDiff;
-            if (this.noDamageTicks < 0) {
-                this.noDamageTicks = 0;
+        if (noDamageTicks > 0) {
+            noDamageTicks -= tickDiff;
+            if (noDamageTicks < 0) {
+                noDamageTicks = 0;
             }
         }
 
-        this.age += tickDiff;
-        this.ticksLived += tickDiff;
+        age += tickDiff;
+        ticksLived += tickDiff;
 
         Timings.entityMoveTimer.stopTiming();
 
@@ -355,21 +352,21 @@ public abstract class BaseEntity extends EntityCreature {
 
     @Override
     public boolean isInsideOfSolid() {
-        Block block = this.level.getBlock(this.temporalVector.setComponents(NukkitMath.floorDouble(this.x), NukkitMath.floorDouble(this.y + this.getHeight() - 0.18f), NukkitMath.floorDouble(this.z)));
+        Block block = level.getBlock(temporalVector.setComponents(NukkitMath.floorDouble(x), NukkitMath.floorDouble(y + getHeight() - 0.18f), NukkitMath.floorDouble(z)));
         AxisAlignedBB bb = block.getBoundingBox();
-        return bb != null && block.isSolid() && !block.isTransparent() && bb.intersectsWith(this.getBoundingBox());
+        return bb != null && block.isSolid() && !block.isTransparent() && bb.intersectsWith(getBoundingBox());
     }
 
     @Override
     public boolean attack(EntityDamageEvent source) {
-        if (this.isKnockback() && source instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
+        if (isKnockback() && source instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
             return false;
         }
 
         super.attack(source);
 
-        this.target = null;
-        //this.attackTime = 7;
+        target = null;
+        //attackTime = 7;
         return true;
     }
 
@@ -378,11 +375,11 @@ public abstract class BaseEntity extends EntityCreature {
     }
 
     public int getMaxFallHeight() {
-        if (!(this.target instanceof Entity)) {
+        if (!(target instanceof Entity)) {
             return 3;
         } else {
-            int i = (int) (this.getHealth() - this.getMaxHealth() * 0.33F);
-            i = i - (3 - this.getServer().getDifficulty()) * 4;
+            int i = (int) (getHealth() - getMaxHealth() * 0.33F);
+            i = i - (3 - getServer().getDifficulty()) * 4;
 
             if (i < 0) {
                 i = 0;
@@ -394,58 +391,54 @@ public abstract class BaseEntity extends EntityCreature {
 
     @Override
     public boolean setMotion(Vector3 motion) {
-        if (MobPlugin.MOB_AI_ENABLED) {
-            if (!this.justCreated) {
-                EntityMotionEvent ev = new EntityMotionEvent(this, motion);
-                this.server.getPluginManager().callEvent(ev);
-                if (ev.isCancelled()) {
-                    return false;
-                }
+        if (!justCreated) {
+            EntityMotionEvent ev = new EntityMotionEvent(this, motion);
+            server.getPluginManager().callEvent(ev);
+            if (ev.isCancelled()) {
+                return false;
             }
-
-            this.motionX = motion.x;
-            this.motionY = motion.y;
-            this.motionZ = motion.z;
         }
+
+        motionX = motion.x;
+        motionY = motion.y;
+        motionZ = motion.z;
+
         return true;
     }
 
     @Override
     public boolean move(double dx, double dy, double dz) {
-        if (MobPlugin.MOB_AI_ENABLED) {
+        Timings.entityMoveTimer.startTiming();
 
-            Timings.entityMoveTimer.startTiming();
+        double movX = dx * moveMultifier;
+        double movY = dy;
+        double movZ = dz * moveMultifier;
 
-            double movX = dx * moveMultifier;
-            double movY = dy;
-            double movZ = dz * moveMultifier;
-
-            AxisAlignedBB[] list = this.level.getCollisionCubes(this, this.level.getTickRate() > 1 ? this.boundingBox.getOffsetBoundingBox(dx, dy, dz) : this.boundingBox.addCoord(dx, dy, dz));
-            if (this.isWallCheck()) {
-                for (AxisAlignedBB bb : list) {
-                    dx = bb.calculateXOffset(this.boundingBox, dx);
-                }
-                this.boundingBox.offset(dx, 0, 0);
-
-                for (AxisAlignedBB bb : list) {
-                    dz = bb.calculateZOffset(this.boundingBox, dz);
-                }
-                this.boundingBox.offset(0, 0, dz);
-            }
+        AxisAlignedBB[] list = level.getCollisionCubes(this, level.getTickRate() > 1 ? boundingBox.getOffsetBoundingBox(dx, dy, dz) : boundingBox.addCoord(dx, dy, dz));
+        if (isWallCheck()) {
             for (AxisAlignedBB bb : list) {
-                dy = bb.calculateYOffset(this.boundingBox, dy);
+                dx = bb.calculateXOffset(boundingBox, dx);
             }
-            this.boundingBox.offset(0, dy, 0);
+            boundingBox.offset(dx, 0, 0);
 
-            this.setComponents(this.x + dx, this.y + dy, this.z + dz);
-            this.checkChunks();
-
-            this.checkGroundState(movX, movY, movZ, dx, dy, dz);
-            this.updateFallState(this.onGround);
-
-            Timings.entityMoveTimer.stopTiming();
+            for (AxisAlignedBB bb : list) {
+                dz = bb.calculateZOffset(boundingBox, dz);
+            }
+            boundingBox.offset(0, 0, dz);
         }
+        for (AxisAlignedBB bb : list) {
+            dy = bb.calculateYOffset(boundingBox, dy);
+        }
+        boundingBox.offset(0, dy, 0);
+
+        setComponents(x + dx, y + dy, z + dz);
+        checkChunks();
+
+        checkGroundState(movX, movY, movZ, dx, dy, dz);
+        updateFallState(onGround);
+
+        Timings.entityMoveTimer.stopTiming();
+
         return true;
     }
-
 }

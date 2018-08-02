@@ -39,7 +39,7 @@ public class RabbitSpawner extends AbstractEntitySpawner {
 //        } else if (blockLightLevel < 9) { // uncommented because lightlevel doesn't work now
 //            result = SpawnResult.WRONG_LIGHTLEVEL;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.75, 0));
+            spawnTask.createEntity(getEntityName(), pos.add(0, 1.75, 0));
         }
 
         return result;
@@ -66,7 +66,7 @@ public class RabbitSpawner extends AbstractEntitySpawner {
      */
     @Override
     protected String getLogprefix() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
 }

@@ -24,17 +24,17 @@ import java.util.Map;
 
 public class AutoSpawnTask implements Runnable {
 
-    private Map<Integer, Integer> maxSpawns      = new HashMap<>();
+    private Map<Integer, Integer> maxSpawns = new HashMap<>();
 
-    private List<IEntitySpawner>  entitySpawners = new ArrayList<>();
+    private List<IEntitySpawner> entitySpawners = new ArrayList<>();
 
-    private Config                pluginConfig   = null;
+    private Config pluginConfig = null;
 
-    private MobPlugin             plugin         = null;
+    private MobPlugin plugin = null;
 
     public AutoSpawnTask(MobPlugin plugin) {
-        this.pluginConfig = plugin.getConfig();
-        this.plugin = plugin;
+        pluginConfig = plugin.getConfig();
+        plugin = plugin;
 
         prepareMaxSpawns();
         try {
@@ -63,48 +63,48 @@ public class AutoSpawnTask implements Runnable {
     }
 
     private void prepareSpawnerClasses() {
-        entitySpawners.add(new BatSpawner(this, this.pluginConfig));
-        entitySpawners.add(new BlazeSpawner(this, this.pluginConfig));
-        entitySpawners.add(new ChickenSpawner(this, this.pluginConfig));
-        entitySpawners.add(new CowSpawner(this, this.pluginConfig));
-        entitySpawners.add(new CreeperSpawner(this, this.pluginConfig));
-        entitySpawners.add(new EndermanSpawner(this, this.pluginConfig));
-        entitySpawners.add(new GhastSpawner(this, this.pluginConfig));
-        entitySpawners.add(new HorseSpawner(this, this.pluginConfig));
-        entitySpawners.add(new HuskSpawner(this, this.pluginConfig));
-        entitySpawners.add(new MooshroomSpawner(this, this.pluginConfig));
-        entitySpawners.add(new OcelotSpawner(this, this.pluginConfig));
-        entitySpawners.add(new PigSpawner(this, this.pluginConfig));
-        entitySpawners.add(new PolarBearSpawner(this, this.pluginConfig));
-        entitySpawners.add(new RabbitSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SheepSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SkeletonSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SpiderSpawner(this, this.pluginConfig));
-        entitySpawners.add(new StraySpawner(this, this.pluginConfig));
-        entitySpawners.add(new WolfSpawner(this, this.pluginConfig));
-        entitySpawners.add(new ZombieSpawner(this, this.pluginConfig));
+        entitySpawners.add(new BatSpawner(this, pluginConfig));
+        entitySpawners.add(new BlazeSpawner(this, pluginConfig));
+        entitySpawners.add(new ChickenSpawner(this, pluginConfig));
+        entitySpawners.add(new CowSpawner(this, pluginConfig));
+        entitySpawners.add(new CreeperSpawner(this, pluginConfig));
+        entitySpawners.add(new EndermanSpawner(this, pluginConfig));
+        entitySpawners.add(new GhastSpawner(this, pluginConfig));
+        entitySpawners.add(new HorseSpawner(this, pluginConfig));
+        entitySpawners.add(new HuskSpawner(this, pluginConfig));
+        entitySpawners.add(new MooshroomSpawner(this, pluginConfig));
+        entitySpawners.add(new OcelotSpawner(this, pluginConfig));
+        entitySpawners.add(new PigSpawner(this, pluginConfig));
+        entitySpawners.add(new PolarBearSpawner(this, pluginConfig));
+        entitySpawners.add(new RabbitSpawner(this, pluginConfig));
+        entitySpawners.add(new SheepSpawner(this, pluginConfig));
+        entitySpawners.add(new SkeletonSpawner(this, pluginConfig));
+        entitySpawners.add(new SpiderSpawner(this, pluginConfig));
+        entitySpawners.add(new StraySpawner(this, pluginConfig));
+        entitySpawners.add(new WolfSpawner(this, pluginConfig));
+        entitySpawners.add(new ZombieSpawner(this, pluginConfig));
     }
 
     private void prepareMaxSpawns() {
-        maxSpawns.put(Bat.NETWORK_ID, this.pluginConfig.getInt("max-spawns.bat", 0));
-        maxSpawns.put(Blaze.NETWORK_ID, this.pluginConfig.getInt("max-spawns.blaze", 0));
-        maxSpawns.put(Chicken.NETWORK_ID, this.pluginConfig.getInt("max-spawns.chicken", 0));
-        maxSpawns.put(Cow.NETWORK_ID, this.pluginConfig.getInt("max-spawns.cow", 0));
-        maxSpawns.put(Creeper.NETWORK_ID, this.pluginConfig.getInt("max-spawns.creeper", 0));
-        maxSpawns.put(Enderman.NETWORK_ID, this.pluginConfig.getInt("max-spawns.enderman", 0));
-        maxSpawns.put(Ghast.NETWORK_ID, this.pluginConfig.getInt("max-spawns.ghast", 0));
-        maxSpawns.put(Horse.NETWORK_ID, this.pluginConfig.getInt("max-spawns.horse", 0));
-        maxSpawns.put(Mooshroom.NETWORK_ID, this.pluginConfig.getInt("max-spawns.mooshroom", 0));
-        maxSpawns.put(Ocelot.NETWORK_ID, this.pluginConfig.getInt("max-spawns.ocelot", 0));
-        maxSpawns.put(Pig.NETWORK_ID, this.pluginConfig.getInt("max-spawns.pig", 0));
-        maxSpawns.put(PolarBear.NETWORK_ID, this.pluginConfig.getInt("max-spawns.polarbear", 0));
-        maxSpawns.put(Rabbit.NETWORK_ID, this.pluginConfig.getInt("max-spawns.rabbit", 0));
-        maxSpawns.put(Sheep.NETWORK_ID, this.pluginConfig.getInt("max-spawns.sheep", 0));
-        maxSpawns.put(Skeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.skeleton", 0));
-        maxSpawns.put(Spider.NETWORK_ID, this.pluginConfig.getInt("max-spawns.spider", 0));
-        maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getInt("max-spawns.stray", 0));
-        maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getInt("max-spawns.wolf", 0));
-        maxSpawns.put(Zombie.NETWORK_ID, this.pluginConfig.getInt("max-spawns.zombie", 0));
+        maxSpawns.put(Bat.NETWORK_ID, pluginConfig.getInt("max-spawns.bat", 0));
+        maxSpawns.put(Blaze.NETWORK_ID, pluginConfig.getInt("max-spawns.blaze", 0));
+        maxSpawns.put(Chicken.NETWORK_ID, pluginConfig.getInt("max-spawns.chicken", 0));
+        maxSpawns.put(Cow.NETWORK_ID, pluginConfig.getInt("max-spawns.cow", 0));
+        maxSpawns.put(Creeper.NETWORK_ID, pluginConfig.getInt("max-spawns.creeper", 0));
+        maxSpawns.put(Enderman.NETWORK_ID, pluginConfig.getInt("max-spawns.enderman", 0));
+        maxSpawns.put(Ghast.NETWORK_ID, pluginConfig.getInt("max-spawns.ghast", 0));
+        maxSpawns.put(Horse.NETWORK_ID, pluginConfig.getInt("max-spawns.horse", 0));
+        maxSpawns.put(Mooshroom.NETWORK_ID, pluginConfig.getInt("max-spawns.mooshroom", 0));
+        maxSpawns.put(Ocelot.NETWORK_ID, pluginConfig.getInt("max-spawns.ocelot", 0));
+        maxSpawns.put(Pig.NETWORK_ID, pluginConfig.getInt("max-spawns.pig", 0));
+        maxSpawns.put(PolarBear.NETWORK_ID, pluginConfig.getInt("max-spawns.polarbear", 0));
+        maxSpawns.put(Rabbit.NETWORK_ID, pluginConfig.getInt("max-spawns.rabbit", 0));
+        maxSpawns.put(Sheep.NETWORK_ID, pluginConfig.getInt("max-spawns.sheep", 0));
+        maxSpawns.put(Skeleton.NETWORK_ID, pluginConfig.getInt("max-spawns.skeleton", 0));
+        maxSpawns.put(Spider.NETWORK_ID, pluginConfig.getInt("max-spawns.spider", 0));
+        maxSpawns.put(Stray.NETWORK_ID, pluginConfig.getInt("max-spawns.stray", 0));
+        maxSpawns.put(Wolf.NETWORK_ID, pluginConfig.getInt("max-spawns.wolf", 0));
+        maxSpawns.put(Zombie.NETWORK_ID, pluginConfig.getInt("max-spawns.zombie", 0));
 
     }
 
@@ -210,5 +210,4 @@ public class AutoSpawnTask implements Runnable {
         }
         return y;
     }
-
 }

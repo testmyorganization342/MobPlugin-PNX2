@@ -23,7 +23,7 @@ public class Husk extends WalkingMonster implements EntityAgeable {
 
     public Husk(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
+        route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Husk extends WalkingMonster implements EntityAgeable {
     @Override
     protected void initEntity() {
         super.initEntity();
-        this.setDamage(new float[]{0, 3, 4, 6});
+        setDamage(new float[]{0, 3, 4, 6});
         setMaxHealth(20);
     }
 
@@ -66,35 +66,35 @@ public class Husk extends WalkingMonster implements EntityAgeable {
     public void setHealth(int health) {
         super.setHealth(health);
 
-        if (this.isAlive()) {
-            if (15 < this.getHealth()) {
-                this.setDamage(new float[]{0, 2, 3, 4});
-            } else if (10 < this.getHealth()) {
-                this.setDamage(new float[]{0, 3, 4, 6});
-            } else if (5 < this.getHealth()) {
-                this.setDamage(new float[]{0, 3, 5, 7});
+        if (isAlive()) {
+            if (15 < getHealth()) {
+                setDamage(new float[]{0, 2, 3, 4});
+            } else if (10 < getHealth()) {
+                setDamage(new float[]{0, 3, 4, 6});
+            } else if (5 < getHealth()) {
+                setDamage(new float[]{0, 3, 5, 7});
             } else {
-                this.setDamage(new float[]{0, 4, 6, 9});
+                setDamage(new float[]{0, 4, 6, 9});
             }
         }
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
-            this.attackDelay = 0;
+        if (attackDelay > 10 && player.distanceSquared(this) <= 1) {
+            attackDelay = 0;
             player.attack(new EntityDamageByEntityEvent(this, player, DamageCause.ENTITY_ATTACK, getDamage()));
             EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = this.getId();
+            pk.eid = getId();
             pk.event = 4;
-            Server.broadcastPacket(this.getViewers().values(), pk);
+            Server.broadcastPacket(getViewers().values(), pk);
         }
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rottenFlesh = Utils.rand(0, 3);
             for (int i = 0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));

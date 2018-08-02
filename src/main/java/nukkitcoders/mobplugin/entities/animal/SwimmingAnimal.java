@@ -13,7 +13,7 @@ public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
 
     public SwimmingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = null;
+        route = null;
     }
 
     @Override
@@ -33,7 +33,7 @@ public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
+        setDataProperty(new ShortEntityData(DATA_AIR, 300));
 
         Timings.entityBaseTickTimer.stopTiming();
         return hasUpdate;
@@ -41,31 +41,31 @@ public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
 
     @Override
     public boolean onUpdate(int currentTick) {
-        if (this.closed) {
+        if (closed) {
             return false;
         }
-        if (!this.isAlive()) {
-            if (++this.deadTicks >= 23) {
-                this.close();
+        if (!isAlive()) {
+            if (++deadTicks >= 23) {
+                close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - this.lastUpdate;
-        this.lastUpdate = currentTick;
-        this.entityBaseTick(tickDiff);
+        int tickDiff = currentTick - lastUpdate;
+        lastUpdate = currentTick;
+        entityBaseTick(tickDiff);
 
-        Vector3 target = this.updateMove(tickDiff);
+        Vector3 target = updateMove(tickDiff);
         if (target instanceof Player) {
-            if (this.distanceSquared(target) <= 2) {
-                this.pitch = 22;
-                this.x = this.lastX;
-                this.y = this.lastY;
-                this.z = this.lastZ;
+            if (distanceSquared(target) <= 2) {
+                pitch = 22;
+                x = lastX;
+                y = lastY;
+                z = lastZ;
             }
-        } else if (target != null && (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2)) <= 1) {
-            this.moveTime = 0;
+        } else if (target != null && (Math.pow(x - target.x, 2) + Math.pow(z - target.z, 2)) <= 1) {
+            moveTime = 0;
         }
         return true;
     }
@@ -74,6 +74,4 @@ public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
     public boolean isBaby() {
         return false;
     }
-
-
 }

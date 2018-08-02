@@ -12,9 +12,8 @@ public class SimpleRouteFinder extends RouteFinder{
 
     @Override
     public boolean search() {
-        this.resetNodes();
-        this.addNode(new Node(this.destination));
+        resetNodes();
+        addNode(new Node(destination));
         return true;
     }
-
 }

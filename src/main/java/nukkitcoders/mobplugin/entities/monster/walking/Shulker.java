@@ -13,7 +13,7 @@ public class Shulker extends WalkingMonster {
 
     public Shulker(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        //this.route = new WalkerRouteFinder(this);
+        //route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Shulker extends WalkingMonster {
     protected void initEntity() {
         super.initEntity();
 
-        this.fireProof = true;
+        fireProof = true;
         setMaxHealth(15);
     }
 

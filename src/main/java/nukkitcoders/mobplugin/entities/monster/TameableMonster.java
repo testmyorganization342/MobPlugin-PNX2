@@ -23,19 +23,19 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 
     public TameableMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.server = Server.getInstance();
+        server = Server.getInstance();
     }
 
     @Override
     protected void initEntity() {
         super.initEntity();
 
-        if (this.namedTag != null) {
+        if (namedTag != null) {
             String ownerName = namedTag.getString(NAMED_TAG_OWNER);
             if (ownerName != null && ownerName.length() > 0) {
                 Player player = server.getPlayer(ownerName);
-                this.setOwner(player);
-                this.setSitting(namedTag.getBoolean(NAMED_TAG_SITTING));
+                setOwner(player);
+                setSitting(namedTag.getBoolean(NAMED_TAG_SITTING));
             }
         }
 
@@ -44,9 +44,9 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
     @Override
     public void saveNBT() {
         super.saveNBT();
-        namedTag.putBoolean(NAMED_TAG_SITTING, this.sitting);
-        if (this.owner != null) {
-            namedTag.putString(NAMED_TAG_OWNER, this.owner.getName());
+        namedTag.putBoolean(NAMED_TAG_SITTING, sitting);
+        if (owner != null) {
+            namedTag.putString(NAMED_TAG_OWNER, owner.getName());
             namedTag.putString(NAMED_TAG_OWNER_UUID, owner.getUniqueId().toString());
         } else {
             namedTag.putString(NAMED_TAG_OWNER, "");
@@ -68,7 +68,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
      * @param player the player that is the owner
      */
     public void setOwner(Player player) {
-        this.owner = player;
+        owner = player;
         setDataProperty(new LongEntityData(DATA_OWNER_EID, player.getId()));
         setTamed(true);
     }
@@ -83,13 +83,13 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
     }
 
     public void setSitting(boolean flag) {
-        this.sitting = flag;
+        sitting = flag;
         setSittingDataProperty(flag);
     }
 
 
     private void setTamed (boolean tamed) {
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_TAMED, tamed);
+        setDataFlag(DATA_FLAGS, DATA_FLAG_TAMED, tamed);
         // following code isn't working
 //        int var = getDataPropertyByte(DATA_TAMED_FLAG);
 //
@@ -101,7 +101,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
     }
 
     private void setSittingDataProperty(boolean sit) {
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SITTING, sit);
+        setDataFlag(DATA_FLAGS, DATA_FLAG_SITTING, sit);
         // following code isn't working
 //        int var = getDataPropertyByte(DATA_TAMED_FLAG);
 //
@@ -119,6 +119,6 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 
     @Override
     public void setOwnerUUID(String ownerUUID) {
-        this.ownerUUID = ownerUUID;
+        ownerUUID = ownerUUID;
     }
 }

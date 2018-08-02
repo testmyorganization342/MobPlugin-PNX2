@@ -36,7 +36,7 @@ public class Skeleton extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(20);
+        setMaxHealth(20);
     }
 
     @Override
@@ -55,15 +55,15 @@ public class Skeleton extends WalkingMonster {
     }
 
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 30 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 55) {
-            this.attackDelay = 0;
+        if (attackDelay > 30 && Utils.rand(1, 32) < 4 && distanceSquared(player) <= 55) {
+            attackDelay = 0;
 
             double f = 1.2;
-            double yaw = this.yaw + Utils.rand(-220, 220) / 10;
-            double pitch = this.pitch + Utils.rand(-120, 120) / 10;
-            Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
-                    this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
-            if(this.getLevel().getBlockIdAt((int)pos.getX(),(int)pos.getY(),(int)pos.getZ()) == Block.AIR) {
+            double yaw = yaw + Utils.rand(-220, 220) / 10;
+            double pitch = pitch + Utils.rand(-120, 120) / 10;
+            Location pos = new Location(x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, y + getHeight() - 0.18,
+                    z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, level);
+            if(getLevel().getBlockIdAt((int)pos.getX(),(int)pos.getY(),(int)pos.getZ()) == Block.AIR) {
                 Entity k = MobPlugin.create("Arrow", pos, this);
                 if (!(k instanceof EntityArrow)) {
                     return;
@@ -74,19 +74,19 @@ public class Skeleton extends WalkingMonster {
                         Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
 
                 EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), arrow, f);
-                this.server.getPluginManager().callEvent(ev);
+                server.getPluginManager().callEvent(ev);
 
                 EntityProjectile projectile = ev.getProjectile();
                 if (ev.isCancelled()) {
                     projectile.kill();
                 } else {
                     ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
-                    this.server.getPluginManager().callEvent(launch);
+                    server.getPluginManager().callEvent(launch);
                     if (launch.isCancelled()) {
                         projectile.kill();
                     } else {
                         projectile.spawnToAll();
-                        this.level.addSound(this, Sound.RANDOM_BOW);
+                        level.addSound(this, Sound.RANDOM_BOW);
                     }
                 }
             }
@@ -98,7 +98,7 @@ public class Skeleton extends WalkingMonster {
         super.spawnTo(player);
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.eid = this.getId();
+        pk.eid = getId();
         pk.item = new ItemBow();
         pk.hotbarSlot = 0;
         player.dataPacket(pk);
@@ -111,9 +111,9 @@ public class Skeleton extends WalkingMonster {
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {
-            this.setOnFire(100);
+        int time = getLevel().getTime() % Level.TIME_FULL;
+        if (!isOnFire() && !level.isRaining() && (time < 12567 || time > 23450)) {
+            setOnFire(100);
         }
 
         // Timings.timerEntityBaseTick.stopTiming();
@@ -123,7 +123,7 @@ public class Skeleton extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
             int bones = Utils.rand(0, 3); // drops 0-2 bones
             int arrows = Utils.rand(0, 3); // drops 0-2 arrows
             for (int i = 0; i < bones; i++) {
