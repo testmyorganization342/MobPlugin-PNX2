@@ -50,9 +50,9 @@ public class Ghast extends FlyingMonster {
     public void initEntity() {
         super.initEntity();
 
-        fireProof = true;
-        setMaxHealth(10);
-        setDamage(new float[]{0, 0, 0, 0});
+        this.fireProof = true;
+        this.setMaxHealth(10);
+        this.setDamage(new float[]{0, 0, 0, 0});
     }
 
     public boolean targetOption(EntityCreature creature, double distance) {
@@ -64,14 +64,14 @@ public class Ghast extends FlyingMonster {
     }
 
     public void attackEntity(Entity player) {
-        if (attackDelay > 30 && Utils.rand(1, 32) < 4 && distance(player) <= 100) {
-            attackDelay = 0;
+        if (this.attackDelay > 30 && Utils.rand(1, 32) < 4 && this.distance(player) <= 100) {
+            this.attackDelay = 0;
 
             double f = 2;
-            double yaw = yaw + Utils.rand(-220, 220) / 10;
-            double pitch = pitch + Utils.rand(-120, 120) / 10;
-            Location pos = new Location(x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, y + getEyeHeight(),
-                    z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, level);
+            double yaw = this.yaw + Utils.rand(-220, 220) / 10;
+            double pitch = this.pitch + Utils.rand(-120, 120) / 10;
+            Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
+                    this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             Entity k = MobPlugin.create("FireBall", pos, this);
             if (!(k instanceof EntityFireBall)) {
                 return;
@@ -83,12 +83,12 @@ public class Ghast extends FlyingMonster {
                     Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
 
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
-            server.getPluginManager().callEvent(launch);
+            this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
                 fireball.kill();
             } else {
                 fireball.spawnToAll();
-                level.addSound(this, Sound.MOB_GHAST_FIREBALL);
+                this.level.addSound(this, Sound.MOB_GHAST_FIREBALL);
             }
         }
     }
@@ -96,7 +96,7 @@ public class Ghast extends FlyingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int gunPowder = Utils.rand(0, 3); // drops 0-2 gun powder
             int ghastTears = Utils.rand(0, 2); // drops 0-1 ghast tears
             for (int i = 0; i < gunPowder; i++) {

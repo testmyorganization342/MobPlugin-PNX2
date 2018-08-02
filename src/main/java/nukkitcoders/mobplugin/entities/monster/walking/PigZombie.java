@@ -26,7 +26,7 @@ public class PigZombie extends WalkingMonster {
 
     public PigZombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        route = new WalkerRouteFinder(this);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -58,35 +58,35 @@ public class PigZombie extends WalkingMonster {
     protected void initEntity() {
         super.initEntity();
 
-        if (namedTag.contains("Angry")) {
-            angry = namedTag.getInt("Angry");
+        if (this.namedTag.contains("Angry")) {
+            this.angry = this.namedTag.getInt("Angry");
         }
 
-        fireProof = true;
-        setDamage(new float[] { 0, 5, 9, 13 });
+        this.fireProof = true;
+        this.setDamage(new float[] { 0, 5, 9, 13 });
         setMaxHealth(20);
     }
 
     @Override
     public void saveNBT() {
         super.saveNBT();
-        namedTag.putInt("Angry", angry);
+        this.namedTag.putInt("Angry", this.angry);
     }
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (distance <= 100 && isAngry() && creature instanceof PigZombie && !((PigZombie) creature).isAngry()) {
+        if (distance <= 100 && this.isAngry() && creature instanceof PigZombie && !((PigZombie) creature).isAngry()) {
             ((PigZombie) creature).setAngry(1000);
         }
-        return isAngry() && super.targetOption(creature, distance);
+        return this.isAngry() && super.targetOption(creature, distance);
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 1.44) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 1.44) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -129,11 +129,11 @@ public class PigZombie extends WalkingMonster {
     }
 
     public boolean isAngry() {
-        return angry > 0;
+        return this.angry > 0;
     }
 
     public void setAngry(int val) {
-        angry = val;
+        this.angry = val;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class PigZombie extends WalkingMonster {
         super.attack(ev);
 
         if (!ev.isCancelled()) {
-            setAngry(1000);
+            this.setAngry(1000);
         }
         return true;
     }
@@ -151,7 +151,7 @@ public class PigZombie extends WalkingMonster {
         super.spawnTo(player);
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.eid = getId();
+        pk.eid = this.getId();
         pk.item = new ItemSwordGold();
         pk.inventorySlot = 0;
         player.dataPacket(pk);
@@ -160,7 +160,7 @@ public class PigZombie extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rottenFlesh = Utils.rand(0, 2); // drops 0-1 rotten flesh
             int goldNuggets = Utils.rand(0, 101) <= 3 ? 1 : 0; // with a 2,5% chance a gold nugget is dropped
             int goldSword = Utils.rand(0, 101) <= 9 ? 1 : 0; // with a 8,5% chance it's gold sword is dropped

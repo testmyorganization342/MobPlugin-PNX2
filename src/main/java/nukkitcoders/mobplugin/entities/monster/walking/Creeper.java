@@ -35,7 +35,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        route = new WalkerRouteFinder(this);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -66,13 +66,13 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     }
 
     public int getBombTime() {
-        return bombTime;
+        return this.bombTime;
     }
 
     @Override
     public void explode() {
         ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 2.8);
-        server.getPluginManager().callEvent(ev);
+        this.server.getPluginManager().callEvent(ev);
 
         if (!ev.isCancelled()) {
             Explosion explosion = new Explosion(this, (float) ev.getForce(), this);
@@ -80,120 +80,120 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                 explosion.explodeA();
             }
             explosion.explodeB();
-            level.addParticle(new HugeExplodeSeedParticle(this));
-            exploded = true;
+            this.level.addParticle(new HugeExplodeSeedParticle(this));
+            this.exploded = true;
         }
-        close();
+        this.close();
     }
 
     @Override
     public boolean onUpdate(int currentTick) {
-        if (server.getDifficulty() < 1) {
-            close();
+        if (this.server.getDifficulty() < 1) {
+            this.close();
             return false;
         }
 
-        if (!isAlive()) {
-            if (++deadTicks >= 23) {
-                close();
+        if (!this.isAlive()) {
+            if (++this.deadTicks >= 23) {
+                this.close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - lastUpdate;
-        lastUpdate = currentTick;
-        entityBaseTick(tickDiff);
+        int tickDiff = currentTick - this.lastUpdate;
+        this.lastUpdate = currentTick;
+        this.entityBaseTick(tickDiff);
 
-        if (!isMovement()) {
+        if (!this.isMovement()) {
             return true;
         }
-        if(age % 10 == 0 && route!=null && !route.isSearching()) {
-            RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(route));
-            if(route.hasNext()) {
-                target = route.next();
+        if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
+            RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
+            if(this.route.hasNext()) {
+                this.target = this.route.next();
             }
         }
 
-        if (isKnockback()) {
-            move(motionX * tickDiff, motionY, motionZ * tickDiff);
-            motionY -= getGravity() * tickDiff;
-            updateMovement();
+        if (this.isKnockback()) {
+            this.move(this.motionX * tickDiff, this.motionY, this.motionZ * tickDiff);
+            this.motionY -= this.getGravity() * tickDiff;
+            this.updateMovement();
             return true;
         }
 
-        Vector3 before = target;
-        checkTarget();
+        Vector3 before = this.target;
+        this.checkTarget();
 
-        if (followTarget != null && !followTarget.closed && followTarget.isAlive() && target!=null) {
-            double x = target.x - x;
-            double y = target.y - y;
-            double z = target.z - z;
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
+            double x = this.target.x - this.x;
+            double y = this.target.y - this.y;
+            double z = this.target.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
             double distance = followTarget.distance(this);
             if (distance <= 4.5) {
                 if (followTarget instanceof EntityCreature) {
                     if (bombTime >= 0) {
-                        level.addSound(this, Sound.RANDOM_FUSE);
-                        setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH,bombTime));
-                        setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
+                        this.level.addSound(this, Sound.RANDOM_FUSE);
+                        this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH,bombTime));
+                        this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
                     }
-                    bombTime += tickDiff;
-                    if (bombTime >= 64) {
-                        explode();
+                    this.bombTime += tickDiff;
+                    if (this.bombTime >= 64) {
+                        this.explode();
                         return false;
                     }
-                } else if (Math.pow(x - target.x, 2) + Math.pow(z - target.z, 2) <= 1) {
-                    moveTime = 0;
+                } else if (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2) <= 1) {
+                    this.moveTime = 0;
                 }
             } else {
-                bombTime -= tickDiff;
-                if (bombTime < 0) {
-                    bombTime = 0;
-                    setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
+                this.bombTime -= tickDiff;
+                if (this.bombTime < 0) {
+                    this.bombTime = 0;
+                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
                 }
 
-                motionX = getSpeed() * 0.15 * (x / diff);
-                motionZ = getSpeed() * 0.15 * (z / diff);
+                this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                this.motionZ = this.getSpeed() * 0.15 * (z / diff);
             }
-            yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-            pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
+            this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+            this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
         }
 
-        double dx = motionX * tickDiff;
-        double dz = motionZ * tickDiff;
-        boolean isJump = checkJump(dx, dz);
-        if (stayTime > 0) {
-            stayTime -= tickDiff;
-            move(0, motionY * tickDiff, 0);
+        double dx = this.motionX * tickDiff;
+        double dz = this.motionZ * tickDiff;
+        boolean isJump = this.checkJump(dx, dz);
+        if (this.stayTime > 0) {
+            this.stayTime -= tickDiff;
+            this.move(0, this.motionY * tickDiff, 0);
         } else {
-            Vector2 be = new Vector2(x + dx, z + dz);
-            move(dx, motionY * tickDiff, dz);
-            Vector2 af = new Vector2(x, z);
+            Vector2 be = new Vector2(this.x + dx, this.z + dz);
+            this.move(dx, this.motionY * tickDiff, dz);
+            Vector2 af = new Vector2(this.x, this.z);
 
             if ((be.x != af.x || be.y != af.y) && !isJump) {
-                moveTime -= 90 * tickDiff;
+                this.moveTime -= 90 * tickDiff;
             }
         }
 
         if (!isJump) {
-            if (onGround) {
-                motionY = 0;
-            } else if (motionY > -getGravity() * 4) {
-                if (!(level.getBlock(new Vector3(NukkitMath.floorDouble(x), (int) (y + 0.8), NukkitMath.floorDouble(z))) instanceof BlockLiquid)) {
-                    motionY -= getGravity() * 1;
+            if (this.onGround) {
+                this.motionY = 0;
+            } else if (this.motionY > -this.getGravity() * 4) {
+                if (!(this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid)) {
+                    this.motionY -= this.getGravity() * 1;
                 }
             } else {
-                motionY -= getGravity() * tickDiff;
+                this.motionY -= this.getGravity() * tickDiff;
             }
         }
-        updateMovement();
-        if(route != null){
-            if(route.hasCurrentNode() && route.hasArrivedNode(this)) {
-                target = null;
-                if (route.hasNext()) {
-                    target = route.next();
+        this.updateMovement();
+        if(this.route != null){
+            if(this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
+                this.target = null;
+                if (this.route.hasNext()) {
+                    this.target = this.route.next();
                 }
             }
         }
@@ -212,7 +212,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int gunPowder = Utils.rand(0, 3); // drops 0-2 gunpowder
             for (int i = 0; i < gunPowder; i++) {
                 drops.add(Item.get(Item.GUNPOWDER, 0, 1));
@@ -227,7 +227,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     }
 
     public int getMaxFallHeight() {
-        return followTarget == null ? 3 : 3 + (int) (getHealth() - 1.0F); //TODO: change this to attack target only
+        return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F); //TODO: change this to attack target only
     }
 
 }

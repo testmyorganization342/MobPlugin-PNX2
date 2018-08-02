@@ -21,7 +21,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     public WalkingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        route = null;
+        this.route = null;
     }
 
     @Override
@@ -33,15 +33,15 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
     protected void initEntity() {
         super.initEntity();
 
-        if (getDataFlag(DATA_FLAG_BABY, 0)) {
-            setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
+        if (this.getDataFlag(DATA_FLAG_BABY, 0)) {
+            this.setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
         }
 
     }
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAG_BABY, 0);
+        return this.getDataFlag(DATA_FLAG_BABY, 0);
     }
 
     @Override
@@ -51,29 +51,29 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        if(isInLove()) {
-            inLoveTicks -= tickDiff;
-            if (age % 20 == 0) {
+        if(this.isInLove()) {
+            this.inLoveTicks -= tickDiff;
+            if (this.age % 20 == 0) {
                 for (int i = 0; i < 3; i++) {
-                    level.addParticle(new HeartParticle(add(Utils.rand(-1.0,1.0),getMountedYOffset()+ Utils.rand(-1.0,1.0),Utils.rand(-1.0,1.0))));
+                    this.level.addParticle(new HeartParticle(this.add(Utils.rand(-1.0,1.0),this.getMountedYOffset()+ Utils.rand(-1.0,1.0),Utils.rand(-1.0,1.0))));
                 }
                 /*EntityEventPacket pk = new EntityEventPacket();
-                pk.eid = getId();
+                pk.eid = this.getId();
                 pk.event = 21;
-                getLevel().addChunkPacket(getChunkX() >> 4,getChunkZ() >> 4,pk);*/
+                this.getLevel().addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4,pk);*/
             }
         }
 
-        if (!hasEffect(Effect.WATER_BREATHING) && isInsideOfWater()) {
+        if (!this.hasEffect(Effect.WATER_BREATHING) && this.isInsideOfWater()) {
             hasUpdate = true;
-            int airTicks = getDataPropertyShort(DATA_AIR) - tickDiff;
+            int airTicks = this.getDataPropertyShort(DATA_AIR) - tickDiff;
             if (airTicks <= -20) {
                 airTicks = 0;
-                attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
+                this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
             }
-            setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
+            this.setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
         } else {
-            setDataProperty(new ShortEntityData(DATA_AIR, 300));
+            this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
         }
 
         Timings.entityBaseTickTimer.stopTiming();
@@ -82,31 +82,31 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     @Override
     public boolean onUpdate(int currentTick) {
-        if (closed) {
+        if (this.closed) {
             return false;
         }
-        if (!isAlive()) {
-            if (++deadTicks >= 23) {
-                close();
+        if (!this.isAlive()) {
+            if (++this.deadTicks >= 23) {
+                this.close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - lastUpdate;
-        lastUpdate = currentTick;
-        entityBaseTick(tickDiff);
+        int tickDiff = currentTick - this.lastUpdate;
+        this.lastUpdate = currentTick;
+        this.entityBaseTick(tickDiff);
 
-        Vector3 target = updateMove(tickDiff);
+        Vector3 target = this.updateMove(tickDiff);
         if (target instanceof Player) {
-            if (distanceSquared(target) <= 2) {
-                pitch = 22;
-                x = lastX;
-                y = lastY;
-                z = lastZ;
+            if (this.distanceSquared(target) <= 2) {
+                this.pitch = 22;
+                this.x = this.lastX;
+                this.y = this.lastY;
+                this.z = this.lastZ;
             }
-        } else if (target != null && (Math.pow(x - target.x, 2) + Math.pow(z - target.z, 2)) <= 1) {
-            moveTime = 0;
+        } else if (target != null && (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2)) <= 1) {
+            this.moveTime = 0;
         }
         return true;
     }
@@ -118,8 +118,8 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
     }
 
     public void setInLove() {
-        inLoveTicks = 600;
-        setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);
+        this.inLoveTicks = 600;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);
     }
 
     public boolean isInLove(){
@@ -129,4 +129,5 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
     public boolean isBreedingItem(Item item) {
         return item != null && item.getId() == Item.WHEAT;
     }
+
 }

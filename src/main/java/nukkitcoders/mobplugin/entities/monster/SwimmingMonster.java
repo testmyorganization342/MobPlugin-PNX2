@@ -27,12 +27,12 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
 
     @Override
     public void setFollowTarget(Entity target) {
-        setFollowTarget(target, true);
+        this.setFollowTarget(target, true);
     }
 
     public void setFollowTarget(Entity target, boolean attack) {
         super.setFollowTarget(target);
-        canAttack = attack;
+        this.canAttack = attack;
     }
 
     public float getDamage() {
@@ -40,7 +40,7 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
     }
 
     public float getDamage(Integer difficulty) {
-        return Utils.rand(getMinDamage(difficulty), getMaxDamage(difficulty));
+        return Utils.rand(this.getMinDamage(difficulty), this.getMaxDamage(difficulty));
     }
 
     public float getMinDamage() {
@@ -51,7 +51,7 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
         if (difficulty == null || difficulty > 3 || difficulty < 0) {
             difficulty = Server.getInstance().getDifficulty();
         }
-        return minDamage[difficulty];
+        return this.minDamage[difficulty];
     }
 
     public float getMaxDamage() {
@@ -62,17 +62,17 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
         if (difficulty == null || difficulty > 3 || difficulty < 0) {
             difficulty = Server.getInstance().getDifficulty();
         }
-        return maxDamage[difficulty];
+        return this.maxDamage[difficulty];
     }
 
     public void setDamage(float damage) {
-        setDamage(damage, Server.getInstance().getDifficulty());
+        this.setDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public void setDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
-            minDamage[difficulty] = damage;
-            maxDamage[difficulty] = damage;
+            this.minDamage[difficulty] = damage;
+            this.maxDamage[difficulty] = damage;
         }
     }
 
@@ -90,8 +90,8 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
         }
 
         for (int i = 0; i < 4; i++) {
-            minDamage[i] = damage[i];
-            maxDamage[i] = damage[i];
+            this.minDamage[i] = damage[i];
+            this.maxDamage[i] = damage[i];
         }
     }
 
@@ -101,17 +101,17 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
         }
 
         for (int i = 0; i < 4; i++) {
-            setMinDamage(Math.min(damage[i], getMaxDamage(i)), i);
+            this.setMinDamage(Math.min(damage[i], this.getMaxDamage(i)), i);
         }
     }
 
     public void setMinDamage(float damage) {
-        setMinDamage(damage, Server.getInstance().getDifficulty());
+        this.setMinDamage(damage, Server.getInstance().getDifficulty());
     }
 
     public void setMinDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
-            minDamage[difficulty] = Math.min(damage, getMaxDamage(difficulty));
+            this.minDamage[difficulty] = Math.min(damage, this.getMaxDamage(difficulty));
         }
     }
 
@@ -120,7 +120,7 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
             return;
 
         for (int i = 0; i < 4; i++) {
-            setMaxDamage(Math.max(damage[i], getMinDamage(i)), i);
+            this.setMaxDamage(Math.max(damage[i], this.getMinDamage(i)), i);
         }
     }
 
@@ -130,39 +130,39 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
 
     public void setMaxDamage(float damage, int difficulty) {
         if (difficulty >= 1 && difficulty <= 3) {
-            maxDamage[difficulty] = Math.max(damage, getMinDamage(difficulty));
+            this.maxDamage[difficulty] = Math.max(damage, this.getMinDamage(difficulty));
         }
     }
 
     public boolean onUpdate(int currentTick) {
-        if (closed) {
+        if (this.closed) {
             return false;
         }
 
-        if (server.getDifficulty() < 1) {
-            close();
+        if (this.server.getDifficulty() < 1) {
+            this.close();
             return false;
         }
 
-        if (!isAlive()) {
-            if (++deadTicks >= 23) {
-                close();
+        if (!this.isAlive()) {
+            if (++this.deadTicks >= 23) {
+                this.close();
                 return false;
             }
             return true;
         }
 
-        int tickDiff = currentTick - lastUpdate;
-        lastUpdate = currentTick;
-        entityBaseTick(tickDiff);
+        int tickDiff = currentTick - this.lastUpdate;
+        this.lastUpdate = currentTick;
+        this.entityBaseTick(tickDiff);
 
-        Vector3 target = updateMove(tickDiff);
-        if ((!isFriendly() || !(target instanceof Player)) && target instanceof Entity) {
-            if (target != followTarget || canAttack) {
-                attackEntity((Entity) target);
+        Vector3 target = this.updateMove(tickDiff);
+        if ((!this.isFriendly() || !(target instanceof Player)) && target instanceof Entity) {
+            if (target != this.followTarget || this.canAttack) {
+                this.attackEntity((Entity) target);
             }
-        } else if (target != null && (Math.pow(x - target.x, 2) + Math.pow(z - target.z, 2)) <= 1) {
-            moveTime = 0;
+        } else if (target != null && (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2)) <= 1) {
+            this.moveTime = 0;
         }
         return true;
     }
@@ -176,9 +176,9 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        attackDelay += tickDiff;
+        this.attackDelay += tickDiff;
 
-        setDataProperty(new ShortEntityData(DATA_AIR, 300));
+        this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
 
         Timings.entityBaseTickTimer.stopTiming();
         return hasUpdate;

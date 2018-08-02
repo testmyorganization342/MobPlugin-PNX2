@@ -26,4 +26,5 @@ public interface Tameable {
     boolean isSitting();
 
     void setSitting(boolean sitting);
+
 }

@@ -28,7 +28,7 @@ public class Mooshroom extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.45f;
         }
         return 0.9f;
@@ -36,7 +36,7 @@ public class Mooshroom extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.7f;
         }
         return 1.4f;
@@ -44,12 +44,12 @@ public class Mooshroom extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(10);
+        this.setMaxHealth(10);
     }
 
     @Override
@@ -63,14 +63,14 @@ public class Mooshroom extends WalkingAnimal {
 
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int leatherDrop = Utils.rand(0, 3); // drops 0-2 leather
             int beefDrop = Utils.rand(1, 4); // drops 1-3 raw beef / steak when on fire
             for (int i = 0; i < leatherDrop; i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
             }
             for (int i = 0; i < beefDrop; i++) {
-                drops.add(Item.get(isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, 1));
+                drops.add(Item.get(this.isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);

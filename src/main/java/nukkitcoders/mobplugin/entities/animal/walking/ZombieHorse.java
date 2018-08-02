@@ -31,7 +31,7 @@ public class ZombieHorse extends Horse {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.6982f;
         }
         return 1.3965f;
@@ -39,7 +39,7 @@ public class ZombieHorse extends Horse {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.8f;
         }
         return 1.6f;
@@ -52,19 +52,19 @@ public class ZombieHorse extends Horse {
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(15);
+        this.setMaxHealth(15);
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             //https://minecraft.gamepedia.com/Horse
             int leather = Utils.rand(0, 3); // drops 0-2 leather
             int rottenflesh = Utils.rand(0, 3);// drop 0-2 rettenflesh

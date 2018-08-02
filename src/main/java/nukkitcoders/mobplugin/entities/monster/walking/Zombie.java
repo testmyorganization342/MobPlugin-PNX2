@@ -26,7 +26,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        route = new WalkerRouteFinder(this);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -53,17 +53,17 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     protected void initEntity() {
         super.initEntity();
 
-//        if (getDataProperty(DATA_AGEABLE_FLAGS) == null) {
-//            setDataProperty(new ByteEntityData(DATA_AGEABLE_FLAGS, (byte) 0));
+//        if (this.getDataProperty(DATA_AGEABLE_FLAGS) == null) {
+//            this.setDataProperty(new ByteEntityData(DATA_AGEABLE_FLAGS, (byte) 0));
 //        }
-        setDamage(new float[] { 0, 2, 3, 4 });
-        setMaxHealth(20);
+        this.setDamage(new float[] { 0, 2, 3, 4 });
+        this.setMaxHealth(20);
     }
 
     @Override
     public boolean isBaby() {
         return false;
-//        return getDataFlag(DATA_AGEABLE_FLAGS, DATA_FLAG_BABY);
+//        return this.getDataFlag(DATA_AGEABLE_FLAGS, DATA_FLAG_BABY);
 
     }
 
@@ -71,25 +71,25 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     public void setHealth(float health) {
         super.setHealth(health);
 
-        if (isAlive()) {
-            if (15 < getHealth()) {
-                setDamage(new float[] { 0, 2, 3, 4 });
-            } else if (10 < getHealth()) {
-                setDamage(new float[] { 0, 3, 4, 6 });
-            } else if (5 < getHealth()) {
-                setDamage(new float[] { 0, 3, 5, 7 });
+        if (this.isAlive()) {
+            if (15 < this.getHealth()) {
+                this.setDamage(new float[] { 0, 2, 3, 4 });
+            } else if (10 < this.getHealth()) {
+                this.setDamage(new float[] { 0, 3, 4, 6 });
+            } else if (5 < this.getHealth()) {
+                this.setDamage(new float[] { 0, 3, 5, 7 });
             } else {
-                setDamage(new float[] { 0, 4, 6, 9 });
+                this.setDamage(new float[] { 0, 4, 6, 9 });
             }
         }
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && player.distanceSquared(this) <= 1) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -129,9 +129,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
             }
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
             EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = getId();
+            pk.eid = this.getId();
             pk.event = 4;
-            level.addChunkPacket(getChunkX() >> 4,getChunkZ() >> 4, pk);
+            this.level.addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4, pk);
         }
     }
 
@@ -143,9 +143,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
-        int time = getLevel().getTime() % Level.TIME_FULL;
-        if (!isOnFire() && !level.isRaining() && (time < 12567 || time > 23450)) {
-            setOnFire(1);
+        int time = this.getLevel().getTime() % Level.TIME_FULL;
+        if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450)) {
+            this.setOnFire(1);
         }
 
         Timings.entityBaseTickTimer.stopTiming();
@@ -155,7 +155,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rottenFlesh = Utils.rand(0, 3); // drops 0-2 rotten flesh
             for (int i=0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));

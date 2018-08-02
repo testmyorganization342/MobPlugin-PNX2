@@ -23,7 +23,7 @@ public class ZombieVillager extends WalkingMonster {
 
     public ZombieVillager(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        route = new WalkerRouteFinder(this);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -50,16 +50,16 @@ public class ZombieVillager extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
 
-        setDamage(new float[] { 0, 3, 4, 6 });
+        this.setDamage(new float[] { 0, 3, 4, 6 });
         setMaxHealth(20);
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 1) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 1) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -99,16 +99,16 @@ public class ZombieVillager extends WalkingMonster {
             }
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
             EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = getId();
+            pk.eid = this.getId();
             pk.event = 4;
-            Server.broadcastPacket(getViewers().values(), pk);
+            Server.broadcastPacket(this.getViewers().values(), pk);
         }
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int rottenFlesh = Utils.rand(0, 3); // drops 0-2 rotten flesh
             for (int i=0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));

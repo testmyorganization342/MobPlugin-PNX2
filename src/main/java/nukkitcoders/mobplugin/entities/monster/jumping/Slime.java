@@ -48,17 +48,17 @@ public class Slime extends WalkingMonster {
     }
 
     protected void initEntity() {
-        setMaxHealth(16);
+        this.setMaxHealth(16);
         super.initEntity();
 
-        setDamage(new float[] { 0, 2, 3, 4 });
+        this.setDamage(new float[] { 0, 2, 3, 4 });
     }
 
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 1) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 1) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -103,7 +103,7 @@ public class Slime extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int slimeBalls = Utils.rand(0, 3);
             for (int i = 0; i < slimeBalls; i++) {
                 drops.add(Item.get(Item.SLIMEBALL, 0, 1));

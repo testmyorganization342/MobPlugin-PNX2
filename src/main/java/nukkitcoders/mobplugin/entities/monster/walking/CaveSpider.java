@@ -45,16 +45,16 @@ public class CaveSpider extends Spider {
     public void initEntity() {
         super.initEntity();
 
-        setMaxHealth(12);
-        setDamage(new float[] { 0, 2, 3, 3 });
+        this.setMaxHealth(12);
+        this.setDamage(new float[] { 0, 2, 3, 3 });
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 1.32) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 1.32) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -99,7 +99,7 @@ public class CaveSpider extends Spider {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int strings = Utils.rand(0, 3); // drops 0-2 strings
             int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0; // with a 1/3 chance it drops spider eye
             for (int i=0; i < strings; i++) {

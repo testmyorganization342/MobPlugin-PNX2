@@ -24,7 +24,7 @@ public class Ocelot extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.3f;
         }
         return 0.6f;
@@ -32,7 +32,7 @@ public class Ocelot extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.35f;
         }
         return 0.7f;
@@ -45,13 +45,13 @@ public class Ocelot extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     protected void initEntity() {
         super.initEntity();
-        setMaxHealth(10);
+        this.setMaxHealth(10);
     }
 
     @Override

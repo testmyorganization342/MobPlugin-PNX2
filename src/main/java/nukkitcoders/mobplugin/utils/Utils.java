@@ -1,3 +1,8 @@
+/**
+ * Utils.java
+ *
+ * Created on 10:18:38
+ */
 package nukkitcoders.mobplugin.utils;
 
 import cn.nukkit.math.Vector3;
@@ -7,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (kniffo80)</a>
+ *
  */
 public class Utils {
 
@@ -68,4 +74,5 @@ public class Utils {
             }
         }
     }
+
 }

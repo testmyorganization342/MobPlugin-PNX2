@@ -21,7 +21,7 @@ public class GhastSpawner extends AbstractEntitySpawner {
 
     @Override
     protected String getLogprefix() {
-        return getClass().getSimpleName();
+        return this.getClass().getSimpleName();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GhastSpawner extends AbstractEntitySpawner {
         } else if (biomeId != 8) { //HELL
             result = SpawnResult.WRONG_BLOCK;
         } else {
-            spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
         }
 
         return result;

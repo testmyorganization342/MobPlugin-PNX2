@@ -23,7 +23,7 @@ public class Evoker extends WalkingMonster {
 
     public Evoker(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        route = new WalkerRouteFinder(this);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Evoker extends WalkingMonster {
     @Override
     protected void initEntity() {
         super.initEntity();
-        setDamage(new float[] { 0, 2, 3, 4 });
+        this.setDamage(new float[] { 0, 2, 3, 4 });
         setMaxHealth(24);
     }
 
@@ -57,25 +57,25 @@ public class Evoker extends WalkingMonster {
     public void setHealth(float health) {
         super.setHealth(health);
 
-        if (isAlive()) {
-            if (15 < getHealth()) {
-                setDamage(new float[] { 0, 2, 3, 4 });
-            } else if (10 < getHealth()) {
-                setDamage(new float[] { 0, 3, 4, 6 });
-            } else if (5 < getHealth()) {
-                setDamage(new float[] { 0, 3, 5, 7 });
+        if (this.isAlive()) {
+            if (15 < this.getHealth()) {
+                this.setDamage(new float[] { 0, 2, 3, 4 });
+            } else if (10 < this.getHealth()) {
+                this.setDamage(new float[] { 0, 3, 4, 6 });
+            } else if (5 < this.getHealth()) {
+                this.setDamage(new float[] { 0, 3, 5, 7 });
             } else {
-                setDamage(new float[] { 0, 4, 6, 9 });
+                this.setDamage(new float[] { 0, 4, 6, 9 });
             }
         }
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && player.distanceSquared(this) <= 1) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -131,7 +131,7 @@ public class Evoker extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int emerald = Utils.rand(0, 2);
 //            int totem = 1;
             for (int i=0; i < emerald; i++) {

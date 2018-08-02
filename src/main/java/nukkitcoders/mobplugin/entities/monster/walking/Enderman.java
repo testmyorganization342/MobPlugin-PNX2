@@ -43,17 +43,17 @@ public class Enderman extends WalkingMonster {
     }
 
     protected void initEntity() {
-        setMaxHealth(40);
+        this.setMaxHealth(40);
         super.initEntity();
 
-        setDamage(new float[] { 0, 4, 7, 10 });
+        this.setDamage(new float[] { 0, 4, 7, 10 });
     }
 
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 1) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 1) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -98,7 +98,7 @@ public class Enderman extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int enderPearls = Utils.rand(0, 2); // drops 0-1 enderpearls
             for (int i = 0; i < enderPearls; i++) {
                 drops.add(Item.get(Item.ENDER_PEARL, 0, 1));

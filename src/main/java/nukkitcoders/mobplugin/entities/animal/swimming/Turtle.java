@@ -34,7 +34,7 @@ public class Turtle extends SwimmingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(30);
+        this.setMaxHealth(30);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class Turtle extends SwimmingAnimal {
     
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 }

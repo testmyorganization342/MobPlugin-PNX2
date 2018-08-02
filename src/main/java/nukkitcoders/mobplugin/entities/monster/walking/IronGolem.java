@@ -21,7 +21,7 @@ public class IronGolem extends WalkingMonster {
 
     public IronGolem(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        setFriendly(true);
+        this.setFriendly(true);
     }
 
     @Override
@@ -46,18 +46,18 @@ public class IronGolem extends WalkingMonster {
 
     @Override
     public void initEntity() {
-        setMaxHealth(100);
+        this.setMaxHealth(100);
         super.initEntity();
 
-        setDamage(new float[] { 0, 21, 21, 21 });
-        setMinDamage(new float[] { 0, 7, 7, 7 });
+        this.setDamage(new float[] { 0, 21, 21, 21 });
+        this.setMinDamage(new float[] { 0, 7, 7, 7 });
     }
 
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 4) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 4) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -105,7 +105,7 @@ public class IronGolem extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int ironIngots = Utils.rand(3, 6); // drops 3-5 iron ingots
             int poppies = Utils.rand(0, 3); // drops 0-2 poppies
             for (int i=0; i < ironIngots; i++) {

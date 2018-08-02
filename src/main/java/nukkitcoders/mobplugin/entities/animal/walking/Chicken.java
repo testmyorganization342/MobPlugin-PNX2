@@ -19,7 +19,7 @@ public class Chicken extends WalkingAnimal {
 
     public static final int NETWORK_ID = 10;
 
-    private int EggLayTime = getRandomEggLayTime();
+    private int EggLayTime = this.getRandomEggLayTime();
     private boolean IsChickenJockey = false;
 
     public Chicken(FullChunk chunk, CompoundTag nbt) {
@@ -33,7 +33,7 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.2f;
         }
         return 0.4f;
@@ -41,7 +41,7 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.35f;
         }
         return 0.7f;
@@ -49,7 +49,7 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public float getEyeHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.51f;
         }
         return 0.7f;
@@ -68,24 +68,24 @@ public class Chicken extends WalkingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
-        if (namedTag.contains("EggLayTime")) {
-            EggLayTime = namedTag.getInt("EggLayTime");
+        if (this.namedTag.contains("EggLayTime")) {
+            this.EggLayTime = this.namedTag.getInt("EggLayTime");
         } else {
-            EggLayTime = getRandomEggLayTime();
+            this.EggLayTime = this.getRandomEggLayTime();
         }
-        IsChickenJockey = namedTag.contains("IsChickenJockey") && namedTag.getBoolean("IsChickenJockey");
+        this.IsChickenJockey = this.namedTag.contains("IsChickenJockey") && this.namedTag.getBoolean("IsChickenJockey");
 
-        setMaxHealth(4);
+        this.setMaxHealth(4);
     }
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
-        if(EggLayTime > 0){
+        if(this.EggLayTime > 0){
             EggLayTime-=tickDiff;
         }else{
-            level.dropItem(this,Item.get(Item.EGG,0,1));
-            level.addSound(this, Sound.MOB_CHICKEN_PLOP);
-            EggLayTime = getRandomEggLayTime();
+            this.level.dropItem(this,Item.get(Item.EGG,0,1));
+            this.level.addSound(this, Sound.MOB_CHICKEN_PLOP);
+            this.EggLayTime = this.getRandomEggLayTime();
         }
         return hasUpdate;
     }
@@ -105,46 +105,46 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item) {
-        if((item.equals(Item.get(Item.SEEDS,0))) && !isBaby()){
+        if((item.equals(Item.get(Item.SEEDS,0))) && !this.isBaby()){
             player.getInventory().removeItem(Item.get(Item.SEEDS,0,1));
-            level.addSound(this,Sound.RANDOM_EAT);
-            level.addParticle(new ItemBreakParticle(add(Utils.rand(-0.5,0.5),getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.SEEDS)));
-            setInLove();
-        }else if((item.equals(Item.get(Item.BEETROOT_SEEDS,0))) && !isBaby()){
+            this.level.addSound(this,Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.SEEDS)));
+            this.setInLove();
+        }else if((item.equals(Item.get(Item.BEETROOT_SEEDS,0))) && !this.isBaby()){
             player.getInventory().removeItem(Item.get(Item.BEETROOT_SEEDS,0,1));
-            level.addSound(this,Sound.RANDOM_EAT);
-            level.addParticle(new ItemBreakParticle(add(Utils.rand(-0.5,0.5),getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.BEETROOT_SEEDS)));
-            setInLove();
-        }else if((item.equals(Item.get(Item.MELON_SEEDS,0))) && !isBaby()){
+            this.level.addSound(this,Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.BEETROOT_SEEDS)));
+            this.setInLove();
+        }else if((item.equals(Item.get(Item.MELON_SEEDS,0))) && !this.isBaby()){
             player.getInventory().removeItem(Item.get(Item.MELON_SEEDS,0,1));
-            level.addSound(this,Sound.RANDOM_EAT);
-            level.addParticle(new ItemBreakParticle(add(Utils.rand(-0.5,0.5),getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.MELON_SEEDS)));
-            setInLove();
-        }else if((item.equals(Item.get(Item.PUMPKIN_SEEDS,0))) && !isBaby()){
+            this.level.addSound(this,Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.MELON_SEEDS)));
+            this.setInLove();
+        }else if((item.equals(Item.get(Item.PUMPKIN_SEEDS,0))) && !this.isBaby()){
             player.getInventory().removeItem(Item.get(Item.PUMPKIN_SEEDS,0,1));
-            level.addSound(this,Sound.RANDOM_EAT);
-            level.addParticle(new ItemBreakParticle(add(Utils.rand(-0.5,0.5),getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.PUMPKIN_SEEDS)));
-            setInLove();
+            this.level.addSound(this,Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.PUMPKIN_SEEDS)));
+            this.setInLove();
         }
         return false;
     }
 
     public void saveNBT() {
         super.saveNBT();
-        namedTag.putInt("EggLayTime", EggLayTime);
-        namedTag.putBoolean("IsChickenJockey",IsChickenJockey);
+        this.namedTag.putInt("EggLayTime", this.EggLayTime);
+        this.namedTag.putBoolean("IsChickenJockey",this.IsChickenJockey);
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int featherDrop = Utils.rand(0, 3); // drops 0-2 feathers
             for (int i = 0; i < featherDrop; i++) {
                 drops.add(Item.get(Item.FEATHER, 0, 1));
             }
             // chicken on fire: cooked chicken otherwise raw chicken
-            drops.add(Item.get(isOnFire() ? Item.COOKED_CHICKEN : Item.RAW_CHICKEN, 0, 1));
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_CHICKEN : Item.RAW_CHICKEN, 0, 1));
         }
         return drops.toArray(new Item[drops.size()]);
     }

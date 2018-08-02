@@ -11,15 +11,15 @@ public class RouteFinderSearchTask implements Runnable {
     private int retryTime = 0;
 
     public RouteFinderSearchTask(RouteFinder route){
-        route = route;
+        this.route = route;
     }
 
     @Override
     public void run() {
-        if (route == null) return;
+        if (this.route == null) return;
         while (retryTime < 50) {
-            if (!route.isSearching()) {
-                route.research();
+            if (!this.route.isSearching()) {
+                this.route.research();
                 return;
             } else {
                 retryTime += 10;

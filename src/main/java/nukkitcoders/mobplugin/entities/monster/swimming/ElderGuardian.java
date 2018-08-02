@@ -39,7 +39,7 @@ public class ElderGuardian extends SwimmingMonster {
     public void initEntity() {
         super.initEntity();
 
-        setMaxHealth(80);
+        this.setMaxHealth(80);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ElderGuardian extends SwimmingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int prismarineShard = Utils.rand(0, 3); // drops 0-2 prismarine shard
             for (int i=0; i < prismarineShard; i++) {
                 drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));

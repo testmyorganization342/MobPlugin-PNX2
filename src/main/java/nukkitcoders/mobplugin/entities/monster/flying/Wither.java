@@ -56,9 +56,9 @@ public class Wither extends FlyingMonster {
     public void initEntity() {
         super.initEntity();
 
-        fireProof = true;
-        setMaxHealth(300);
-        setDamage(new float[]{0, 0, 0, 0});
+        this.fireProof = true;
+        this.setMaxHealth(300);
+        this.setDamage(new float[]{0, 0, 0, 0});
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Wither extends FlyingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int netherstar = Utils.rand(0, 101) <= 3 ? 1 : 0;
             for (int i = 0; i < netherstar; i++) {
                 drops.add(Item.get(Item.NETHER_STAR, 0, 1));

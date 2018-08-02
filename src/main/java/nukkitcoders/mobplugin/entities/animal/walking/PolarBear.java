@@ -33,7 +33,7 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.65f;
         }
         return 1.3f;
@@ -41,7 +41,7 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.7f;
         }
         return 1.4f;
@@ -49,7 +49,7 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public float getEyeHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.65f;
         }
         return 1.4f;
@@ -61,39 +61,39 @@ public class PolarBear extends WalkingMonster {
     }
 
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
-        setDamage(new float[] { 0, 4, 6, 9 });
-        setMaxHealth(30);
-        if (namedTag.contains("Angry")) {
-            angry = namedTag.getInt("Angry");
+        this.setDamage(new float[] { 0, 4, 6, 9 });
+        this.setMaxHealth(30);
+        if (this.namedTag.contains("Angry")) {
+            this.angry = this.namedTag.getInt("Angry");
         }
     }
 
     @Override
     public void saveNBT() {
         super.saveNBT();
-        namedTag.putInt("Angry", angry);
+        this.namedTag.putInt("Angry", this.angry);
     }
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (distance <= 100 && isAngry() && creature instanceof PolarBear && !((PolarBear) creature).isAngry()) {
+        if (distance <= 100 && this.isAngry() && creature instanceof PolarBear && !((PolarBear) creature).isAngry()) {
             ((PolarBear) creature).setAngry(1000);
         }
-        return isAngry() && super.targetOption(creature, distance);
+        return this.isAngry() && super.targetOption(creature, distance);
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 10 && distanceSquared(player) < 1.44) {
-            attackDelay = 0;
+        if (this.attackDelay > 10 && this.distanceSquared(player) < 1.44) {
+            this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, (float) getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -136,11 +136,11 @@ public class PolarBear extends WalkingMonster {
     }
 
     public boolean isAngry() {
-        return angry > 0;
+        return this.angry > 0;
     }
 
     public void setAngry(int val) {
-        angry = val;
+        this.angry = val;
     }
 
     @Override
@@ -148,7 +148,7 @@ public class PolarBear extends WalkingMonster {
         super.attack(ev);
 
         if (!ev.isCancelled()) {
-            setAngry(1000);
+            this.setAngry(1000);
         }
         return true;
     }

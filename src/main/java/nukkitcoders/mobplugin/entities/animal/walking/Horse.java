@@ -22,7 +22,7 @@ public class Horse extends WalkingAnimal {
 
     public static final int NETWORK_ID = 23;
     private int Type = 0;
-    private int Variant = getRandomVariant();
+    private int Variant = this.getRandomVariant();
 
     public Horse(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -35,7 +35,7 @@ public class Horse extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.6982f;
         }
         return 1.3965f;
@@ -43,7 +43,7 @@ public class Horse extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.8f;
         }
         return 1.6f;
@@ -55,28 +55,28 @@ public class Horse extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(15);
+        this.setMaxHealth(15);
         if(this instanceof Donkey){
-            namedTag.putInt("Type",Type = 1);
+            this.namedTag.putInt("Type",this.Type = 1);
         }else if(this instanceof Mule){
-            namedTag.putInt("Type",Type = 2);
+            this.namedTag.putInt("Type",this.Type = 2);
         }else if(this instanceof ZombieHorse){
-            namedTag.putInt("Type",Type = 3);
+            this.namedTag.putInt("Type",this.Type = 3);
         }else if(this instanceof SkeletonHorse){
-            namedTag.putInt("Type",Type = 4);
+            this.namedTag.putInt("Type",this.Type = 4);
         }else{
-            namedTag.putInt("Type",Type = 0);
+            this.namedTag.putInt("Type",this.Type = 0);
         }
-        if(namedTag.contains("Variant")){
-            Variant = namedTag.getInt("Variant");
+        if(this.namedTag.contains("Variant")){
+            this.Variant = this.namedTag.getInt("Variant");
         }else{
-            namedTag.putInt("Variant",Variant = getRandomVariant());
+            this.namedTag.putInt("Variant",this.Variant = this.getRandomVariant());
         }
 
 
@@ -84,8 +84,8 @@ public class Horse extends WalkingAnimal {
     @Override
     public void saveNBT() {
         super.saveNBT();
-        namedTag.putByte("Type", Type);
-        namedTag.putInt("Variant", Variant);
+        this.namedTag.putByte("Type", this.Type);
+        this.namedTag.putInt("Variant", this.Variant);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Horse extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int leather = Utils.rand(0, 3); // drops 0-2 leather
 
             for (int i = 0; i < leather; i++) {

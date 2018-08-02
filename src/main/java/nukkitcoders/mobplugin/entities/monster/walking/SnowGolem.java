@@ -27,7 +27,7 @@ public class SnowGolem extends WalkingMonster {
 
     public SnowGolem(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        setFriendly(true);
+        this.setFriendly(true);
     }
 
     @Override
@@ -58,14 +58,14 @@ public class SnowGolem extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (attackDelay > 23 && Utils.rand(1, 32) < 4 && distanceSquared(player) <= 55) {
-            attackDelay = 0;
+        if (this.attackDelay > 23 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 55) {
+            this.attackDelay = 0;
 
             double f = 1.2;
-            double yaw = yaw + Utils.rand(-220, 220) / 10;
-            double pitch = pitch + Utils.rand(-120, 120) / 10;
-            Location location = new Location(x + (-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), y + getEyeHeight(),
-                    z + (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), yaw, pitch, level);
+            double yaw = this.yaw + Utils.rand(-220, 220) / 10;
+            double pitch = this.pitch + Utils.rand(-120, 120) / 10;
+            Location location = new Location(this.x + (-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), this.y + this.getEyeHeight(),
+                    this.z + (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), yaw, pitch, this.level);
             Entity k = MobPlugin.create("Snowball", location, this);
             if (k == null) {
                 return;
@@ -80,19 +80,19 @@ public class SnowGolem extends WalkingMonster {
             snowball.setMotion(motion);
 
             EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), snowball, f);
-            server.getPluginManager().callEvent(ev);
+            this.server.getPluginManager().callEvent(ev);
 
             EntityProjectile projectile = ev.getProjectile();
             if (ev.isCancelled()) {
                 projectile.kill();
             } else if (projectile != null) {
                 ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
-                server.getPluginManager().callEvent(launch);
+                this.server.getPluginManager().callEvent(launch);
                 if (launch.isCancelled()) {
                     projectile.kill();
                 } else {
                     projectile.spawnToAll();
-                    level.addSound(this, Sound.MOB_SNOWGOLEM_SHOOT);
+                    this.level.addSound(this, Sound.MOB_SNOWGOLEM_SHOOT);
                 }
             }
         }
@@ -101,7 +101,7 @@ public class SnowGolem extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int snowBall = Utils.rand(0, 16); // drops 0-15 snowballs
             for (int i = 0; i < snowBall; i++) {
                 drops.add(Item.get(Item.SNOWBALL, 0, 1));

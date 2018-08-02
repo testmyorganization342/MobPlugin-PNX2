@@ -26,7 +26,7 @@ public class Villager extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.3f;
         }
         return 0.6f;
@@ -34,7 +34,7 @@ public class Villager extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.975f;
         }
         return 1.95f;
@@ -48,24 +48,24 @@ public class Villager extends WalkingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(10);
+        this.setMaxHealth(10);
 
-        if (!namedTag.contains("Profession")) {
-            setProfession(PROFESSION_GENERIC);
+        if (!this.namedTag.contains("Profession")) {
+            this.setProfession(PROFESSION_GENERIC);
         }
     }
 
     public int getProfession() {
-        return namedTag.getInt("Profession");
+        return this.namedTag.getInt("Profession");
     }
 
     public void setProfession(int profession) {
-        namedTag.putInt("Profession", profession);
+        this.namedTag.putInt("Profession", profession);
     }
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     @Override

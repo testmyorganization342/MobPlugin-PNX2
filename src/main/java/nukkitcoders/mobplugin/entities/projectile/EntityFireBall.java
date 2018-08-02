@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockCobblestone;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
@@ -57,64 +58,66 @@ public class EntityFireBall extends EntityProjectile {
     public EntityFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
         super(chunk, nbt, shootingEntity);
 
-        critical = critical;
+        this.critical = critical;
     }
 
     public boolean isExplode() {
-        return canExplode;
+        return this.canExplode;
     }
 
     public void setExplode(boolean bool) {
-        canExplode = bool;
+        this.canExplode = bool;
     }
 
     public boolean onUpdate(int currentTick) {
-        if (closed) {
+        if (this.closed) {
             return false;
         }
-        if (shootingEntity.getLevelBlock() instanceof BlockCobblestone) {
+        if (this.shootingEntity.getLevelBlock() instanceof BlockCobblestone) {
             return false;
         }
 
+        // this.timings.startTiming();
         boolean hasUpdate = super.onUpdate(currentTick);
 
-        if (!hadCollision && critical) {
-            level.addParticle(new CriticalParticle(
-                    add(getWidth() / 2 + Utils.rand(-100, 100) / 500, getHeight() / 2 + Utils.rand(-100, 100) / 500, getWidth() / 2 + Utils.rand(-100, 100) / 500)));
-        } else if (onGround) {
-            critical = false;
+        if (!this.hadCollision && this.critical) {
+            this.level.addParticle(new CriticalParticle(
+                    this.add(this.getWidth() / 2 + Utils.rand(-100, 100) / 500, this.getHeight() / 2 + Utils.rand(-100, 100) / 500, this.getWidth() / 2 + Utils.rand(-100, 100) / 500)));
+        } else if (this.onGround) {
+            this.critical = false;
         }
 
-        if (age > 1200 || isCollided) {
-            if (isCollided && canExplode) {
+        if (this.age > 1200 || this.isCollided) {
+            if (this.isCollided && this.canExplode) {
                 ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 2.8);
-                server.getPluginManager().callEvent(ev);
+                this.server.getPluginManager().callEvent(ev);
                 if (!ev.isCancelled()) {
-                    Explosion explosion = new Explosion(this, (float) ev.getForce(), shootingEntity);
+                    Explosion explosion = new Explosion(this, (float) ev.getForce(), this.shootingEntity);
                     if (ev.isBlockBreaking()) {
                         explosion.explodeA();
                     }
                     explosion.explodeB();
                 }
             }
-            kill();
+            this.kill();
             hasUpdate = true;
         }
 
+        // this.timings.stopTiming();
         return hasUpdate;
     }
 
     public void spawnTo(Player player) {
         AddEntityPacket pk = new AddEntityPacket();
         pk.type = NETWORK_ID;
-        pk.entityRuntimeId = getId();
-        pk.x = (float) x;
-        pk.y = (float) y;
-        pk.z = (float) z;
-        pk.speedX = (float) motionX;
-        pk.speedY = (float) motionY;
-        pk.speedZ = (float) motionZ;
-        pk.metadata = dataProperties;
+        pk.entityRuntimeId = this.getId();
+        pk.x = (float) this.x;
+        pk.y = (float) this.y;
+        pk.z = (float) this.z;
+        pk.speedX = (float) this.motionX;
+        pk.speedY = (float) this.motionY;
+        pk.speedZ = (float) this.motionZ;
+        pk.metadata = this.dataProperties;
         player.dataPacket(pk);
 
         super.spawnTo(player);

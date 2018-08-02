@@ -16,17 +16,17 @@ import java.util.List;
  */
 public class SpawnTask implements Runnable {
 
-    private Server server = null;
+    private Server              server           = null;
 
-    private static final int MAX_SPAWN_RADIUS = 10;
+    private static final int    MAX_SPAWN_RADIUS = 10; //in blocks
 
-    private static final int MIN_SPAWN_RADIUS = 3;
+    private static final int    MIN_SPAWN_RADIUS = 3; //in blocks
 
-    private MobPlugin plugin = null;
+    private MobPlugin           plugin = null;
 
     public SpawnTask(MobPlugin plugin) {
-        server = Server.getInstance();
-        plugin = plugin;
+        this.server = Server.getInstance();
+        this.plugin = plugin;
     }
 
     /*
@@ -35,7 +35,7 @@ public class SpawnTask implements Runnable {
      */
     @Override
     public void run() {
-        List<IPlayer> allRegisteredUsers = plugin.getAllRegisteredPlayers();
+        List<IPlayer> allRegisteredUsers = this.plugin.getAllRegisteredPlayers();
 
         // we only perform for offline players ...
         List<Player> onlinePlayers = new ArrayList<>();
@@ -126,4 +126,5 @@ public class SpawnTask implements Runnable {
         }
         return true;
     }
+
 }

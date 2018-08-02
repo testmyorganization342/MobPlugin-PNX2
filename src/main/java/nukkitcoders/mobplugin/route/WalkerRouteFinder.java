@@ -28,20 +28,20 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
     public WalkerRouteFinder(WalkingEntity entity) {
         super(entity);
-        level = entity.getLevel();
+        this.level = entity.getLevel();
     }
 
     public WalkerRouteFinder(WalkingEntity entity, Vector3 start) {
         super(entity);
-        level = entity.getLevel();
-        start = start;
+        this.level = entity.getLevel();
+        this.start = start;
     }
 
     public WalkerRouteFinder(WalkingEntity entity, Vector3 start, Vector3 destination) {
         super(entity);
-        level = entity.getLevel();
-        start = start;
-        destination = destination;
+        this.level = entity.getLevel();
+        this.start = start;
+        this.destination = destination;
     }
 
     /**
@@ -55,34 +55,34 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     @Override
     public boolean search() {
 
-        finished = false;
-        searching = true;
+        this.finished = false;
+        this.searching = true;
 
-        if (start == null) {
-            start = entity;
+        if (this.start == null) {
+            this.start = this.entity;
         }
 
-        if (destination == null) {
+        if (this.destination == null) {
             if (entity.getFollowTarget() != null) {
-                destination = entity.getFollowTarget();
+                this.destination = entity.getFollowTarget();
             } else {
-                searching = false;
-                finished = true;
+                this.searching = false;
+                this.finished = true;
                 return false;
             }
         }
 
-        resetTemporary();
+        this.resetTemporary();
 
         Node presentNode = new Node(start);
         closeList.add(new Node(start));
 
 
         while (!isPositionOverlap(presentNode.getVector3(), destination)) {
-            if (isInterrupted()) {
+            if (this.isInterrupted()) {
                 searchLimit = 0;
-                searching = false;
-                finished = true;
+                this.searching = false;
+                this.finished = true;
                 return false;
             }
             putNeighborNodeIntoOpen(presentNode);
@@ -90,10 +90,10 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
                 closeList.add(presentNode = openList.poll());
 
             } else {
-                searching = false;
-                finished = true;
-                reachable = false;
-                addNode(new Node(destination));
+                this.searching = false;
+                this.finished = true;
+                this.reachable = false;
+                this.addNode(new Node(destination));
                 return false;
             }
 
@@ -105,11 +105,11 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         ArrayList<Node> findingPath = getPathRoute();
         findingPath = FloydSmooth(findingPath);
 
-        resetNodes();
+        this.resetNodes();
 
-        addNode(findingPath);
-        finished = true;
-        searching = false;
+        this.addNode(findingPath);
+        this.finished = true;
+        this.searching = false;
 
         return true;
     }
@@ -118,13 +118,13 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     private Block getHighestUnder(Vector3 vector3, int limit) {
         if (limit > 0) {
             for (int y = vector3.getFloorY(); y >= vector3.getFloorY() - limit; y--) {
-                Block block = level.getBlock(vector3.getFloorX(), y, vector3.getFloorZ());
+                Block block = this.level.getBlock(vector3.getFloorX(), y, vector3.getFloorZ());
                 if (isWalkable(block) && level.getBlock(block.add(0, 1, 0)).getId() == Block.AIR) return block;
             }
             return null;
         }
         for (int y = vector3.getFloorY(); y >= 0; y--) {
-            Block block = level.getBlock(vector3.getFloorX(), y, vector3.getFloorZ());
+            Block block = this.level.getBlock(vector3.getFloorX(), y, vector3.getFloorZ());
             if (isWalkable(block) && level.getBlock(block.add(0, 1, 0)).getId() == Block.AIR) return block;
         }
         return null;
@@ -140,10 +140,10 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     private boolean isPassable(Vector3 vector3) {
-        double radius = (entity.getWidth() * entity.getScale()) / 2;
-        float height = entity.getHeight() * entity.getScale();
+        double radius = (this.entity.getWidth() * this.entity.getScale()) / 2;
+        float height = this.entity.getHeight() * this.entity.getScale();
         AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius, vector3.getY(), vector3.getZ() - radius, vector3.getX() + radius, vector3.getY() + height, vector3.getZ() + radius);
-        return level.getCollisionBlocks(bb, true).length == 0 && !level.getBlock(vector3.add(0, -1, 0)).canPassThrough();
+        return this.level.getCollisionBlocks(bb, true).length == 0 && !this.level.getBlock(vector3.add(0, -1, 0)).canPassThrough();
     }
 
     private int getWalkableHorizontalOffset(Vector3 vector3) {
@@ -159,7 +159,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     public void setSearchLimit(int limit) {
-        searchLimit = limit;
+        this.searchLimit = limit;
     }
 
     private void putNeighborNodeIntoOpen(Node node) {
@@ -180,7 +180,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + DIRECT_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -196,7 +196,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + DIRECT_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -212,7 +212,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + DIRECT_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -228,7 +228,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, DIRECT_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + DIRECT_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -244,7 +244,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + OBLIQUE_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -260,7 +260,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + OBLIQUE_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -276,7 +276,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + OBLIQUE_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -292,7 +292,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
             if (isPassable(vec) && !isContainsInClose(vec)) {
                 Node nodeNear = getNodeInOpenByVector2(vec);
                 if (nodeNear == null) {
-                    openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
+                    this.openList.offer(new Node(vec, node, OBLIQUE_MOVE_COST + node.getG(), calHeuristic(vec, destination)));
                 } else {
                     if (node.getG() + OBLIQUE_MOVE_COST < nodeNear.getG()) {
                         nodeNear.setParent(node);
@@ -305,7 +305,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     private Node getNodeInOpenByVector2(Vector3 vector2) {
-        for (Node node : openList) {
+        for (Node node : this.openList) {
             if (vector2.equals(node.getVector3())) {
                 return node;
             }
@@ -319,7 +319,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     private Node getNodeInCloseByVector2(Vector3 vector2) {
-        for (Node node : closeList) {
+        for (Node node : this.closeList) {
             if (vector2.equals(node.getVector3())) {
                 return node;
             }
@@ -366,11 +366,11 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
 
 
     private boolean hasBlocksAround(ArrayList<Vector3> list) {
-        double radius = (entity.getWidth() * entity.getScale()) / 2 + 0.1;
-        double height = entity.getHeight() * entity.getScale();
+        double radius = (this.entity.getWidth() * this.entity.getScale()) / 2 + 0.1;
+        double height = this.entity.getHeight() * this.entity.getScale();
         for (Vector3 vector3 : list) {
             AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius, vector3.getY(), vector3.getZ() - radius, vector3.getX() + radius, vector3.getY() + height, vector3.getZ() + radius);
-            if (level.getCollisionBlocks(bb, true).length != 0) return true;
+            if (this.level.getCollisionBlocks(bb, true).length != 0) return true;
 
             boolean xIsInt = vector3.getX() % 1 == 0;
             boolean zIsInt = vector3.getZ() % 1 == 0;
@@ -444,8 +444,8 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     public void resetTemporary() {
-        openList.clear();
-        closeList.clear();
-        searchLimit = 100;
+        this.openList.clear();
+        this.closeList.clear();
+        this.searchLimit = 100;
     }
 }

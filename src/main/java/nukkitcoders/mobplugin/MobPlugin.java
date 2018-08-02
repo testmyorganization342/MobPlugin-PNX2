@@ -53,7 +53,9 @@ import java.util.List;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 2; // change this when you make big changes to config
+    private int configVersion = 2; //change this when you add/remove something from config
+
+    public static boolean MOB_AI_ENABLED = true;
 
     private Config pluginConfig = null;
 
@@ -71,25 +73,31 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
-        // save default config file
-        saveDefaultConfig();
-        // intialize config
+        // Config reading and writing
+        this.saveDefaultConfig();
+
         pluginConfig = getConfig();
-        // check config version
-        if (getConfig().getInt("config-version") != configVersion) getServer().getLogger().warning("MobPlugin's config file is outdated. Delete old config and reload server to update it.");
+
+        if (getConfig().getInt("config-version") != configVersion) this.getServer().getLogger().warning("MobPlugin's config file is outdated. Delete old config and reload server to update it.");
+
         // we need this flag as it's controlled by the plugin's entities
         int spawnDelay = pluginConfig.getInt("entities.auto-spawn-tick", 0);
-        // register listener for plugin events
-        getServer().getPluginManager().registerEvents(this, this);
-        // enable autospawn
+
+        // register as listener to plugin events
+        this.getServer().getPluginManager().registerEvents(this, this);
+
         if (spawnDelay > 0) {
-            getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
+            this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
         }
+
+        this.getServer().getLogger().info(String.format("\u00A76Mob plugin enabled successful [aiEnabled:%s] [autoSpawnTick:%d]", MOB_AI_ENABLED, spawnDelay));
+
     }
 
     @Override
     public void onDisable() {
         RouteFinderThreadPool.shutDownNow();
+        this.getServer().getLogger().info("\u00A76Mob plugin disabled successful.");
     }
 
     @Override
@@ -97,7 +105,7 @@ public class MobPlugin extends PluginBase implements Listener {
         if (cmd.getName().toLowerCase().equals("mob")) {
 
             if (args.length == 0) {
-                sender.sendMessage("-- MobPlugin 1.1 --");
+                sender.sendMessage("-- MobPlugin 1.0 --");
                 sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
                 sender.sendMessage("/mob removeall - Remove all living mobs");
                 sender.sendMessage("/mob removeitems - Remove all items from ground");
@@ -115,7 +123,7 @@ public class MobPlugin extends PluginBase implements Listener {
                         Player playerThatSpawns = null;
 
                         if (args.length == 3) {
-                            playerThatSpawns = getServer().getPlayer(args[2]);
+                            playerThatSpawns = this.getServer().getPlayer(args[2]);
                         } else {
                             playerThatSpawns = (Player) sender;
                         }
@@ -144,7 +152,7 @@ public class MobPlugin extends PluginBase implements Listener {
                                 }
                             }
                         }
-                        sender.sendMessage("Removed " + count + " entities from all levels");
+                        sender.sendMessage("Removed " + count + " entities from all levels.");
                         break;
                     case "removeitems":
                         count = 0;
@@ -156,10 +164,10 @@ public class MobPlugin extends PluginBase implements Listener {
                                 }
                             }
                         }
-                        sender.sendMessage("Removed " + count + " items on ground from all levels");
+                        sender.sendMessage("Removed " + count + " items on ground from all levels.");
                         break;
                     default:
-                        sender.sendMessage("Unkown command");
+                        sender.sendMessage("Unkown command.");
                         break;
                 }
             }
@@ -174,7 +182,7 @@ public class MobPlugin extends PluginBase implements Listener {
      * @return a {@link Config} instance
      */
     public Config getPluginConfig() {
-        return pluginConfig;
+        return this.pluginConfig;
     }
 
     private void registerEntities() {
@@ -269,7 +277,7 @@ public class MobPlugin extends PluginBase implements Listener {
      */
     public List<IPlayer> getAllRegisteredPlayers() {
         List<IPlayer> playerList = new ArrayList<>();
-        for (Player player : getServer().getOnlinePlayers().values()) {
+        for (Player player : this.getServer().getOnlinePlayers().values()) {
             playerList.add(player);
         }
         return playerList;
@@ -396,7 +404,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     /*@EventHandler
     public void PlayerMouseOverEntityEvent(PlayerMouseOverEntityEvent ev) {
-        if (counter > 10) {
+        if (this.counter > 10) {
             counter = 0;
             // wolves can be tamed using bones
             if (ev != null && ev.getEntity() != null && ev.getPlayer() != null && ev.getEntity().getNetworkId() == Wolf.NETWORK_ID && ev.getPlayer().getInventory().getItemInHand().getId() == Item.BONE) {
@@ -419,4 +427,6 @@ public class MobPlugin extends PluginBase implements Listener {
             counter++;
         }
     }*/
+
+
 }

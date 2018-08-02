@@ -21,7 +21,7 @@ public class HorseSpawner extends AbstractEntitySpawner {
 
     @Override
     protected String getLogprefix() {
-        return getClass().getSimpleName();
+        return this.getClass().getSimpleName();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class HorseSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
             result = SpawnResult.POSITION_MISMATCH;
         } else { // horse is spawned
-            spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }
 
         return result;

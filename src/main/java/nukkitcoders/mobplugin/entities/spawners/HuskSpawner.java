@@ -21,7 +21,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
 
     @Override
     protected String getLogprefix() {
-        return getClass().getSimpleName();
+        return this.getClass().getSimpleName();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
         } else if (biomeId != 2) { //DESERT
             result = SpawnResult.WRONG_BLOCK;
         } else if (time > 13184 && time < 22800) {
-            spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }
 
         return result;

@@ -40,13 +40,13 @@ public class Parrot extends FlyingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(6);
+        this.setMaxHealth(6);
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int featherDrop = Utils.rand(1, 3);
             for (int i = 0; i < featherDrop; i++) {
                 drops.add(Item.get(Item.FEATHER, 0, 1));

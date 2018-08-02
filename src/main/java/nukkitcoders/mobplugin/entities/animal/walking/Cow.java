@@ -30,7 +30,7 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public float getWidth() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.2f;
         }
         return 0.45f;
@@ -38,7 +38,7 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public float getHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.7f;
         }
         return 1.4f;
@@ -46,7 +46,7 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public float getEyeHeight() {
-        if (isBaby()) {
+        if (this.isBaby()) {
             return 0.65f;
         }
         return 1.2f;
@@ -54,12 +54,12 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public boolean isBaby() {
-        return getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
+        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
     }
 
     public void initEntity() {
         super.initEntity();
-        setMaxHealth(10);
+        this.setMaxHealth(10);
     }
 
     @Override
@@ -67,13 +67,13 @@ public class Cow extends WalkingAnimal {
         if (item.equals(Item.get(Item.BUCKET,0),true)) {
             player.getInventory().removeItem(Item.get(Item.BUCKET,0,1));
             player.getInventory().addItem(Item.get(Item.BUCKET,1,1));
-            level.addSound(this, Sound.MOB_COW_MILK);
+            this.level.addSound(this, Sound.MOB_COW_MILK);
             return true;
-        }else if(item.equals(Item.get(Item.WHEAT,0)) && !isBaby()){
+        }else if(item.equals(Item.get(Item.WHEAT,0)) && !this.isBaby()){
             player.getInventory().removeItem(Item.get(Item.WHEAT,0,1));
-            level.addSound(this,Sound.RANDOM_EAT);
-            level.addParticle(new ItemBreakParticle(add(0,getMountedYOffset(),0),Item.get(Item.WHEAT)));
-            setInLove();
+            this.level.addSound(this,Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.WHEAT)));
+            this.setInLove();
         }
         return false;
     }
@@ -89,7 +89,7 @@ public class Cow extends WalkingAnimal {
 
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
 
             int leatherDropCount = Utils.rand(0, 3);
             int beefDrop = Utils.rand(1, 4);
@@ -100,7 +100,7 @@ public class Cow extends WalkingAnimal {
             }
             // when cow is burning, it drops steak instead of raw beef (1-3)
             for (int i = 0; i < beefDrop; i++) {
-                drops.add(Item.get(isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, 1));
+                drops.add(Item.get(this.isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, 1));
             }
         }
         return drops.toArray(new Item[drops.size()]);

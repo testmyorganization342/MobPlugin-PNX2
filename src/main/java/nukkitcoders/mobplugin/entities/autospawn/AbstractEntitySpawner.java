@@ -25,8 +25,8 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     protected List<String>  disabledSpawnWorlds = new ArrayList<>();
 
     public AbstractEntitySpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        spawnTask = spawnTask;
-        server = Server.getInstance();
+        this.spawnTask = spawnTask;
+        this.server = Server.getInstance();
         String disabledWorlds = pluginConfig.getString("entities.worlds-spawn-disabled");
         if (disabledWorlds != null && !disabledWorlds.trim().isEmpty()) {
             StringTokenizer tokenizer = new StringTokenizer(disabledWorlds, ",");
@@ -63,7 +63,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
      * @return <code>true</code> when world spawn is allowed
      */
     private boolean isWorldSpawnAllowed (Level level) {
-        for (String worldName : disabledSpawnWorlds) {
+        for (String worldName : this.disabledSpawnWorlds) {
             if (level.getName().toLowerCase().equals(worldName.toLowerCase())) {
                 return false;
             }
@@ -84,12 +84,12 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         Position pos = ((Player) iPlayer).getPosition();
         Level level = ((Player) iPlayer).getLevel();
 
-        if (spawnTask.entitySpawnAllowed(level, getEntityNetworkId(), getEntityName())) {
+        if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId(), getEntityName())) {
             if (pos != null) {
                 // get a random safe position for spawn
-                pos.x += spawnTask.getRandomSafeXZCoord(50, 26, 6);
-                pos.z += spawnTask.getRandomSafeXZCoord(50, 26, 6);
-                pos.y = spawnTask.getSafeYCoord(level, pos, 3);
+                pos.x += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
+                pos.z += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
+                pos.y = this.spawnTask.getSafeYCoord(level, pos, 3);
             }
 
             if (pos == null) {
@@ -131,7 +131,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
      * @return a {@link Difficulty} instance
      */
     protected Difficulty getCurrentDifficulty() {
-        return Difficulty.getByDiffculty(server.getDifficulty());
+        return Difficulty.getByDiffculty(this.server.getDifficulty());
     }
 
     protected abstract String getLogprefix ();

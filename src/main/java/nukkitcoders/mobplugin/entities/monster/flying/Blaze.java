@@ -58,97 +58,97 @@ public class Blaze extends FlyingMonster {
     public void initEntity() {
         super.initEntity();
 
-        fireProof = true;
-        setDamage(new float[]{0, 0, 0, 0});
+        this.fireProof = true;
+        this.setDamage(new float[]{0, 0, 0, 0});
     }
 
     protected void checkTarget() {
-        if (isKnockback()) {
+        if (this.isKnockback()) {
             return;
         }
 
-        if (followTarget != null && !followTarget.closed && followTarget.isAlive()) {
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
             return;
         }
 
-        Vector3 target = target;
-        if (!(target instanceof EntityCreature) || !targetOption((EntityCreature) target, distanceSquared(target))) {
+        Vector3 target = this.target;
+        if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
             double near = Integer.MAX_VALUE;
 
-            for (Entity entity : getLevel().getEntities()) {
+            for (Entity entity : this.getLevel().getEntities()) {
                 if (entity == this || !(entity instanceof EntityCreature) || entity instanceof Animal) {
                     continue;
                 }
 
                 EntityCreature creature = (EntityCreature) entity;
-                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == isFriendly()) {
+                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
                     continue;
                 }
 
-                double distance = distanceSquared(creature);
-                if (distance > near || !targetOption(creature, distance)) {
+                double distance = this.distanceSquared(creature);
+                if (distance > near || !this.targetOption(creature, distance)) {
                     continue;
                 }
                 near = distance;
 
-                moveTime = 0;
-                target = creature;
+                this.moveTime = 0;
+                this.target = creature;
             }
         }
 
-        if (target instanceof EntityCreature && ((EntityCreature) target).isAlive()) {
+        if (this.target instanceof EntityCreature && ((EntityCreature) this.target).isAlive()) {
             return;
         }
 
         int x, z;
-        if (stayTime > 0) {
+        if (this.stayTime > 0) {
             if (Utils.rand(1, 100) > 5) {
                 return;
             }
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            target = add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
         } else if (Utils.rand(1, 410) == 1) {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            stayTime = Utils.rand(90, 400);
-            target = add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
-        } else if (moveTime <= 0 || target == null) {
+            this.stayTime = Utils.rand(90, 400);
+            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
+        } else if (this.moveTime <= 0 || this.target == null) {
             x = Utils.rand(20, 100);
             z = Utils.rand(20, 100);
-            stayTime = 0;
-            moveTime = Utils.rand(300, 1200);
-            target = add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
+            this.stayTime = 0;
+            this.moveTime = Utils.rand(300, 1200);
+            this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         }
     }
 
     protected boolean checkJump(double dx, double dz) {
-        if (motionY == getGravity() * 2) {
-            return level.getBlock(new Vector3(NukkitMath.floorDouble(x), (int) y, NukkitMath.floorDouble(z))) instanceof BlockLiquid;
+        if (this.motionY == this.getGravity() * 2) {
+            return this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z))) instanceof BlockLiquid;
         } else {
-            if (level.getBlock(new Vector3(NukkitMath.floorDouble(x), (int) (y + 0.8), NukkitMath.floorDouble(z))) instanceof BlockLiquid) {
-                motionY = getGravity() * 2;
+            if (this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid) {
+                this.motionY = this.getGravity() * 2;
                 return true;
             }
         }
 
-        if (!onGround || stayTime > 0) {
+        if (!this.onGround || this.stayTime > 0) {
             return false;
         }
 
-        Block that = getLevel().getBlock(new Vector3(NukkitMath.floorDouble(x + dx), (int) y, NukkitMath.floorDouble(z + dz)));
-        if (getDirection() == null) {
+        Block that = this.getLevel().getBlock(new Vector3(NukkitMath.floorDouble(this.x + dx), (int) this.y, NukkitMath.floorDouble(this.z + dz)));
+        if (this.getDirection() == null) {
             return false;
         }
 
-        Block block = that.getSide(getDirection());
+        Block block = that.getSide(this.getDirection());
         if (!block.canPassThrough() && block.getSide(BlockFace.UP).canPassThrough() && that.getSide(BlockFace.UP, 2).canPassThrough()) {
             if (block instanceof BlockFence || block instanceof BlockFenceGate) {
-                motionY = getGravity();
-            } else if (motionY <= getGravity() * 4) {
-                motionY = getGravity() * 4;
+                this.motionY = this.getGravity();
+            } else if (this.motionY <= this.getGravity() * 4) {
+                this.motionY = this.getGravity() * 4;
             } else {
-                motionY += getGravity() * 0.25;
+                this.motionY += this.getGravity() * 0.25;
             }
             return true;
         }
@@ -157,102 +157,102 @@ public class Blaze extends FlyingMonster {
 
     @Override
     public Vector3 updateMove(int tickDiff) {
-        if (!isMovement()) {
+        if (!this.isMovement()) {
             return null;
         }
 
-        if (isKnockback()) {
-            move(motionX * tickDiff, motionY * tickDiff, motionZ * tickDiff);
-            updateMovement();
+        if (this.isKnockback()) {
+            this.move(this.motionX * tickDiff, this.motionY * tickDiff, this.motionZ * tickDiff);
+            this.updateMovement();
             return null;
         }
 
-        if (followTarget != null && !followTarget.closed && followTarget.isAlive()) {
-            double x = followTarget.x - x;
-            double y = followTarget.y - y;
-            double z = followTarget.z - z;
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
+            double x = this.followTarget.x - this.x;
+            double y = this.followTarget.y - this.y;
+            double z = this.followTarget.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
-            if (stayTime > 0 || distance(followTarget) <= (getWidth() + 0.0d) / 2 + 0.05) {
-                motionX = 0;
-                motionZ = 0;
+            if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
+                this.motionX = 0;
+                this.motionZ = 0;
             } else {
-                motionX = getSpeed() * 0.15 * (x / diff);
-                motionZ = getSpeed() * 0.15 * (z / diff);
+                this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                this.motionZ = this.getSpeed() * 0.15 * (z / diff);
             }
-            yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-            pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
-            return followTarget;
+            this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+            this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
+            return this.followTarget;
         }
 
-        Vector3 before = target;
-        checkTarget();
-        if (target instanceof EntityCreature || before != target) {
-            double x = target.x - x;
-            double y = target.y - y;
-            double z = target.z - z;
+        Vector3 before = this.target;
+        this.checkTarget();
+        if (this.target instanceof EntityCreature || before != this.target) {
+            double x = this.target.x - this.x;
+            double y = this.target.y - this.y;
+            double z = this.target.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
-            double distance = distance(target);
-            if (distance <= (getWidth() + 0.0d) / 2 + 0.05) {
-                motionX = 0;
-                motionZ = 0;
+            double distance = this.distance(this.target);
+            if (distance <= (this.getWidth() + 0.0d) / 2 + 0.05) {
+                this.motionX = 0;
+                this.motionZ = 0;
             } else {
-                if (target instanceof EntityCreature) {
-                    motionX = 0;
-                    motionZ = 0;
-                    if (distance > y - getLevel().getHighestBlockAt((int) x, (int) z)) {
-                        motionY = getGravity();
+                if (this.target instanceof EntityCreature) {
+                    this.motionX = 0;
+                    this.motionZ = 0;
+                    if (distance > this.y - this.getLevel().getHighestBlockAt((int) this.x, (int) this.z)) {
+                        this.motionY = this.getGravity();
                     } else {
-                        motionY = 0;
+                        this.motionY = 0;
                     }
                 } else {
-                    motionX = getSpeed() * 0.15 * (x / diff);
-                    motionZ = getSpeed() * 0.15 * (z / diff);
+                    this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
             }
-            yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-            pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
+            this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+            this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
         }
 
-        double dx = motionX * tickDiff;
-        double dz = motionZ * tickDiff;
-        boolean isJump = checkJump(dx, dz);
-        if (stayTime > 0) {
-            stayTime -= tickDiff;
-            move(0, motionY * tickDiff, 0);
+        double dx = this.motionX * tickDiff;
+        double dz = this.motionZ * tickDiff;
+        boolean isJump = this.checkJump(dx, dz);
+        if (this.stayTime > 0) {
+            this.stayTime -= tickDiff;
+            this.move(0, this.motionY * tickDiff, 0);
         } else {
-            Vector2 be = new Vector2(x + dx, z + dz);
-            move(dx, motionY * tickDiff, dz);
-            Vector2 af = new Vector2(x, z);
+            Vector2 be = new Vector2(this.x + dx, this.z + dz);
+            this.move(dx, this.motionY * tickDiff, dz);
+            Vector2 af = new Vector2(this.x, this.z);
 
             if ((be.x != af.x || be.y != af.y) && !isJump) {
-                moveTime -= 90 * tickDiff;
+                this.moveTime -= 90 * tickDiff;
             }
         }
 
         if (!isJump) {
-            if (onGround) {
-                motionY = 0;
-            } else if (motionY > -getGravity() * 4) {
-                motionY = -getGravity() * 4;
+            if (this.onGround) {
+                this.motionY = 0;
+            } else if (this.motionY > -this.getGravity() * 4) {
+                this.motionY = -this.getGravity() * 4;
             } else {
-                motionY -= getGravity() * tickDiff;
+                this.motionY -= this.getGravity() * tickDiff;
             }
         }
-        updateMovement();
-        return target;
+        this.updateMovement();
+        return this.target;
     }
 
     public void attackEntity(Entity player) {
-        if (attackDelay > 20 && Utils.rand(1, 32) < 4 && distance(player) <= 18) {
-            attackDelay = 0;
+        if (this.attackDelay > 20 && Utils.rand(1, 32) < 4 && this.distance(player) <= 18) {
+            this.attackDelay = 0;
 
             double f = 1.2;
-            double yaw = yaw + Utils.rand(-150, 150) / 10;
-            double pitch = pitch + Utils.rand(-75, 75) / 10;
-            Location pos = new Location(x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, y + getEyeHeight(),
-                    z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, level);
+            double yaw = this.yaw + Utils.rand(-150, 150) / 10;
+            double pitch = this.pitch + Utils.rand(-75, 75) / 10;
+            Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
+                    this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             Entity k = MobPlugin.create("FireBall", pos, this);
             if (!(k instanceof EntityFireBall)) {
                 return;
@@ -264,12 +264,12 @@ public class Blaze extends FlyingMonster {
                     Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
 
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
-            server.getPluginManager().callEvent(launch);
+            this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
                 fireball.kill();
             } else {
                 fireball.spawnToAll();
-                level.addSound(this, Sound.MOB_BLAZE_SHOOT);
+                this.level.addSound(this, Sound.MOB_BLAZE_SHOOT);
             }
         }
     }
@@ -277,7 +277,7 @@ public class Blaze extends FlyingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             int blazeRod = Utils.rand(0, 2); // drops 0-1 blaze rod
             int glowStoneDust = Utils.rand(0, 3); // drops 0-2 glowstone dust
             for (int i = 0; i < blazeRod; i++) {
