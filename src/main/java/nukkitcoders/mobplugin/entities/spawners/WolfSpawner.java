@@ -31,7 +31,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
-        if (biomeId != 4 && biomeId != 27 && biomeId == 5) { //FOREST, BIRCH_FOREST, TAIGA
+        if (biomeId != 4 && biomeId != 5 && biomeId !=20 biomeId != 27 && biomeId != 30 && biomeId !=32 && biomeId !=133 && biomeId !=158 ) { //FOREST, BIRCH_FOREST, TAIGA
             result = SpawnResult.WRONG_BLOCK;
 //        } else if (blockLightLevel < 9) { // uncommented because lightlevel doesn't work now
 //            result = SpawnResult.WRONG_LIGHTLEVEL;
