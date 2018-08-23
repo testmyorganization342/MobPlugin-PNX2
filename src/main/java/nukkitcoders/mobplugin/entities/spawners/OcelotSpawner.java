@@ -32,12 +32,12 @@ public class OcelotSpawner extends AbstractEntitySpawner {
             return SpawnResult.SPAWN_DENIED;
         }
 
+        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-        int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
 
         if (biomeId != 21 && biomeId != 149 && biomeId != 23 && biomeId != 151) {
             result = SpawnResult.WRONG_BLOCK;
-        } else id(blockId != Block.GRASS && blockId != Block.LEAVE) { // only spawns on gras or leave blocks
+        } else if(blockId != Block.GRASS && blockId != Block.LEAVE) { // only spawns on gras or leave blocks
             result = SpawnResult.WRONG_BLOCK;
 //        } else if (blockLightLevel < 9) { // uncommented because lightlevel doesn't work now
 //            result = SpawnResult.WRONG_LIGHTLEVEL;
