@@ -52,7 +52,7 @@ public class Wither extends FlyingMonster {
         super.initEntity();
 
         this.fireProof = true;
-        this.setMaxHealth(300);
+        this.setMaxHealth(600);
         this.setDamage(new float[]{0, 0, 0, 0});
     }
 
