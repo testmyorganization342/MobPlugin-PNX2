@@ -94,13 +94,13 @@ public class Sheep extends WalkingAnimal {
         if (item.getId() == Item.DYE) {
             this.setColor(((ItemDye) item).getDyeColor().getWoolData());;
             return true;
-        }else if(item.equals(Item.get(Item.WHEAT,0,1)) && !this.isBaby()){
+        }else if (item.equals(Item.get(Item.WHEAT,0,1)) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.WHEAT,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.WHEAT)));
             this.setInLove();
             return true;
-        }else if(item.equals(Item.get(Item.SHEARS,0,1),false) && !isBaby() && !this.sheared){
+        }else if (item.equals(Item.get(Item.SHEARS,0,1),false) && !isBaby() && !this.sheared) {
             this.shear();
             this.level.addSound(this,Sound.MOB_SHEEP_SHEAR);
             player.getInventory().getItemInHand().setDamage(item.getDamage() + 1);
@@ -153,11 +153,11 @@ public class Sheep extends WalkingAnimal {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int rand = random.nextInt(0, 2500);
 
-        if(rand < 125 && 0 <= rand)return DyeColor.BLACK.getDyeData();
-        else if(rand < 250 && 125 <= rand)return DyeColor.GRAY.getDyeData();
-        else if(rand < 375 && 250 <= rand)return DyeColor.LIGHT_GRAY.getDyeData();
-        else if(rand < 500 && 375 <= rand)return DyeColor.GRAY.getDyeData();
-        else if(rand < 541 && 500 <= rand)return DyeColor.PINK.getDyeData();
+        if (rand < 125 && 0 <= rand)return DyeColor.BLACK.getDyeData();
+        else if (rand < 250 && 125 <= rand)return DyeColor.GRAY.getDyeData();
+        else if (rand < 375 && 250 <= rand)return DyeColor.LIGHT_GRAY.getDyeData();
+        else if (rand < 500 && 375 <= rand)return DyeColor.GRAY.getDyeData();
+        else if (rand < 541 && 500 <= rand)return DyeColor.PINK.getDyeData();
         else return DyeColor.WHITE.getDyeData();
     }
 

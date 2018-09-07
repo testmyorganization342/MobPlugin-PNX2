@@ -79,7 +79,7 @@ public class Chicken extends WalkingAnimal {
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
-        if(this.EggLayTime > 0){
+        if (this.EggLayTime > 0) {
             EggLayTime-=tickDiff;
         }else{
             this.level.dropItem(this,Item.get(Item.EGG,0,1));
@@ -104,22 +104,22 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item) {
-        if((item.equals(Item.get(Item.SEEDS,0))) && !this.isBaby()){
+        if ((item.equals(Item.get(Item.SEEDS,0))) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.SEEDS,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.SEEDS)));
             this.setInLove();
-        }else if((item.equals(Item.get(Item.BEETROOT_SEEDS,0))) && !this.isBaby()){
+        }else if ((item.equals(Item.get(Item.BEETROOT_SEEDS,0))) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.BEETROOT_SEEDS,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.BEETROOT_SEEDS)));
             this.setInLove();
-        }else if((item.equals(Item.get(Item.MELON_SEEDS,0))) && !this.isBaby()){
+        }else if ((item.equals(Item.get(Item.MELON_SEEDS,0))) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.MELON_SEEDS,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.MELON_SEEDS)));
             this.setInLove();
-        }else if((item.equals(Item.get(Item.PUMPKIN_SEEDS,0))) && !this.isBaby()){
+        }else if ((item.equals(Item.get(Item.PUMPKIN_SEEDS,0))) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.PUMPKIN_SEEDS,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.PUMPKIN_SEEDS)));
@@ -153,7 +153,7 @@ public class Chicken extends WalkingAnimal {
         return Utils.rand(1, 4); // gain 1-3 experience
     }
 
-    private int getRandomEggLayTime(){
+    private int getRandomEggLayTime() {
         return Utils.rand(6000,12000);
     }
 

@@ -7,14 +7,14 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import nukkitcoders.mobplugin.entities.monster.JumpingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MagmaCube extends WalkingMonster {
+public class MagmaCube extends JumpingMonster {
 
     public static final int NETWORK_ID = 42;
 
@@ -29,12 +29,12 @@ public class MagmaCube extends WalkingMonster {
 
     @Override
     public float getWidth() {
-        return 2.04f;
+        return 0.51f;
     }
 
     @Override
     public float getHeight() {
-        return 2.04f;
+        return 0.51f;
     }
 
     @Override
@@ -116,5 +116,4 @@ public class MagmaCube extends WalkingMonster {
     public int getKillExperience () {
         return 4;
     }
-
 }

@@ -35,7 +35,7 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget)) && this.target!=null){
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget)) && this.target!=null) {
             return;
         }
 
@@ -62,7 +62,7 @@ public abstract class WalkingEntity extends BaseEntity {
             this.stayTime = 0;
             this.moveTime = 0;
             this.followTarget = creature;
-            if(this.route==null)this.target = creature;
+            if (this.route==null)this.target = creature;
 
         }
         //}
@@ -137,9 +137,9 @@ public abstract class WalkingEntity extends BaseEntity {
                 return null;
             }
 
-            if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
+            if (this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
                 RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
-                if(this.route.hasNext()) {
+                if (this.route.hasNext()) {
                     this.target = this.route.next();
                 }
             }
@@ -229,8 +229,8 @@ public abstract class WalkingEntity extends BaseEntity {
                 }
             }
             this.updateMovement();
-            if(this.route != null){
-                if(this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
+            if (this.route != null) {
+                if (this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
                     //this.target = null;
                     if (this.route.hasNext()) {
                         this.target = this.route.next();
@@ -242,11 +242,11 @@ public abstract class WalkingEntity extends BaseEntity {
         return null;
     }
 
-    public RouteFinder getRoute(){
+    public RouteFinder getRoute() {
         return this.route;
     }
 
-    public void setRoute(RouteFinder route){
+    public void setRoute(RouteFinder route) {
         this.route = route;
     }
 }

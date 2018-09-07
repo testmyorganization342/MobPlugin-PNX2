@@ -33,47 +33,47 @@ public abstract class RouteFinder {
 
     //public boolean arrived = false;
 
-    RouteFinder(WalkingEntity entity){
+    RouteFinder(WalkingEntity entity) {
         Objects.requireNonNull(entity,"RouteFinder: entity can not be null");
         this.entity = entity;
         this.level = entity.getLevel();
     }
 
-    public WalkingEntity getEntity(){
+    public WalkingEntity getEntity() {
         return entity;
     }
 
-    public Vector3 getStart(){
+    public Vector3 getStart() {
         return this.start;
     }
 
-    public void setStart(Vector3 start){
-        if(!this.isSearching()) {
+    public void setStart(Vector3 start) {
+        if (!this.isSearching()) {
             this.start = start;
         }
     }
 
-    public Vector3 getDestination(){
+    public Vector3 getDestination() {
         return this.destination;
     }
 
-    public void setDestination(Vector3 destination){
+    public void setDestination(Vector3 destination) {
         this.destination = destination;
-        if(this.isSearching()){
+        if (this.isSearching()) {
             this.interrupt = true;
             this.research();
         }
     }
 
-    public boolean isFinished(){
+    public boolean isFinished() {
         return finished;
     }
 
-    public boolean isSearching(){
+    public boolean isSearching() {
         return searching;
     }
 
-    public void addNode(Node node){
+    public void addNode(Node node) {
         try {
             lock.writeLock().lock();
             nodes.add(node);
@@ -82,7 +82,7 @@ public abstract class RouteFinder {
         }
     }
 
-    public void addNode(ArrayList<Node> node){
+    public void addNode(ArrayList<Node> node) {
         try{
             lock.writeLock().lock();
             nodes.addAll(node);
@@ -92,14 +92,14 @@ public abstract class RouteFinder {
 
     }
 
-    public boolean isReachable(){
+    public boolean isReachable() {
         return reachable;
     }
 
-    public Node getCurrentNode(){
+    public Node getCurrentNode() {
         try{
             lock.readLock().lock();
-            if(this.hasCurrentNode()) {
+            if (this.hasCurrentNode()) {
                 return nodes.get(current);
             }
             return null;
@@ -108,27 +108,27 @@ public abstract class RouteFinder {
         }
 
     }
-    public boolean hasCurrentNode(){
+    public boolean hasCurrentNode() {
         return current < this.nodes.size();
     }
 
 
-    public Level getLevel(){
+    public Level getLevel() {
         return this.level;
     }
 
-    public void setLevel(Level level){
+    public void setLevel(Level level) {
         this.level = level;
     }
 
-    public int getCurrent(){
+    public int getCurrent() {
         return this.current;
     }
 
-    public boolean hasArrivedNode(Vector3 vec){
+    public boolean hasArrivedNode(Vector3 vec) {
         try{
             lock.readLock().lock();
-            if(this.hasNext() &&  this.getCurrentNode().getVector3()!=null) {
+            if (this.hasNext() &&  this.getCurrentNode().getVector3()!=null) {
                 Vector3 cur = this.getCurrentNode().getVector3();
                 return vec.getX() == cur.getX() && vec.getZ() == cur.getZ()/* && vec.getFloorY() == cur.getFloorY()*/;
             }
@@ -138,7 +138,7 @@ public abstract class RouteFinder {
         }
     }
 
-    public void resetNodes(){
+    public void resetNodes() {
         try{
             this.lock.writeLock().lock();
             this.nodes.clear();
@@ -152,19 +152,19 @@ public abstract class RouteFinder {
 
     public abstract boolean search();
 
-    public void research(){
+    public void research() {
         this.resetNodes();
         this.search();
     }
 
-    public boolean hasNext(){
+    public boolean hasNext() {
         return this.current + 1 < nodes.size() && this.nodes.get(this.current+1)!= null;
     }
 
-    public Vector3 next(){
+    public Vector3 next() {
         try{
             lock.readLock().lock();
-            if(this.hasNext()){
+            if (this.hasNext()) {
                 return this.nodes.get(++current).getVector3();
             }
             return null;
@@ -174,11 +174,11 @@ public abstract class RouteFinder {
 
     }
 
-    public boolean isInterrupted(){
+    public boolean isInterrupted() {
         return this.interrupt;
     }
 
-    public boolean interrupt(){
+    public boolean interrupt() {
         return this.interrupt ^= true;
     }
 }

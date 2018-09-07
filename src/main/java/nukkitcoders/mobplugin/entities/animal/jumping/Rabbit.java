@@ -6,14 +6,16 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.particle.PunchBlockParticle;
+import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
+import nukkitcoders.mobplugin.entities.animal.JumpingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rabbit extends WalkingAnimal {
+public class Rabbit extends JumpingAnimal {
 
     public static final int NETWORK_ID = 18;
 
@@ -94,4 +96,10 @@ public class Rabbit extends WalkingAnimal {
         return Utils.rand(1, 4); // gain 1-3 experience
     }
 
+    @Override
+    public boolean onUpdate(int currentTick) {
+        boolean hasUpdate = super.onUpdate(currentTick);
+        this.level.addParticle(new PunchBlockParticle(this, this.level.getBlock((int) x, (int) y - 1, (int) z), BlockFace.UP));
+        return hasUpdate;
+    }
 }

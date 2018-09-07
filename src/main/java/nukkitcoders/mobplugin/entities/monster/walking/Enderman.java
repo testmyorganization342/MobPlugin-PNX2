@@ -5,6 +5,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
@@ -96,6 +97,23 @@ public class Enderman extends WalkingMonster {
     }
 
     @Override
+    public boolean attack(EntityDamageEvent ev) {
+        super.attack(ev);
+        if (!ev.isCancelled()) {
+            if (ev.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+                this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
+                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+            } else if (Utils.rand(1, 15) == 5) {
+                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+                this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
+                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+            }
+        }
+        return true;
+    }
+
+    @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
@@ -111,5 +129,4 @@ public class Enderman extends WalkingMonster {
     public int getKillExperience () {
         return 5; // gain 5 experience
     }
-
 }

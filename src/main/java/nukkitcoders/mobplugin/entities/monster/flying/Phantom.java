@@ -9,6 +9,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
+import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,12 +108,12 @@ public class Phantom extends FlyingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        /*if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int drop = EntityUtils.rand(0, 2);
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+            int drop = Utils.rand(0, 2);
             for (int i = 0; i < drop; i++) {
-                drops.add(Item.get(Item.PHANTOM_MEMBRANE, 0, 1));
+                drops.add(Item.get(470, 0, 1));
             }
-        }*/
+        }
         return drops.toArray(new Item[drops.size()]);
     }
 

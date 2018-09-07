@@ -1,6 +1,6 @@
 name: MobPlugin
 main: nukkitcoders.mobplugin.MobPlugin
-version: "1.1"
+version: "${pom.version}"
 api: ["1.0.7"]
 
 author: kniffo80, matt404, augesrob, PetteriM1, PikyCZ, zzz1999

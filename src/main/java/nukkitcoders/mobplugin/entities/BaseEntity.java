@@ -109,11 +109,11 @@ public abstract class BaseEntity extends EntityCreature {
         return this.age;
     }
 
-    public Vector3 getTarget(){
+    public Vector3 getTarget() {
         return this.target;
     }
 
-    public void setTarget(Vector3 vec){
+    public void setTarget(Vector3 vec) {
         this.target = vec;
     }
 
@@ -147,7 +147,7 @@ public abstract class BaseEntity extends EntityCreature {
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return this.getClass().getSimpleName();
     }
 

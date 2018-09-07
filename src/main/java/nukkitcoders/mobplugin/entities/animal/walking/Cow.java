@@ -69,7 +69,7 @@ public class Cow extends WalkingAnimal {
             player.getInventory().addItem(Item.get(Item.BUCKET,1,1));
             this.level.addSound(this, Sound.MOB_COW_MILK);
             return true;
-        }else if(item.equals(Item.get(Item.WHEAT,0)) && !this.isBaby()){
+        }else if (item.equals(Item.get(Item.WHEAT,0)) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.WHEAT,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.WHEAT)));

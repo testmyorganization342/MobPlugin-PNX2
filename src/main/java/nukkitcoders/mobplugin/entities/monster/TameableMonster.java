@@ -59,7 +59,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
         return owner;
     }
 
-    public boolean hasOwner(){
+    public boolean hasOwner() {
         return owner!=null;
     }
 

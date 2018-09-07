@@ -59,7 +59,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     public static MobPlugin instance;
 
-    public static MobPlugin getInstance(){
+    public static MobPlugin getInstance() {
         return instance;
     }
 
@@ -314,7 +314,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
         Item item = ev.getItem();
         Block block = ev.getBlock();
-        if (item.getId() == Item.SPAWN_EGG && block.getId() == Item.MONSTER_SPAWNER) {
+        if (item.getId() == Item.SPAWN_EGG && block.getId() == Block.MONSTER_SPAWNER) {
             ev.setCancelled(true);
 
             BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
@@ -324,9 +324,12 @@ public class MobPlugin extends PluginBase implements Listener {
                 if (blockEntity != null) {
                     blockEntity.close();
                 }
-                CompoundTag nbt = new CompoundTag().putString("id", BlockEntity.MOB_SPAWNER).putInt("EntityId", item.getDamage()).putInt("x", (int) block.x).putInt("y", (int) block.y).putInt("z",
-                        (int) block.z);
-
+                CompoundTag nbt = new CompoundTag()
+                        .putString("id", BlockEntity.MOB_SPAWNER)
+                        .putInt("EntityId", item.getDamage())
+                        .putInt("x", (int) block.x)
+                        .putInt("y", (int) block.y)
+                        .putInt("z", (int) block.z);
                 new BlockEntitySpawner(block.getLevel().getChunk((int) block.x >> 4, (int) block.z >> 4), nbt);
             }
         }
@@ -339,7 +342,7 @@ public class MobPlugin extends PluginBase implements Listener {
         }
 
         Block block = ev.getBlock();
-        if (block.getId() == Item.JACK_O_LANTERN || block.getId() == Item.PUMPKIN) {
+        if (block.getId() == Block.JACK_O_LANTERN || block.getId() == Block.PUMPKIN) {
             if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
                 Entity entity = create("SnowGolem", block.add(0.5, -2, 0.5));
                 if (entity != null) {
@@ -385,7 +388,7 @@ public class MobPlugin extends PluginBase implements Listener {
                 && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
             Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5));
-            if(entity != null){
+            if (entity != null) {
                 entity.spawnToAll();
                 EntityEventPacket pk = new EntityEventPacket();
                 pk.eid = entity.getId();

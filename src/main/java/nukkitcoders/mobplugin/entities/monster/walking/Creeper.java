@@ -108,9 +108,9 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         if (!this.isMovement()) {
             return true;
         }
-        if(this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
+        if (this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
             RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
-            if(this.route.hasNext()) {
+            if (this.route.hasNext()) {
                 this.target = this.route.next();
             }
         }
@@ -189,8 +189,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             }
         }
         this.updateMovement();
-        if(this.route != null){
-            if(this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
+        if (this.route != null) {
+            if (this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
                 this.target = null;
                 if (this.route.hasNext()) {
                     this.target = this.route.next();

@@ -25,15 +25,15 @@ public class Utils {
         }
         return ThreadLocalRandom.current().nextInt(min,max);
     }
-    public static double rand(double min, double max){
-        if(min == max){
+    public static double rand(double min, double max) {
+        if (min == max) {
             return max;
         }
         return ThreadLocalRandom.current().nextDouble(min,max);
     }
 
-    public static float rand(float min, float max){
-        if(min == max){
+    public static float rand(float min, float max) {
+        if (min == max) {
             return max;
         }
         return min + (ThreadLocalRandom.current().nextFloat() * (max));
@@ -51,15 +51,15 @@ public class Utils {
     public static final int ACCORDING_Y_OBTAIN_X = 1;
 
     public static double calLinearFunction(Vector3 pos1, Vector3 pos2, double element, int type) {
-        if(pos1.getFloorY() != pos2.getFloorY())return Double.MAX_VALUE;
-        if(pos1.getX() == pos2.getX()){
-            if(type == ACCORDING_Y_OBTAIN_X) return pos1.getX();
+        if (pos1.getFloorY() != pos2.getFloorY())return Double.MAX_VALUE;
+        if (pos1.getX() == pos2.getX()) {
+            if (type == ACCORDING_Y_OBTAIN_X) return pos1.getX();
             else return Double.MAX_VALUE;
-        }else if(pos1.getZ() == pos2.getZ()){
-            if(type == ACCORDING_X_OBTAIN_Y) return pos1.getZ();
+        }else if (pos1.getZ() == pos2.getZ()) {
+            if (type == ACCORDING_X_OBTAIN_Y) return pos1.getZ();
             else return Double.MAX_VALUE;
         }else{
-            if(type == ACCORDING_X_OBTAIN_Y){
+            if (type == ACCORDING_X_OBTAIN_Y) {
                 //Y = [(x-x1)(y1-y2)/(x1-x2) ] + y1
                 return (element-pos1.getX()) * (pos1.getZ()-pos2.getZ()) / (pos1.getX()-pos2.getX()) + pos1.getZ();
             }else{//ACCORDING_Y_OBTAIN_X

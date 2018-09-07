@@ -10,7 +10,7 @@ public class RouteFinderSearchTask implements Runnable {
     private RouteFinder route;
     private int retryTime = 0;
 
-    public RouteFinderSearchTask(RouteFinder route){
+    public RouteFinderSearchTask(RouteFinder route) {
         this.route = route;
     }
 
