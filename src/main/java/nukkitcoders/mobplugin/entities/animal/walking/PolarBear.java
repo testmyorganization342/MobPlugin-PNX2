@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class PolarBear extends WalkingMonster {
 
     public static final int NETWORK_ID = 28;
-    int                     angry      = 0;
+    int angry = 0;
 
     public PolarBear(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -28,7 +28,7 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public String getName() {
-        return "PolarBear";
+        return "Polar Bear";
     }
 
     @Override
@@ -162,5 +162,4 @@ public class PolarBear extends WalkingMonster {
     public int getKillExperience() {
         return Utils.rand(1, 3);
     }
-
 }

@@ -38,11 +38,6 @@ public class Stray extends WalkingMonster {
     }
 
     @Override
-    public String getName() {
-        return "Stray";
-    }
-
-    @Override
     public float getWidth() {
         return 0.6f;
     }
@@ -102,5 +97,4 @@ public class Stray extends WalkingMonster {
     public int getKillExperience() {
         return 5;
     }
-
 }

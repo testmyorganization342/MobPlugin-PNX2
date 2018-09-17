@@ -107,7 +107,6 @@ public class Skeleton extends WalkingMonster {
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = false;
-        // Timings.timerEntityBaseTick.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
@@ -116,7 +115,6 @@ public class Skeleton extends WalkingMonster {
             this.setOnFire(100);
         }
 
-        // Timings.timerEntityBaseTick.stopTiming();
         return hasUpdate;
     }
 
@@ -124,8 +122,8 @@ public class Skeleton extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int bones = Utils.rand(0, 3); // drops 0-2 bones
-            int arrows = Utils.rand(0, 3); // drops 0-2 arrows
+            int bones = Utils.rand(0, 3);
+            int arrows = Utils.rand(0, 3);
             for (int i = 0; i < bones; i++) {
                 drops.add(Item.get(Item.BONE, 0, 1));
             }
@@ -138,7 +136,6 @@ public class Skeleton extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5; // gain 5 experience
+        return 5;
     }
-
 }

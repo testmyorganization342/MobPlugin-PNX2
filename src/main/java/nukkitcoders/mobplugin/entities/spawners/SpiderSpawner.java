@@ -31,11 +31,11 @@ public class SpiderSpawner extends AbstractEntitySpawner {
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
         int time = level.getTime() % Level.TIME_FULL;
 
-        if (!Block.solid[blockId]) { // only spawns on solid blocks
+        if (!Block.solid[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (blockLightLevel > 7) { // lightlevel not working for now, but as lightlevel is always zero that should work
+        } else if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.12, 0));
@@ -44,28 +44,13 @@ public class SpiderSpawner extends AbstractEntitySpawner {
         return result;
     }
 
-    /* (@Override)
-     * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityNetworkId()
-     */
     @Override
     public int getEntityNetworkId() {
         return Spider.NETWORK_ID;
     }
 
-    /* (@Override)
-     * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityName()
-     */
     @Override
     public String getEntityName() {
         return "Spider";
     }
-
-    /* (@Override)
-     * @see nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner#getLogprefix()
-     */
-    @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
 }

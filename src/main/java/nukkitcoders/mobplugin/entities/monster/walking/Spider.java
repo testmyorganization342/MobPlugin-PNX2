@@ -61,7 +61,6 @@ public class Spider extends WalkingMonster {
 
         this.setMaxHealth(16);
         this.setDamage(new float[] { 0, 2, 2, 3 });
-        //this.setDataFlag(DATA_FLAGS,DATA_FLAG_CAN_CLIMB);
     }
 
     @Override
@@ -258,8 +257,8 @@ public class Spider extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int strings = Utils.rand(0, 3); // drops 0-2 strings
-            int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0; // with a 1/3 chance it drops a spider eye
+            int strings = Utils.rand(0, 3);
+            int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0;
             for (int i = 0; i < strings; i++) {
                 drops.add(Item.get(Item.STRING, 0, 1));
             }
@@ -272,7 +271,6 @@ public class Spider extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5; // gain 5 experience
+        return 5;
     }
-
 }

@@ -95,14 +95,7 @@ public class Endermite extends WalkingMonster {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
-    @Override
     public int getKillExperience () {
         return 3;
     }
-
-
 }

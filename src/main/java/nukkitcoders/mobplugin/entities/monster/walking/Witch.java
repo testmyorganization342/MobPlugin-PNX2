@@ -6,7 +6,6 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
@@ -22,7 +21,7 @@ public class Witch extends WalkingMonster {
 
     public static final int NETWORK_ID = 45;
 
-    private static final int ATTACK_TICKS = 20; // how many ticks does the witch need to attack
+    private static final int ATTACK_TICKS = 20;
 
     public Witch(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -71,11 +70,11 @@ public class Witch extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > ATTACK_TICKS && this.distanceSquared(player) <= 8) { // they attack only beginning from 8 blocks away ...
+        if (this.attackDelay > ATTACK_TICKS && this.distanceSquared(player) <= 20) {
             this.attackDelay = 0;
             if (player.isAlive() && !player.closed) {
 
-                double f = 2;
+                double f = 1;
                 double yaw = this.yaw + Utils.rand(-220, 220) / 10;
                 double pitch = this.pitch + Utils.rand(-120, 120) / 10;
                 Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
@@ -110,13 +109,7 @@ public class Witch extends WalkingMonster {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
-    @Override
     public int getKillExperience() {
-        return 5; // gain 5 experience
+        return 5;
     }
-
 }

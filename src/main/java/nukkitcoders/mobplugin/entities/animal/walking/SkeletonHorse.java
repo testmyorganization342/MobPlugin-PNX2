@@ -64,7 +64,7 @@ public class SkeletonHorse extends Horse {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int leather = Utils.rand(0, 3); // drops 0-2 leather
+            int leather = Utils.rand(0, 3);
             int bone = Utils.rand(0, 2);
 
             for (int i = 0; i < leather; i++) {
@@ -83,4 +83,8 @@ public class SkeletonHorse extends Horse {
         return Utils.rand(1, 4);
     }
 
+    @Override
+    public String getName() {
+        return "Skeleton Horse";
+    }
 }

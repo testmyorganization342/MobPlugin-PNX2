@@ -143,5 +143,4 @@ public class Vindicator extends WalkingMonster {
     public int getKillExperience () {
         return 5;
     }
-
 }

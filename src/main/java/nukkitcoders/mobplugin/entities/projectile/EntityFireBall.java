@@ -35,7 +35,7 @@ public class EntityFireBall extends EntityProjectile {
 
     @Override
     public float getGravity() {
-        return 0.05f;
+        return 0.01f;
     }
 
     @Override
@@ -66,10 +66,12 @@ public class EntityFireBall extends EntityProjectile {
         this.canExplode = bool;
     }
 
+    @Override
     public boolean onUpdate(int currentTick) {
         if (this.closed) {
             return false;
         }
+
         if (this.shootingEntity.getLevelBlock() instanceof BlockCobblestone) {
             return false;
         }

@@ -1,6 +1,5 @@
 package nukkitcoders.mobplugin.entities.autospawn;
 
-
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (mige)</a>
  *
@@ -33,5 +32,4 @@ public enum Difficulty {
                 return PEACEFUL;
         }
     }
-
 }

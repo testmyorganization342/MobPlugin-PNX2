@@ -18,11 +18,6 @@ public class Villager extends WalkingAnimal {
     public int getNetworkId() {
         return NETWORK_ID;
     }
-    
-    @Override
-    public String getName() {
-        return "Villager";
-    }
 
     @Override
     public float getWidth() {

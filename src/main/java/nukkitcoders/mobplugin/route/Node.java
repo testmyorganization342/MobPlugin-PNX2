@@ -65,8 +65,6 @@ public class Node implements Comparable<Node> {
         if (this.getF() != o.getF()) {
             return this.getF() - o.getF();
         }
-        //Breaking ties
-        //0.1 = 10.0/100
         double breaking;
         if ((breaking = this.getG() + (this.getH() * 0.1) - (o.getG() + (this.getH() * 0.1))) > 0) {
             return 1;

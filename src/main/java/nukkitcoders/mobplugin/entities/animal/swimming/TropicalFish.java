@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
@@ -41,12 +40,12 @@ public class TropicalFish extends SwimmingAnimal {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
+    public int getKillExperience() {
+        return 0;
     }
 
     @Override
-    public int getKillExperience() {
-        return 0;
+    public String getName() {
+        return "Tropical Fish";
     }
 }

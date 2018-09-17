@@ -102,7 +102,7 @@ public class SnowGolem extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int snowBall = Utils.rand(0, 16); // drops 0-15 snowballs
+            int snowBall = Utils.rand(0, 16);
             for (int i = 0; i < snowBall; i++) {
                 drops.add(Item.get(Item.SNOWBALL, 0, 1));
             }
@@ -115,4 +115,8 @@ public class SnowGolem extends WalkingMonster {
         return 0;
     }
 
+    @Override
+    public String getName() {
+        return "Snow Golem";
+    }
 }

@@ -27,7 +27,7 @@ public class WitherSkeleton extends WalkingMonster {
 
     @Override
     public String getName() {
-        return "WitherSkeleton";
+        return "Wither Skeleton";
     }
 
     @Override

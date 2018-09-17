@@ -42,11 +42,6 @@ public class Vex extends FlyingMonster {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
-    @Override
     public int getKillExperience() {
         return 3;
     }

@@ -17,7 +17,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     protected int inLoveTicks = 0;
-    protected int spawnBabyDelay = 0; //TODO: spawn baby animal
+    protected int spawnBabyDelay = 0;
 
     public WalkingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -112,8 +112,6 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
     }
 
     public boolean onInteract(Entity entity, Item item) {
-        //TODO: mating
-
         return false;
     }
 

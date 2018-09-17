@@ -47,7 +47,10 @@ public class EnderDragon extends FlyingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        //TODO
     }
 
+    @Override
+    public String getName() {
+        return "Ender Dragon";
+    }
 }

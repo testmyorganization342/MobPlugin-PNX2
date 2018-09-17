@@ -92,17 +92,17 @@ public class Sheep extends WalkingAnimal {
     @Override
     public boolean onInteract(Player player, Item item) {
         if (item.getId() == Item.DYE) {
-            this.setColor(((ItemDye) item).getDyeColor().getWoolData());;
+            this.setColor(((ItemDye) item).getDyeColor().getWoolData());
             return true;
-        }else if (item.equals(Item.get(Item.WHEAT,0,1)) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.WHEAT,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.WHEAT)));
+        } else if (item.equals(Item.get(Item.WHEAT, 0, 1)) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.WHEAT, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.WHEAT)));
             this.setInLove();
             return true;
-        }else if (item.equals(Item.get(Item.SHEARS,0,1),false) && !isBaby() && !this.sheared) {
+        } else if (item.equals(Item.get(Item.SHEARS, 0, 1), false) && !isBaby() && !this.sheared) {
             this.shear();
-            this.level.addSound(this,Sound.MOB_SHEEP_SHEAR);
+            this.level.addSound(this, Sound.MOB_SHEEP_SHEAR);
             player.getInventory().getItemInHand().setDamage(item.getDamage() + 1);
             return true;
         }
@@ -129,8 +129,8 @@ public class Sheep extends WalkingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            drops.add(Item.get(Item.WOOL, this.namedTag.getByte("Color"), 1)); // each time drops 1 wool
-            int muttonDrop = Utils.rand(1, 3); // drops 1-2 muttons / cooked muttons
+            drops.add(Item.get(Item.WOOL, this.namedTag.getByte("Color"), 1));
+            int muttonDrop = Utils.rand(1, 3);
             for (int i = 0; i < muttonDrop; i++) {
                 drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
             }
@@ -163,7 +163,6 @@ public class Sheep extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
-
 }

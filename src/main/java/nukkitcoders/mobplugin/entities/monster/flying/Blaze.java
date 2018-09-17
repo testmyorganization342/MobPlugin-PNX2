@@ -246,10 +246,10 @@ public class Blaze extends FlyingMonster {
     }
 
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 20 && Utils.rand(1, 32) < 4 && this.distance(player) <= 18) {
+        if (this.attackDelay > 20 && Utils.rand(1, 32) < 4 && this.distance(player) <= 100) {
             this.attackDelay = 0;
 
-            double f = 1.2;
+            double f = 1.1;
             double yaw = this.yaw + Utils.rand(-150, 150) / 10;
             double pitch = this.pitch + Utils.rand(-75, 75) / 10;
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
@@ -261,8 +261,8 @@ public class Blaze extends FlyingMonster {
 
             EntityFireBall fireball = (EntityFireBall) k;
             fireball.setExplode(true);
-            fireball.setMotion(new Vector3(-Math.sin(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f, -Math.sin(Math.toDegrees(pitch)) * f * f,
-                    Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
+            fireball.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
+                    Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
 
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
             this.server.getPluginManager().callEvent(launch);
@@ -279,8 +279,8 @@ public class Blaze extends FlyingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int blazeRod = Utils.rand(0, 2); // drops 0-1 blaze rod
-            int glowStoneDust = Utils.rand(0, 3); // drops 0-2 glowstone dust
+            int blazeRod = Utils.rand(0, 2);
+            int glowStoneDust = Utils.rand(0, 3);
             for (int i = 0; i < blazeRod; i++) {
                 drops.add(Item.get(Item.BLAZE_ROD, 0, 1));
             }
@@ -293,7 +293,6 @@ public class Blaze extends FlyingMonster {
 
     @Override
     public int getKillExperience() {
-        return 10; // gain 10 experience
+        return 10;
     }
-
 }

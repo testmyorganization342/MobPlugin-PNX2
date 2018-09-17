@@ -117,7 +117,7 @@ public class Enderman extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int enderPearls = Utils.rand(0, 2); // drops 0-1 enderpearls
+            int enderPearls = Utils.rand(0, 2);
             for (int i = 0; i < enderPearls; i++) {
                 drops.add(Item.get(Item.ENDER_PEARL, 0, 1));
             }
@@ -127,6 +127,6 @@ public class Enderman extends WalkingMonster {
 
     @Override
     public int getKillExperience () {
-        return 5; // gain 5 experience
+        return 5;
     }
 }

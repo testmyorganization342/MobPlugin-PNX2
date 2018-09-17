@@ -79,22 +79,22 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public boolean onInteract(Player player, Item item) {
-        if (item.equals(Item.get(Item.CARROT,0)) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.CARROT,0,1));
+        if (item.equals(Item.get(Item.CARROT, 0)) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.CARROT, 0, 1));
             this.level.addSound(this, Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.CARROT)));
+            this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.CARROT)));
             this.setInLove();
             return true;
-        }else if (item.equals(Item.get(Item.POTATO,0)) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.POTATO,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.POTATO)));
+        } else if (item.equals(Item.get(Item.POTATO, 0)) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.POTATO, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.POTATO)));
             this.setInLove();
             return true;
-        }else if (item.equals(Item.get(Item.BEETROOT,0)) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.BEETROOT,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.BEETROOT)));
+        } else if (item.equals(Item.get(Item.BEETROOT, 0)) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.BEETROOT, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.BEETROOT)));
             this.setInLove();
             return true;
         }
@@ -104,7 +104,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int drop = Utils.rand(1, 4); // drops 1-3 raw porkchop / cooked porkchop when on fire
+            int drop = Utils.rand(1, 4);
             for (int i = 0; i < drop; i++) {
                 drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
             }
@@ -113,12 +113,11 @@ public class Pig extends WalkingAnimal implements EntityRideable {
     }
 
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
 
     @Override
     public boolean mountEntity(Entity entity) {
         return false;
     }
-
 }

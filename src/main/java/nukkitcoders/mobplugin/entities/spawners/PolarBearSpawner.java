@@ -20,24 +20,19 @@ public class PolarBearSpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
-        if (Block.transparent[blockId]) { // only spawns on opaque blocks
+        if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
         //} else if (blockLightLevel < 9) {
         //    result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (biomeId != 12) { //ICE_PLAINS
+        } else if (biomeId != 12) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
@@ -55,5 +50,4 @@ public class PolarBearSpawner extends AbstractEntitySpawner {
     public String getEntityName() {
         return "PolarBear";
     }
-
 }

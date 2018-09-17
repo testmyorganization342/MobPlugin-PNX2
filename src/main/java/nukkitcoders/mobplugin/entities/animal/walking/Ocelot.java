@@ -63,12 +63,7 @@ public class Ocelot extends WalkingAnimal {
         return false;
     }
 
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
-
 }

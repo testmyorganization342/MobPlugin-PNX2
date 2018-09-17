@@ -23,10 +23,6 @@ public class Parrot extends FlyingAnimal {
         return NETWORK_ID;
     }
 
-    public String getName() {
-        return "Parrot";
-    }
-
     @Override
     public float getWidth() {
         return 0.5f;
@@ -59,5 +55,4 @@ public class Parrot extends FlyingAnimal {
     public int getKillExperience() {
         return Utils.rand(1, 4);
     }
-
 }

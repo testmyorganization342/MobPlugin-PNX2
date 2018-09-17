@@ -20,20 +20,15 @@ public class BlazeSpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
-        if (Block.transparent[blockId]) { // only spawns on opaque blocks
+        if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (biomeId != 8) { //HELL
+        } else if (biomeId != 8) {
             result = SpawnResult.WRONG_BLOCK;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
@@ -51,5 +46,4 @@ public class BlazeSpawner extends AbstractEntitySpawner {
     public String getEntityName() {
         return "Blaze";
     }
-
 }

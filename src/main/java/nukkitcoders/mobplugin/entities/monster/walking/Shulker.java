@@ -12,17 +12,11 @@ public class Shulker extends WalkingMonster {
 
     public Shulker(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        //this.route = new WalkerRouteFinder(this);
-    }
+     }
 
     @Override
     public int getNetworkId() {
         return NETWORK_ID;
-    }
-
-    @Override
-    public String getName() {
-        return "Shulker";
     }
 
     @Override
@@ -51,5 +45,4 @@ public class Shulker extends WalkingMonster {
     public int getKillExperience() {
         return 5;
     }
-
 }

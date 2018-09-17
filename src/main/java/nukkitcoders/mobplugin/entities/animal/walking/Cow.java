@@ -94,11 +94,10 @@ public class Cow extends WalkingAnimal {
             int leatherDropCount = Utils.rand(0, 3);
             int beefDrop = Utils.rand(1, 4);
 
-            // in any case, cow drops leather (0-2)
             for (int i = 0; i < leatherDropCount; i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
             }
-            // when cow is burning, it drops steak instead of raw beef (1-3)
+
             for (int i = 0; i < beefDrop; i++) {
                 drops.add(Item.get(this.isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, 1));
             }
@@ -110,5 +109,4 @@ public class Cow extends WalkingAnimal {
     public int getKillExperience() {
         return Utils.rand(1, 4);
     }
-
 }

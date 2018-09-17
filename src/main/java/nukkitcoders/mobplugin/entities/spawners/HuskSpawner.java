@@ -20,11 +20,6 @@ public class HuskSpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
@@ -34,9 +29,9 @@ public class HuskSpawner extends AbstractEntitySpawner {
 
         if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
-        } else if (biomeId != 2) { //DESERT
+        } else if (biomeId != 2) {
             result = SpawnResult.WRONG_BLOCK;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
@@ -54,5 +49,4 @@ public class HuskSpawner extends AbstractEntitySpawner {
     public String getEntityName() {
         return "Husk";
     }
-
 }

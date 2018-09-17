@@ -75,9 +75,9 @@ public class Rabbit extends JumpingAnimal {
         }
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int rabbitHide = Utils.rand(0, 2); // drops 0-1 rabit hide
-            int rawRabbit = Utils.rand(0, 2); // drops 0-1 raw rabit
-            int rabbitfoot = Utils.rand(0, 101) <= 9 ? 1 : 0; //8.5%
+            int rabbitHide = Utils.rand(0, 2);
+            int rawRabbit = Utils.rand(0, 2);
+            int rabbitfoot = Utils.rand(0, 101) <= 9 ? 1 : 0;
             for (int i = 0; i < rabbitHide; i++) {
                 drops.add(Item.get(Item.RABBIT_HIDE, 0, 1));
             }
@@ -93,7 +93,7 @@ public class Rabbit extends JumpingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
 
     @Override

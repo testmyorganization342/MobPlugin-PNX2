@@ -52,9 +52,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                     }
                 }
             }
-        } else {
         }
-
     }
 
     /**
@@ -72,21 +70,11 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     }
 
     protected SpawnResult spawn(IPlayer iPlayer) {
-        // boolean offlinePlayer = iPlayer instanceof OfflinePlayer;
-        //
-        // Level level = offlinePlayer ? ((OfflinePlayer) iPlayer).getLevel() : ((Player) iPlayer).getLevel();
-        //
-        // if (!isEntitySpawnAllowed(level)) {
-        // return SpawnResult.MAX_SPAWN_REACHED;
-        // }
-        //
-        // Position pos = offlinePlayer ? ((OfflinePlayer) iPlayer).getLastKnownPosition() : ((Player) iPlayer).getPosition();
         Position pos = ((Player) iPlayer).getPosition();
         Level level = ((Player) iPlayer).getLevel();
 
         if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId(), getEntityName())) {
             if (pos != null) {
-                // get a random safe position for spawn
                 pos.x += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.z += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.y = this.spawnTask.getSafeYCoord(level, pos, 3);
@@ -119,7 +107,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             case NORMAL:
                 return randomNumber <= 2;
             case HARD:
-                return true; // in hard: always spawn
+                return true;
             default:
                 return true;
         }
@@ -133,7 +121,4 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     protected Difficulty getCurrentDifficulty() {
         return Difficulty.getByDiffculty(this.server.getDifficulty());
     }
-
-    protected abstract String getLogprefix ();
-
 }

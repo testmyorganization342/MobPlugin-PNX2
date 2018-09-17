@@ -97,14 +97,7 @@ public class Silverfish extends WalkingMonster {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
-    @Override
     public int getKillExperience () {
-        return 5; // gain 5 experience
+        return 5;
     }
-
-
 }

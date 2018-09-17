@@ -59,11 +59,6 @@ public class Chicken extends WalkingAnimal {
         return 0.2f;
     }
 
-    /*@Override
-    public float getGravity() {
-        return 0.04f;
-    }*/
-
     @Override
     public void initEntity() {
         super.initEntity();
@@ -138,11 +133,10 @@ public class Chicken extends WalkingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int featherDrop = Utils.rand(0, 3); // drops 0-2 feathers
+            int featherDrop = Utils.rand(0, 3);
             for (int i = 0; i < featherDrop; i++) {
                 drops.add(Item.get(Item.FEATHER, 0, 1));
             }
-            // chicken on fire: cooked chicken otherwise raw chicken
             drops.add(Item.get(this.isOnFire() ? Item.COOKED_CHICKEN : Item.RAW_CHICKEN, 0, 1));
         }
         return drops.toArray(new Item[drops.size()]);
@@ -150,11 +144,11 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
 
     private int getRandomEggLayTime() {
-        return Utils.rand(6000,12000);
+        return Utils.rand(6000, 12000);
     }
 
     public boolean isChickenJockey() {

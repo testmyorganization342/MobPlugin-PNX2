@@ -28,11 +28,6 @@ public class Wither extends FlyingMonster {
     }
 
     @Override
-    public String getName() {
-        return "Wither";
-    }
-
-    @Override
     public float getWidth() {
         return 0.9f;
     }
@@ -72,7 +67,7 @@ public class Wither extends FlyingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-	      return; //TODO
+	      return;
     }
 
     @Override
@@ -86,5 +81,4 @@ public class Wither extends FlyingMonster {
         }
         return drops.toArray(new Item[drops.size()]);
     }
-
 }

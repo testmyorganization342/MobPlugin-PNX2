@@ -53,9 +53,6 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     protected void initEntity() {
         super.initEntity();
 
-//        if (this.getDataProperty(DATA_AGEABLE_FLAGS) == null) {
-//            this.setDataProperty(new ByteEntityData(DATA_AGEABLE_FLAGS, (byte) 0));
-//        }
         this.setDamage(new float[] { 0, 2, 3, 4 });
         this.setMaxHealth(20);
     }
@@ -63,8 +60,6 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     @Override
     public boolean isBaby() {
         return false;
-//        return this.getDataFlag(DATA_AGEABLE_FLAGS, DATA_FLAG_BABY);
-
     }
 
     @Override
@@ -156,7 +151,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int rottenFlesh = Utils.rand(0, 3); // drops 0-2 rotten flesh
+            int rottenFlesh = Utils.rand(0, 3);
             for (int i=0; i < rottenFlesh; i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
@@ -166,7 +161,6 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
     @Override
     public int getKillExperience () {
-        return 5; // gain 5 experience
+        return 5;
     }
-
 }

@@ -20,15 +20,15 @@ import java.util.HashMap;
 
 public class Wolf extends TameableMonster {
 
-    public static final int     NETWORK_ID           = 14;
+    public static final int NETWORK_ID = 14;
 
-    private static final String NBT_KEY_ANGRY        = "Angry";
+    private static final String NBT_KEY_ANGRY = "Angry";
 
     private static final String NBT_KEY_COLLAR_COLOR = "CollarColor";
 
-    private int                 angry                = 0;
+    private int angry = 0;
 
-    private DyeColor            collarColor          = DyeColor.RED; // red is default
+    private DyeColor collarColor = DyeColor.RED;
 
     public Wolf(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -177,13 +177,8 @@ public class Wolf extends TameableMonster {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
-    @Override
     public int getKillExperience() {
-        return 3; // gain 3 experience
+        return 3;
     }
 
     /**
@@ -196,5 +191,4 @@ public class Wolf extends TameableMonster {
         this.setDataProperty(new IntEntityData(DATA_COLOUR, color.getColor().getRGB()));
         this.collarColor = color;
     }
-
 }

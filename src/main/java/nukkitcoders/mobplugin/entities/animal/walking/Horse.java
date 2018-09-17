@@ -63,24 +63,23 @@ public class Horse extends WalkingAnimal {
         super.initEntity();
         this.setMaxHealth(15);
         if (this instanceof Donkey) {
-            this.namedTag.putInt("Type",this.Type = 1);
-        }else if (this instanceof Mule) {
-            this.namedTag.putInt("Type",this.Type = 2);
-        }else if (this instanceof ZombieHorse) {
-            this.namedTag.putInt("Type",this.Type = 3);
-        }else if (this instanceof SkeletonHorse) {
-            this.namedTag.putInt("Type",this.Type = 4);
-        }else{
-            this.namedTag.putInt("Type",this.Type = 0);
+            this.namedTag.putInt("Type", this.Type = 1);
+        } else if (this instanceof Mule) {
+            this.namedTag.putInt("Type", this.Type = 2);
+        } else if (this instanceof ZombieHorse) {
+            this.namedTag.putInt("Type", this.Type = 3);
+        } else if (this instanceof SkeletonHorse) {
+            this.namedTag.putInt("Type", this.Type = 4);
+        } else {
+            this.namedTag.putInt("Type", this.Type = 0);
         }
         if (this.namedTag.contains("Variant")) {
             this.Variant = this.namedTag.getInt("Variant");
-        }else{
-            this.namedTag.putInt("Variant",this.Variant = this.getRandomVariant());
+        } else {
+            this.namedTag.putInt("Variant", this.Variant = this.getRandomVariant());
         }
-
-
     }
+
     @Override
     public void saveNBT() {
         super.saveNBT();
@@ -114,7 +113,7 @@ public class Horse extends WalkingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int leather = Utils.rand(0, 3); // drops 0-2 leather
+            int leather = Utils.rand(0, 3);
 
             for (int i = 0; i < leather; i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));

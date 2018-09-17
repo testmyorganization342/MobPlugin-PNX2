@@ -62,7 +62,7 @@ public class Squid extends SwimmingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
 
     @Override

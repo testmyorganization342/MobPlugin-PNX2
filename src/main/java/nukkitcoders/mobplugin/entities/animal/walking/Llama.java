@@ -25,11 +25,6 @@ public class Llama extends WalkingAnimal {
     }
 
     @Override
-    public String getName() {
-        return "Llama";
-    }
-
-    @Override
     public float getWidth() {
         if (this.isBaby()) {
             return 0.45f;
@@ -81,5 +76,4 @@ public class Llama extends WalkingAnimal {
     public int getKillExperience() {
         return Utils.rand(1, 3);
     }
-
 }

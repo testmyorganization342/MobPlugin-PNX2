@@ -32,11 +32,6 @@ public class Husk extends WalkingMonster implements EntityAgeable {
     }
 
     @Override
-    public String getName() {
-        return "Husk";
-    }
-
-    @Override
     public float getWidth() {
         return 0.6f;
     }
@@ -111,5 +106,4 @@ public class Husk extends WalkingMonster implements EntityAgeable {
     public int getKillExperience() {
         return 5;
     }
-
 }

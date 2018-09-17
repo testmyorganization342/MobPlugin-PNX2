@@ -29,9 +29,7 @@ public abstract class RouteFinder {
 
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
-    protected boolean reachable = true;//TODO burial depth
-
-    //public boolean arrived = false;
+    protected boolean reachable = true;
 
     RouteFinder(WalkingEntity entity) {
         Objects.requireNonNull(entity,"RouteFinder: entity can not be null");
@@ -130,7 +128,7 @@ public abstract class RouteFinder {
             lock.readLock().lock();
             if (this.hasNext() &&  this.getCurrentNode().getVector3()!=null) {
                 Vector3 cur = this.getCurrentNode().getVector3();
-                return vec.getX() == cur.getX() && vec.getZ() == cur.getZ()/* && vec.getFloorY() == cur.getFloorY()*/;
+                return vec.getX() == cur.getX() && vec.getZ() == cur.getZ();
             }
             return false;
         }finally {

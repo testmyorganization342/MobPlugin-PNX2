@@ -276,7 +276,6 @@ public class MobPlugin extends PluginBase implements Listener {
         return playerList;
     }
 
-    // --- event listeners ---
     /**
      * This event is called when an entity dies. We need this for experience
      * gain.

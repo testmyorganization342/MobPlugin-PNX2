@@ -106,8 +106,8 @@ public class IronGolem extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int ironIngots = Utils.rand(3, 6); // drops 3-5 iron ingots
-            int poppies = Utils.rand(0, 3); // drops 0-2 poppies
+            int ironIngots = Utils.rand(3, 6);
+            int poppies = Utils.rand(0, 3);
             for (int i=0; i < ironIngots; i++) {
                 drops.add(Item.get(Item.IRON_INGOT, 0, 1));
             }
@@ -123,5 +123,8 @@ public class IronGolem extends WalkingMonster {
         return 0;
     }
 
-
+    @Override
+    public String getName() {
+        return "Iron Golem";
+    }
 }

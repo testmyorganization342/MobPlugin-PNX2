@@ -83,7 +83,7 @@ public class Donkey extends Horse {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int leather = Utils.rand(0, 3); // drops 0-2 leather
+            int leather = Utils.rand(0, 3);
 
             for (int i = 0; i < leather; i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
@@ -96,5 +96,4 @@ public class Donkey extends Horse {
     public int getKillExperience() {
         return Utils.rand(1, 4);
     }
-
 }

@@ -29,11 +29,11 @@ public class CowSpawner extends AbstractEntitySpawner {
 
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
 
-        if (Block.transparent[blockId]) { // only spawns on opaque blocks
+        if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
-//        } else if (blockLightLevel < 9) { // uncommented because lightlevel doesn't work now
-//            result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        //} else if (blockLightLevel < 9) {
+        //    result = SpawnResult.WRONG_LIGHTLEVEL;
+        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
@@ -42,28 +42,13 @@ public class CowSpawner extends AbstractEntitySpawner {
         return result;
     }
 
-    /* (@Override)
-     * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityNetworkId()
-     */
     @Override
     public int getEntityNetworkId() {
         return Cow.NETWORK_ID;
     }
 
-    /* (@Override)
-     * @see cn.nukkit.entity.ai.IEntitySpawner#getEntityName()
-     */
     @Override
     public String getEntityName() {
         return "Cow";
     }
-
-    /* (@Override)
-     * @see nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner#getLogprefix()
-     */
-    @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
 }

@@ -206,14 +206,13 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     }
 
     public void attackEntity(Entity player) {
-        // creepers don't attack, they only explode
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int gunPowder = Utils.rand(0, 3); // drops 0-2 gunpowder
+            int gunPowder = Utils.rand(0, 3);
             for (int i = 0; i < gunPowder; i++) {
                 drops.add(Item.get(Item.GUNPOWDER, 0, 1));
             }
@@ -223,11 +222,10 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public int getKillExperience() {
-        return 5; // gain 5 experience
+        return 5;
     }
 
     public int getMaxFallHeight() {
-        return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F); //TODO: change this to attack target only
+        return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
     }
-
 }

@@ -49,14 +49,13 @@ public class ElderGuardian extends SwimmingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        //TODO
     }
 
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int prismarineShard = Utils.rand(0, 3); // drops 0-2 prismarine shard
+            int prismarineShard = Utils.rand(0, 3);
             for (int i=0; i < prismarineShard; i++) {
                 drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
             }
@@ -69,4 +68,8 @@ public class ElderGuardian extends SwimmingMonster {
         return 10;
     }
 
+    @Override
+    public String getName() {
+        return "Elder Guardian";
+    }
 }

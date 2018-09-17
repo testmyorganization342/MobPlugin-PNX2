@@ -100,8 +100,8 @@ public class CaveSpider extends Spider {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int strings = Utils.rand(0, 3); // drops 0-2 strings
-            int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0; // with a 1/3 chance it drops spider eye
+            int strings = Utils.rand(0, 3);
+            int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0;
             for (int i=0; i < strings; i++) {
                 drops.add(Item.get(Item.STRING, 0, 1));
             }
@@ -114,7 +114,11 @@ public class CaveSpider extends Spider {
 
     @Override
     public int getKillExperience () {
-        return 5; // gain 5 experience
+        return 5;
     }
 
+    @Override
+    public String getName() {
+        return "Cave Spider";
+    }
 }

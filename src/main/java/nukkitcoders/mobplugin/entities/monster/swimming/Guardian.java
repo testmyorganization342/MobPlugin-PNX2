@@ -54,7 +54,7 @@ public class Guardian extends SwimmingMonster {
         if (creature instanceof Player) {
             Player player = (Player) creature;
             return (!player.closed) && player.spawned && player.isAlive() && player.isSurvival() && distance <= 81;
-        } else if (/*|| creature instanceof SwimmingAnimal || */creature instanceof Squid) {//ummmmm
+        } else if (creature instanceof Squid) {
             return creature.isAlive() && this.distanceSquared(creature) <= 81;
         }
         return false;
@@ -104,7 +104,7 @@ public class Guardian extends SwimmingMonster {
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
-        if (followTarget!=null) {//haven't tested
+        if (followTarget!=null) {
             if (laserTargetEid !=followTarget.getId()) {
                 this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = followTarget.getId()));
                 laserChargeTick = 40;
@@ -127,7 +127,7 @@ public class Guardian extends SwimmingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int prismarineShard = Utils.rand(0, 3); // drops 0-2 prismarine shard
+            int prismarineShard = Utils.rand(0, 3);
             for (int i = 0; i < prismarineShard; i++) {
                 drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
             }
@@ -139,5 +139,4 @@ public class Guardian extends SwimmingMonster {
     public int getKillExperience() {
         return 10;
     }
-
 }

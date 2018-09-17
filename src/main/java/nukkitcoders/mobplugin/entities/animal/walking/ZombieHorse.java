@@ -64,9 +64,8 @@ public class ZombieHorse extends Horse {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            //https://minecraft.gamepedia.com/Horse
-            int leather = Utils.rand(0, 3); // drops 0-2 leather
-            int rottenflesh = Utils.rand(0, 3);// drop 0-2 rettenflesh
+            int leather = Utils.rand(0, 3);
+            int rottenflesh = Utils.rand(0, 3);
 
             for (int i = 0; i < leather; i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
@@ -84,4 +83,8 @@ public class ZombieHorse extends Horse {
         return Utils.rand(1, 4);
     }
 
+    @Override
+    public String getName() {
+        return "Zombie Horse";
+    }
 }

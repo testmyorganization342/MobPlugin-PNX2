@@ -53,8 +53,7 @@ public abstract class BaseEntity extends EntityCreature {
     
     private int despawnTicks;
 
-    ///Jump
-    private int maxJumpHeight = 1; // default: 1 block jump height - this should be 2 for horses e.g.
+    private int maxJumpHeight = 1;
     protected boolean isJumping;
     public float jumpMovementFactor = 0.02F;
 
@@ -182,31 +181,6 @@ public abstract class BaseEntity extends EntityCreature {
         return false;
     }
 
-    /*@Override
-    public List<Block> getBlocksAround() {
-        if (this.blocksAround == null) {
-            int minX = NukkitMath.floorDouble(this.boundingBox.getMinX());
-            int minY = NukkitMath.floorDouble(this.boundingBox.getMinY());
-            int minZ = NukkitMath.floorDouble(this.boundingBox.getMinZ());
-            int maxX = NukkitMath.ceilDouble(this.boundingBox.getMaxX());
-            int maxY = NukkitMath.ceilDouble(this.boundingBox.getMaxY());
-            int maxZ = NukkitMath.ceilDouble(this.boundingBox.getMaxZ());
-
-            this.blocksAround = new ArrayList<>();
-
-            for (int z = minZ; z <= maxZ; ++z) {
-                for (int x = minX; x <= maxX; ++x) {
-                    for (int y = minY; y <= maxY; ++y) {
-                        Block block = this.level.getBlock(this.temporalVector.setComponents(x, y, z));
-                        this.blocksAround.add(block);
-                    }
-                }
-            }
-        }
-
-        return this.blocksAround;
-    }*/
-
     @Override
     protected void checkBlockCollision() {
         Vector3 vector = new Vector3(0.0D, 0.0D, 0.0D);
@@ -318,7 +292,6 @@ public abstract class BaseEntity extends EntityCreature {
         }
 
         this.age += tickDiff;
-        this.ticksLived += tickDiff;
 
         Timings.entityMoveTimer.stopTiming();
 
@@ -341,7 +314,6 @@ public abstract class BaseEntity extends EntityCreature {
         super.attack(source);
 
         this.target = null;
-        //this.attackTime = 7;
         return true;
     }
 

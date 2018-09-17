@@ -66,8 +66,8 @@ public class Mooshroom extends WalkingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            int leatherDrop = Utils.rand(0, 3); // drops 0-2 leather
-            int beefDrop = Utils.rand(1, 4); // drops 1-3 raw beef / steak when on fire
+            int leatherDrop = Utils.rand(0, 3);
+            int beefDrop = Utils.rand(1, 4);
             for (int i = 0; i < leatherDrop; i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
             }
@@ -80,7 +80,7 @@ public class Mooshroom extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4); // gain 1-3 experience
+        return Utils.rand(1, 4);
     }
     
     @Override

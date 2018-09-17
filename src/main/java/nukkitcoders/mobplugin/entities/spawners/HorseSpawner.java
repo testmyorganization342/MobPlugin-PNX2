@@ -20,11 +20,6 @@ public class HorseSpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
@@ -33,11 +28,11 @@ public class HorseSpawner extends AbstractEntitySpawner {
 
         if (biomeId != 1 && biomeId != 35 && biomeId != 128 && biomeId != 129) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (!Block.solid[blockId]) { // only spawns on solid blocks
+        } else if (!Block.solid[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
-        } else { // horse is spawned
+        } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }
 
@@ -53,5 +48,4 @@ public class HorseSpawner extends AbstractEntitySpawner {
     public String getEntityName() {
         return "Horse";
     }
-
 }

@@ -18,17 +18,16 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
-    protected float[]   minDamage;
+    protected float[] minDamage;
 
-    protected float[]   maxDamage;
+    protected float[] maxDamage;
 
-    protected int   attackDelay = 0;
+    protected int attackDelay = 0;
 
-    protected boolean canAttack   = true;
+    protected boolean canAttack = true;
 
     public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        //this.route = new WalkerRouteFinder(this);
     }
 
     @Override

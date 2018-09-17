@@ -20,11 +20,6 @@ public class StraySpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    protected String getLogprefix() {
-        return this.getClass().getSimpleName();
-    }
-
-    @Override
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
@@ -33,13 +28,13 @@ public class StraySpawner extends AbstractEntitySpawner {
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
         int time = level.getTime() % Level.TIME_FULL;
 
-        if (Block.transparent[blockId]) { // only spawns on opaque blocks
+        if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
         }else if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) { // cannot spawn on AIR block
+        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
-        } else if (biomeId != 12) { //ICE_PLAINS
+        } else if (biomeId != 12) {
             result = SpawnResult.WRONG_BLOCK;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
@@ -57,5 +52,4 @@ public class StraySpawner extends AbstractEntitySpawner {
     public String getEntityName() {
         return "Stray";
     }
-
 }

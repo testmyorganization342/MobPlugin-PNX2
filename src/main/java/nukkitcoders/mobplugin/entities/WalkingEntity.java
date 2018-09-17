@@ -14,7 +14,6 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.RouteFinderThreadPool;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.route.RouteFinder;
@@ -27,7 +26,6 @@ public abstract class WalkingEntity extends BaseEntity {
 
     public WalkingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        //TODO flying
     }
 
     protected void checkTarget() {
@@ -65,9 +63,7 @@ public abstract class WalkingEntity extends BaseEntity {
             if (this.route==null)this.target = creature;
 
         }
-        //}
 
-        // (Spitz4478) this.target must be EntityCreature, open, alive AND meet criteria of targetOption() for this Entity before returning
         if (this.followTarget instanceof EntityCreature && !((EntityCreature) this.followTarget).closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
             return;
         }
@@ -173,7 +169,6 @@ public abstract class WalkingEntity extends BaseEntity {
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
                 this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
-                //return this.followTarget;
             }
 
             Vector3 before = this.target;
@@ -231,7 +226,6 @@ public abstract class WalkingEntity extends BaseEntity {
             this.updateMovement();
             if (this.route != null) {
                 if (this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
-                    //this.target = null;
                     if (this.route.hasNext()) {
                         this.target = this.route.next();
                     }

@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.flying;
 
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.FlyingAnimal;
@@ -42,13 +41,7 @@ public class Bat extends FlyingAnimal {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[0];
-    }
-
-    @Override
     public int getKillExperience() {
         return 0;
     }
-
 }
