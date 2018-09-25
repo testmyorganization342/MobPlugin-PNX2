@@ -4,7 +4,6 @@ import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
-import cn.nukkit.block.BlockID;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -45,6 +44,8 @@ import nukkitcoders.mobplugin.entities.monster.swimming.ElderGuardian;
 import nukkitcoders.mobplugin.entities.monster.swimming.Guardian;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
 import nukkitcoders.mobplugin.entities.projectile.EntityFireBall;
+import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
+import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -373,7 +374,7 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent ev) {
         if (ev.getFace() == null || ev.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) return;
 
@@ -381,12 +382,19 @@ public class MobPlugin extends PluginBase implements Listener {
         Block block = ev.getBlock();
 
         if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
-
-        ev.setCancelled(true);
+        
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
         if (blockEntity != null && blockEntity instanceof BlockEntitySpawner) {
+            SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), item.getDamage());
+            this.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) return;
             ((BlockEntitySpawner) blockEntity).setSpawnEntityType(item.getDamage());
+            ev.setCancelled(true);
         } else {
+            SpawnerCreateEvent event = new SpawnerCreateEvent(ev.getPlayer(), ev.getBlock(), item.getDamage());
+            this.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) return;
+            ev.setCancelled(true);
             if (blockEntity != null) {
                 blockEntity.close();
             }
@@ -405,7 +413,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Block block = ev.getBlock();
         if (block.getId() == Block.JACK_O_LANTERN || block.getId() == Block.PUMPKIN) {
             if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
-                Entity entity = create("SnowGolem", block.add(0.5, -2, 0.5));
+                Entity entity = create(SnowGolem.NETWORK_ID, block.add(0.5, -2, 0.5));
                 if (entity != null) {
                     entity.spawnToAll();
                 }
@@ -426,7 +434,7 @@ public class MobPlugin extends PluginBase implements Listener {
                 }
 
                 if (second != null) {
-                    Entity entity = MobPlugin.create("IronGolem", block.add(0.5, -1, 0.5));
+                    Entity entity = MobPlugin.create(IronGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
                     if (entity != null) {
                         entity.spawnToAll();
                     }
@@ -444,7 +452,7 @@ public class MobPlugin extends PluginBase implements Listener {
         if ((block.getId() == Block.MONSTER_EGG)
                 && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
-            Silverfish entity = (Silverfish) create("Silverfish", block.add(0.5, 0, 0.5));
+            Silverfish entity = (Silverfish) create(Silverfish.NETWORK_ID, block.add(0.5, 0, 0.5));
             if (entity != null) {
                 entity.spawnToAll();
                 EntityEventPacket pk = new EntityEventPacket();
