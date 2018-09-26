@@ -29,7 +29,6 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
-import nukkitcoders.mobplugin.block.BlockMobSpawner;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Parrot;
@@ -44,6 +43,7 @@ import nukkitcoders.mobplugin.entities.monster.swimming.ElderGuardian;
 import nukkitcoders.mobplugin.entities.monster.swimming.Guardian;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
 import nukkitcoders.mobplugin.entities.projectile.EntityFireBall;
+import nukkitcoders.mobplugin.event.entity.SpawnGolemEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -102,75 +102,74 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().toLowerCase().equals("mob")) {
+        if (!cmd.getName().toLowerCase().equals("mob")) return true;
 
-            if (args.length == 0) {
-                sender.sendMessage("-- MobPlugin 1.1 --");
-                sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
-                sender.sendMessage("/mob removeall - Remove all living mobs");
-                sender.sendMessage("/mob removeitems - Remove all items from ground");
-            } else {
-                switch (args[0]) {
+        if (args.length == 0) {
+            sender.sendMessage("-- MobPlugin " + this.getDescription().getVersion() + " --");
+            sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
+            sender.sendMessage("/mob removeall - Remove all living mobs");
+            sender.sendMessage("/mob removeitems - Remove all items from ground");
+            return true;
+        }
 
-                    case "spawn":
+        switch (args[0]) {
+            case "spawn":
 
-                        if (args.length == 1) {
-                            sender.sendMessage("Usage: /mob spawn <mob> <opt:player>");
-                            break;
-                        }
-
-                        String mob = args[1];
-                        Player playerThatSpawns = null;
-
-                        if (args.length == 3) {
-                            playerThatSpawns = this.getServer().getPlayer(args[2]);
-                        } else {
-                            playerThatSpawns = (Player) sender;
-                        }
-
-                        if (playerThatSpawns != null) {
-                            Position pos = playerThatSpawns.getPosition();
-
-                            Entity ent;
-                            if ((ent = MobPlugin.create(mob, pos)) != null) {
-                                ent.spawnToAll();
-                                sender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
-                            } else {
-                                sender.sendMessage("Unable to spawn " + mob);
-                            }
-                        } else {
-                            sender.sendMessage("Unknown player " + (args.length == 3 ? args[2] : ((Player) sender).getName()));
-                        }
-                        break;
-                    case "removeall":
-                        int count = 0;
-                        for (Level level : getServer().getLevels().values()) {
-                            for (Entity entity : level.getEntities()) {
-                                if (entity instanceof BaseEntity) {
-                                    entity.close();
-                                    count++;
-                                }
-                            }
-                        }
-                        sender.sendMessage("Removed " + count + " entities from all levels.");
-                        break;
-                    case "removeitems":
-                        count = 0;
-                        for (Level level : getServer().getLevels().values()) {
-                            for (Entity entity : level.getEntities()) {
-                                if (entity instanceof EntityItem && entity.isOnGround()) {
-                                    entity.close();
-                                    count++;
-                                }
-                            }
-                        }
-                        sender.sendMessage("Removed " + count + " items on ground from all levels.");
-                        break;
-                    default:
-                        sender.sendMessage("Unkown command.");
-                        break;
+                if (args.length == 1) {
+                    sender.sendMessage("Usage: /mob spawn <mob> <opt:player>");
+                    break;
                 }
-            }
+
+                String mob = args[1];
+                Player playerThatSpawns;
+
+                if (args.length == 3) {
+                    playerThatSpawns = this.getServer().getPlayer(args[2]);
+                } else {
+                    playerThatSpawns = (Player) sender;
+                }
+
+                if (playerThatSpawns != null) {
+                    Position pos = playerThatSpawns.getPosition();
+
+                    Entity ent;
+                    if ((ent = MobPlugin.create(mob, pos)) != null) {
+                        ent.spawnToAll();
+                        sender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
+                    } else {
+                        sender.sendMessage("Unable to spawn " + mob);
+                    }
+                } else {
+                    sender.sendMessage("Unknown player " + (args.length == 3 ? args[2] : sender.getName()));
+                }
+                break;
+            case "removeall":
+                int count = 0;
+                for (Level level : getServer().getLevels().values()) {
+                    for (Entity entity : level.getEntities()) {
+                        if (entity instanceof BaseEntity) {
+                            entity.close();
+                            ++count;
+                        }
+                    }
+                }
+                sender.sendMessage("Removed " + count + " entities from all levels.");
+                break;
+            case "removeitems":
+                count = 0;
+                for (Level level : getServer().getLevels().values()) {
+                    for (Entity entity : level.getEntities()) {
+                        if (entity instanceof EntityItem && entity.isOnGround()) {
+                            entity.close();
+                            ++count;
+                        }
+                    }
+                }
+                sender.sendMessage("Removed " + count + " items on ground from all levels.");
+                break;
+            default:
+                sender.sendMessage("Unknown command.");
+                break;
         }
         return true;
 
@@ -266,8 +265,8 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Pufferfish.class.getSimpleName(), Pufferfish.class);
         Entity.registerEntity(Rabbit.class.getSimpleName(), Rabbit.class);
         Entity.registerEntity(Salmon.class.getSimpleName(), Salmon.class);
-        Entity.registerEntity(Sheep.class.getSimpleName(), Sheep.class);
         Entity.registerEntity(SkeletonHorse.class.getSimpleName(), SkeletonHorse.class);
+        Entity.registerEntity(Sheep.class.getSimpleName(), Sheep.class);
         Entity.registerEntity(Squid.class.getSimpleName(), Squid.class);
         Entity.registerEntity(TropicalFish.class.getSimpleName(), TropicalFish.class);
         Entity.registerEntity(Turtle.class.getSimpleName(), Turtle.class);
@@ -277,6 +276,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);
         Entity.registerEntity(CaveSpider.class.getSimpleName(), CaveSpider.class);
+        Entity.registerEntity(WitherSkeleton.class.getSimpleName(), WitherSkeleton.class);
         Entity.registerEntity(Creeper.class.getSimpleName(), Creeper.class);
         Entity.registerEntity(Drowned.class.getSimpleName(), Drowned.class);
         Entity.registerEntity(ElderGuardian.class.getSimpleName(), ElderGuardian.class);
@@ -300,7 +300,6 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Vindicator.class.getSimpleName(), Vindicator.class);
         Entity.registerEntity(Witch.class.getSimpleName(), Witch.class);
         Entity.registerEntity(Wither.class.getSimpleName(), Wither.class);
-        Entity.registerEntity(WitherSkeleton.class.getSimpleName(), WitherSkeleton.class);
         Entity.registerEntity(Wolf.class.getSimpleName(), Wolf.class);
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
         Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
@@ -353,24 +352,21 @@ public class MobPlugin extends PluginBase implements Listener {
      */
     @EventHandler
     public void EntityDeathEvent(EntityDeathEvent ev) {
-        if (ev.getEntity() instanceof BaseEntity) {
-            BaseEntity baseEntity = (BaseEntity) ev.getEntity();
-            if (baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-                Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
-                if (damager instanceof Player) {
-                    Player player = (Player) damager;
-                    int killExperience = baseEntity.getKillExperience();
-                    if (killExperience > 0 && player != null && player.isSurvival()) {
-                        player.addExperience(killExperience);
-                        // don't drop that fucking experience orbs because they're somehow buggy :(
-                        // if (player.isSurvival()) {
-                        // for (int i = 1; i <= killExperience; i++) {
-                        // player.getLevel().dropExpOrb(baseEntity, 1);
-                        // }
-                        // }
-                    }
-                }
-            }
+        if (!(ev.getEntity() instanceof BaseEntity)) return;
+        BaseEntity baseEntity = (BaseEntity) ev.getEntity();
+        if (!(baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
+        Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
+        if (!(damager instanceof Player)) return;
+        Player player = (Player) damager;
+        int killExperience = baseEntity.getKillExperience();
+        if (killExperience > 0 && player.isSurvival()) {
+            player.addExperience(killExperience);
+            // don't drop that fucking experience orbs because they're somehow buggy :(
+            // if (player.isSurvival()) {
+            // for (int i = 1; i <= killExperience; i++) {
+            // player.getLevel().dropExpOrb(baseEntity, 1);
+            // }
+            // }
         }
     }
 
@@ -382,7 +378,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Block block = ev.getBlock();
 
         if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
-        
+
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
         if (blockEntity != null && blockEntity instanceof BlockEntitySpawner) {
             SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), item.getDamage());
@@ -411,37 +407,57 @@ public class MobPlugin extends PluginBase implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void BlockPlaceEvent(BlockPlaceEvent ev) {
         Block block = ev.getBlock();
+        Player player = ev.getPlayer();
         if (block.getId() == Block.JACK_O_LANTERN || block.getId() == Block.PUMPKIN) {
             if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
+
+                SpawnGolemEvent event = new SpawnGolemEvent(player, block.add(0.5, -2, 0.5), SpawnGolemEvent.GolemType.SNOW_GOLEM);
+
+                this.getServer().getPluginManager().callEvent(event);
+
+                if (event.isCancelled()) return;
+
                 Entity entity = create(SnowGolem.NETWORK_ID, block.add(0.5, -2, 0.5));
-                if (entity != null) {
-                    entity.spawnToAll();
-                }
+
+                if (entity != null) entity.spawnToAll();
+
+                block.level.setBlock(block.add(0, -1, 0), new BlockAir());
+                block.level.setBlock(block.add(0, -2, 0), new BlockAir());
 
                 ev.setCancelled();
-                block.getLevel().setBlock(block.add(0, -1, 0), new BlockAir());
-                block.getLevel().setBlock(block.add(0, -2, 0), new BlockAir());
+                if (player.isSurvival()) player.getInventory().removeItem(Item.get(block.getId()));
             } else if (block.getSide(BlockFace.DOWN).getId() == Item.IRON_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.IRON_BLOCK) {
+                int removeId = block.getId();
                 block = block.getSide(BlockFace.DOWN);
 
-                Block first, second = null;
-                if ((first = block.getSide(BlockFace.EAST)).getId() == Item.IRON_BLOCK && (second = block.getSide(BlockFace.WEST)).getId() == Item.IRON_BLOCK) {
-                    block.getLevel().setBlock(first, new BlockAir());
-                    block.getLevel().setBlock(second, new BlockAir());
-                } else if ((first = block.getSide(BlockFace.NORTH)).getId() == Item.IRON_BLOCK && (second = block.getSide(BlockFace.SOUTH)).getId() == Item.IRON_BLOCK) {
-                    block.getLevel().setBlock(first, new BlockAir());
-                    block.getLevel().setBlock(second, new BlockAir());
+                Block first = null, second = null;
+                if (block.getSide(BlockFace.EAST).getId() == Item.IRON_BLOCK && block.getSide(BlockFace.WEST).getId() == Item.IRON_BLOCK) {
+                    first = block.getSide(BlockFace.EAST);
+                    second = block.getSide(BlockFace.WEST);
+                } else if (block.getSide(BlockFace.NORTH).getId() == Item.IRON_BLOCK && block.getSide(BlockFace.SOUTH).getId() == Item.IRON_BLOCK) {
+                    first = block.getSide(BlockFace.NORTH);
+                    second = block.getSide(BlockFace.SOUTH);
                 }
 
-                if (second != null) {
-                    Entity entity = MobPlugin.create(IronGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
-                    if (entity != null) {
-                        entity.spawnToAll();
-                    }
-                    block.getLevel().setBlock(block, new BlockAir());
-                    block.getLevel().setBlock(block.add(0, -1, 0), new BlockAir());
-                    ev.setCancelled();
-                }
+                if (second == null || first == null) return;
+
+                SpawnGolemEvent event = new SpawnGolemEvent(player, block.add(0.5, -1, 0.5), SpawnGolemEvent.GolemType.IRON_GOLEM);
+
+                this.getServer().getPluginManager().callEvent(event);
+
+                if (event.isCancelled()) return;
+
+                Entity entity = MobPlugin.create(IronGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
+
+                if (entity != null) entity.spawnToAll();
+
+                block.level.setBlock(first, new BlockAir());
+                block.level.setBlock(second, new BlockAir());
+                block.level.setBlock(block, new BlockAir());
+                block.level.setBlock(block.add(0, -1, 0), new BlockAir());
+
+                ev.setCancelled();
+                if (player.isSurvival()) player.getInventory().removeItem(Item.get(removeId));
             }
         }
     }
@@ -449,17 +465,16 @@ public class MobPlugin extends PluginBase implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void BlockBreakEvent(BlockBreakEvent ev) {
         Block block = ev.getBlock();
-        if ((block.getId() == Block.MONSTER_EGG)
-                && block.getLevel().getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
+        if ((block.getId() == Block.MONSTER_EGG) && block.level.getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
             Silverfish entity = (Silverfish) create(Silverfish.NETWORK_ID, block.add(0.5, 0, 0.5));
-            if (entity != null) {
-                entity.spawnToAll();
-                EntityEventPacket pk = new EntityEventPacket();
-                pk.eid = entity.getId();
-                pk.event = 27;
-                entity.getLevel().addChunkPacket(entity.getChunkX() >> 4, entity.getChunkZ() >> 4, pk);
-            }
+            if (entity == null) return;
+
+            entity.spawnToAll();
+            EntityEventPacket pk = new EntityEventPacket();
+            pk.eid = entity.getId();
+            pk.event = 27;
+            entity.level.addChunkPacket(entity.getChunkX() >> 4, entity.getChunkZ() >> 4, pk);
         }
     }
 
