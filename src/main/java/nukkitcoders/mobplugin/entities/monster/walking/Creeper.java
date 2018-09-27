@@ -1,5 +1,6 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
+import cn.nukkit.Player;
 import cn.nukkit.block.BlockLiquid;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
@@ -122,7 +123,6 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             return true;
         }
 
-        Vector3 before = this.target;
         this.checkTarget();
 
         if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
@@ -136,7 +136,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                 if (followTarget instanceof EntityCreature) {
                     if (bombTime >= 0) {
                         this.level.addSound(this, Sound.RANDOM_FUSE);
-                        this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH,bombTime));
+                        this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH, bombTime));
                         this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
                     }
                     this.bombTime += tickDiff;
@@ -227,5 +227,16 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public int getMaxFallHeight() {
         return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
+    }
+
+    @Override
+    public boolean onInteract(Player player, Item item) {
+        super.onInteract(player, item);
+        if (item.getId() == Item.FLINT_AND_STEEL) {
+            this.level.addSound(this, Sound.FIRE_IGNITE);
+            this.explode();
+            return true;
+        }
+        return false;
     }
 }

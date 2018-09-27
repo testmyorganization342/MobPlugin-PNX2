@@ -79,6 +79,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
     @Override
     public boolean onInteract(Player player, Item item) {
+        super.onInteract(player, item);
         if (item.equals(Item.get(Item.CARROT, 0)) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.CARROT, 0, 1));
             this.level.addSound(this, Sound.RANDOM_EAT);

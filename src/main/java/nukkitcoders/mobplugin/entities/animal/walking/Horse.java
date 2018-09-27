@@ -88,11 +88,6 @@ public class Horse extends WalkingAnimal {
     }
 
     @Override
-    public boolean onInteract(Player player, Item item) {
-        return false;
-    }
-
-    @Override
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;

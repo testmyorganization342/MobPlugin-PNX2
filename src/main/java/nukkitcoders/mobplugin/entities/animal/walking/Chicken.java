@@ -99,6 +99,7 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item) {
+        super.onInteract(player, item);
         if ((item.equals(Item.get(Item.SEEDS,0))) && !this.isBaby()) {
             player.getInventory().removeItem(Item.get(Item.SEEDS,0,1));
             this.level.addSound(this,Sound.RANDOM_EAT);

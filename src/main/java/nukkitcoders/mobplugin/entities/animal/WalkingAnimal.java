@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -109,10 +108,6 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
             this.moveTime = 0;
         }
         return true;
-    }
-
-    public boolean onInteract(Entity entity, Item item) {
-        return false;
     }
 
     public void setInLove() {

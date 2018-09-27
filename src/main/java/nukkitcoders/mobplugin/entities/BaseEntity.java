@@ -6,17 +6,15 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.EntityMotionEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
-import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import co.aikar.timings.Timings;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class BaseEntity extends EntityCreature {
@@ -52,6 +50,8 @@ public abstract class BaseEntity extends EntityCreature {
     private boolean despawnEntities;
     
     private int despawnTicks;
+    
+    public boolean canDespawn = true;
 
     private int maxJumpHeight = 1;
     protected boolean isJumping;
@@ -157,19 +157,6 @@ public abstract class BaseEntity extends EntityCreature {
         this.namedTag.putShort("Age", this.age);
     }
 
-    @Override
-    protected void updateMovement() {
-        if (this.lastX != this.x || this.lastY != this.y || this.lastZ != this.z || this.lastYaw != this.yaw || this.lastPitch != this.pitch) {
-            this.lastX = this.x;
-            this.lastY = this.y;
-            this.lastZ = this.z;
-            this.lastYaw = this.yaw;
-            this.lastPitch = this.pitch;
-
-            this.addMovement(this.x, this.y, this.z, this.yaw, this.pitch, this.yaw);
-        }
-    }
-
     public boolean targetOption(EntityCreature creature, double distance) {
         if (this instanceof Monster) {
             if (creature instanceof Player) {
@@ -182,127 +169,14 @@ public abstract class BaseEntity extends EntityCreature {
     }
 
     @Override
-    protected void checkBlockCollision() {
-        Vector3 vector = new Vector3(0.0D, 0.0D, 0.0D);
-        Iterator<Block> d = this.getBlocksAround().iterator();
-
-        inWater = false;
-        inLava = false;
-        onClimbable = false;
-
-        while (d.hasNext()) {
-            Block block = d.next();
-
-            if (block.hasEntityCollision()) {
-                block.onEntityCollide(this);
-                block.addVelocityToEntity(this, vector);
-            }
-
-            if (block.getId() == Block.WATER || block.getId() == Block.STILL_WATER) {
-                inWater = true;
-            } else if (block.getId() == Block.LAVA || block.getId() == Block.STILL_LAVA) {
-                inLava = true;
-            } else if (block.getId() == Block.LADDER || block.getId() == Block.VINE) {
-                onClimbable = true;
-            }
-        }
-
-        if (vector.lengthSquared() > 0.0D) {
-            vector = vector.normalize();
-            double d1 = 0.014D;
-            this.motionX += vector.x * d1;
-            this.motionY += vector.y * d1;
-            this.motionZ += vector.z * d1;
-        }
-    }
-
-    /*@Override
     public boolean entityBaseTick(int tickDiff) {
+        super.entityBaseTick(tickDiff);
 
-        Timings.entityMoveTimer.startTiming();
-
-        if (this.despawnEntities && this.age > this.despawnTicks) {
+        if (this.despawnEntities && this.age > this.despawnTicks && this.canDespawn) {
             this.close();
-            return true;
         }
 
-        boolean hasUpdate = false;
-
-        this.blocksAround = null;
-        this.justCreated = false;
-
-        if (!this.effects.isEmpty()) {
-            for (Effect effect : this.effects.values()) {
-                if (effect.canTick()) {
-                    effect.applyEffect(this);
-                }
-                effect.setDuration(effect.getDuration() - tickDiff);
-
-                if (effect.getDuration() <= 0) {
-                    this.removeEffect(effect.getId());
-                }
-            }
-        }
-
-        this.checkBlockCollision();
-
-        if (this.isInsideOfSolid()) {
-            hasUpdate = true;
-            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.SUFFOCATION, 1));
-        }
-
-        if (this.y <= -16 && this.isAlive()) {
-            hasUpdate = true;
-            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.VOID, 10));
-        }
-
-
-        if (this.fireTicks > 0) {
-            if (this.fireProof) {
-                this.fireTicks -= 4 * tickDiff;
-            } else {
-                if (!this.hasEffect(Effect.FIRE_RESISTANCE) && (this.fireTicks % 20) == 0 || tickDiff > 20) {
-                    EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.DamageCause.FIRE_TICK, 1);
-                    this.attack(ev);
-                }
-                this.fireTicks -= tickDiff;
-            }
-
-            if (this.fireTicks <= 0) {
-                this.extinguish();
-            } else {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_ONFIRE, true);
-                hasUpdate = true;
-            }
-        }
-
-        if (this.moveTime > 0) {
-            this.moveTime -= tickDiff;
-        }
-
-        if (this.attackTime > 0) {
-            this.attackTime -= tickDiff;
-        }
-
-        if (this.noDamageTicks > 0) {
-            this.noDamageTicks -= tickDiff;
-            if (this.noDamageTicks < 0) {
-                this.noDamageTicks = 0;
-            }
-        }
-
-        this.age += tickDiff;
-
-        Timings.entityMoveTimer.stopTiming();
-
-        return hasUpdate;
-    }*/
-
-    @Override
-    public boolean isInsideOfSolid() {
-        Block block = this.level.getBlock(this.temporalVector.setComponents(NukkitMath.floorDouble(this.x), NukkitMath.floorDouble(this.y + this.getHeight() - 0.18f), NukkitMath.floorDouble(this.z)));
-        AxisAlignedBB bb = block.getBoundingBox();
-        return bb != null && block.isSolid() && !block.isTransparent() && bb.intersectsWith(this.getBoundingBox());
+        return true;
     }
 
     @Override
@@ -315,10 +189,6 @@ public abstract class BaseEntity extends EntityCreature {
 
         this.target = null;
         return true;
-    }
-
-    public List<Block> getCollisionBlocks() {
-        return collisionBlocks;
     }
 
     public int getMaxFallHeight() {
@@ -334,23 +204,6 @@ public abstract class BaseEntity extends EntityCreature {
 
             return i + 3;
         }
-    }
-
-    @Override
-    public boolean setMotion(Vector3 motion) {
-        if (!this.justCreated) {
-            EntityMotionEvent ev = new EntityMotionEvent(this, motion);
-            this.server.getPluginManager().callEvent(ev);
-            if (ev.isCancelled()) {
-                return false;
-            }
-        }
-
-        this.motionX = motion.x;
-        this.motionY = motion.y;
-        this.motionZ = motion.z;
-
-        return true;
     }
 
     @Override
@@ -386,5 +239,19 @@ public abstract class BaseEntity extends EntityCreature {
 
         Timings.entityMoveTimer.stopTiming();
         return true;
+    }
+
+    @Override
+    public boolean onInteract(Player player, Item item) {
+        if (item.getId() == Item.NAME_TAG) {
+            if (item.hasCustomName()) {
+                this.setNameTag(item.getCustomName());
+                this.setNameTagVisible(true);
+                player.getInventory().removeItem(item);
+                this.canDespawn = false;
+                return true;
+            }
+        }
+        return false;
     }
 }

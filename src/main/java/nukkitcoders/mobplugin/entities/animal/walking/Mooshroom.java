@@ -85,6 +85,7 @@ public class Mooshroom extends WalkingAnimal {
     
     @Override
     public boolean onInteract(Player player, Item item) {
+        super.onInteract(player, item);
         if (item.equals(Item.get(Item.BOWL, 0), true)) {
             player.getInventory().removeItem(Item.get(Item.BOWL, 0, 1));
             player.getInventory().addItem(Item.get(Item.MUSHROOM_STEW, 0, 1));
