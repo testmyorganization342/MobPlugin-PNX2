@@ -37,7 +37,7 @@ public class EnderDragon extends FlyingMonster {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.DRAGON_EGG), Item.get(410)};
+        return new Item[]{Item.get(Item.DRAGON_EGG)};
     }
 
     @Override
