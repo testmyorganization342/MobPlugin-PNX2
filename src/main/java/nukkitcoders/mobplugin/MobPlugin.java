@@ -42,6 +42,7 @@ import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
 import nukkitcoders.mobplugin.entities.monster.swimming.ElderGuardian;
 import nukkitcoders.mobplugin.entities.monster.swimming.Guardian;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
+import nukkitcoders.mobplugin.entities.projectile.EntityBlueWitherSkull;
 import nukkitcoders.mobplugin.entities.projectile.EntityFireBall;
 import nukkitcoders.mobplugin.event.entity.SpawnGolemEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
@@ -240,8 +241,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Block.fullList[(BlockID.MONSTER_SPAWNER << 4) + WitherSkeleton.NETWORK_ID] = new BlockMobSpawner(WitherSkeleton.NETWORK_ID);
         Block.fullList[(BlockID.MONSTER_SPAWNER << 4) + Wolf.NETWORK_ID] = new BlockMobSpawner(Wolf.NETWORK_ID);
         Block.fullList[(BlockID.MONSTER_SPAWNER << 4) + Zombie.NETWORK_ID] = new BlockMobSpawner(Zombie.NETWORK_ID);
-        Block.fullList[(BlockID.MONSTER_SPAWNER << 4) + ZombieVillager.NETWORK_ID] = new BlockMobSpawner(ZombieVillager.NETWORK_ID);
-        */
+        Block.fullList[(BlockID.MONSTER_SPAWNER << 4) + ZombieVillager.NETWORK_ID] = new BlockMobSpawner(ZombieVillager.NETWORK_ID);*/
     }
 
     private void registerEntities() {
@@ -304,6 +304,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
         Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
 
+        Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
         Entity.registerEntity("FireBall", EntityFireBall.class);
     }
 
