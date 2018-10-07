@@ -38,7 +38,9 @@ public class SkeletonSpawner extends AbstractEntitySpawner {
         } else if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (biomeId == 8) {
-            result = SpawnResult.WRONG_BLOCK;
+            if (blockId == Block.NETHERRACK) {
+                this.spawnTask.createEntity("WitherSkeleton", pos.add(0, 2.8, 0));
+            }
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
