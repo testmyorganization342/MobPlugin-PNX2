@@ -6,6 +6,7 @@ import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.SmokeParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.potion.Effect;
 
 public class EntityBlueWitherSkull extends EntityProjectile {
 
@@ -93,5 +94,15 @@ public class EntityBlueWitherSkull extends EntityProjectile {
         this.timing.startTiming();
 
         return hasUpdate;
+    }
+
+    @Override
+    public void onCollideWithEntity(Entity entity) {
+        super.onCollideWithEntity(entity);
+        
+        Effect wither = Effect.getEffect(Effect.WITHER);
+        wither.setAmplifier(1);
+        wither.setDuration(140);
+        entity.addEffect(wither);
     }
 }
