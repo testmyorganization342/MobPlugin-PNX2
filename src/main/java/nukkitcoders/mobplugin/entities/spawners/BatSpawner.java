@@ -34,7 +34,7 @@ public class BatSpawner extends AbstractEntitySpawner {
         if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
         } else if (biomeId == 8) {
-            result = SpawnResult.WRONG_BLOCK;
+            result = SpawnResult.WRONG_BIOME;
         } else if (blockLightLevel > 3) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
