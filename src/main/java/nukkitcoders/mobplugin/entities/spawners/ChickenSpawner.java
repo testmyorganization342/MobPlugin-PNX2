@@ -36,7 +36,7 @@ public class ChickenSpawner extends AbstractEntitySpawner {
         //    result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (biomeId == 8) {
             result = SpawnResult.WRONG_BIOME;
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.7, 0));

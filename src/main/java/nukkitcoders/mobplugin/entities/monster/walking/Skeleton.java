@@ -88,6 +88,7 @@ public class Skeleton extends WalkingMonster {
                         projectile.kill();
                     } else {
                         projectile.spawnToAll();
+                        projectile.namedTag.putBoolean("canNotPickup", true);
                         this.level.addSound(this, Sound.RANDOM_BOW);
                     }
                 }

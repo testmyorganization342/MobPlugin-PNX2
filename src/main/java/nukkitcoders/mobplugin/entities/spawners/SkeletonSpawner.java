@@ -41,7 +41,7 @@ public class SkeletonSpawner extends AbstractEntitySpawner {
             if (blockId == Block.NETHERRACK) {
                 this.spawnTask.createEntity("WitherSkeleton", pos.add(0, 2.8, 0));
             }
-        } else if (pos.y > 127 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
