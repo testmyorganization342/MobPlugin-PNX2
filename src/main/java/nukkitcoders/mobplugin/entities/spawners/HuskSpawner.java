@@ -25,11 +25,12 @@ public class HuskSpawner extends AbstractEntitySpawner {
 
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int time = level.getTime() % Level.TIME_FULL;
 
         if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (biomeId != 2) {
             result = SpawnResult.WRONG_BIOME;

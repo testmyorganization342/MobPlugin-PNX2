@@ -11,15 +11,10 @@ import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 /**
- * Each entity get it's own spawner class.
- *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class ChickenSpawner extends AbstractEntitySpawner {
 
-    /**
-     * @param spawnTask
-     */
     public ChickenSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
     }
@@ -32,11 +27,9 @@ public class ChickenSpawner extends AbstractEntitySpawner {
 
         if (blockId != Block.GRASS) {
             result = SpawnResult.WRONG_BLOCK;
-        //} else if (blockLightLevel < 9) {
-        //    result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (biomeId == 8) {
             result = SpawnResult.WRONG_BIOME;
-        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.7, 0));

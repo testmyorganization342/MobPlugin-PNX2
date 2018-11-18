@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of a horse
- *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class Horse extends WalkingAnimal {

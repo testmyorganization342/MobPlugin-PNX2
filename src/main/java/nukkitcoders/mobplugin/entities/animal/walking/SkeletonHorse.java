@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of a skeleton horse
- *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class SkeletonHorse extends Horse {

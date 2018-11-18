@@ -12,15 +12,10 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 import nukkitcoders.mobplugin.utils.Utils;
 
 /**
- * Each entity get it's own spawner class.
- *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class OcelotSpawner extends AbstractEntitySpawner {
 
-    /**
-     * @param spawnTask
-     */
     public OcelotSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
     }
@@ -39,9 +34,7 @@ public class OcelotSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BIOME;
         } else if (blockId != Block.GRASS && blockId != Block.LEAVES) {
             result = SpawnResult.WRONG_BLOCK;
-        //} else if (blockLightLevel < 9) {
-        //  result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.9, 0));

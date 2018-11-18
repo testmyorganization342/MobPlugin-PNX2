@@ -71,13 +71,14 @@ public class Chicken extends WalkingAnimal {
 
         this.setMaxHealth(4);
     }
+
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
         if (this.EggLayTime > 0) {
-            EggLayTime-=tickDiff;
-        }else{
-            this.level.dropItem(this,Item.get(Item.EGG,0,1));
+            EggLayTime -= tickDiff;
+        } else {
+            this.level.dropItem(this, Item.get(Item.EGG, 0, 1));
             this.level.addSound(this, Sound.MOB_CHICKEN_PLOP);
             this.EggLayTime = this.getRandomEggLayTime();
         }
@@ -90,9 +91,10 @@ public class Chicken extends WalkingAnimal {
             Player player = (Player) creature;
             return player.isAlive() && !player.closed
                     && (player.getInventory().getItemInHand().getId() == Item.SEEDS
-                    || player.getInventory().getItemInHand().getId() == Item.BEETROOT_SEEDS
-                    || player.getInventory().getItemInHand().getId() == Item.MELON_SEEDS
-                    || player.getInventory().getItemInHand().getId() == Item.PUMPKIN_SEEDS) && distance <= 49;
+                            || player.getInventory().getItemInHand().getId() == Item.BEETROOT_SEEDS
+                            || player.getInventory().getItemInHand().getId() == Item.MELON_SEEDS
+                            || player.getInventory().getItemInHand().getId() == Item.PUMPKIN_SEEDS)
+                    && distance <= 49;
         }
         return false;
     }
@@ -100,25 +102,25 @@ public class Chicken extends WalkingAnimal {
     @Override
     public boolean onInteract(Player player, Item item) {
         super.onInteract(player, item);
-        if ((item.equals(Item.get(Item.SEEDS,0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.SEEDS,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.SEEDS)));
+        if ((item.equals(Item.get(Item.SEEDS, 0))) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.SEEDS, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.SEEDS)));
             this.setInLove();
-        }else if ((item.equals(Item.get(Item.BEETROOT_SEEDS,0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.BEETROOT_SEEDS,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.BEETROOT_SEEDS)));
+        } else if ((item.equals(Item.get(Item.BEETROOT_SEEDS, 0))) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.BEETROOT_SEEDS, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.BEETROOT_SEEDS)));
             this.setInLove();
-        }else if ((item.equals(Item.get(Item.MELON_SEEDS,0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.MELON_SEEDS,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.MELON_SEEDS)));
+        } else if ((item.equals(Item.get(Item.MELON_SEEDS, 0))) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.MELON_SEEDS, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.MELON_SEEDS)));
             this.setInLove();
-        }else if ((item.equals(Item.get(Item.PUMPKIN_SEEDS,0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.PUMPKIN_SEEDS,0,1));
-            this.level.addSound(this,Sound.RANDOM_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5,0.5),this.getMountedYOffset(),Utils.rand(-0.5,0.5)),Item.get(Item.PUMPKIN_SEEDS)));
+        } else if ((item.equals(Item.get(Item.PUMPKIN_SEEDS, 0))) && !this.isBaby()) {
+            player.getInventory().removeItem(Item.get(Item.PUMPKIN_SEEDS, 0, 1));
+            this.level.addSound(this, Sound.RANDOM_EAT);
+            this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.PUMPKIN_SEEDS)));
             this.setInLove();
         }
         return false;
@@ -127,7 +129,7 @@ public class Chicken extends WalkingAnimal {
     public void saveNBT() {
         super.saveNBT();
         this.namedTag.putInt("EggLayTime", this.EggLayTime);
-        this.namedTag.putBoolean("IsChickenJockey",this.IsChickenJockey);
+        this.namedTag.putBoolean("IsChickenJockey", this.IsChickenJockey);
     }
 
     @Override

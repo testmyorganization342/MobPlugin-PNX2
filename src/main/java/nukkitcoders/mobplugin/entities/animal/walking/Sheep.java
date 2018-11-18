@@ -130,7 +130,7 @@ public class Sheep extends WalkingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            drops.add(Item.get(Item.WOOL, this.namedTag.getByte("Color"), 1));
+            drops.add(Item.get(Item.WOOL, this.getColor(), 1));
             int muttonDrop = Utils.rand(1, 3);
             for (int i = 0; i < muttonDrop; i++) {
                 drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));

@@ -28,11 +28,9 @@ public class MooshroomSpawner extends AbstractEntitySpawner {
 
         if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
-        //} else if (blockLightLevel < 9) {
-        //    result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (biomeId != 14) {
             result = SpawnResult.WRONG_BIOME;
-        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));

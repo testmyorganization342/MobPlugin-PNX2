@@ -15,6 +15,7 @@ import java.util.HashMap;
 public class PolarBear extends WalkingMonster {
 
     public static final int NETWORK_ID = 28;
+
     int angry = 0;
 
     public PolarBear(FullChunk chunk, CompoundTag nbt) {

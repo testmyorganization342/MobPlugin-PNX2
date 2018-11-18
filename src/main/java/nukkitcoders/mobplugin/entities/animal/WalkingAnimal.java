@@ -56,10 +56,6 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
                 for (int i = 0; i < 3; i++) {
                     this.level.addParticle(new HeartParticle(this.add(Utils.rand(-1.0,1.0),this.getMountedYOffset()+ Utils.rand(-1.0,1.0),Utils.rand(-1.0,1.0))));
                 }
-                /*EntityEventPacket pk = new EntityEventPacket();
-                pk.eid = this.getId();
-                pk.event = 21;
-                this.getLevel().addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4,pk);*/
             }
         }
 

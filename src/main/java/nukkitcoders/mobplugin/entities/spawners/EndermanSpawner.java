@@ -12,15 +12,10 @@ import nukkitcoders.mobplugin.entities.monster.walking.Enderman;
 import nukkitcoders.mobplugin.utils.Utils;
 
 /**
- * Each entity get it's own spawner class.
- *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class EndermanSpawner extends AbstractEntitySpawner {
 
-    /**
-     * @param spawnTask
-     */
     public EndermanSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
     }
@@ -40,7 +35,7 @@ public class EndermanSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BLOCK;
         } else if (blockLightLevel > 7) {
             result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (pos.y > 256 || pos.y < 1 || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.AIR) {
+        } else if (pos.y > 256 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 3.8, 0));

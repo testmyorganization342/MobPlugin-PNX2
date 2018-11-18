@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of a donkey
- *
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
 public class Donkey extends Horse {
