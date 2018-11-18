@@ -50,8 +50,6 @@ public abstract class BaseEntity extends EntityCreature {
     private boolean despawnEntities;
     
     private int despawnTicks;
-    
-    public boolean canDespawn = true;
 
     private int maxJumpHeight = 1;
     protected boolean isJumping;
@@ -172,7 +170,7 @@ public abstract class BaseEntity extends EntityCreature {
     public boolean entityBaseTick(int tickDiff) {
         super.entityBaseTick(tickDiff);
 
-        if (this.despawnEntities && this.age > this.despawnTicks && this.canDespawn) {
+        if (this.despawnEntities && this.age > this.despawnTicks && !this.hasCustomName()) {
             this.close();
         }
 
@@ -248,7 +246,6 @@ public abstract class BaseEntity extends EntityCreature {
                 this.setNameTag(item.getCustomName());
                 this.setNameTagVisible(true);
                 player.getInventory().removeItem(item);
-                this.canDespawn = false;
                 return true;
             }
         }
