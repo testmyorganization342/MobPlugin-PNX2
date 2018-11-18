@@ -27,7 +27,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
 
         if (biomeId != 4 && biomeId != 5 && biomeId != 20 && biomeId != 27 && biomeId != 30 && biomeId != 32 && biomeId != 133 && biomeId != 158 ) {
             result = SpawnResult.WRONG_BIOME;
-        } else if (pos.y > 256 || pos.y < 1 || blockId == Block.AIR) {
+        } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (Block.transparent[blockId]) {
             result = SpawnResult.WRONG_BLOCK;
