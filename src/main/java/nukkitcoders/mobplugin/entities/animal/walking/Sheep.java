@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -60,12 +59,8 @@ public class Sheep extends WalkingAnimal {
     }
 
     @Override
-    public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
-    }
-
-    @Override
     public void initEntity() {
+        super.initEntity();
         this.setMaxHealth(8);
 
         if (!this.namedTag.contains("Color")) {
@@ -129,7 +124,7 @@ public class Sheep extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             drops.add(Item.get(Item.WOOL, this.getColor(), 1));
             int muttonDrop = Utils.rand(1, 3);
             for (int i = 0; i < muttonDrop; i++) {

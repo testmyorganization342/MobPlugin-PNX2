@@ -135,7 +135,7 @@ public class Chicken extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             int featherDrop = Utils.rand(0, 3);
             for (int i = 0; i < featherDrop; i++) {
                 drops.add(Item.get(Item.FEATHER, 0, 1));

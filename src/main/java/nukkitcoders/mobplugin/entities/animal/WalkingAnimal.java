@@ -9,7 +9,6 @@ import cn.nukkit.level.particle.HeartParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
-import co.aikar.timings.Timings;
 import nukkitcoders.mobplugin.entities.WalkingEntity;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -24,29 +23,17 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
     }
 
     @Override
-    public double getSpeed() {
-        return 0.8;
-    }
-
-    @Override
     protected void initEntity() {
         super.initEntity();
 
         if (this.getDataFlag(DATA_FLAG_BABY, 0)) {
             this.setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
         }
-
-    }
-
-    @Override
-    public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAG_BABY, 0);
     }
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = false;
-        Timings.entityBaseTickTimer.startTiming();
 
         hasUpdate = super.entityBaseTick(tickDiff);
 
@@ -71,7 +58,6 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
             this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
         }
 
-        Timings.entityBaseTickTimer.stopTiming();
         return hasUpdate;
     }
 

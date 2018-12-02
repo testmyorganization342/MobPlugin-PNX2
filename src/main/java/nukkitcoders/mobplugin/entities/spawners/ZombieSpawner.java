@@ -9,6 +9,7 @@ import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 import nukkitcoders.mobplugin.entities.monster.walking.Zombie;
+import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.utils.Utils;
 
 /**
@@ -39,9 +40,15 @@ public class ZombieSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BLOCK;
         } else if (time > 13184 && time < 22800) {
             if (Utils.rand(1, 40) == 30) {
-                this.spawnTask.createEntity("ZombieVillager", pos.add(0, 2.8, 0));
+                BaseEntity entity = this.spawnTask.createEntity("ZombieVillager", pos.add(0, 2.8, 0));
+                if (Utils.rand(0, 500) > 480) {
+                    entity.setBaby(true);
+                }
             } else {
-                this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+                BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+                if (Utils.rand(0, 500) > 480) {
+                    entity.setBaby(true);
+                }
             }
         }
 

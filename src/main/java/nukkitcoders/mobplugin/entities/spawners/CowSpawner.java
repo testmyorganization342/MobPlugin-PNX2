@@ -9,6 +9,8 @@ import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.entities.animal.walking.Cow;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
+import nukkitcoders.mobplugin.entities.BaseEntity;
+import nukkitcoders.mobplugin.utils.Utils;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
@@ -32,7 +34,10 @@ public class CowSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
+            BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.3, 0));
+            if (Utils.rand(0, 500) > 480) {
+                entity.setBaby(true);
+            }
         }
 
         return result;

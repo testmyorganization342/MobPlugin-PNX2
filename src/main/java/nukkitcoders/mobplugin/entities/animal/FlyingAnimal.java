@@ -14,20 +14,6 @@ public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable
     }
 
     @Override
-    protected void initEntity() {
-        super.initEntity();
-
-        if (this.getDataFlag(DATA_FLAG_BABY, 0)) {
-            this.setDataFlag(DATA_FLAG_BABY, DATA_TYPE_BYTE);
-        }
-    }
-
-    @Override
-    public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAG_BABY, 0);
-    }
-
-    @Override
     public boolean onUpdate(int currentTick) {
         if (!this.isAlive()) {
             if (++this.deadTicks >= 23) {

@@ -117,6 +117,16 @@ public class Wolf extends TameableMonster {
                 this.setCollarColor(((ItemDye) item).getDyeColor());
                 return true;
             }
+        } else if (this.hasOwner() && player.equals(this.getOwner())) {
+            if (this.namedTag.getByte("Sitting") == 0) {
+                this.namedTag.putByte("Sitting", 1);
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_SITTING, true);
+                this.saveNBT();
+            } else {
+                this.namedTag.putByte("Sitting", 0);
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_SITTING, false);
+                this.saveNBT();
+            }
         }
         return false;
     }

@@ -7,6 +7,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
+import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.*;
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.walking.*;
@@ -122,11 +123,12 @@ public class AutoSpawnTask extends Thread {
         return count;
     }
 
-    public void createEntity(Object type, Position pos) {
-        Entity entity = MobPlugin.create(type, pos);
+    public BaseEntity createEntity(Object type, Position pos) {
+        BaseEntity entity = (BaseEntity) MobPlugin.create(type, pos);
         if (entity != null) {
             entity.spawnToAll();
         }
+        return entity;
     }
 
     public int getRandomSafeXZCoord(int degree, int safeDegree, int correctionDegree) {

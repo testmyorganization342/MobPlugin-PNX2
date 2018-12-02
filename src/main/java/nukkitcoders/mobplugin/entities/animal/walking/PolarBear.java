@@ -61,10 +61,6 @@ public class PolarBear extends WalkingMonster {
         return 1.25;
     }
 
-    public boolean isBaby() {
-        return this.getDataFlag(DATA_FLAGS, Entity.DATA_FLAG_BABY);
-    }
-
     @Override
     public void initEntity() {
         super.initEntity();
@@ -156,7 +152,11 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.RAW_FISH), Item.get(Item.RAW_SALMON)};
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            return new Item[]{Item.get(Item.RAW_FISH), Item.get(Item.RAW_SALMON)};
+        } else {
+            return new Item[0];
+        }
     }
 
     @Override

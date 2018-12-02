@@ -124,7 +124,7 @@ public class Stray extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             int bones = Utils.rand(0, 3);
             int arrows = Utils.rand(0, 3);
             for (int i = 0; i < bones; i++) {
