@@ -20,9 +20,9 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     protected AutoSpawnTask spawnTask;
 
-    protected Server        server;
+    protected Server server;
 
-    protected List<String>  disabledSpawnWorlds = new ArrayList<>();
+    protected List<String> disabledSpawnWorlds = new ArrayList<>();
 
     public AbstractEntitySpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         this.spawnTask = spawnTask;
@@ -64,7 +64,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         Position pos = ((Player) iPlayer).getPosition();
         Level level = ((Player) iPlayer).getLevel();
 
-        if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId(), getEntityName())) {
+        if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId())) {
             if (pos != null) {
                 pos.x += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.z += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);

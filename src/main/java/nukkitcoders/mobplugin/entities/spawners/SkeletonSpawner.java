@@ -35,9 +35,7 @@ public class SkeletonSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (biomeId == 8) {
-            if (blockId == Block.NETHERRACK) {
-                this.spawnTask.createEntity("WitherSkeleton", pos.add(0, 2.8, 0));
-            }
+            result = SpawnResult.WRONG_BIOME;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
         }

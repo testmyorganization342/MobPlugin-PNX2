@@ -61,7 +61,7 @@ import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 2;
+    private int configVersion = 3;
 
     private Config pluginConfig = null;
 

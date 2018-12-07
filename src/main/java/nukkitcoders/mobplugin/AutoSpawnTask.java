@@ -81,6 +81,8 @@ public class AutoSpawnTask extends Thread {
         entitySpawners.add(new SkeletonSpawner(this, this.pluginConfig));
         entitySpawners.add(new SpiderSpawner(this, this.pluginConfig));
         entitySpawners.add(new StraySpawner(this, this.pluginConfig));
+        entitySpawners.add(new WitchSpawner(this, this.pluginConfig));
+        entitySpawners.add(new WitherSkeletonSpawner(this, this.pluginConfig));
         entitySpawners.add(new WolfSpawner(this, this.pluginConfig));
         entitySpawners.add(new ZombieSpawner(this, this.pluginConfig));
     }
@@ -103,14 +105,14 @@ public class AutoSpawnTask extends Thread {
         maxSpawns.put(Skeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.skeleton", 0));
         maxSpawns.put(Spider.NETWORK_ID, this.pluginConfig.getInt("max-spawns.spider", 0));
         maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getInt("max-spawns.stray", 0));
+        maxSpawns.put(Witch.NETWORK_ID, this.pluginConfig.getInt("max-spawns.witch", 0));
+        maxSpawns.put(WitherSkeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.witherskeleton", 0));
         maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getInt("max-spawns.wolf", 0));
         maxSpawns.put(Zombie.NETWORK_ID, this.pluginConfig.getInt("max-spawns.zombie", 0));
-
     }
 
-    public boolean entitySpawnAllowed(Level level, int networkId, String entityName) {
-        int count = countEntity(level, networkId);
-        return count < maxSpawns.getOrDefault(networkId, 0);
+    public boolean entitySpawnAllowed(Level level, int networkId) {
+        return countEntity(level, networkId) < maxSpawns.getOrDefault(networkId, 0);
     }
 
     private int countEntity(Level level, int networkId) {

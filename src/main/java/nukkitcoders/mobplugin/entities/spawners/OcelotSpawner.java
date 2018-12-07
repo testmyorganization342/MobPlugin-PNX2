@@ -24,7 +24,7 @@ public class OcelotSpawner extends AbstractEntitySpawner {
     public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
-        if (Utils.rand(0, 3) == 0) {
+        if (Utils.rand(1, 3) == 1) {
             return SpawnResult.SPAWN_DENIED;
         }
 
