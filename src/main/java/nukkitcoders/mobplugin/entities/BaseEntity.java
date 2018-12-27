@@ -196,7 +196,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public boolean entityBaseTick(int tickDiff) {
         super.entityBaseTick(tickDiff);
 
-        if (this.despawnEntities && this.age > this.despawnTicks && !this.hasCustomName()) {
+        if (this.despawnEntities && this.age > this.despawnTicks && !this.hasCustomName() && !(this instanceof Boss)) {
             this.close();
         }
 
