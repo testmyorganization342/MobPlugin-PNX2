@@ -61,6 +61,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     public AtomicBoolean inKnockback = new AtomicBoolean();
 
+    protected int attackDelay = 0;
+
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         
@@ -198,6 +200,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
         if (this.despawnEntities && this.age > this.despawnTicks && !this.hasCustomName() && !(this instanceof Boss)) {
             this.close();
+        }
+
+        if (this instanceof Monster && this.attackDelay < 500) {
+            this.attackDelay++;
         }
 
         return true;

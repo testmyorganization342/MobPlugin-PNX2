@@ -44,8 +44,7 @@ import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
 import nukkitcoders.mobplugin.entities.monster.swimming.ElderGuardian;
 import nukkitcoders.mobplugin.entities.monster.swimming.Guardian;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
-import nukkitcoders.mobplugin.entities.projectile.EntityBlueWitherSkull;
-import nukkitcoders.mobplugin.entities.projectile.EntityFireBall;
+import nukkitcoders.mobplugin.entities.projectile.*;
 import nukkitcoders.mobplugin.event.entity.SpawnGolemEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
@@ -242,6 +241,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
         Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
         Entity.registerEntity("FireBall", EntityFireBall.class);
+        Entity.registerEntity("ShulkerBullet", EntityShulkerBullet.class);
     }
 
     public static Entity create(Object type, Position source, Object... args) {
