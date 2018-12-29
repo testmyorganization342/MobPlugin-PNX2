@@ -9,7 +9,6 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
-import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
@@ -398,8 +397,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @EventHandler
     public void onPickup(InventoryPickupArrowEvent ev) {
-        EntityArrow a = ev.getArrow();
-        if (a.namedTag.getBoolean("canNotPickup")) {
+        if (ev.getArrow().namedTag.getBoolean("canNotPickup")) {
             ev.setCancelled();
         }
     }
