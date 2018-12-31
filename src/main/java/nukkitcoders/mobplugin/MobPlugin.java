@@ -1,6 +1,5 @@
 package nukkitcoders.mobplugin;
 
-import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
@@ -49,9 +48,6 @@ import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
 
 /**
@@ -59,7 +55,7 @@ import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 3;
+    private int configVersion = 4;
 
     private Config pluginConfig = null;
 
@@ -222,7 +218,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Husk.class.getSimpleName(), Husk.class);
         Entity.registerEntity(IronGolem.class.getSimpleName(), IronGolem.class);
         Entity.registerEntity(Phantom.class.getSimpleName(), Phantom.class);
-        Entity.registerEntity(PigZombie.class.getSimpleName(), PigZombie.class);
+        Entity.registerEntity(ZombiePigman.class.getSimpleName(), ZombiePigman.class);
         Entity.registerEntity(Shulker.class.getSimpleName(), Shulker.class);
         Entity.registerEntity(Silverfish.class.getSimpleName(), Silverfish.class);
         Entity.registerEntity(Skeleton.class.getSimpleName(), Skeleton.class);
@@ -258,14 +254,6 @@ public class MobPlugin extends PluginBase implements Listener {
                         .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
 
         return Entity.createEntity(type.toString(), chunk, nbt, args);
-    }
-
-    public List<IPlayer> getAllRegisteredPlayers() {
-        List<IPlayer> playerList = new ArrayList<>();
-        for (Player player : this.getServer().getOnlinePlayers().values()) {
-            playerList.add(player);
-        }
-        return playerList;
     }
 
     @EventHandler

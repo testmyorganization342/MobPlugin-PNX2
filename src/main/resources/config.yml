@@ -1,4 +1,4 @@
-config-version: 3
+config-version: 4
 
 entities:
   auto-spawn-tick: 200
@@ -29,3 +29,4 @@ max-spawns:
   witherskeleton: 0
   wolf: 0
   zombie: 0
+  zombiepigman: 0

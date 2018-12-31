@@ -1,6 +1,6 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
-import cn.nukkit.IPlayer;
+import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
@@ -21,7 +21,7 @@ public class OcelotSpawner extends AbstractEntitySpawner {
         super(spawnTask, pluginConfig);
     }
 
-    public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
+    public SpawnResult spawn(Player player, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
         if (Utils.rand(1, 3) == 1) {

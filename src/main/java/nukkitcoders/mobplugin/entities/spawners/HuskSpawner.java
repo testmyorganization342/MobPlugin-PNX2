@@ -1,6 +1,6 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
-import cn.nukkit.IPlayer;
+import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
@@ -22,7 +22,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    public SpawnResult spawn(IPlayer iPlayer, Position pos, Level level) {
+    public SpawnResult spawn(Player player, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);

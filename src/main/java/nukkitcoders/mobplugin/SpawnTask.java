@@ -1,14 +1,10 @@
 package nukkitcoders.mobplugin;
 
-import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (mige)</a>
@@ -27,28 +23,16 @@ public class SpawnTask extends Thread {
 
     @Override
     public void run() {
-        List<IPlayer> allRegisteredUsers = this.plugin.getAllRegisteredPlayers();
-
-        List<Player> onlinePlayers = new ArrayList<>();
-        for (IPlayer iPlayer : allRegisteredUsers) {
-            if (iPlayer instanceof Player) {
-                onlinePlayers.add((Player) iPlayer);
-            }
-        }
-
-        for (Player player : onlinePlayers) {
-            Position pos = player.getPosition();
-
-            Position spawnPosition = new Position(pos.x, pos.y, pos.z);
+        for (Player player : plugin.getServer().getOnlinePlayers().values()) {
+            Position spawnPosition = new Position(player.x, player.y, player.z);
             getSpawnPosition(spawnPosition, new int[0], 2, 5, player.getLevel());
         }
     }
 
     private Position getSpawnPosition (Position startSpawnPosition, int[] notAllowedBlockIds, int minAirAboveSpawnBlock, int maxFindingTries, Level level) {
-        int spawnX = (int)startSpawnPosition.x;
-        int spawnZ = (int)startSpawnPosition.z;
+        int spawnX = (int) startSpawnPosition.x;
+        int spawnZ = (int) startSpawnPosition.z;
         Position spawnPosition = null;
-
 
         int minSpawnX1 = spawnX - MIN_SPAWN_RADIUS;
         int minSpawnX2 = spawnX + MIN_SPAWN_RADIUS;
@@ -75,9 +59,7 @@ public class SpawnTask extends Thread {
             if (isBlockAllowed(blockId, notAllowedBlockIds) && isEnoughAirAboveBlock(x, y, z, minAirAboveSpawnBlock, level)) {
                 found = true;
             }
-            if (!found) {
 
-            }
             findTries ++;
         }
 

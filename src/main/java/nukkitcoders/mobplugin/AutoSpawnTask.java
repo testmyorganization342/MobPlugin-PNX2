@@ -1,7 +1,5 @@
 package nukkitcoders.mobplugin;
 
-import cn.nukkit.IPlayer;
-import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
@@ -39,25 +37,14 @@ public class AutoSpawnTask extends Thread {
         prepareMaxSpawns();
         try {
             prepareSpawnerClasses();
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 
     @Override
     public void run() {
-        List<IPlayer> players = plugin.getAllRegisteredPlayers();
-        List<Player> onlinePlayers = new ArrayList<>();
-
-        for (IPlayer foundPlayer : players) {
-            if (foundPlayer instanceof Player) {
-                onlinePlayers.add((Player) foundPlayer);
-            } else {
-            }
-        }
-
-        if (onlinePlayers.size() > 0) {
+        if (plugin.getServer().getOnlinePlayers().size() > 0) {
             for (IEntitySpawner spawner : entitySpawners) {
-                spawner.spawn(onlinePlayers);
+                spawner.spawn(plugin.getServer().getOnlinePlayers().values());
             }
         }
     }
@@ -85,6 +72,7 @@ public class AutoSpawnTask extends Thread {
         entitySpawners.add(new WitherSkeletonSpawner(this, this.pluginConfig));
         entitySpawners.add(new WolfSpawner(this, this.pluginConfig));
         entitySpawners.add(new ZombieSpawner(this, this.pluginConfig));
+        entitySpawners.add(new ZombiePigmanSpawner(this, this.pluginConfig));
     }
 
     private void prepareMaxSpawns() {
@@ -109,6 +97,7 @@ public class AutoSpawnTask extends Thread {
         maxSpawns.put(WitherSkeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.witherskeleton", 0));
         maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getInt("max-spawns.wolf", 0));
         maxSpawns.put(Zombie.NETWORK_ID, this.pluginConfig.getInt("max-spawns.zombie", 0));
+        maxSpawns.put(ZombiePigman.NETWORK_ID, this.pluginConfig.getInt("max-spawns.zombiepigman", 0));
     }
 
     public boolean entitySpawnAllowed(Level level, int networkId) {

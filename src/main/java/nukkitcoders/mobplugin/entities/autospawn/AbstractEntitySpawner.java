@@ -1,6 +1,5 @@
 package nukkitcoders.mobplugin.entities.autospawn;
 
-import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
@@ -10,6 +9,7 @@ import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -37,7 +37,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     }
 
     @Override
-    public void spawn(List<Player> onlinePlayers) {
+    public void spawn(Collection<Player> onlinePlayers) {
         if (isSpawnAllowedByDifficulty()) {
             SpawnResult lastSpawnResult = null;
             for (Player player : onlinePlayers) {
@@ -60,9 +60,9 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         return true;
     }
 
-    protected SpawnResult spawn(IPlayer iPlayer) {
-        Position pos = ((Player) iPlayer).getPosition();
-        Level level = ((Player) iPlayer).getLevel();
+    protected SpawnResult spawn(Player player) {
+        Position pos = player.getPosition();
+        Level level = player.getLevel();
 
         if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId())) {
             if (pos != null) {
@@ -78,28 +78,23 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             return SpawnResult.MAX_SPAWN_REACHED;
         }
 
-        return spawn(iPlayer, pos, level);
+        return spawn(player, pos, level);
     }
 
     protected boolean isSpawnAllowedByDifficulty() {
-
         int randomNumber = Utils.rand(0, 4);
 
-        switch (getCurrentDifficulty()) {
-            case PEACEFUL:
+        switch (this.server.getDifficulty()) {
+            case 0:
                 return randomNumber == 0;
-            case EASY:
+            case 1:
                 return randomNumber <= 1;
-            case NORMAL:
+            case 2:
                 return randomNumber <= 2;
-            case HARD:
+            case 3:
                 return true;
             default:
                 return true;
         }
-    }
-
-    protected Difficulty getCurrentDifficulty() {
-        return Difficulty.getByDiffculty(this.server.getDifficulty());
     }
 }
