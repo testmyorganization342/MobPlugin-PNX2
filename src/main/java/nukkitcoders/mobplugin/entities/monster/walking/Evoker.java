@@ -112,7 +112,7 @@ public class Evoker extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
-        return 10;
+    public int getKillExperience() {
+        return this.isBaby() ? 0 : 10;
     }
 }

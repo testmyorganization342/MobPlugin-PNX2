@@ -35,7 +35,7 @@ public class BatSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.3, 0));
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
         }
 
         return result;

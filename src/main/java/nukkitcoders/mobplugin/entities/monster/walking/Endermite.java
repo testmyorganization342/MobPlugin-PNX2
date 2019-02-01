@@ -95,7 +95,7 @@ public class Endermite extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
-        return 3;
+    public int getKillExperience() {
+        return this.isBaby() ? 0 : 3;
     }
 }

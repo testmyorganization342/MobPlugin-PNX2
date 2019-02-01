@@ -137,6 +137,6 @@ public class Guardian extends SwimmingMonster {
 
     @Override
     public int getKillExperience() {
-        return 10;
+        return this.isBaby() ? 0 : 10;
     }
 }

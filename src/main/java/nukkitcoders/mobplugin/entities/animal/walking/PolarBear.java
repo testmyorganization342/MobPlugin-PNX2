@@ -49,14 +49,6 @@ public class PolarBear extends WalkingMonster {
     }
 
     @Override
-    public float getEyeHeight() {
-        if (this.isBaby()) {
-            return 0.65f;
-        }
-        return 1.4f;
-    }
-
-    @Override
     public double getSpeed() {
         return 1.25;
     }
@@ -164,6 +156,6 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 3);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 }

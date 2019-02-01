@@ -47,11 +47,6 @@ public class Spider extends WalkingMonster {
     }
 
     @Override
-    public float getEyeHeight() {
-        return 1;
-    }
-
-    @Override
     public double getSpeed() {
         return 1.13;
     }
@@ -271,6 +266,6 @@ public class Spider extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5;
+        return this.isBaby() ? 0 : 5;
     }
 }

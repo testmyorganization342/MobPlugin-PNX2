@@ -72,7 +72,7 @@ public class ZombieHorse extends Horse {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 4);
     }
 
     @Override

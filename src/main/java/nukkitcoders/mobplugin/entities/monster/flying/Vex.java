@@ -43,7 +43,7 @@ public class Vex extends FlyingMonster {
 
     @Override
     public int getKillExperience() {
-        return 3;
+        return this.isBaby() ? 0 : 3;
     }
 
     @Override

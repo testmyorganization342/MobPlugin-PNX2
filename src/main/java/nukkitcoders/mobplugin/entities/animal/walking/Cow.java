@@ -44,14 +44,6 @@ public class Cow extends WalkingAnimal {
     }
 
     @Override
-    public float getEyeHeight() {
-        if (this.isBaby()) {
-            return 0.65f;
-        }
-        return 1.2f;
-    }
-
-    @Override
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(10);
@@ -103,6 +95,6 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 4);
     }
 }

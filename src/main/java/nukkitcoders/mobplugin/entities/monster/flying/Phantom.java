@@ -120,6 +120,6 @@ public class Phantom extends FlyingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5;
+        return this.isBaby() ? 0 : 5;
     }
 }

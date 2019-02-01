@@ -114,7 +114,7 @@ public class Slime extends JumpingMonster {
     }
 
     @Override
-    public int getKillExperience () {
-        return 4;
+    public int getKillExperience() {
+        return this.isBaby() ? 0 : 4;
     }
 }

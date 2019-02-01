@@ -97,7 +97,7 @@ public class Silverfish extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
-        return 5;
+    public int getKillExperience() {
+        return this.isBaby() ? 0 : 5;
     }
 }

@@ -11,6 +11,8 @@ import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.walking.*;
 import nukkitcoders.mobplugin.entities.autospawn.IEntitySpawner;
 import nukkitcoders.mobplugin.entities.monster.flying.*;
+import nukkitcoders.mobplugin.entities.monster.jumping.MagmaCube;
+import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
 import nukkitcoders.mobplugin.entities.spawners.*;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -35,9 +37,7 @@ public class AutoSpawnTask extends Thread {
         this.plugin = plugin;
 
         prepareMaxSpawns();
-        try {
-            prepareSpawnerClasses();
-        } catch (Exception e) {}
+        prepareSpawnerClasses();
     }
 
     @Override
@@ -55,17 +55,21 @@ public class AutoSpawnTask extends Thread {
         entitySpawners.add(new ChickenSpawner(this, this.pluginConfig));
         entitySpawners.add(new CowSpawner(this, this.pluginConfig));
         entitySpawners.add(new CreeperSpawner(this, this.pluginConfig));
+        entitySpawners.add(new DonkeySpawner(this, this.pluginConfig));
         entitySpawners.add(new EndermanSpawner(this, this.pluginConfig));
         entitySpawners.add(new GhastSpawner(this, this.pluginConfig));
         entitySpawners.add(new HorseSpawner(this, this.pluginConfig));
         entitySpawners.add(new HuskSpawner(this, this.pluginConfig));
+        entitySpawners.add(new MagmaCubeSpawner(this, this.pluginConfig));
         entitySpawners.add(new MooshroomSpawner(this, this.pluginConfig));
         entitySpawners.add(new OcelotSpawner(this, this.pluginConfig));
+        entitySpawners.add(new ParrotSpawner(this, this.pluginConfig));
         entitySpawners.add(new PigSpawner(this, this.pluginConfig));
         entitySpawners.add(new PolarBearSpawner(this, this.pluginConfig));
         entitySpawners.add(new RabbitSpawner(this, this.pluginConfig));
         entitySpawners.add(new SheepSpawner(this, this.pluginConfig));
         entitySpawners.add(new SkeletonSpawner(this, this.pluginConfig));
+        entitySpawners.add(new SlimeSpawner(this, this.pluginConfig));
         entitySpawners.add(new SpiderSpawner(this, this.pluginConfig));
         entitySpawners.add(new StraySpawner(this, this.pluginConfig));
         entitySpawners.add(new WitchSpawner(this, this.pluginConfig));
@@ -81,16 +85,20 @@ public class AutoSpawnTask extends Thread {
         maxSpawns.put(Chicken.NETWORK_ID, this.pluginConfig.getInt("max-spawns.chicken", 0));
         maxSpawns.put(Cow.NETWORK_ID, this.pluginConfig.getInt("max-spawns.cow", 0));
         maxSpawns.put(Creeper.NETWORK_ID, this.pluginConfig.getInt("max-spawns.creeper", 0));
+        maxSpawns.put(Donkey.NETWORK_ID, this.pluginConfig.getInt("max-spawns.donkey", 0));
         maxSpawns.put(Enderman.NETWORK_ID, this.pluginConfig.getInt("max-spawns.enderman", 0));
         maxSpawns.put(Ghast.NETWORK_ID, this.pluginConfig.getInt("max-spawns.ghast", 0));
         maxSpawns.put(Horse.NETWORK_ID, this.pluginConfig.getInt("max-spawns.horse", 0));
+        maxSpawns.put(MagmaCube.NETWORK_ID, this.pluginConfig.getInt("max-spawns.magmacube", 0));
         maxSpawns.put(Mooshroom.NETWORK_ID, this.pluginConfig.getInt("max-spawns.mooshroom", 0));
         maxSpawns.put(Ocelot.NETWORK_ID, this.pluginConfig.getInt("max-spawns.ocelot", 0));
+        maxSpawns.put(Parrot.NETWORK_ID, this.pluginConfig.getInt("max-spawns.parrot", 0));
         maxSpawns.put(Pig.NETWORK_ID, this.pluginConfig.getInt("max-spawns.pig", 0));
         maxSpawns.put(PolarBear.NETWORK_ID, this.pluginConfig.getInt("max-spawns.polarbear", 0));
         maxSpawns.put(Rabbit.NETWORK_ID, this.pluginConfig.getInt("max-spawns.rabbit", 0));
         maxSpawns.put(Sheep.NETWORK_ID, this.pluginConfig.getInt("max-spawns.sheep", 0));
         maxSpawns.put(Skeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.skeleton", 0));
+        maxSpawns.put(Slime.NETWORK_ID, this.pluginConfig.getInt("max-spawns.slime", 0));
         maxSpawns.put(Spider.NETWORK_ID, this.pluginConfig.getInt("max-spawns.spider", 0));
         maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getInt("max-spawns.stray", 0));
         maxSpawns.put(Witch.NETWORK_ID, this.pluginConfig.getInt("max-spawns.witch", 0));

@@ -66,7 +66,7 @@ public class ElderGuardian extends SwimmingMonster {
 
     @Override
     public int getKillExperience() {
-        return 10;
+        return this.isBaby() ? 0 : 10;
     }
 
     @Override

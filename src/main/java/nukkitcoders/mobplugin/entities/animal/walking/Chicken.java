@@ -47,14 +47,6 @@ public class Chicken extends WalkingAnimal {
     }
 
     @Override
-    public float getEyeHeight() {
-        if (this.isBaby()) {
-            return 0.51f;
-        }
-        return 0.7f;
-    }
-
-    @Override
     public float getDrag() {
         return 0.2f;
     }
@@ -147,7 +139,7 @@ public class Chicken extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 4);
     }
 
     private int getRandomEggLayTime() {

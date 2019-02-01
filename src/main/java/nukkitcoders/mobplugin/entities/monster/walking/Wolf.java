@@ -198,7 +198,7 @@ public class Wolf extends TameableMonster {
 
     @Override
     public int getKillExperience() {
-        return 3;
+        return this.isBaby() ? 0 : 3;
     }
 
     public void setCollarColor(DyeColor color) {

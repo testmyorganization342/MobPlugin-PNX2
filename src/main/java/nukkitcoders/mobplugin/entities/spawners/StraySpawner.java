@@ -37,7 +37,7 @@ public class StraySpawner extends AbstractEntitySpawner {
         } else if (biomeId != 12) {
             result = SpawnResult.WRONG_BIOME;
         } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 2.8, 0));
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
         }
 
         return result;

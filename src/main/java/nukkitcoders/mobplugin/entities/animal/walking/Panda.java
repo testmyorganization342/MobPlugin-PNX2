@@ -42,6 +42,6 @@ public class Panda extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 3);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 }

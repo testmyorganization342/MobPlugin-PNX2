@@ -53,6 +53,6 @@ public class Parrot extends FlyingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 4);
     }
 }

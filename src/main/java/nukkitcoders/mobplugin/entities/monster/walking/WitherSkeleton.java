@@ -61,11 +61,7 @@ public class WitherSkeleton extends WalkingMonster {
             this.attackDelay = 0;
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, getDamage()));
         }
-
-        Effect wither = Effect.getEffect(Effect.WITHER);
-        wither.setAmplifier(1);
-        wither.setDuration(200);
-        player.addEffect(wither);
+        player.addEffect(Effect.getEffect(Effect.WITHER).setAmplifier(1).setDuration(200));
     }
 
     @Override
@@ -97,6 +93,6 @@ public class WitherSkeleton extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5;
+        return this.isBaby() ? 0 : 5;
     }
 }

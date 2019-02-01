@@ -40,14 +40,6 @@ public class Llama extends WalkingAnimal {
     }
 
     @Override
-    public float getEyeHeight() {
-        if (this.isBaby()) {
-            return 0.65f;
-        }
-        return 1.2f;
-    }
-
-    @Override
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(15);
@@ -68,6 +60,6 @@ public class Llama extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return Utils.rand(1, 3);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 }

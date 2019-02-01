@@ -45,11 +45,6 @@ public class ZombiePigman extends WalkingMonster {
     }
 
     @Override
-    public float getEyeHeight() {
-        return 1.62f;
-    }
-
-    @Override
     public double getSpeed() {
         return 1.15;
     }
@@ -181,8 +176,8 @@ public class ZombiePigman extends WalkingMonster {
     }
 
     @Override
-    public int getKillExperience () {
-        return 5;
+    public int getKillExperience() {
+        return this.isBaby() ? 0 : 5;
     }
 
     @Override

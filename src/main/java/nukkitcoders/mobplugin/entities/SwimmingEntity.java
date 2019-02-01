@@ -86,10 +86,12 @@ public abstract class SwimmingEntity extends BaseEntity {
     }
 
     protected boolean checkJump(double dx, double dz) {
-        if (this.isInsideOfWater()) {
-            this.motionY = Utils.rand(-0.15, 0.15);
-        } else {
+        if (this.isInsideOfWater() && (this.motionX > 0 || this.motionZ > 0)) {
+            this.motionY = Utils.rand(-0.12, 0.12);
+        } else if (!this.isOnGround() && !isInsideOfWater()) {
             this.motionY -= this.getGravity();
+        } else {
+            this.motionY = 0;
         }
         return true;
     }

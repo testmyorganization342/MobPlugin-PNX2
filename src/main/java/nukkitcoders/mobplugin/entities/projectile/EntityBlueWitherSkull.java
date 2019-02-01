@@ -94,10 +94,6 @@ public class EntityBlueWitherSkull extends EntityProjectile {
     @Override
     public void onCollideWithEntity(Entity entity) {
         super.onCollideWithEntity(entity);
-        
-        Effect wither = Effect.getEffect(Effect.WITHER);
-        wither.setAmplifier(1);
-        wither.setDuration(140);
-        entity.addEffect(wither);
+        entity.addEffect(Effect.getEffect(Effect.WITHER).setAmplifier(1).setDuration(140));
     }
 }

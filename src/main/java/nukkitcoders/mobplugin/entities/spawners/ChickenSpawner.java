@@ -34,7 +34,7 @@ public class ChickenSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 1.7, 0));
+            BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
             if (Utils.rand(0, 500) > 480) {
                 entity.setBaby(true);
             }

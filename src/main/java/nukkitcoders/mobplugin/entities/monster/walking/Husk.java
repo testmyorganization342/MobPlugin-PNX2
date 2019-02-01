@@ -78,10 +78,7 @@ public class Husk extends WalkingMonster implements EntityAgeable {
             pk.eid = this.getId();
             pk.event = 4;
             Server.broadcastPacket(this.getViewers().values(), pk);
-            Effect hunger = Effect.getEffectByName("HUNGER");
-            hunger.setAmplifier(1);
-            hunger.setDuration(140);
-            player.addEffect(hunger);
+            player.addEffect(Effect.getEffectByName("HUNGER").setAmplifier(1).setDuration(140));
         }
     }
 
@@ -99,6 +96,6 @@ public class Husk extends WalkingMonster implements EntityAgeable {
 
     @Override
     public int getKillExperience() {
-        return 5;
+        return this.isBaby() ? 0 : 5;
     }
 }

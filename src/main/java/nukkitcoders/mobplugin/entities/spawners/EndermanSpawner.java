@@ -38,7 +38,7 @@ public class EndermanSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if ((time > 13184 && time < 22800) || level.getName().equals("nether") || level.getName().equals("end")) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 3.8, 0));
+            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
         }
 
         return result;

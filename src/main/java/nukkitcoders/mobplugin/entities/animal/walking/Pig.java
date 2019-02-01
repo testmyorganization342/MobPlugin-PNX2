@@ -46,14 +46,6 @@ public class Pig extends WalkingAnimal implements EntityRideable {
     }
 
     @Override
-    public float getEyeHeight() {
-        if (this.isBaby()) {
-            return 0.45f;
-        }
-        return 0.9f;
-    }
-
-    @Override
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(10);
@@ -109,7 +101,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
     }
 
     public int getKillExperience() {
-        return Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 4);
     }
 
     @Override

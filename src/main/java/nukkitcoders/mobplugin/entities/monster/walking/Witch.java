@@ -119,6 +119,6 @@ public class Witch extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5;
+        return this.isBaby() ? 0 : 5;
     }
 }

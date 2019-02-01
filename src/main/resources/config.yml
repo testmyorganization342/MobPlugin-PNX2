@@ -1,4 +1,4 @@
-config-version: 4
+config-version: 5
 
 entities:
   auto-spawn-tick: 200
@@ -12,18 +12,22 @@ max-spawns:
   chicken: 1
   cow: 1
   creeper: 0
+  donkey: 0
   enderman: 0
   ghast: 0
   husk: 0
   horse: 0
+  magmacube: 0
   mooshroom: 0
   ocelot: 0
+  parrot: 0
   pig: 1
   polarbear: 0
   rabbit: 0
   stray: 0
   sheep: 1
   skeleton: 0
+  slime: 0
   spider: 0
   witch: 0
   witherskeleton: 0

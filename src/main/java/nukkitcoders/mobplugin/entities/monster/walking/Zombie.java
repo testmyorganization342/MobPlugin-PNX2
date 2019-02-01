@@ -138,8 +138,8 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     }
 
     @Override
-    public int getKillExperience () {
-        return 5;
+    public int getKillExperience() {
+        return this.isBaby() ? 0 : 5;
     }
 
     @Override
