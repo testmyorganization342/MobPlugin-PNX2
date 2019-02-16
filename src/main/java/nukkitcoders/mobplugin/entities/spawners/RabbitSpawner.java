@@ -34,7 +34,7 @@ public class RabbitSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            BaseEntity entity = this.spawnTask.createEntity("Rabbit", pos.add(0, 1, 0));
             if (Utils.rand(0, 500) > 480) {
                 entity.setBaby(true);
             }
@@ -46,10 +46,5 @@ public class RabbitSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return Rabbit.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "Rabbit";
     }
 }

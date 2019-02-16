@@ -37,7 +37,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
         } else if (biomeId != 2) {
             result = SpawnResult.WRONG_BIOME;
         } else if (time > 13184 && time < 22800) {
-            BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            BaseEntity entity = this.spawnTask.createEntity("Husk", pos.add(0, 1, 0));
             if (Utils.rand(0, 500) > 480) {
                 entity.setBaby(true);
             }
@@ -49,10 +49,5 @@ public class HuskSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return Husk.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "Husk";
     }
 }

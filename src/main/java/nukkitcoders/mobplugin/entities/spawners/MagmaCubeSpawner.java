@@ -30,7 +30,7 @@ public class MagmaCubeSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            this.spawnTask.createEntity("MagmaCube", pos.add(0, 1, 0));
         }
 
         return result;
@@ -39,10 +39,5 @@ public class MagmaCubeSpawner extends AbstractEntitySpawner {
     @Override
     public final int getEntityNetworkId() {
         return MagmaCube.NETWORK_ID;
-    }
-
-    @Override
-    public final String getEntityName() {
-        return "MagmaCube";
     }
 }

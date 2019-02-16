@@ -34,7 +34,7 @@ public class PigSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            BaseEntity entity = this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            BaseEntity entity = this.spawnTask.createEntity("Pig", pos.add(0, 1, 0));
             if (Utils.rand(0, 500) > 480) {
                 entity.setBaby(true);
             }
@@ -46,10 +46,5 @@ public class PigSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return Pig.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "Pig";
     }
 }

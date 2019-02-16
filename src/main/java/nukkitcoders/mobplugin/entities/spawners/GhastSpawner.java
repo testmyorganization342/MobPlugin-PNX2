@@ -33,7 +33,7 @@ public class GhastSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            this.spawnTask.createEntity("Ghast", pos.add(0, 1, 0));
         }
 
         return result;
@@ -42,10 +42,5 @@ public class GhastSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return Ghast.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "Ghast";
     }
 }

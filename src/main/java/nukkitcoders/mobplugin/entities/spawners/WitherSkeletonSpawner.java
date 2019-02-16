@@ -30,7 +30,7 @@ public class WitherSkeletonSpawner extends AbstractEntitySpawner {
         } else if (blockId != Block.NETHERRACK) {
             result = SpawnResult.WRONG_BLOCK;
         } else {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            this.spawnTask.createEntity("WitherSkeleton", pos.add(0, 1, 0));
         }
 
         return result;
@@ -39,10 +39,5 @@ public class WitherSkeletonSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return WitherSkeleton.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "WitherSkeleton";
     }
 }

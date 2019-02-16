@@ -2,38 +2,36 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.passive.EntitySquid;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
-import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
 
-public class SlimeSpawner extends AbstractEntitySpawner {
+public class SquidSpawner extends AbstractEntitySpawner {
 
-    public SlimeSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
+    public SquidSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         super(spawnTask, pluginConfig);
     }
 
-    @Override
     public SpawnResult spawn(Player player, Position pos, Level level) {
         SpawnResult result = SpawnResult.OK;
 
-        int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
-        int time = level.getTime() % Level.TIME_FULL;
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
 
-        if (blockId != Block.GRASS) {
+        if (blockId != Block.WATER && blockId != Block.STILL_WATER) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (biomeId != 6 && biomeId != 134) {
+        } else if (biomeId != 0) {
             result = SpawnResult.WRONG_BIOME;
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
-        } else if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) > 7) {
-            result = SpawnResult.WRONG_LIGHTLEVEL;
-        } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity("Slime", pos.add(0, 1, 0));
+        } else if (level.getName().equals("nether") || level.getName().equals("end")) {
+            result = SpawnResult.WRONG_BIOME;
+        } else {
+            this.spawnTask.createEntity("Squid", pos.add(0, -1, 0));
         }
 
         return result;
@@ -41,6 +39,6 @@ public class SlimeSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return Slime.NETWORK_ID;
+        return EntitySquid.NETWORK_ID;
     }
 }

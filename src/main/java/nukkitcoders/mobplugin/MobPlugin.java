@@ -55,7 +55,7 @@ import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 5;
+    private int configVersion = 6;
 
     private Config pluginConfig = null;
 
@@ -380,7 +380,7 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     @EventHandler
-    public void onPickup(InventoryPickupArrowEvent ev) {
+    public void InventoryPickupArrowEvent(InventoryPickupArrowEvent ev) {
         if (ev.getArrow().namedTag.getBoolean("canNotPickup")) {
             ev.setCancelled();
         }

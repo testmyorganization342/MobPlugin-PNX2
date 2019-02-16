@@ -81,7 +81,7 @@ public class EntityFireBall extends EntityProjectile {
 
         if (this.age > 1200 || this.isCollided) {
             if (this.isCollided && this.canExplode) {
-                ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 2.8);
+                ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1);
                 this.server.getPluginManager().callEvent(ev);
                 if (!ev.isCancelled()) {
                     FireBallExplosion explosion = new FireBallExplosion(this, (float) ev.getForce(), this.shootingEntity);

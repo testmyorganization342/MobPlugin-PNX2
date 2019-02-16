@@ -1,14 +1,20 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
+import cn.nukkit.Player;
+import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
 
 public class Pufferfish extends SwimmingAnimal {
 
     public static final int NETWORK_ID = 108;
+
+    protected boolean puffed = false;
 
     public Pufferfish(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -47,5 +53,21 @@ public class Pufferfish extends SwimmingAnimal {
     @Override
     public int getKillExperience() {
         return 0;
+    }
+
+    @Override
+    public boolean attack(EntityDamageEvent ev) {
+        super.attack(ev);
+
+        if (ev instanceof EntityDamageByEntityEvent) {
+            Entity damager = ((EntityDamageByEntityEvent) ev).getDamager();
+            if (damager instanceof Player) {
+                if (this.puffed) return true;
+                this.puffed = true;
+                damager.addEffect(Effect.getEffect(Effect.POISON).setAmplifier(1).setDuration(140));
+            }
+        }
+
+        return true;
     }
 }

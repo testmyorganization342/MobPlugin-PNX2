@@ -36,7 +36,7 @@ public class SpiderSpawner extends AbstractEntitySpawner {
         } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            this.spawnTask.createEntity("Spider", pos.add(0, 1, 0));
         }
 
         return result;
@@ -45,10 +45,5 @@ public class SpiderSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return Spider.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "Spider";
     }
 }

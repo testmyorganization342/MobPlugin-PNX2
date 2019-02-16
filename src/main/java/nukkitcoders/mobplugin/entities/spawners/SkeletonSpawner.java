@@ -37,7 +37,7 @@ public class SkeletonSpawner extends AbstractEntitySpawner {
         } else if (biomeId == 8) {
             result = SpawnResult.WRONG_BIOME;
         } else if (time > 13184 && time < 22800) {
-            this.spawnTask.createEntity(getEntityName(), pos.add(0, 1, 0));
+            this.spawnTask.createEntity("Skeleton", pos.add(0, 1, 0));
         }
 
         return result;
@@ -46,10 +46,5 @@ public class SkeletonSpawner extends AbstractEntitySpawner {
     @Override
     public int getEntityNetworkId() {
         return Skeleton.NETWORK_ID;
-    }
-
-    @Override
-    public String getEntityName() {
-        return "Skeleton";
     }
 }
