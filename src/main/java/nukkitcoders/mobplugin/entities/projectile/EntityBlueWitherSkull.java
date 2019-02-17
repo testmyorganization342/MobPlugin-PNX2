@@ -76,8 +76,6 @@ public class EntityBlueWitherSkull extends EntityProjectile {
             return false;
         }
 
-        this.timing.startTiming();
-
         if (this.age > 1200 || this.hadCollision) {
             if (this.canExplode) {
                 ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1);
@@ -96,8 +94,6 @@ public class EntityBlueWitherSkull extends EntityProjectile {
         } else {
             this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + Utils.rand(-100, 100) / 500, this.getHeight() / 2 + Utils.rand(-100, 100) / 500, this.getWidth() / 2 + Utils.rand(-100, 100) / 500)));
         }
-
-        this.timing.stopTiming();
 
         return super.onUpdate(currentTick);
     }

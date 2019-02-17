@@ -6,6 +6,7 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.potion.Effect;
 
 public class EntityShulkerBullet extends EntityProjectile {
 
@@ -60,18 +61,11 @@ public class EntityShulkerBullet extends EntityProjectile {
             return false;
         }
 
-        this.timing.startTiming();
-
-        boolean hasUpdate = super.onUpdate(currentTick);
-
         if (this.age > 1200 || this.isCollided) {
             this.kill();
-            hasUpdate = true;
         }
 
-        this.timing.stopTiming();
-
-        return hasUpdate;
+        return super.onUpdate(currentTick);
     }
 
     @Override
@@ -81,9 +75,9 @@ public class EntityShulkerBullet extends EntityProjectile {
         return true;
     }
 
-    /*@Override
+    @Override
     public void onCollideWithEntity(Entity entity) {
         super.onCollideWithEntity(entity);
         entity.addEffect(Effect.getEffect(Effect.LEVITATION).setAmplifier(1).setDuration(200));
-    }*/
+    }
 }
