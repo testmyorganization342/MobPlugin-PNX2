@@ -63,7 +63,9 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        
+
+        this.setHealth(this.getMaxHealth());
+
         this.despawnEntities = MobPlugin.getInstance().getConfig().getBoolean("entities.despawn-entities", true);
         this.despawnTicks = MobPlugin.getInstance().getConfig().getInt("entities.despawn-ticks", 12000);
     }
