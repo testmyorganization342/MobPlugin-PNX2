@@ -88,40 +88,40 @@ public class AutoSpawnTask extends Thread {
     }
 
     private void prepareMaxSpawns() {
-        maxSpawns.put(Bat.NETWORK_ID, this.pluginConfig.getInt("max-spawns.bat", 0));
-        maxSpawns.put(Blaze.NETWORK_ID, this.pluginConfig.getInt("max-spawns.blaze", 0));
-        maxSpawns.put(Chicken.NETWORK_ID, this.pluginConfig.getInt("max-spawns.chicken", 0));
-        maxSpawns.put(Cod.NETWORK_ID, this.pluginConfig.getInt("max-spawns.cod", 0));
-        maxSpawns.put(Cow.NETWORK_ID, this.pluginConfig.getInt("max-spawns.cow", 0));
-        maxSpawns.put(Creeper.NETWORK_ID, this.pluginConfig.getInt("max-spawns.creeper", 0));
-        maxSpawns.put(Dolphin.NETWORK_ID, this.pluginConfig.getInt("max-spawns.dolphin", 0));
-        maxSpawns.put(Donkey.NETWORK_ID, this.pluginConfig.getInt("max-spawns.donkey", 0));
-        maxSpawns.put(Enderman.NETWORK_ID, this.pluginConfig.getInt("max-spawns.enderman", 0));
-        maxSpawns.put(Ghast.NETWORK_ID, this.pluginConfig.getInt("max-spawns.ghast", 0));
-        maxSpawns.put(Horse.NETWORK_ID, this.pluginConfig.getInt("max-spawns.horse", 0));
-        maxSpawns.put(MagmaCube.NETWORK_ID, this.pluginConfig.getInt("max-spawns.magmacube", 0));
-        maxSpawns.put(Mooshroom.NETWORK_ID, this.pluginConfig.getInt("max-spawns.mooshroom", 0));
-        maxSpawns.put(Ocelot.NETWORK_ID, this.pluginConfig.getInt("max-spawns.ocelot", 0));
-        maxSpawns.put(Parrot.NETWORK_ID, this.pluginConfig.getInt("max-spawns.parrot", 0));
-        maxSpawns.put(Pig.NETWORK_ID, this.pluginConfig.getInt("max-spawns.pig", 0));
-        maxSpawns.put(PolarBear.NETWORK_ID, this.pluginConfig.getInt("max-spawns.polarbear", 0));
-        maxSpawns.put(Pufferfish.NETWORK_ID, this.pluginConfig.getInt("max-spawns.pufferfish", 0));
-        maxSpawns.put(Rabbit.NETWORK_ID, this.pluginConfig.getInt("max-spawns.rabbit", 0));
-        maxSpawns.put(Salmon.NETWORK_ID, this.pluginConfig.getInt("max-spawns.salmon", 0));
-        maxSpawns.put(Sheep.NETWORK_ID, this.pluginConfig.getInt("max-spawns.sheep", 0));
-        maxSpawns.put(Skeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.skeleton", 0));
-        maxSpawns.put(Slime.NETWORK_ID, this.pluginConfig.getInt("max-spawns.slime", 0));
-        maxSpawns.put(Spider.NETWORK_ID, this.pluginConfig.getInt("max-spawns.spider", 0));
-        maxSpawns.put(Squid.NETWORK_ID, this.pluginConfig.getInt("max-spawns.squid", 0));
-        maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getInt("max-spawns.stray", 0));
-        maxSpawns.put(TropicalFish.NETWORK_ID, this.pluginConfig.getInt("max-spawns.tropicalfish", 0));
-        maxSpawns.put(Turtle.NETWORK_ID, this.pluginConfig.getInt("max-spawns.turtle", 0));
-        maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getInt("max-spawns.stray", 0));
-        maxSpawns.put(Witch.NETWORK_ID, this.pluginConfig.getInt("max-spawns.witch", 0));
-        maxSpawns.put(WitherSkeleton.NETWORK_ID, this.pluginConfig.getInt("max-spawns.witherskeleton", 0));
-        maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getInt("max-spawns.wolf", 0));
-        maxSpawns.put(Zombie.NETWORK_ID, this.pluginConfig.getInt("max-spawns.zombie", 0));
-        maxSpawns.put(ZombiePigman.NETWORK_ID, this.pluginConfig.getInt("max-spawns.zombiepigman", 0));
+        maxSpawns.put(Bat.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.bat") ? 1 : 0);
+        maxSpawns.put(Blaze.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.blaze") ? 1 : 0);
+        maxSpawns.put(Chicken.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.chicken") ? 1 : 0);
+        maxSpawns.put(Cod.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.cod") ? 1 : 0);
+        maxSpawns.put(Cow.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.cow") ? 1 : 0);
+        maxSpawns.put(Creeper.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.creeper") ? 1 : 0);
+        maxSpawns.put(Dolphin.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.dolphin") ? 1 : 0);
+        maxSpawns.put(Donkey.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.donkey") ? 1 : 0);
+        maxSpawns.put(Enderman.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.enderman") ? 1 : 0);
+        maxSpawns.put(Ghast.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.ghast") ? 1 : 0);
+        maxSpawns.put(Horse.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.horse") ? 1 : 0);
+        maxSpawns.put(MagmaCube.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.magmacube") ? 1 : 0);
+        maxSpawns.put(Mooshroom.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.mooshroom") ? 1 : 0);
+        maxSpawns.put(Ocelot.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.ocelot") ? 1 : 0);
+        maxSpawns.put(Parrot.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.parrot") ? 1 : 0);
+        maxSpawns.put(Pig.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.pig") ? 1 : 0);
+        maxSpawns.put(PolarBear.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.polarbear") ? 1 : 0);
+        maxSpawns.put(Pufferfish.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.pufferfish") ? 1 : 0);
+        maxSpawns.put(Rabbit.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.rabbit") ? 1 : 0);
+        maxSpawns.put(Salmon.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.salmon") ? 1 : 0);
+        maxSpawns.put(Sheep.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.sheep") ? 1 : 0);
+        maxSpawns.put(Skeleton.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.skeleton") ? 1 : 0);
+        maxSpawns.put(Slime.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.slime") ? 1 : 0);
+        maxSpawns.put(Spider.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.spider") ? 1 : 0);
+        maxSpawns.put(Squid.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.squid") ? 1 : 0);
+        maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.stray") ? 1 : 0);
+        maxSpawns.put(TropicalFish.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.tropicalfish") ? 1 : 0);
+        maxSpawns.put(Turtle.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.turtle") ? 1 : 0);
+        maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.stray") ? 1 : 0);
+        maxSpawns.put(Witch.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.witch") ? 1 : 0);
+        maxSpawns.put(WitherSkeleton.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.witherskeleton") ? 1 : 0);
+        maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.wolf") ? 1 : 0);
+        maxSpawns.put(Zombie.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.zombie") ? 1 : 0);
+        maxSpawns.put(ZombiePigman.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.zombiepigman") ? 1 : 0);
     }
 
     public boolean entitySpawnAllowed(Level level, int networkId) {

@@ -29,7 +29,7 @@ public class WitchSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (blockId != Block.GRASS) {
             result = SpawnResult.WRONG_BLOCK;
-        } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
+        } else if ((pos.y > 255 || (level.getName().equals("nether") && pos.y > 127)) || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (biomeId != 6 && biomeId != 134) {
             result = SpawnResult.WRONG_BIOME;

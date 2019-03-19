@@ -8,11 +8,11 @@ assignees: ''
 ---
 
 ### Info
-<!--- Put [ x ] to select -->
+<!--- Put [X] to select -->
 This is:
-[ ] bug report
-[ ] feature request
-[ ] other
+- [] bug report
+- [] feature request
+- [] other
 
 ### Your issue / suggestion
 <!-- Tell us how we could improve the plugin. Describe clearly and in detail. For stack traces use https://hastebin.com/ and share the link. -->

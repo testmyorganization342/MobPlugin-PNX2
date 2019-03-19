@@ -15,5 +15,5 @@ public interface IEntitySpawner {
 
     SpawnResult spawn(Player player, Position pos, Level level);
 
-    int getEntityNetworkId ();
+    int getEntityNetworkId();
 }

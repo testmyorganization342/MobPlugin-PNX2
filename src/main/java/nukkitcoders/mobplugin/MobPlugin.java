@@ -55,9 +55,9 @@ import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 6;
+    private int configVersion = 7;
 
-    private Config pluginConfig = null;
+    public Config pluginConfig = null;
 
     public static MobPlugin instance;
 
@@ -77,9 +77,10 @@ public class MobPlugin extends PluginBase implements Listener {
 
         if (getConfig().getInt("config-version") != configVersion) {
             this.getServer().getLogger().warning("MobPlugin's config file is outdated. Please delete old config.");
+            this.getServer().getPluginManager().disablePlugin(this);
         }
 
-        int spawnDelay = pluginConfig.getInt("entities.auto-spawn-tick", 0);
+        int spawnDelay = pluginConfig.getInt("entities.autospawn-ticks", 0);
 
         if (spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
@@ -100,7 +101,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
         if (args.length == 0) {
             sender.sendMessage("-- MobPlugin " + this.getDescription().getVersion() + " --");
-            sender.sendMessage("/mob spawn <mob> <opt:player> - Spawn a mob");
+            sender.sendMessage("/mob spawn <entity> <opt:player> - Summon entity");
             sender.sendMessage("/mob removeall - Remove all living mobs");
             sender.sendMessage("/mob removeitems - Remove all items from ground");
             return true;
@@ -109,7 +110,7 @@ public class MobPlugin extends PluginBase implements Listener {
         switch (args[0]) {
             case "spawn":
                 if (args.length == 1) {
-                    sender.sendMessage("Usage: /mob spawn <mob> <opt:player>");
+                    sender.sendMessage("Usage: /mob spawn <entity> <opt:player>");
                     break;
                 }
 
@@ -237,12 +238,6 @@ public class MobPlugin extends PluginBase implements Listener {
 
     public static Entity create(Object type, Position source, Object... args) {
         FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
-        if (!chunk.isGenerated()) {
-            chunk.setGenerated();
-        }
-        if (!chunk.isPopulated()) {
-            chunk.setPopulated();
-        }
 
         CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
                 .putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0)))
@@ -259,15 +254,9 @@ public class MobPlugin extends PluginBase implements Listener {
         if (!(baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
         Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
         if (!(damager instanceof Player)) return;
-        Player player = (Player) damager;
         int killExperience = baseEntity.getKillExperience();
-        if (killExperience > 0 && player.isSurvival()) {
-            player.addExperience(killExperience);
-            /*if (player.isSurvival()) {
-                for (int i = 1; i <= killExperience; i++) {
-                    player.getLevel().dropExpOrb(baseEntity, 1);
-                }
-            }*/
+        if (killExperience > 0) {
+            damager.getLevel().dropExpOrb(baseEntity, killExperience);
         }
     }
 

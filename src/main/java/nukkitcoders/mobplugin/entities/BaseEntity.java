@@ -66,8 +66,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
         this.setHealth(this.getMaxHealth());
 
-        this.despawnEntities = MobPlugin.getInstance().getConfig().getBoolean("entities.despawn-entities", true);
-        this.despawnTicks = MobPlugin.getInstance().getConfig().getInt("entities.despawn-ticks", 12000);
+        this.despawnEntities = MobPlugin.getInstance().pluginConfig.getBoolean("entities.despawn-entities", true);
+        this.despawnTicks = MobPlugin.getInstance().pluginConfig.getInt("entities.despawn-ticks", 8000);
     }
 
     public abstract Vector3 updateMove(int tickDiff);

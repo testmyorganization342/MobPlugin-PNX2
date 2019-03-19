@@ -33,7 +33,7 @@ public class CreeperSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (biomeId == 8) {
             result = SpawnResult.WRONG_BIOME;
-        } else if (pos.y > 127 || pos.y < 1 || blockId == Block.AIR) {
+        } else if ((pos.y > 255 || (level.getName().equals("nether") && pos.y > 127)) || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (time > 13184 && time < 22800) {
             this.spawnTask.createEntity("Creeper", pos.add(0, 1, 0));
