@@ -47,8 +47,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     protected List<Block> collisionBlocks = new ArrayList<>();
     
-    private boolean despawnEntities;
-    
     private int despawnTicks;
 
     private int maxJumpHeight = 1;
@@ -66,7 +64,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
         this.setHealth(this.getMaxHealth());
 
-        this.despawnEntities = MobPlugin.getInstance().pluginConfig.getBoolean("entities.despawn-entities", true);
         this.despawnTicks = MobPlugin.getInstance().pluginConfig.getInt("entities.despawn-ticks", 8000);
     }
 
@@ -185,7 +182,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public boolean entityBaseTick(int tickDiff) {
         super.entityBaseTick(tickDiff);
 
-        if (this.despawnEntities && this.age > this.despawnTicks && !this.hasCustomName() && !(this instanceof Boss)) {
+        if (this.age > this.despawnTicks && !this.hasCustomName() && !(this instanceof Boss)) {
             this.close();
         }
 
