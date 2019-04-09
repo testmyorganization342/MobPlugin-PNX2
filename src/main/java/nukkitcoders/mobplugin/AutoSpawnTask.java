@@ -116,7 +116,6 @@ public class AutoSpawnTask extends Thread {
         maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.stray") ? 1 : 0);
         maxSpawns.put(TropicalFish.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.tropicalfish") ? 1 : 0);
         maxSpawns.put(Turtle.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.turtle") ? 1 : 0);
-        maxSpawns.put(Stray.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.stray") ? 1 : 0);
         maxSpawns.put(Witch.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.witch") ? 1 : 0);
         maxSpawns.put(WitherSkeleton.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.witherskeleton") ? 1 : 0);
         maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getBoolean("autospawn.wolf") ? 1 : 0);

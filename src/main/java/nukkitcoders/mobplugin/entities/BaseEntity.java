@@ -275,4 +275,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
         return new Item[0];
     }
+
+    public float getMountedYOffset() {
+        return getHeight() * 0.75F;
+    }
 }
