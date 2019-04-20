@@ -58,6 +58,6 @@ public class Ocelot extends WalkingAnimal {
     }
 
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 }

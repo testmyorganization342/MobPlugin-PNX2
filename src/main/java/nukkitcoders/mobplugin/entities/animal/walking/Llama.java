@@ -48,14 +48,18 @@ public class Llama extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int leather = Utils.rand(1, 3);
 
-            for (int i = 0; i < leather; i++) {
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

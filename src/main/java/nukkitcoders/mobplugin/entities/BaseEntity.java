@@ -14,6 +14,7 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
+import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,33 +32,19 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     protected Entity followTarget = null;
 
-    public boolean inWater = false;
-
-    public boolean inLava = false;
-
-    public boolean onClimbable = false;
-
     protected boolean baby = false;
 
     private boolean movement = true;
 
     private boolean friendly = false;
-
-    protected List<Block> blocksAround = new ArrayList<>();
-
-    protected List<Block> collisionBlocks = new ArrayList<>();
     
     private int despawnTicks;
 
     private int maxJumpHeight = 1;
 
-    protected boolean isJumping;
-
-    public float jumpMovementFactor = 0.02F;
-
-    public AtomicBoolean inKnockback = new AtomicBoolean();
-
     protected int attackDelay = 0;
+
+    public Item[] armor;
 
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -102,10 +89,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return this.maxJumpHeight;
     }
 
-    public int getAge() {
-        return this.age;
-    }
-
     public Vector3 getTarget() {
         return this.target;
     }
@@ -132,8 +115,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     }
 
     public void setBaby(boolean baby) {
-        this.baby = true;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, true);
+        this.baby = baby;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, baby);
         this.setScale((float) 0.5);
     }
 
@@ -203,6 +186,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             return false;
         }
 
+        if (source instanceof EntityDamageByEntityEvent) {
+            ((EntityDamageByEntityEvent) source).setKnockBack(0.25f);
+        }
+
         super.attack(source);
 
         this.target = null;
@@ -261,7 +248,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             if (item.hasCustomName()) {
                 this.setNameTag(item.getCustomName());
                 this.setNameTagVisible(true);
-                player.getInventory().removeItem(item);
+                player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
                 return true;
             }
         }
@@ -276,7 +263,143 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return new Item[0];
     }
 
-    public float getMountedYOffset() {
+    protected float getMountedYOffset() {
         return getHeight() * 0.75F;
+    }
+
+    public Item[] getRandomArmor() {
+        Item[] slots = new Item[4];
+        Item helmet = new Item(0, 0, 0);
+        Item chestplate = new Item(0, 0, 0);
+        Item leggings = new Item(0, 0, 0);
+        Item boots = new Item(0, 0, 0);
+
+        switch (Utils.rand(1, 5)) {
+            case 1:
+                if (Utils.rand(1, 100) < 39) {
+                    helmet = Item.get(Item.LEATHER_CAP, 0, Utils.rand(0, 1));
+                }
+                break;
+            case 2:
+                if (Utils.rand(1, 100) < 50) {
+                    helmet = Item.get(Item.GOLD_HELMET, 0, Utils.rand(0, 1));
+                }
+                break;
+            case 3:
+                if (Utils.rand(1, 100) < 14) {
+                    helmet = Item.get(Item.CHAIN_HELMET, 0, Utils.rand(0, 1));
+                }
+                break;
+            case 4:
+                if (Utils.rand(1, 100) < 3) {
+                    helmet = Item.get(Item.IRON_HELMET, 0, Utils.rand(0, 1));
+                }
+                break;
+            case 5:
+                if (Utils.rand(1, 100) == 100) {
+                    helmet = Item.get(Item.DIAMOND_HELMET, 0, Utils.rand(0, 1));
+                }
+                break;
+        }
+
+        slots[0] = helmet;
+
+        if (Utils.rand(1, 4) != 1) {
+            switch (Utils.rand(1, 5)) {
+                case 1:
+                    if (Utils.rand(1, 100) < 39) {
+                        chestplate = Item.get(Item.LEATHER_TUNIC, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 2:
+                    if (Utils.rand(1, 100) < 50) {
+                        chestplate = Item.get(Item.GOLD_CHESTPLATE, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 3:
+                    if (Utils.rand(1, 100) < 14) {
+                        chestplate = Item.get(Item.CHAIN_CHESTPLATE, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 4:
+                    if (Utils.rand(1, 100) < 3) {
+                        chestplate = Item.get(Item.IRON_CHESTPLATE, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 5:
+                    if (Utils.rand(1, 100) == 100) {
+                        chestplate = Item.get(Item.DIAMOND_CHESTPLATE, 0, Utils.rand(0, 1));
+                    }
+                    break;
+            }
+        }
+
+        slots[1] = chestplate;
+
+        if (Utils.rand(1, 2) == 2) {
+            switch (Utils.rand(1, 5)) {
+                case 1:
+                    if (Utils.rand(1, 100) < 39) {
+                        leggings = Item.get(Item.LEATHER_PANTS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 2:
+                    if (Utils.rand(1, 100) < 50) {
+                        leggings = Item.get(Item.GOLD_LEGGINGS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 3:
+                    if (Utils.rand(1, 100) < 14) {
+                        leggings = Item.get(Item.CHAIN_LEGGINGS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 4:
+                    if (Utils.rand(1, 100) < 3) {
+                        leggings = Item.get(Item.IRON_LEGGINGS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 5:
+                    if (Utils.rand(1, 100) == 100) {
+                        leggings = Item.get(Item.DIAMOND_LEGGINGS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+            }
+        }
+
+        slots[2] = leggings;
+
+        if (Utils.rand(1, 5) < 3) {
+            switch (Utils.rand(1, 5)) {
+                case 1:
+                    if (Utils.rand(1, 100) < 39) {
+                        boots = Item.get(Item.LEATHER_BOOTS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 2:
+                    if (Utils.rand(1, 100) < 50) {
+                        boots = Item.get(Item.GOLD_BOOTS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 3:
+                    if (Utils.rand(1, 100) < 14) {
+                        boots = Item.get(Item.CHAIN_BOOTS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 4:
+                    if (Utils.rand(1, 100) < 3) {
+                        boots = Item.get(Item.IRON_BOOTS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+                case 5:
+                    if (Utils.rand(1, 100) == 100) {
+                        boots = Item.get(Item.DIAMOND_BOOTS, 0, Utils.rand(0, 1));
+                    }
+                    break;
+            }
+        }
+
+        slots[3] = boots;
+
+        return slots;
     }
 }

@@ -35,7 +35,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BLOCK;
         } else {
             BaseEntity entity = this.spawnTask.createEntity("Wolf", pos.add(0, 1, 0));
-            if (Utils.rand(0, 500) > 480) {
+            if (Utils.rand(1, 20) == 1) {
                 entity.setBaby(true);
             }
         }

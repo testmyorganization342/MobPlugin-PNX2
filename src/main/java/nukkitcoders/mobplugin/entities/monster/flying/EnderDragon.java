@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.monster.flying;
 
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.item.EntityEndCrystal;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -75,5 +76,21 @@ public class EnderDragon extends FlyingMonster implements Boss {
         addEntity.metadata = this.dataProperties;
         addEntity.attributes = new Attribute[]{Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(200).setValue(200)};
         return addEntity;
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        for (Entity e : this.getLevel().getEntities()) {
+            if (e instanceof EntityEndCrystal) {
+                if (e.distanceSquared(this) <= 32) {
+                    float health = this.getHealth();
+                    if (!(health > this.getMaxHealth()) && health != 0) {
+                        this.setHealth(health + 0.1f);
+                    }
+                }
+            }
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

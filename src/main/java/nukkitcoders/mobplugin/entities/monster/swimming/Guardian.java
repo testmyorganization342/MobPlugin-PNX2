@@ -104,7 +104,7 @@ public class Guardian extends SwimmingMonster {
     @Override
     public boolean entityBaseTick(int tickDiff) {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
-        if (followTarget!=null) {
+        if (followTarget != null) {
             if (laserTargetEid !=followTarget.getId()) {
                 this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = followTarget.getId()));
                 laserChargeTick = 40;
@@ -115,7 +115,7 @@ public class Guardian extends SwimmingMonster {
                     this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = -1));
                     laserChargeTick = 40;
                 }
-            }else{
+            } else {
                 this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = -1));
                 laserChargeTick = 40;
             }
@@ -126,13 +126,18 @@ public class Guardian extends SwimmingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int prismarineShard = Utils.rand(0, 3);
-            for (int i = 0; i < prismarineShard; i++) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

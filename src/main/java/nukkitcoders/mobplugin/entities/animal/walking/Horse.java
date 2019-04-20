@@ -18,8 +18,10 @@ import java.util.List;
 public class Horse extends WalkingAnimal {
 
     public static final int NETWORK_ID = 23;
-    private int Type = 0;
-    private int Variant = this.getRandomVariant();
+
+    private int type = 0;
+
+    private int variant = this.getRandomVariant();
 
     public Horse(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -55,28 +57,28 @@ public class Horse extends WalkingAnimal {
         super.initEntity();
         this.setMaxHealth(15);
         if (this instanceof Donkey) {
-            this.namedTag.putInt("Type", this.Type = 1);
+            this.namedTag.putInt("Type", this.type = 1);
         } else if (this instanceof Mule) {
-            this.namedTag.putInt("Type", this.Type = 2);
+            this.namedTag.putInt("Type", this.type = 2);
         } else if (this instanceof ZombieHorse) {
-            this.namedTag.putInt("Type", this.Type = 3);
+            this.namedTag.putInt("Type", this.type = 3);
         } else if (this instanceof SkeletonHorse) {
-            this.namedTag.putInt("Type", this.Type = 4);
+            this.namedTag.putInt("Type", this.type = 4);
         } else {
-            this.namedTag.putInt("Type", this.Type = 0);
+            this.namedTag.putInt("Type", this.type = 0);
         }
         if (this.namedTag.contains("Variant")) {
-            this.Variant = this.namedTag.getInt("Variant");
+            this.variant = this.namedTag.getInt("Variant");
         } else {
-            this.namedTag.putInt("Variant", this.Variant = this.getRandomVariant());
+            this.namedTag.putInt("Variant", this.variant = this.getRandomVariant());
         }
     }
 
     @Override
     public void saveNBT() {
         super.saveNBT();
-        this.namedTag.putByte("Type", this.Type);
-        this.namedTag.putInt("Variant", this.Variant);
+        this.namedTag.putByte("Type", this.type);
+        this.namedTag.putInt("Variant", this.variant);
     }
 
     @Override
@@ -99,30 +101,29 @@ public class Horse extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int leather = Utils.rand(0, 3);
 
-            for (int i = 0; i < leather; i++) {
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 
 
     private int getRandomVariant() {
-        int VariantList[] = {
-                0,1,2,3,4,5,6,
-                256,257,258,259,260,261,262,
-                512,513,514,515,516,517,518,
-                768,769,770,771,772,773,774,
-                1024,1025,1026,1027,1028,1029,1030
-        };
-        return VariantList[Utils.rand(0,VariantList.length)];
+        int variantList[] = { 0, 1, 2, 3, 4, 5, 6, 256, 257, 258, 259, 260, 261, 262, 512, 513, 514, 515, 516, 517, 518,
+                768, 769, 770, 771, 772, 773, 774, 1024, 1025, 1026, 1027, 1028, 1029, 1030 };
+        return variantList[Utils.rand(0, variantList.length - 1)];
     }
 }

@@ -86,8 +86,8 @@ public class Stray extends WalkingMonster {
             this.attackDelay = 0;
 
             double f = 1.2;
-            double yaw = this.yaw + Utils.rand(-220, 220) / 10;
-            double pitch = this.pitch + Utils.rand(-120, 120) / 10;
+            double yaw = this.yaw + Utils.rand(-220.0, 220.0) / 10;
+            double pitch = this.pitch + Utils.rand(-120.0, 120.0) / 10;
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             if (this.getLevel().getBlockIdAt((int)pos.getX(),(int)pos.getY(),(int)pos.getZ()) == Block.AIR) {
@@ -124,17 +124,22 @@ public class Stray extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int bones = Utils.rand(0, 3);
-            int arrows = Utils.rand(0, 3);
-            for (int i = 0; i < bones; i++) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.BONE, 0, 1));
             }
-            for (int i = 0; i < arrows; i++) {
+
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.ARROW, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

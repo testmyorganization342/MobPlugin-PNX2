@@ -95,22 +95,22 @@ public class Chicken extends WalkingAnimal {
     public boolean onInteract(Player player, Item item) {
         super.onInteract(player, item);
         if ((item.equals(Item.get(Item.SEEDS, 0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.SEEDS, 0, 1));
+            player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.SEEDS)));
             this.setInLove();
         } else if ((item.equals(Item.get(Item.BEETROOT_SEEDS, 0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.BEETROOT_SEEDS, 0, 1));
+            player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.BEETROOT_SEEDS)));
             this.setInLove();
         } else if ((item.equals(Item.get(Item.MELON_SEEDS, 0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.MELON_SEEDS, 0, 1));
+            player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.MELON_SEEDS)));
             this.setInLove();
         } else if ((item.equals(Item.get(Item.PUMPKIN_SEEDS, 0))) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.PUMPKIN_SEEDS, 0, 1));
+            player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(Utils.rand(-0.5, 0.5), this.getMountedYOffset(), Utils.rand(-0.5, 0.5)), Item.get(Item.PUMPKIN_SEEDS)));
             this.setInLove();
@@ -127,19 +127,25 @@ public class Chicken extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int featherDrop = Utils.rand(0, 3);
-            for (int i = 0; i < featherDrop; i++) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.FEATHER, 0, 1));
             }
+
             drops.add(Item.get(this.isOnFire() ? Item.COOKED_CHICKEN : Item.RAW_CHICKEN, 0, 1));
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 
     private int getRandomEggLayTime() {

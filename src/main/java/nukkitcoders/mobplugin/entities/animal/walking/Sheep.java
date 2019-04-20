@@ -83,7 +83,7 @@ public class Sheep extends WalkingAnimal {
             this.setColor(((ItemDye) item).getDyeColor().getWoolData());
             return true;
         } else if (item.equals(Item.get(Item.WHEAT, 0, 1)) && !this.isBaby()) {
-            player.getInventory().removeItem(Item.get(Item.WHEAT, 0, 1));
+            player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.WHEAT)));
             this.setInLove();
@@ -116,14 +116,20 @@ public class Sheep extends WalkingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             drops.add(Item.get(Item.WOOL, this.getColor(), 1));
-            int muttonDrop = Utils.rand(1, 3);
-            for (int i = 0; i < muttonDrop; i++) {
+
+            for (int i = 0; i < Utils.rand(1, 2); i++) {
                 drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
 
@@ -151,6 +157,6 @@ public class Sheep extends WalkingAnimal {
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 }

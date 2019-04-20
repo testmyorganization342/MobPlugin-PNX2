@@ -109,13 +109,16 @@ public class Phantom extends FlyingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int drop = Utils.rand(0, 2);
-            for (int i = 0; i < drop; i++) {
-                drops.add(Item.get(470, 0, 1));
-            }
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            drops.add(Item.get(Item.PHANTOM_MEMBRANE, 0, Utils.rand(0, 1)));
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

@@ -66,26 +66,26 @@ public class Rabbit extends JumpingAnimal {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int rabbitHide = Utils.rand(0, 2);
-            int rawRabbit = Utils.rand(0, 2);
-            int rabbitfoot = Utils.rand(0, 101) <= 9 ? 1 : 0;
-            for (int i = 0; i < rabbitHide; i++) {
-                drops.add(Item.get(Item.RABBIT_HIDE, 0, 1));
-            }
-            for (int i = 0; i < rabbitfoot; i++) {
+            drops.add(Item.get(Item.RABBIT_HIDE, 0, Utils.rand(0, 1)));
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_RABBIT : Item.RAW_RABBIT, 0, Utils.rand(0, 1)));
+
+            for (int i = 0; i < (Utils.rand(0, 101) <= 9 ? 1 : 0); i++) {
                 drops.add(Item.get(Item.RABBIT_FOOT, 0, 1));
             }
-            for (int i = 0; i < rawRabbit; i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_RABBIT : Item.RAW_RABBIT, 0, 1));
-            }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 4);
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 
     @Override

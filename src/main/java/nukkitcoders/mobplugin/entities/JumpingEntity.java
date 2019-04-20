@@ -64,12 +64,12 @@ public abstract class JumpingEntity extends BaseEntity {
             }
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20.0, 20.0) / 10, Utils.rand() ? z : -z);
         } else if (Utils.rand(1, 410) == 1) {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
             this.stayTime = Utils.rand(100, 400);
-            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20.0, 20.0) / 10, Utils.rand() ? z : -z);
         } else if (this.moveTime <= 0 || this.target == null) {
             x = Utils.rand(20, 100);
             z = Utils.rand(20, 100);
@@ -137,7 +137,6 @@ public abstract class JumpingEntity extends BaseEntity {
                     }
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-                this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
                 return this.followTarget;
             }
 
@@ -163,7 +162,6 @@ public abstract class JumpingEntity extends BaseEntity {
                     }
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-                this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
             }
 
             double dx = this.motionX * tickDiff;

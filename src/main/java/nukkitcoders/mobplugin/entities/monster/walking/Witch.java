@@ -19,6 +19,9 @@ import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Witch extends WalkingMonster {
 
     public static final int NETWORK_ID = 45;
@@ -77,8 +80,8 @@ public class Witch extends WalkingMonster {
             if (player.isAlive() && !player.closed) {
 
                 double f = 1;
-                double yaw = this.yaw + Utils.rand(-220, 220) / 10;
-                double pitch = this.pitch + Utils.rand(-120, 120) / 10;
+                double yaw = this.yaw + Utils.rand(-220.0, 220.0) / 10;
+                double pitch = this.pitch + Utils.rand(-120.0, 120.0) / 10;
                 Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
                         this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
 
@@ -110,11 +113,42 @@ public class Witch extends WalkingMonster {
 
     @Override
     public Item[] getDrops() {
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby() && Utils.rand(1, 5) == 1) {
-            return new Item[]{Item.get(Item.REDSTONE, 0, 1)};
-        } else {
-            return new Item[0];
+        List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
         }
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            if (Utils.rand(1, 4) == 1) {
+                drops.add(Item.get(Item.STICK, 0, Utils.rand(0, 2)));
+            }
+
+            if (Utils.rand(1, 3) == 1) {
+                switch (Utils.rand(1, 6)) {
+                    case 1:
+                        drops.add(Item.get(Item.BOTTLE, 0, Utils.rand(0, 2)));
+                        break;
+                    case 2:
+                        drops.add(Item.get(Item.GLOWSTONE_DUST, 0, Utils.rand(0, 2)));
+                        break;
+                    case 3:
+                        drops.add(Item.get(Item.GUNPOWDER, 0, Utils.rand(0, 2)));
+                        break;
+                    case 4:
+                        drops.add(Item.get(Item.REDSTONE, 0, Utils.rand(0, 2)));
+                        break;
+                    case 5:
+                        drops.add(Item.get(Item.SPIDER_EYE, 0, Utils.rand(0, 2)));
+                        break;
+                    case 6:
+                        drops.add(Item.get(Item.SUGAR, 0, Utils.rand(0, 2)));
+                        break;
+                }
+            }
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

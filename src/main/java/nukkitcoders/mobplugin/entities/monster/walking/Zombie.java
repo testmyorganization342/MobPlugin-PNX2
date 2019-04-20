@@ -13,6 +13,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MobArmorEquipmentPacket;
+import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -25,6 +26,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
     public static final int NETWORK_ID = 32;
 
+    public Item tool;
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -57,6 +59,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
         this.setDamage(new float[] { 0, 2, 3, 4 });
         this.setMaxHealth(20);
+
+        this.armor = getRandomArmor();
+        this.setRandomTool();
     }
 
     @Override
@@ -119,7 +124,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;
         if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450) && !this.isInsideOfWater() && this.level.canBlockSeeSky(this)) {
-            this.setOnFire(1);
+            if (this.armor[0] == null || this.armor[0].getId() == 0) {
+                this.setOnFire(100);
+            }
         }
 
         return hasUpdate;
@@ -128,29 +135,68 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int rottenFlesh = Utils.rand(0, 3);
-            for (int i=0; i < rottenFlesh; i++) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
+
+            if (Utils.rand(1, 3) == 1) {
+                switch (Utils.rand(1, 3)) {
+                    case 1:
+                        drops.add(Item.get(Item.IRON_INGOT, 0, Utils.rand(0, 1)));
+                        break;
+                    case 2:
+                        drops.add(Item.get(Item.CARROT, 0, Utils.rand(0, 1)));
+                        break;
+                    case 3:
+                        drops.add(Item.get(Item.POTATO, 0, Utils.rand(0, 1)));
+                        break;
+                }
+            }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : 5;
+        return this.isBaby() ? 12 : 5;
     }
 
     @Override
     public void spawnTo(Player player) {
         super.spawnTo(player);
 
+        MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
+        pk.eid = this.getId();
+
         if (java.time.LocalDate.now().toString().contains("-10-31")) {
-            MobArmorEquipmentPacket pk2 = new MobArmorEquipmentPacket();
+            pk.slots[0] = new ItemBlock(Block.get(Block.PUMPKIN));
+        } else {
+            pk.slots = this.armor;
+        }
+
+        player.dataPacket(pk);
+
+        if (this.tool != null && Utils.rand(1, 10) == 1) {
+            MobEquipmentPacket pk2 = new MobEquipmentPacket();
             pk2.eid = this.getId();
-            pk2.slots[0] = new ItemBlock(Block.get(Block.PUMPKIN));
+            pk2.hotbarSlot = 0;
+            pk2.item = this.tool;
             player.dataPacket(pk2);
+        }
+    }
+
+    private void setRandomTool() {
+        if (Utils.rand(1, 3) == 1) {
+            this.tool = Item.get(Item.IRON_SWORD, 0, 1);
+        } else {
+            this.tool = Item.get(Item.IRON_SHOVEL, 0, 1);
         }
     }
 }

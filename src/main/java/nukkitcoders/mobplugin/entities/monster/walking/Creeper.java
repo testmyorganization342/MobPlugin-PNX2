@@ -158,7 +158,6 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                 this.motionZ = this.getSpeed() * 0.15 * (z / diff);
             }
             this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-            this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
         }
 
         double dx = this.motionX * tickDiff;
@@ -206,13 +205,18 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int gunPowder = Utils.rand(0, 3);
-            for (int i = 0; i < gunPowder; i++) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.GUNPOWDER, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

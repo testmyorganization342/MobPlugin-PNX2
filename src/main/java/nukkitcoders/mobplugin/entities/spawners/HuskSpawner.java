@@ -38,7 +38,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BIOME;
         } else if (time > 13184 && time < 22800) {
             BaseEntity entity = this.spawnTask.createEntity("Husk", pos.add(0, 1, 0));
-            if (Utils.rand(0, 500) > 480) {
+            if (Utils.rand(1, 20) == 1) {
                 entity.setBaby(true);
             }
         }

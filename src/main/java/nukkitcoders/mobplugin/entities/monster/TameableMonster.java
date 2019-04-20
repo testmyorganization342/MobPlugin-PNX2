@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.Tameable;
 
@@ -12,7 +13,7 @@ import nukkitcoders.mobplugin.entities.Tameable;
  */
 public abstract class TameableMonster extends WalkingMonster implements Tameable {
 
-    private Server server = null;
+    private Server server;
 
     private Player owner = null;
 
@@ -95,5 +96,14 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
     @Override
     public void setOwnerUUID(String ownerUUID) {
         this.ownerUUID = ownerUUID;
+    }
+
+    @Override
+    public Vector3 updateMove(int tickDiff) {
+        if (this.isSitting()) {
+            return this.target;
+        }
+
+        return super.updateMove(tickDiff);
     }
 }

@@ -158,21 +158,21 @@ public class ZombiePigman extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int rottenFlesh = Utils.rand(0, 2);
-            int goldNuggets = Utils.rand(0, 101) <= 3 ? 1 : 0;
-            int goldSword = Utils.rand(0, 101) <= 9 ? 1 : 0;
-            for (int i=0; i < rottenFlesh; i++) {
-                drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
-            }
-            for (int i=0; i < goldNuggets; i++) {
-                drops.add(Item.get(Item.GOLD_NUGGET, 0, 1));
-            }
-            for (int i=0; i < goldSword; i++) {
-                drops.add(Item.get(Item.GOLD_SWORD, Utils.rand(5, 30), 1));
+            drops.add(Item.get(Item.ROTTEN_FLESH, 0, Utils.rand(0, 1)));
+            drops.add(Item.get(Item.GOLD_NUGGET, 0, Utils.rand(0, 1)));
+
+            for (int i = 0; i < (Utils.rand(0, 101) <= 9 ? 1 : 0); i++) {
+                drops.add(Item.get(Item.GOLD_SWORD, Utils.rand(20, 30), 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

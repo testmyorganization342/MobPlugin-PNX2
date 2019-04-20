@@ -104,18 +104,21 @@ public class MagmaCube extends JumpingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int magmaCream = Utils.rand(0, 2);
-            for (int i = 0; i < magmaCream; i++) {
-                drops.add(Item.get(Item.MAGMA_CREAM, 0, 1));
-            }
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            drops.add(Item.get(Item.MAGMA_CREAM, 0, Utils.rand(0, 1)));
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : 4;
+        return this.isBaby() ? 0 : 3;
     }
 
     @Override

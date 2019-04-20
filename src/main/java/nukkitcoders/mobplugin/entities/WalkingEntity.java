@@ -75,12 +75,12 @@ public abstract class WalkingEntity extends BaseEntity {
             }
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20.0, 20.0) / 10, Utils.rand() ? z : -z);
         } else if (Utils.rand(1, 410) == 1) {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
             this.stayTime = Utils.rand(100, 400);
-            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20, 20) / 10, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20.0, 20.0) / 10, Utils.rand() ? z : -z);
         } else if (this.moveTime <= 0 || this.target == null) {
             x = Utils.rand(20, 100);
             z = Utils.rand(20, 100);
@@ -115,7 +115,7 @@ public abstract class WalkingEntity extends BaseEntity {
                 this.motionY = this.getGravity();
             } else if (this.motionY <= this.getGravity() * 4) {
                 this.motionY = this.getGravity() * 4;
-            } else if (block instanceof BlockSlab && block instanceof BlockStairs) {
+            } else if (block instanceof BlockStairs) {
                 this.motionY = this.getGravity() * 4;
             } else if (this.motionY <= (this.getGravity() * 8)) {
                 this.motionY = this.getGravity() * 8;
@@ -168,7 +168,6 @@ public abstract class WalkingEntity extends BaseEntity {
                     }
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-                this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
             }
 
             Vector3 before = this.target;
@@ -193,7 +192,6 @@ public abstract class WalkingEntity extends BaseEntity {
                     }
                 }
                 this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
-                this.pitch = y == 0 ? 0 : Math.toDegrees(-Math.atan2(y, Math.sqrt(x * x + z * z)));
             }
 
             double dx = this.motionX * tickDiff;

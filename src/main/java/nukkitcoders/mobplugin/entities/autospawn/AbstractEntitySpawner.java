@@ -39,7 +39,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     @Override
     public void spawn(Collection<Player> onlinePlayers) {
         if (isSpawnAllowedByDifficulty()) {
-            SpawnResult lastSpawnResult = null;
+            SpawnResult lastSpawnResult;
             for (Player player : onlinePlayers) {
                 if (isWorldSpawnAllowed (player.getLevel())) {
                     lastSpawnResult = spawn(player);
@@ -82,7 +82,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     }
 
     protected boolean isSpawnAllowedByDifficulty() {
-        int randomNumber = Utils.rand(0, 4);
+        int randomNumber = Utils.rand(0, 3);
 
         switch (this.server.getDifficulty()) {
             case 0:

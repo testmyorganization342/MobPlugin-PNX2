@@ -105,10 +105,11 @@ public class Enderman extends WalkingMonster {
         super.attack(ev);
         if (!ev.isCancelled()) {
             if (ev.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+                ev.setCancelled(true);
                 this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
                 this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
                 this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
-            } else if (Utils.rand(1, 15) == 5) {
+            } else if (Utils.rand(1, 10) == 1) {
                 this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
                 this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
                 this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
@@ -120,13 +121,16 @@ public class Enderman extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int enderPearls = Utils.rand(0, 2);
-            for (int i = 0; i < enderPearls; i++) {
-                drops.add(Item.get(Item.ENDER_PEARL, 0, 1));
-            }
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+            drops.add(Item.get(Item.ENDER_PEARL, 0, Utils.rand(0, 1)));
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

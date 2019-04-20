@@ -15,6 +15,9 @@ import nukkitcoders.mobplugin.utils.Utils;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityShulkerBullet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Shulker extends WalkingMonster {
 
     public static final int NETWORK_ID = 54;
@@ -57,8 +60,8 @@ public class Shulker extends WalkingMonster {
             this.attackDelay = 0;
 
             double f = 0.5;
-            double yaw = this.yaw + Utils.rand(-220, 220) / 10;
-            double pitch = this.pitch + Utils.rand(-120, 120) / 10;
+            double yaw = this.yaw + Utils.rand(-220.0, 220.0) / 10;
+            double pitch = this.pitch + Utils.rand(-120.0, 120.0) / 10;
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             Entity k = MobPlugin.create("ShulkerBullet", pos, this);
@@ -86,7 +89,7 @@ public class Shulker extends WalkingMonster {
     public boolean attack(EntityDamageEvent ev) {
         super.attack(ev);
         if (!ev.isCancelled()) {
-            if (Utils.rand(1, 15) == 5) {
+            if (Utils.rand(1, 10) == 1) {
                 this.level.addSound(this, Sound.MOB_SHULKER_TELEPORT);
                 this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
             }
@@ -96,11 +99,17 @@ public class Shulker extends WalkingMonster {
 
     @Override
     public Item[] getDrops() {
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby() && Utils.rand(1, 2) == 1) {
-            return new Item[]{Item.get(Item.SHULKER_SHELL, 0, 1)};
-        } else {
-            return new Item[0];
+        List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
         }
+
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby() && Utils.rand(1, 2) == 1) {
+            drops.add(Item.get(Item.SHULKER_SHELL, 0, 1));
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

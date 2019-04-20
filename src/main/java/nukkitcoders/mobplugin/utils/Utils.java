@@ -16,8 +16,9 @@ public class Utils {
         if (min == max) {
             return max;
         }
-        return ThreadLocalRandom.current().nextInt(min,max);
+        return random.nextInt(max + 1 - min) + min;
     }
+
     public static double rand(double min, double max) {
         if (min == max) {
             return max;

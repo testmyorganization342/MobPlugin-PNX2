@@ -14,7 +14,7 @@ public class EntityBlueWitherSkull extends EntityProjectile {
 
     public static final int NETWORK_ID = 89;
 
-    protected boolean critical = false;
+    protected boolean critical;
 
     protected boolean canExplode = false;
 
@@ -92,7 +92,7 @@ public class EntityBlueWitherSkull extends EntityProjectile {
 
             this.kill();
         } else {
-            this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + Utils.rand(-100, 100) / 500, this.getHeight() / 2 + Utils.rand(-100, 100) / 500, this.getWidth() / 2 + Utils.rand(-100, 100) / 500)));
+            this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500)));
         }
 
         return super.onUpdate(currentTick);

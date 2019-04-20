@@ -199,6 +199,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Turtle.class.getSimpleName(), Turtle.class);
         Entity.registerEntity(Villager.class.getSimpleName(), Villager.class);
         Entity.registerEntity(ZombieHorse.class.getSimpleName(), ZombieHorse.class);
+        Entity.registerEntity(WanderingTrader.class.getSimpleName(), WanderingTrader.class);
 
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);
@@ -230,6 +231,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Wolf.class.getSimpleName(), Wolf.class);
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
         Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
+        Entity.registerEntity(Pillager.class.getSimpleName(), Pillager.class);
 
         Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
         Entity.registerEntity("FireBall", EntityFireBall.class);
@@ -270,7 +272,7 @@ public class MobPlugin extends PluginBase implements Listener {
         if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
 
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
-        if (blockEntity != null && blockEntity instanceof BlockEntitySpawner) {
+        if (blockEntity instanceof BlockEntitySpawner) {
             SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), item.getDamage());
             this.getServer().getPluginManager().callEvent(event);
             if (event.isCancelled()) return;
@@ -337,7 +339,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
                 if (event.isCancelled()) return;
 
-                Entity entity = MobPlugin.create(IronGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
+                Entity entity = create(IronGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
 
                 if (entity != null) entity.spawnToAll();
 

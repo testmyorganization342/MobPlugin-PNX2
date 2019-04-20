@@ -99,17 +99,22 @@ public class CaveSpider extends Spider {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
+
+        if (this.hasCustomName()) {
+            drops.add(Item.get(Item.NAME_TAG, 0, 1));
+        }
+
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            int strings = Utils.rand(0, 3);
-            int spiderEye = Utils.rand(0, 3) == 0 ? 1 : 0;
-            for (int i=0; i < strings; i++) {
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.STRING, 0, 1));
             }
-            for (int i=0; i < spiderEye; i++) {
+
+            for (int i = 0; i < (Utils.rand(0, 2) == 0 ? 1 : 0); i++) {
                 drops.add(Item.get(Item.SPIDER_EYE, 0, 1));
             }
         }
-        return drops.toArray(new Item[drops.size()]);
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override

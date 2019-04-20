@@ -13,7 +13,7 @@ public class EntityFireBall extends EntityProjectile {
 
     public static final int NETWORK_ID = 85;
 
-    protected boolean critical = false;
+    protected boolean critical;
 
     protected boolean canExplode = false;
 
@@ -72,7 +72,7 @@ public class EntityFireBall extends EntityProjectile {
 
         if (!this.hadCollision && this.critical) {
             this.level.addParticle(new CriticalParticle(
-                    this.add(this.getWidth() / 2 + Utils.rand(-100, 100) / 500, this.getHeight() / 2 + Utils.rand(-100, 100) / 500, this.getWidth() / 2 + Utils.rand(-100, 100) / 500)));
+                    this.add(this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500)));
         } else if (this.onGround) {
             this.critical = false;
         }
