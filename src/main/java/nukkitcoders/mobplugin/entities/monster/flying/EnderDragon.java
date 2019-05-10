@@ -25,12 +25,12 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
     @Override
     public float getWidth() {
-        return 13f;
+        return 16f;
     }
 
     @Override
     public float getHeight() {
-        return 4f;
+        return 8f;
     }
 
     @Override
