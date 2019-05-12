@@ -16,10 +16,8 @@ import java.util.PriorityQueue;
  */
 public class WalkerRouteFinder extends SimpleRouteFinder {
 
-    public final static int DIRECT_MOVE_COST = 10;
-    public final static int OBLIQUE_MOVE_COST = 14;
-
-    public final static int MAX_JUMP_HEIGHT = 1;
+    private final static int DIRECT_MOVE_COST = 10;
+    private final static int OBLIQUE_MOVE_COST = 14;
 
     private PriorityQueue<Node> openList = new PriorityQueue<>();
     private ArrayList<Node> closeList = new ArrayList<>();

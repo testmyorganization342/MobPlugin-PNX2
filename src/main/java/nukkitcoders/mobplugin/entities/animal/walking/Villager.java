@@ -1,9 +1,10 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
-import static cn.nukkit.entity.passive.EntityVillager.PROFESSION_GENERIC;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
+
+import static cn.nukkit.entity.passive.EntityVillagerV1.PROFESSION_GENERIC;
 
 public class Villager extends WalkingAnimal {
 

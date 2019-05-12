@@ -15,7 +15,6 @@ import nukkitcoders.mobplugin.utils.Utils;
 public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     protected int inLoveTicks = 0;
-    protected int spawnBabyDelay = 0;
 
     public WalkingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -33,7 +32,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate = false;
+        boolean hasUpdate;
 
         hasUpdate = super.entityBaseTick(tickDiff);
 

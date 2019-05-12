@@ -29,9 +29,9 @@ public class AutoSpawnTask extends Thread {
 
     private List<IEntitySpawner> entitySpawners = new ArrayList<>();
 
-    private Config pluginConfig = null;
+    private Config pluginConfig;
 
-    private MobPlugin plugin = null;
+    private MobPlugin plugin;
 
     public AutoSpawnTask(MobPlugin plugin) {
         this.pluginConfig = plugin.getConfig();

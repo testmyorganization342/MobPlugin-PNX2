@@ -105,7 +105,6 @@ public abstract class SwimmingEntity extends BaseEntity {
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
 
                 double x = this.target.x - this.x;
-                double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
@@ -123,7 +122,6 @@ public abstract class SwimmingEntity extends BaseEntity {
             this.checkTarget();
             if (this.target instanceof Vector3 || before != this.target) {
                 double x = this.target.x - this.x;
-                double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);

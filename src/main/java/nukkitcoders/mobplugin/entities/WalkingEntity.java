@@ -1,11 +1,6 @@
 package nukkitcoders.mobplugin.entities;
 
-import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockFence;
-import cn.nukkit.block.BlockFenceGate;
-import cn.nukkit.block.BlockLiquid;
-import cn.nukkit.block.BlockStairs;
-import cn.nukkit.block.BlockSlab;
+import cn.nukkit.block.*;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.level.format.FullChunk;
@@ -150,7 +145,6 @@ public abstract class WalkingEntity extends BaseEntity {
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
 
                 double x = this.target.x - this.x;
-                double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
@@ -174,7 +168,6 @@ public abstract class WalkingEntity extends BaseEntity {
             this.checkTarget();
             if (this.target instanceof Vector3 || before != this.target) {
                 double x = this.target.x - this.x;
-                double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);

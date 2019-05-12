@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
@@ -15,10 +14,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class BaseEntity extends EntityCreature implements EntityAgeable {
 

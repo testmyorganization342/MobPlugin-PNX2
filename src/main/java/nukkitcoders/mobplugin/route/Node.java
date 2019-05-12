@@ -8,6 +8,7 @@ import java.util.Objects;
  * @author zzz1999 @ MobPlugin
  */
 public class Node implements Comparable<Node> {
+
     private Vector3 vector3;
     private Node parent;
     private int G;

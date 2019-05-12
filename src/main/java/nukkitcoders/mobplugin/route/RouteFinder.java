@@ -12,6 +12,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author zzz1999 @ MobPlugin
  */
 public abstract class RouteFinder {
+
     protected ArrayList<Node> nodes = new ArrayList<>();
     protected boolean finished = false;
     protected boolean searching = false;

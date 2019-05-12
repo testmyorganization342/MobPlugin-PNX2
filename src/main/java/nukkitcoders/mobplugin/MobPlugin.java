@@ -303,13 +303,13 @@ public class MobPlugin extends PluginBase implements Listener {
         if (block.getId() == Block.JACK_O_LANTERN || block.getId() == Block.PUMPKIN) {
             if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
 
-                SpawnGolemEvent event = new SpawnGolemEvent(player, block.add(0.5, -2, 0.5), SpawnGolemEvent.GolemType.SNOW_GOLEM);
+                SpawnGolemEvent event = new SpawnGolemEvent(player, block.add(0.5, -1, 0.5), SpawnGolemEvent.GolemType.SNOW_GOLEM);
 
                 this.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) return;
 
-                Entity entity = create(SnowGolem.NETWORK_ID, block.add(0.5, -2, 0.5));
+                Entity entity = create(SnowGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
 
                 if (entity != null) entity.spawnToAll();
 
