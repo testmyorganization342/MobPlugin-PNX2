@@ -55,11 +55,9 @@ import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    private int configVersion = 7;
-
     public Config pluginConfig = null;
 
-    public static MobPlugin instance;
+    private static MobPlugin instance;
 
     public static MobPlugin getInstance() {
         return instance;
@@ -75,7 +73,7 @@ public class MobPlugin extends PluginBase implements Listener {
         this.saveDefaultConfig();
         pluginConfig = getConfig();
 
-        if (getConfig().getInt("config-version") != configVersion) {
+        if (getConfig().getInt("config-version") != 7) {
             this.getServer().getLogger().warning("MobPlugin's config file is outdated. Please delete old config.");
             this.getServer().getPluginManager().disablePlugin(this);
         }
@@ -232,6 +230,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
         Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
         Entity.registerEntity(Pillager.class.getSimpleName(), Pillager.class);
+        Entity.registerEntity(Ravager.class.getSimpleName(), Ravager.class);
 
         Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
         Entity.registerEntity("FireBall", EntityFireBall.class);
@@ -268,6 +267,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
         Item item = ev.getItem();
         Block block = ev.getBlock();
+        Player player = ev.getPlayer();
 
         if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
 
@@ -278,6 +278,10 @@ public class MobPlugin extends PluginBase implements Listener {
             if (event.isCancelled()) return;
             ((BlockEntitySpawner) blockEntity).setSpawnEntityType(item.getDamage());
             ev.setCancelled(true);
+
+            if (!player.isCreative()) {
+                player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
+            }
         } else {
             SpawnerCreateEvent event = new SpawnerCreateEvent(ev.getPlayer(), ev.getBlock(), item.getDamage());
             this.getServer().getPluginManager().callEvent(event);
@@ -293,6 +297,10 @@ public class MobPlugin extends PluginBase implements Listener {
                     .putInt(TAG_Y, (int) block.y)
                     .putInt(TAG_Z, (int) block.z);
             new BlockEntitySpawner(block.getLevel().getChunk((int) block.x >> 4, (int) block.z >> 4), nbt);
+
+            if (!player.isCreative()) {
+                player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
+            }
         }
     }
 
