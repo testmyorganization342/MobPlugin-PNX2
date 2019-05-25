@@ -6,9 +6,14 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.data.IntEntityData;
+import cn.nukkit.entity.mob.EntityCreeper;
+import cn.nukkit.entity.mob.EntitySkeleton;
+import cn.nukkit.entity.mob.EntityStray;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemSkull;
 import cn.nukkit.level.Explosion;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
@@ -70,7 +75,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 2.8);
+        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, this.isPowered() ? 3 : 2.8);
         this.server.getPluginManager().callEvent(ev);
 
         if (!ev.isCancelled()) {
@@ -131,7 +136,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
             double diff = Math.abs(x) + Math.abs(z);
             double distance = followTarget.distance(this);
-            if (distance <= 4.5) {
+            if (distance <= 4) {
                 if (followTarget instanceof EntityCreature) {
                     if (bombTime >= 0) {
                         this.level.addSound(this, Sound.RANDOM_FUSE);
@@ -139,19 +144,17 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                         this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
                     }
                     this.bombTime += tickDiff;
-                    if (this.bombTime >= 64) {
+                    if (this.bombTime >= 30) {
                         this.explode();
                         return false;
                     }
-                } else if (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2) <= 1) {
-                    this.moveTime = 0;
+                    if (distance <= 1) {
+                        this.moveTime = 0;
+                    }
                 }
             } else {
-                this.bombTime -= tickDiff;
-                if (this.bombTime < 0) {
-                    this.bombTime = 0;
-                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
-                }
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
+                this.bombTime = 0;
 
                 this.motionX = this.getSpeed() * 0.15 * (x / diff);
                 this.motionZ = this.getSpeed() * 0.15 * (z / diff);
@@ -215,6 +218,18 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             }
         }
 
+        Entity killer = ((EntityDamageByEntityEvent) this.lastDamageCause).getDamager();
+
+        if (killer instanceof EntitySkeleton || killer instanceof EntityStray) {
+            drops.add(Item.get(Utils.rand(500, 511), 0, 1));
+        }
+
+        if (killer instanceof EntityCreeper) {
+            if (((EntityCreeper) killer).isPowered()) {
+                drops.add(Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1));
+            }
+        }
+
         return drops.toArray(new Item[0]);
     }
 
@@ -236,5 +251,24 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             return true;
         }
         return false;
+    }
+
+    public boolean isPowered() {
+        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_POWERED);
+    }
+
+    public void setPowered(boolean charged) {
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_POWERED, charged);
+    }
+
+    @Override
+    public void onStruckByLightning(Entity entity) {
+        if (this.attack(new EntityDamageByEntityEvent(entity, this, EntityDamageEvent.DamageCause.LIGHTNING, 5))) {
+            if (this.fireTicks < 8 * 20) {
+                this.setOnFire(8);
+            }
+
+            this.setPowered(true);
+        }
     }
 }
