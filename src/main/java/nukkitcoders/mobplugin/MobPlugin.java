@@ -55,7 +55,7 @@ import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    public Config pluginConfig = null;
+    public Config pluginConfig;
 
     private static MobPlugin instance;
 
@@ -73,9 +73,10 @@ public class MobPlugin extends PluginBase implements Listener {
         this.saveDefaultConfig();
         pluginConfig = getConfig();
 
-        if (getConfig().getInt("config-version") != 7) {
+        if (getConfig().getInt("config-version") != 8) {
             this.getServer().getLogger().warning("MobPlugin's config file is outdated. Please delete old config.");
             this.getServer().getPluginManager().disablePlugin(this);
+            return;
         }
 
         int spawnDelay = pluginConfig.getInt("entities.autospawn-ticks", 0);
@@ -125,7 +126,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     Position pos = playerThatSpawns.getPosition();
 
                     Entity ent;
-                    if ((ent = MobPlugin.create(mob, pos)) != null) {
+                    if ((ent = create(mob, pos)) != null) {
                         ent.spawnToAll();
                         sender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
                     } else {

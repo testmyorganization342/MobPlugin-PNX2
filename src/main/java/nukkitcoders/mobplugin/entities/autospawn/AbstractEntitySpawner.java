@@ -22,7 +22,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     protected Server server;
 
-    protected List<String> disabledSpawnWorlds = new ArrayList<>();
+    private List<String> disabledSpawnWorlds = new ArrayList<>();
 
     public AbstractEntitySpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
         this.spawnTask = spawnTask;
@@ -57,6 +57,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -69,9 +70,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 pos.x += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.z += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.y = this.spawnTask.getSafeYCoord(level, pos, 3);
-            }
-
-            if (pos == null) {
+            } else {
                 return SpawnResult.POSITION_MISMATCH;
             }
         } else {
@@ -81,7 +80,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         return spawn(player, pos, level);
     }
 
-    protected boolean isSpawnAllowedByDifficulty() {
+    private boolean isSpawnAllowedByDifficulty() {
         int randomNumber = Utils.rand(0, 3);
 
         switch (this.server.getDifficulty()) {

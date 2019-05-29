@@ -1,42 +1,42 @@
-config-version: 7
+config-version: 8
 
 entities:
   autospawn-ticks: 200
-  despawn-ticks: 8000
+  despawn-ticks: 6000
   worlds-spawning-disabled: "exampleworld1, exampleworld2"
 
 autospawn:
-  bat: true
-  blaze: true
-  chicken: true
-  cod: true
-  cow: true
-  creeper: true
-  dolphin: true
-  donkey: true
-  enderman: true
-  ghast: true
-  husk: true
-  horse: true
-  magmacube: true
-  mooshroom: true
-  ocelot: true
-  parrot: true
-  pig: true
-  polarbear: true
-  pufferfish: true
-  rabbit: true
-  salmon: true
-  sheep: true
-  skeleton: true
-  slime: true
-  spider: true
-  squid: true
-  stray: true
-  tropicalfish: true
-  turtle: true
-  witch: true
-  witherskeleton: true
-  wolf: true
-  zombie: true
-  zombiepigman: true
+  bat: 2
+  blaze: 2
+  chicken: 2
+  cod: 2
+  cow: 2
+  creeper: 2
+  dolphin: 2
+  donkey: 2
+  enderman: 2
+  ghast: 2
+  husk: 2
+  horse: 2
+  magmacube: 2
+  mooshroom: 2
+  ocelot: 2
+  parrot: 2
+  pig: 2
+  polarbear: 2
+  pufferfish: 2
+  rabbit: 2
+  salmon: 2
+  sheep: 2
+  skeleton: 2
+  slime: 2
+  spider: 2
+  squid: 2
+  stray: 2
+  tropicalfish: 2
+  turtle: 2
+  witch: 2
+  witherskeleton: 2
+  wolf: 2
+  zombie: 2
+  zombiepigman: 2

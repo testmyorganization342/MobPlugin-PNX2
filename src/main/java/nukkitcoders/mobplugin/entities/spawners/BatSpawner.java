@@ -34,6 +34,8 @@ public class BatSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if ((pos.y > 255 || (level.getName().equals("nether") && pos.y > 127)) || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
+        } else if (!level.canBlockSeeSky(pos)) {
+            result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity("Bat", pos.add(0, 1, 0));
         }
