@@ -5,6 +5,7 @@ import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.walking.Mooshroom;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
@@ -34,7 +35,7 @@ public class MooshroomSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BIOME;
         } else if ((pos.y > 255 || (level.getName().equals("nether") && pos.y > 127)) || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
-        } else {
+        } else if (MobPlugin.getInstance().isAnimalSpawningAllowedByTime(level)) {
             BaseEntity entity = this.spawnTask.createEntity("Mooshroom", pos.add(0, 1, 0));
             if (Utils.rand(1, 20) == 1) {
                 entity.setBaby(true);

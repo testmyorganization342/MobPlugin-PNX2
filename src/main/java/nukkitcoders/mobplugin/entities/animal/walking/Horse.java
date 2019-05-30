@@ -171,7 +171,9 @@ public class Horse extends WalkingAnimal implements EntityRideable {
     @Override
     public boolean onInteract(Player player, Item item) {
         if (this.passengers.isEmpty() && !this.isBaby() && !player.isSneaking()) {
-            this.mountEntity(player);
+            if (player.riding == null) {
+                this.mountEntity(player);
+            }
         }
 
         return super.onInteract(player, item);

@@ -149,7 +149,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                         return false;
                     }
                     if (distance <= 1) {
-                        this.moveTime = 0;
+                        this.stayTime = 10;
                     }
                 }
             } else {
@@ -159,7 +159,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                 this.motionX = this.getSpeed() * 0.15 * (x / diff);
                 this.motionZ = this.getSpeed() * 0.15 * (z / diff);
             }
-            this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+            if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
         }
 
         double dx = this.motionX * tickDiff;

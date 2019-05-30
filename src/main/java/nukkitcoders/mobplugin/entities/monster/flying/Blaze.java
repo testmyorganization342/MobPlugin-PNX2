@@ -1,25 +1,15 @@
 package nukkitcoders.mobplugin.entities.monster.flying;
 
-import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockFence;
-import cn.nukkit.block.BlockFenceGate;
-import cn.nukkit.block.BlockLiquid;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.math.BlockFace;
-import cn.nukkit.math.NukkitMath;
-import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.MobPlugin;
-import nukkitcoders.mobplugin.entities.BaseEntity;
-import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityFireBall;
 import nukkitcoders.mobplugin.utils.Utils;

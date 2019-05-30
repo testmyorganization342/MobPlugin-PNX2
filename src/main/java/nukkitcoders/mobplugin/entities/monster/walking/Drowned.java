@@ -6,10 +6,10 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -58,7 +58,7 @@ public class Drowned extends WalkingMonster {
         if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
             this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
@@ -106,12 +106,9 @@ public class Drowned extends WalkingMonster {
     
     @Override
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate;
+        boolean hasUpdate = super.entityBaseTick(tickDiff);
 
-        hasUpdate = super.entityBaseTick(tickDiff);
-
-        int time = this.getLevel().getTime() % Level.TIME_FULL;
-        if (!this.isOnFire() && !this.level.isRaining() && (time < 12567 || time > 23450) && !this.isInsideOfWater()) {
+        if (MobPlugin.getInstance().shouldMobBurn(level, this)) {
             this.setOnFire(100);
         }
 

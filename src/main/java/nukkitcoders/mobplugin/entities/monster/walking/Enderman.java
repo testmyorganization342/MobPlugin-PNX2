@@ -106,13 +106,9 @@ public class Enderman extends WalkingMonster {
         if (!ev.isCancelled()) {
             if (ev.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 ev.setCancelled(true);
-                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
-                this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
-                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+                tp();
             } else if (Utils.rand(1, 10) == 1) {
-                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
-                this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
-                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+                tp();
             }
         }
         return true;
@@ -142,9 +138,17 @@ public class Enderman extends WalkingMonster {
     public boolean entityBaseTick(int tickDiff) {
         if (this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z))) instanceof BlockWater) {
             this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
-            this.move(Utils.rand(-20, 20), Utils.rand(-20, 20), Utils.rand(-20, 20));
+            tp();
+        } else if (Utils.rand(0, 500) == 20) {
+            tp();
         }
 
         return super.entityBaseTick(tickDiff);
+    }
+
+    private void tp() {
+        this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+        this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
+        this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
     }
 }

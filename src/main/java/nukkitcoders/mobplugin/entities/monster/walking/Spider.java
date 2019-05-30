@@ -4,14 +4,12 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockLiquid;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.NukkitMath;
-import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
@@ -89,7 +87,7 @@ public class Spider extends WalkingMonster {
                 if (this.attackDelay > 10 && this.distanceSquared(player) < 1.3) {
                     this.attackDelay = 0;
                     HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-                    damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
+                    damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
                     if (player instanceof Player) {
                         @SuppressWarnings("serial")

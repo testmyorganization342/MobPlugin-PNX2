@@ -6,6 +6,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.AutoSpawnTask;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
@@ -36,7 +37,7 @@ public class BatSpawner extends AbstractEntitySpawner {
             result = SpawnResult.POSITION_MISMATCH;
         } else if (level.canBlockSeeSky(pos)) {
             result = SpawnResult.POSITION_MISMATCH;
-        } else {
+        } else if (MobPlugin.getInstance().isAnimalSpawningAllowedByTime(level)) {
             this.spawnTask.createEntity("Bat", pos.add(0, 1, 0));
         }
 

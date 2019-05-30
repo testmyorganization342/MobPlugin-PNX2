@@ -65,16 +65,16 @@ public abstract class JumpingEntity extends BaseEntity {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
             this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20.0, 20.0) / 10, Utils.rand() ? z : -z);
-        } else if (Utils.rand(1, 410) == 1) {
+        } else if (Utils.rand(1, 100) == 1) {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            this.stayTime = Utils.rand(100, 400);
+            this.stayTime = Utils.rand(100, 200);
             this.target = this.add(Utils.rand() ? x : -x, Utils.rand(-20.0, 20.0) / 10, Utils.rand() ? z : -z);
         } else if (this.moveTime <= 0 || this.target == null) {
             x = Utils.rand(20, 100);
             z = Utils.rand(20, 100);
             this.stayTime = 0;
-            this.moveTime = Utils.rand(300, 1200);
+            this.moveTime = Utils.rand(100, 200);
             this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         }
     }
@@ -135,7 +135,7 @@ public abstract class JumpingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.1 * (z / diff);
                     }
                 }
-                this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
                 return this.followTarget;
             }
 
@@ -159,7 +159,7 @@ public abstract class JumpingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                     }
                 }
-                this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             double dx = this.motionX * tickDiff;

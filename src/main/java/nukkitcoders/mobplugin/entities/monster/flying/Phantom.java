@@ -64,7 +64,7 @@ public class Phantom extends FlyingMonster {
         if (this.attackDelay > 10 && player.distanceSquared(this) <= 1) {
             this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
                 @SuppressWarnings("serial")
