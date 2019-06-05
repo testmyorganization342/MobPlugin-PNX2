@@ -9,7 +9,6 @@ import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ShortTag;
-import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -108,7 +107,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
                                 this.z + Utils.rand(-this.spawnRange, this.spawnRange),
                                 this.level
                         );
-                Entity entity = MobPlugin.create(this.entityId, pos);
+                Entity entity = Entity.createEntity(this.entityId, pos);
                 if (entity == null) return true;
                 entity.spawnToAll();
             }

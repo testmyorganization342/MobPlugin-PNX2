@@ -15,7 +15,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.potion.Potion;
-import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -85,7 +84,7 @@ public class Witch extends WalkingMonster {
                 Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
                         this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
 
-                EntityPotion thrownPotion = (EntityPotion) MobPlugin.create("ThrownPotion", pos, this);
+                EntityPotion thrownPotion = (EntityPotion) Entity.createEntity("ThrownPotion", pos, this);
 
                 if (this.distance(player) <= 8 && !player.hasEffect(Effect.SLOWNESS)) {
                     thrownPotion.potionId = Potion.SLOWNESS;

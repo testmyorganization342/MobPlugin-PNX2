@@ -14,7 +14,6 @@ import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -66,7 +65,7 @@ public class SnowGolem extends WalkingMonster {
             double pitch = this.pitch + Utils.rand(-75.0, 75.0) / 10;
             Location location = new Location(this.x + (-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), this.y + this.getEyeHeight(),
                     this.z + (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), yaw, pitch, this.level);
-            Entity k = MobPlugin.create("Snowball", location, this);
+            Entity k = Entity.createEntity("Snowball", location, this);
             if (k == null) {
                 return;
             }

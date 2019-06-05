@@ -10,7 +10,6 @@ import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.utils.Utils;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityShulkerBullet;
@@ -64,7 +63,7 @@ public class Shulker extends WalkingMonster {
             double pitch = this.pitch + Utils.rand(-75.0, 75.0) / 10;
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
-            Entity k = MobPlugin.create("ShulkerBullet", pos, this);
+            Entity k = Entity.createEntity("ShulkerBullet", pos, this);
             if (!(k instanceof EntityShulkerBullet)) {
                 return;
             }

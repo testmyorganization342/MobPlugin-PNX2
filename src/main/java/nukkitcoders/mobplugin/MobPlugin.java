@@ -18,14 +18,9 @@ import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
-import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
-import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.DoubleTag;
-import cn.nukkit.nbt.tag.FloatTag;
-import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
@@ -126,7 +121,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     Position pos = playerThatSpawns.getPosition();
 
                     Entity ent;
-                    if ((ent = create(mob, pos)) != null) {
+                    if ((ent = Entity.createEntity(mob, pos)) != null) {
                         ent.spawnToAll();
                         sender.sendMessage("Spawned " + mob + " to " + playerThatSpawns.getName());
                     } else {
@@ -238,17 +233,6 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity("ShulkerBullet", EntityShulkerBullet.class);
     }
 
-    public static Entity create(Object type, Position source, Object... args) {
-        FullChunk chunk = source.getLevel().getChunk((int) source.x >> 4, (int) source.z >> 4, true);
-
-        CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", source.x)).add(new DoubleTag("", source.y)).add(new DoubleTag("", source.z)))
-                .putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0)))
-                .putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", source instanceof Location ? (float) ((Location) source).yaw : 0))
-                        .add(new FloatTag("", source instanceof Location ? (float) ((Location) source).pitch : 0)));
-
-        return Entity.createEntity(type.toString(), chunk, nbt, args);
-    }
-
     @EventHandler
     public void EntityDeathEvent(EntityDeathEvent ev) {
         if (!(ev.getEntity() instanceof BaseEntity)) return;
@@ -318,7 +302,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
                 if (event.isCancelled()) return;
 
-                Entity entity = create(SnowGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
+                Entity entity = Entity.createEntity("SnowGolem", block.add(0.5, -1, 0.5));
 
                 if (entity != null) entity.spawnToAll();
 
@@ -348,7 +332,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
                 if (event.isCancelled()) return;
 
-                Entity entity = create(IronGolem.NETWORK_ID, block.add(0.5, -1, 0.5));
+                Entity entity = Entity.createEntity("IronGolem", block.add(0.5, -1, 0.5));
 
                 if (entity != null) entity.spawnToAll();
 
@@ -368,7 +352,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Block block = ev.getBlock();
         if ((block.getId() == Block.MONSTER_EGG) && block.level.getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
 
-            Silverfish entity = (Silverfish) create(Silverfish.NETWORK_ID, block.add(0.5, 0, 0.5));
+            Silverfish entity = (Silverfish) Entity.createEntity("Silverfish", block.add(0.5, 0, 0.5));
             if (entity == null) return;
 
             entity.spawnToAll();
