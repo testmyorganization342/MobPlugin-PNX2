@@ -16,8 +16,8 @@ import nukkitcoders.mobplugin.entities.monster.walking.Creeper;
  */
 public class CreeperSpawner extends AbstractEntitySpawner {
 
-    public CreeperSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public CreeperSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

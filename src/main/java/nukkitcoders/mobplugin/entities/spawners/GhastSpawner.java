@@ -15,8 +15,8 @@ import nukkitcoders.mobplugin.entities.monster.flying.Ghast;
  */
 public class GhastSpawner extends AbstractEntitySpawner {
 
-    public GhastSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public GhastSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

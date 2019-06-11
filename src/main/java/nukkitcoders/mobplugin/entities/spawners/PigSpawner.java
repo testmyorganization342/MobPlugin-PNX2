@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class PigSpawner extends AbstractEntitySpawner {
 
-    public PigSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public PigSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

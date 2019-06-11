@@ -13,8 +13,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 public class PufferfishSpawner extends AbstractEntitySpawner {
 
-    public PufferfishSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public PufferfishSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

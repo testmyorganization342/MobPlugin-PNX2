@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class HorseSpawner extends AbstractEntitySpawner {
 
-    public HorseSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public HorseSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

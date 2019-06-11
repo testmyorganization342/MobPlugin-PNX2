@@ -14,8 +14,8 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public class WitchSpawner extends AbstractEntitySpawner {
 
-    public WitchSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public WitchSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

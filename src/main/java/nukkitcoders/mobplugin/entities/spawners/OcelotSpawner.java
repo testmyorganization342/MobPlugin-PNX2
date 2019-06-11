@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class OcelotSpawner extends AbstractEntitySpawner {
 
-    public OcelotSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public OcelotSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

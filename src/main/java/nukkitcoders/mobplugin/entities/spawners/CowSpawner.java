@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class CowSpawner extends AbstractEntitySpawner {
 
-    public CowSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public CowSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

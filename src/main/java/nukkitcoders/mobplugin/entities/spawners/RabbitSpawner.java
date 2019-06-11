@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class RabbitSpawner extends AbstractEntitySpawner {
 
-    public RabbitSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public RabbitSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

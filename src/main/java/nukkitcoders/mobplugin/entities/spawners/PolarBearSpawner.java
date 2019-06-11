@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class PolarBearSpawner extends AbstractEntitySpawner {
 
-    public PolarBearSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public PolarBearSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

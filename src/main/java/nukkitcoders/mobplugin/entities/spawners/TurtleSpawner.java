@@ -13,8 +13,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 public class TurtleSpawner extends AbstractEntitySpawner {
 
-    public TurtleSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public TurtleSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class MooshroomSpawner extends AbstractEntitySpawner {
 
-    public MooshroomSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public MooshroomSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

@@ -16,8 +16,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
  */
 public class StraySpawner extends AbstractEntitySpawner {
 
-    public StraySpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public StraySpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

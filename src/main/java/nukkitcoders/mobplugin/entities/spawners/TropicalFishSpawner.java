@@ -13,8 +13,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 public class TropicalFishSpawner extends AbstractEntitySpawner {
 
-    public TropicalFishSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public TropicalFishSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

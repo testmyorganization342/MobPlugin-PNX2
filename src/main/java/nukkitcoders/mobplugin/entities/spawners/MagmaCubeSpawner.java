@@ -12,8 +12,8 @@ import nukkitcoders.mobplugin.entities.monster.jumping.MagmaCube;
 
 public class MagmaCubeSpawner extends AbstractEntitySpawner {
 
-    public MagmaCubeSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public MagmaCubeSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

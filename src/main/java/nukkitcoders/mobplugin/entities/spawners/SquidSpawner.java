@@ -13,8 +13,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 public class SquidSpawner extends AbstractEntitySpawner {
 
-    public SquidSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public SquidSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

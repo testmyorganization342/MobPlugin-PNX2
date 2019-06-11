@@ -14,8 +14,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 public class DolphinSpawner extends AbstractEntitySpawner {
 
-    public DolphinSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public DolphinSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

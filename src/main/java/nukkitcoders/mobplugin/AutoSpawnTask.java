@@ -4,6 +4,7 @@ import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
@@ -53,40 +54,40 @@ public class AutoSpawnTask extends Thread {
     }
 
     private void prepareSpawnerClasses() {
-        entitySpawners.add(new BatSpawner(this, this.pluginConfig));
-        entitySpawners.add(new BlazeSpawner(this, this.pluginConfig));
-        entitySpawners.add(new ChickenSpawner(this, this.pluginConfig));
-        entitySpawners.add(new CodSpawner(this, this.pluginConfig));
-        entitySpawners.add(new CowSpawner(this, this.pluginConfig));
-        entitySpawners.add(new CreeperSpawner(this, this.pluginConfig));
-        entitySpawners.add(new DolphinSpawner(this, this.pluginConfig));
-        entitySpawners.add(new DonkeySpawner(this, this.pluginConfig));
-        entitySpawners.add(new EndermanSpawner(this, this.pluginConfig));
-        entitySpawners.add(new GhastSpawner(this, this.pluginConfig));
-        entitySpawners.add(new HorseSpawner(this, this.pluginConfig));
-        entitySpawners.add(new HuskSpawner(this, this.pluginConfig));
-        entitySpawners.add(new MagmaCubeSpawner(this, this.pluginConfig));
-        entitySpawners.add(new MooshroomSpawner(this, this.pluginConfig));
-        entitySpawners.add(new OcelotSpawner(this, this.pluginConfig));
-        entitySpawners.add(new ParrotSpawner(this, this.pluginConfig));
-        entitySpawners.add(new PigSpawner(this, this.pluginConfig));
-        entitySpawners.add(new PolarBearSpawner(this, this.pluginConfig));
-        entitySpawners.add(new PufferfishSpawner(this, this.pluginConfig));
-        entitySpawners.add(new RabbitSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SalmonSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SheepSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SkeletonSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SlimeSpawner(this, this.pluginConfig));
-        entitySpawners.add(new SpiderSpawner(this, this.pluginConfig));
-        entitySpawners.add(new StraySpawner(this, this.pluginConfig));
-        entitySpawners.add(new SquidSpawner(this, this.pluginConfig));
-        entitySpawners.add(new TropicalFishSpawner(this, this.pluginConfig));
-        entitySpawners.add(new TurtleSpawner(this, this.pluginConfig));
-        entitySpawners.add(new WitchSpawner(this, this.pluginConfig));
-        entitySpawners.add(new WitherSkeletonSpawner(this, this.pluginConfig));
-        entitySpawners.add(new WolfSpawner(this, this.pluginConfig));
-        entitySpawners.add(new ZombieSpawner(this, this.pluginConfig));
-        entitySpawners.add(new ZombiePigmanSpawner(this, this.pluginConfig));
+        entitySpawners.add(new BatSpawner(this));
+        entitySpawners.add(new BlazeSpawner(this));
+        entitySpawners.add(new ChickenSpawner(this));
+        entitySpawners.add(new CodSpawner(this));
+        entitySpawners.add(new CowSpawner(this));
+        entitySpawners.add(new CreeperSpawner(this));
+        entitySpawners.add(new DolphinSpawner(this));
+        entitySpawners.add(new DonkeySpawner(this));
+        entitySpawners.add(new EndermanSpawner(this));
+        entitySpawners.add(new GhastSpawner(this));
+        entitySpawners.add(new HorseSpawner(this));
+        entitySpawners.add(new HuskSpawner(this));
+        entitySpawners.add(new MagmaCubeSpawner(this));
+        entitySpawners.add(new MooshroomSpawner(this));
+        entitySpawners.add(new OcelotSpawner(this));
+        entitySpawners.add(new ParrotSpawner(this));
+        entitySpawners.add(new PigSpawner(this));
+        entitySpawners.add(new PolarBearSpawner(this));
+        entitySpawners.add(new PufferfishSpawner(this));
+        entitySpawners.add(new RabbitSpawner(this));
+        entitySpawners.add(new SalmonSpawner(this));
+        entitySpawners.add(new SheepSpawner(this));
+        entitySpawners.add(new SkeletonSpawner(this));
+        entitySpawners.add(new SlimeSpawner(this));
+        entitySpawners.add(new SpiderSpawner(this));
+        entitySpawners.add(new StraySpawner(this));
+        entitySpawners.add(new SquidSpawner(this));
+        entitySpawners.add(new TropicalFishSpawner(this));
+        entitySpawners.add(new TurtleSpawner(this));
+        entitySpawners.add(new WitchSpawner(this));
+        entitySpawners.add(new WitherSkeletonSpawner(this));
+        entitySpawners.add(new WolfSpawner(this));
+        entitySpawners.add(new ZombieSpawner(this));
+        entitySpawners.add(new ZombiePigmanSpawner(this));
     }
 
     private void prepareMaxSpawns() {
@@ -126,10 +127,10 @@ public class AutoSpawnTask extends Thread {
         maxSpawns.put(ZombiePigman.NETWORK_ID, this.pluginConfig.getInt("autospawn.zombiepigman"));
     }
 
-    public boolean entitySpawnAllowed(Level level, int networkId) {
+    public boolean entitySpawnAllowed(Level level, int networkId, Vector3 pos) {
         int count = 0;
         for (Entity entity : level.getEntities()) {
-            if (entity.isAlive() && entity.getNetworkId() == networkId) {
+            if (entity.isAlive() && entity.getNetworkId() == networkId && new Vector3(pos.x, entity.y, pos.z).distance(entity) < 100) {
                 count++;
             }
         }
@@ -159,6 +160,7 @@ public class AutoSpawnTask extends Thread {
                 addX += Utils.rand(correctionDegree / 2 * -1, correctionDegree / 2);
             }
         }
+
         return addX;
     }
 

@@ -14,8 +14,8 @@ import cn.nukkit.level.Position;
 
 public class ZombiePigmanSpawner extends AbstractEntitySpawner {
 
-    public ZombiePigmanSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public ZombiePigmanSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

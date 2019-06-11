@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class HuskSpawner extends AbstractEntitySpawner {
 
-    public HuskSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public HuskSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

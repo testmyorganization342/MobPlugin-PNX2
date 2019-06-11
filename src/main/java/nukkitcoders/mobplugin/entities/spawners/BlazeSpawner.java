@@ -15,8 +15,8 @@ import nukkitcoders.mobplugin.entities.monster.flying.Blaze;
  */
 public class BlazeSpawner extends AbstractEntitySpawner {
 
-    public BlazeSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public BlazeSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

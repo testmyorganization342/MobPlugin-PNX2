@@ -13,8 +13,8 @@ import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 
 public class SalmonSpawner extends AbstractEntitySpawner {
 
-    public SalmonSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public SalmonSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     public SpawnResult spawn(Player player, Position pos, Level level) {

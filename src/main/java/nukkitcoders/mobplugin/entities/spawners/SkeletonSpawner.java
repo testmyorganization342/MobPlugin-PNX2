@@ -16,8 +16,8 @@ import nukkitcoders.mobplugin.entities.monster.walking.Skeleton;
  */
 public class SkeletonSpawner extends AbstractEntitySpawner {
 
-    public SkeletonSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public SkeletonSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

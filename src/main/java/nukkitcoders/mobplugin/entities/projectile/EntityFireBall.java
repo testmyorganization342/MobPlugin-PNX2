@@ -90,7 +90,7 @@ public class EntityFireBall extends EntityProjectile {
                 }
             }
 
-            this.kill();
+            this.close();
         }
 
         return super.onUpdate(currentTick);

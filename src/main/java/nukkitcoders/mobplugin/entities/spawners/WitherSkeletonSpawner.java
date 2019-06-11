@@ -12,8 +12,8 @@ import nukkitcoders.mobplugin.entities.monster.walking.WitherSkeleton;
 
 public class WitherSkeletonSpawner extends AbstractEntitySpawner {
 
-    public WitherSkeletonSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public WitherSkeletonSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

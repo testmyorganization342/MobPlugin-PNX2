@@ -33,7 +33,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     private boolean friendly = false;
     
-    private int despawnTicks;
+    private int despawnTicks = MobPlugin.getInstance().pluginConfig.getInt("entities.despawn-ticks", 6000);
 
     private int maxJumpHeight = 1;
 
@@ -45,8 +45,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         super(chunk, nbt);
 
         this.setHealth(this.getMaxHealth());
-
-        this.despawnTicks = MobPlugin.getInstance().pluginConfig.getInt("entities.despawn-ticks", 6000);
     }
 
     public abstract Vector3 updateMove(int tickDiff);

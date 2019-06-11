@@ -15,8 +15,8 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public class DonkeySpawner extends AbstractEntitySpawner {
 
-    public DonkeySpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public DonkeySpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

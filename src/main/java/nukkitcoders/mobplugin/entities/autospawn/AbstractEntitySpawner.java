@@ -6,6 +6,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.AutoSpawnTask;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     private List<String> disabledSpawnWorlds = new ArrayList<>();
 
-    public AbstractEntitySpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
+    public AbstractEntitySpawner(AutoSpawnTask spawnTask) {
         this.spawnTask = spawnTask;
         this.server = Server.getInstance();
-        String disabledWorlds = pluginConfig.getString("entities.worlds-spawning-disabled");
+        String disabledWorlds = MobPlugin.getInstance().pluginConfig.getString("entities.worlds-spawning-disabled");
         if (disabledWorlds != null && !disabledWorlds.trim().isEmpty()) {
             StringTokenizer tokenizer = new StringTokenizer(disabledWorlds, ", ");
             while (tokenizer.hasMoreTokens()) {
@@ -65,7 +66,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         Position pos = player.getPosition();
         Level level = player.getLevel();
 
-        if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId())) {
+        if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId(), player)) {
             if (pos != null) {
                 pos.x += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.z += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);

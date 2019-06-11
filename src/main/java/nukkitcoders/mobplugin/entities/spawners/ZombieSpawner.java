@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class ZombieSpawner extends AbstractEntitySpawner {
 
-    public ZombieSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public ZombieSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override

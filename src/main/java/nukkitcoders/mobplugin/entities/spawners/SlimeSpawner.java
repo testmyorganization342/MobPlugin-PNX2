@@ -13,8 +13,8 @@ import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
 
 public class SlimeSpawner extends AbstractEntitySpawner {
 
-    public SlimeSpawner(AutoSpawnTask spawnTask, Config pluginConfig) {
-        super(spawnTask, pluginConfig);
+    public SlimeSpawner(AutoSpawnTask spawnTask) {
+        super(spawnTask);
     }
 
     @Override
