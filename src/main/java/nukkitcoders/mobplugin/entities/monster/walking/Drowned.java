@@ -41,11 +41,6 @@ public class Drowned extends WalkingMonster {
     }
 
     @Override
-    public double getSpeed() {
-        return 1.0;
-    }
-
-    @Override
     protected void initEntity() {
         super.initEntity();
 

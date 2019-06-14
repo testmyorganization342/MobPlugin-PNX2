@@ -140,7 +140,7 @@ public class AutoSpawnTask extends Thread {
 
     public BaseEntity createEntity(Object type, Position pos) {
         BaseEntity entity = (BaseEntity) Entity.createEntity((String) type, pos);
-        if (entity != null) {
+        if (entity != null && !entity.isInsideOfSolid()) {
             entity.spawnToAll();
         }
 

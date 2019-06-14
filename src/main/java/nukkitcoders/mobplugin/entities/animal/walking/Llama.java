@@ -4,13 +4,13 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
+import nukkitcoders.mobplugin.entities.HorseBase;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Llama extends WalkingAnimal {
+public class Llama extends HorseBase {
 
     public static final int NETWORK_ID = 29;
 
@@ -63,7 +63,7 @@ public class Llama extends WalkingAnimal {
     }
 
     @Override
-    public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 3);
+    public int getMaxJumpHeight() {
+        return 1;
     }
 }

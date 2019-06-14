@@ -8,12 +8,15 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
+import cn.nukkit.entity.projectile.EntityEgg;
+import cn.nukkit.entity.projectile.EntityEnderPearl;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
@@ -233,7 +236,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity("ShulkerBullet", EntityShulkerBullet.class);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void EntityDeathEvent(EntityDeathEvent ev) {
         if (!(ev.getEntity() instanceof BaseEntity)) return;
         BaseEntity baseEntity = (BaseEntity) ev.getEntity();
@@ -246,7 +249,7 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void PlayerInteractEvent(PlayerInteractEvent ev) {
         if (ev.getFace() == null || ev.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) return;
 
@@ -363,10 +366,32 @@ public class MobPlugin extends PluginBase implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void InventoryPickupArrowEvent(InventoryPickupArrowEvent ev) {
         if (ev.getArrow().namedTag.getBoolean("canNotPickup")) {
-            ev.setCancelled();
+            ev.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void ProjectileHitEvent(ProjectileHitEvent ev) {
+        if (ev.getEntity() instanceof EntityEgg) {
+            if (Utils.rand(1, 20) == 5) {
+                Chicken entity = (Chicken) Entity.createEntity("Chicken", ev.getEntity().add(0.5, 1, 0.5));
+                if (entity != null) {
+                    entity.spawnToAll();
+                    entity.setBaby(true);
+                }
+            }
+        }
+
+        if (ev.getEntity() instanceof EntityEnderPearl) {
+            if (Utils.rand(1, 20) == 5) {
+                Entity entity = Entity.createEntity("Endermite", ev.getEntity().add(0.5, 1, 0.5));
+                if (entity != null) {
+                    entity.spawnToAll();
+                }
+            }
         }
     }
 

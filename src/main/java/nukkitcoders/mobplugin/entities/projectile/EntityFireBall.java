@@ -1,7 +1,10 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
+import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.CriticalParticle;
@@ -94,5 +97,16 @@ public class EntityFireBall extends EntityProjectile {
         }
 
         return super.onUpdate(currentTick);
+    }
+
+    @Override
+    public boolean attack(EntityDamageEvent source) {
+        if (source instanceof EntityDamageByEntityEvent) {
+            if (((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
+                this.setMotion(((EntityDamageByEntityEvent) source).getDamager().getLocation().getDirectionVector());
+            }
+        }
+
+        return true;
     }
 }

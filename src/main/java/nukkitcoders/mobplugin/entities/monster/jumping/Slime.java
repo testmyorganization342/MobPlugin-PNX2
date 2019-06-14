@@ -18,6 +18,12 @@ public class Slime extends JumpingMonster {
 
     public static final int NETWORK_ID = 37;
 
+    public static final int SIZE_SMALL = 1;
+    public static final int SIZE_MEDIUM = 2;
+    public static final int SIZE_BIG = 3;
+
+    protected int size = SIZE_BIG;
+
     public Slime(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -29,17 +35,17 @@ public class Slime extends JumpingMonster {
 
     @Override
     public float getWidth() {
-        return 0.51f;
+        return 0.51f + size * 0.51f;
     }
 
     @Override
     public float getHeight() {
-        return 0.51f;
+        return 0.51f + size * 0.51f;
     }
 
     @Override
-    public double getSpeed() {
-        return 1.0;
+    public float getLength() {
+        return 0.51f + size * 0.51f;
     }
 
     @Override
@@ -49,10 +55,38 @@ public class Slime extends JumpingMonster {
 
     @Override
     protected void initEntity() {
-        this.setMaxHealth(16);
         super.initEntity();
 
-        this.setDamage(new float[] { 0, 2, 3, 4 });
+        if (this.namedTag.contains("Size")) {
+            this.size = this.namedTag.getInt("Size");
+        } else {
+            this.size = Utils.rand(1, 3);
+        }
+
+        this.setScale(0.51f + size * 0.51f);
+
+        if (size == SIZE_BIG) {
+            this.setMaxHealth(16);
+        } else if (size == SIZE_MEDIUM) {
+            this.setMaxHealth(4);
+        } else if (size == SIZE_SMALL) {
+            this.setMaxHealth(1);
+        }
+
+        if (size == SIZE_BIG) {
+            this.setDamage(new float[] { 0, 3, 4, 6 });
+        } else if (size == SIZE_MEDIUM) {
+            this.setDamage(new float[] { 0, 2, 2, 3 });
+        } else {
+            this.setDamage(new float[] { 0, 0, 0, 0 });
+        }
+    }
+
+    @Override
+    public void saveNBT() {
+        super.saveNBT();
+
+        this.namedTag.putInt("Size", this.size);
     }
 
     public void attackEntity(Entity player) {
@@ -97,29 +131,55 @@ public class Slime extends JumpingMonster {
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
+
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
         }
     }
 
     @Override
     public Item[] getDrops() {
-        List<Item> drops = new ArrayList<>();
+        if (this.size == SIZE_BIG) {
+            Slime entity = (Slime) Entity.createEntity("Slime", this);
 
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
-
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.SLIMEBALL, 0, 1));
+            if (entity != null) {
+                entity.size = SIZE_MEDIUM;
+                entity.setScale(0.51f + entity.size * 0.51f);
+                entity.spawnToAll();
             }
-        }
 
-        return drops.toArray(new Item[0]);
+            return new Item[0];
+        } else if (this.size == SIZE_MEDIUM) {
+            Slime entity = (Slime) Entity.createEntity("Slime", this);
+
+            if (entity != null) {
+                entity.size = SIZE_SMALL;
+                entity.setScale(0.51f + entity.size * 0.51f);
+                entity.spawnToAll();
+            }
+
+            return new Item[0];
+        } else {
+            List<Item> drops = new ArrayList<>();
+
+            if (this.hasCustomName()) {
+                drops.add(Item.get(Item.NAME_TAG, 0, 1));
+            }
+
+            if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+                for (int i = 0; i < Utils.rand(0, 2); i++) {
+                    drops.add(Item.get(Item.SLIMEBALL, 0, 1));
+                }
+            }
+
+            return drops.toArray(new Item[0]);
+        }
     }
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : 3;
+        if (this.size == SIZE_BIG) return 4;
+        if (this.size == SIZE_MEDIUM) return 2;
+        if (this.size == SIZE_SMALL) return 1;
+        return 0;
     }
 }
