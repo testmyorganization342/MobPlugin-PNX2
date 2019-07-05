@@ -34,6 +34,10 @@ public abstract class WalkingEntity extends BaseEntity {
 
         this.followTarget = null;
 
+        if (!this.passengers.isEmpty()) {
+            return;
+        }
+
         double near = Integer.MAX_VALUE;
 
         for (Entity entity : this.getLevel().getEntities()) {
@@ -55,7 +59,7 @@ public abstract class WalkingEntity extends BaseEntity {
             this.stayTime = 0;
             this.moveTime = 0;
             this.followTarget = creature;
-            if (this.route==null)this.target = creature;
+            if (this.route == null && this.passengers.isEmpty()) this.target = creature;
 
         }
 
@@ -128,7 +132,7 @@ public abstract class WalkingEntity extends BaseEntity {
                 return null;
             }
 
-            if (this.age % 10 == 0 && this.route!=null && !this.route.isSearching()) {
+            if (this.age % 10 == 0 && this.route != null && !this.route.isSearching()) {
                 RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
                 if (this.route.hasNext()) {
                     this.target = this.route.next();
@@ -161,7 +165,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.1 * (z / diff);
                     }
                 }
-                if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if (this.passengers.isEmpty() && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             Vector3 before = this.target;
@@ -184,7 +188,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                     }
                 }
-                if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if (this.passengers.isEmpty() && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             double dx = this.motionX * tickDiff;

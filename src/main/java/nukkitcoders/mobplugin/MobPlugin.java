@@ -19,15 +19,18 @@ import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
+import cn.nukkit.network.protocol.PlayerInputPacket;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.BaseEntity;
+import nukkitcoders.mobplugin.entities.HorseBase;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Parrot;
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
@@ -391,6 +394,17 @@ public class MobPlugin extends PluginBase implements Listener {
                 if (entity != null) {
                     entity.spawnToAll();
                 }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void DataPacketReceiveEvent(DataPacketReceiveEvent ev) {
+        if (ev.getPacket() instanceof PlayerInputPacket) {
+            PlayerInputPacket ipk = (PlayerInputPacket) ev.getPacket();
+            Player p = ev.getPlayer();
+            if (p.riding instanceof HorseBase) {
+                ((HorseBase) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
             }
         }
     }
