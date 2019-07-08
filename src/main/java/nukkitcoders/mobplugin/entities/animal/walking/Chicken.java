@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
@@ -146,6 +147,15 @@ public class Chicken extends WalkingAnimal {
     @Override
     public int getKillExperience() {
         return this.isBaby() ? 0 : Utils.rand(1, 3);
+    }
+
+    @Override
+    public boolean attack(EntityDamageEvent ev) {
+        if (ev.getCause() != EntityDamageEvent.DamageCause.FALL) {
+            return super.attack(ev);
+        }
+
+        return false;
     }
 
     private int getRandomEggLayTime() {

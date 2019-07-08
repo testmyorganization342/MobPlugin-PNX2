@@ -11,6 +11,7 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.RouteFinderThreadPool;
 import nukkitcoders.mobplugin.entities.animal.Animal;
+import nukkitcoders.mobplugin.entities.animal.walking.Llama;
 import nukkitcoders.mobplugin.route.RouteFinder;
 import nukkitcoders.mobplugin.runnable.RouteFinderSearchTask;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -34,7 +35,7 @@ public abstract class WalkingEntity extends BaseEntity {
 
         this.followTarget = null;
 
-        if (!this.passengers.isEmpty()) {
+        if (!this.passengers.isEmpty() && !(this instanceof Llama)) {
             return;
         }
 
@@ -165,7 +166,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.1 * (z / diff);
                     }
                 }
-                if (this.passengers.isEmpty() && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof HorseBase) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             Vector3 before = this.target;
@@ -188,7 +189,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                     }
                 }
-                if (this.passengers.isEmpty() && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof HorseBase) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             double dx = this.motionX * tickDiff;
@@ -226,7 +227,7 @@ public abstract class WalkingEntity extends BaseEntity {
                     }
                 }
             }
-            return this.followTarget !=null ? this.followTarget : this.target ;
+            return this.followTarget != null ? this.followTarget : this.target;
         }
         return null;
     }

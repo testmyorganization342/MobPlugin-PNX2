@@ -403,7 +403,7 @@ public class MobPlugin extends PluginBase implements Listener {
         if (ev.getPacket() instanceof PlayerInputPacket) {
             PlayerInputPacket ipk = (PlayerInputPacket) ev.getPacket();
             Player p = ev.getPlayer();
-            if (p.riding instanceof HorseBase) {
+            if (p.riding instanceof HorseBase && !(p.riding instanceof Llama)) {
                 ((HorseBase) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
             }
         }
