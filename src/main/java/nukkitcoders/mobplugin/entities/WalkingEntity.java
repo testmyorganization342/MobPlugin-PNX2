@@ -166,7 +166,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.1 * (z / diff);
                     }
                 }
-                if ((this.passengers.isEmpty() || this instanceof HorseBase) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             Vector3 before = this.target;
@@ -189,7 +189,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                     }
                 }
-                if ((this.passengers.isEmpty() || this instanceof HorseBase) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
             }
 
             double dx = this.motionX * tickDiff;
