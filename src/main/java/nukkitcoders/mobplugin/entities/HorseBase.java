@@ -142,4 +142,13 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
             this.motionZ = 0;
         }
     }
+
+    @Override
+    public boolean canDespawn() {
+        if (!this.getPassengers().isEmpty()) {
+            return false;
+        }
+
+        return super.canDespawn();
+    }
 }

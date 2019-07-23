@@ -147,7 +147,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         if (this instanceof Monster) {
             if (creature instanceof Player) {
                 Player player = (Player) creature;
-                return (!player.closed) && player.spawned && player.isAlive() && player.isSurvival() && distance <= 80;
+                return (!player.closed) && player.spawned && player.isAlive() && (player.isSurvival() || player.isAdventure()) && distance <= 80;
             }
             return creature.isAlive() && (!creature.closed) && distance <= 81;
         }
@@ -158,7 +158,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public boolean entityBaseTick(int tickDiff) {
         super.entityBaseTick(tickDiff);
 
-        if (this.age > this.despawnTicks && !this.hasCustomName() && !(this instanceof Boss)) {
+        if (this.canDespawn()) {
             this.close();
         }
 
@@ -460,5 +460,9 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     private void addHealth(int health) {
         this.setMaxHealth(this.getMaxHealth() + health);
         this.setHealth(this.getHealth() + health);
+    }
+
+    public boolean canDespawn() {
+        return this.age > this.despawnTicks && !this.hasCustomName() && !(this instanceof Boss);
     }
 }

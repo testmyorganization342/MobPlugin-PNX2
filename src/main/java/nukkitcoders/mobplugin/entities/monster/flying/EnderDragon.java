@@ -1,14 +1,24 @@
 package nukkitcoders.mobplugin.entities.monster.flying;
 
+import cn.nukkit.Player;
+import cn.nukkit.block.BlockDragonEgg;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.item.EntityEndCrystal;
+import cn.nukkit.event.entity.ProjectileLaunchEvent;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.network.protocol.DataPacket;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
+import nukkitcoders.mobplugin.entities.projectile.EntityEnderCharge;
+import nukkitcoders.mobplugin.utils.Utils;
 
 public class EnderDragon extends FlyingMonster implements Boss {
 
@@ -36,6 +46,9 @@ public class EnderDragon extends FlyingMonster implements Boss {
     @Override
     public void initEntity() {
         super.initEntity();
+
+        this.fireProof = true;
+
         this.setMaxHealth(200);
         this.setHealth(200);
     }
@@ -50,7 +63,36 @@ public class EnderDragon extends FlyingMonster implements Boss {
     }
 
     @Override
+    public boolean targetOption(EntityCreature creature, double distance) {
+        if (creature instanceof Player) {
+            Player player = (Player) creature;
+            return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance <= 800 && distance > 50;
+        }
+        return creature.isAlive() && !creature.closed && distance <= 800 && distance > 50;
+    }
+
+    @Override
     public void attackEntity(Entity player) {
+        if (this.attackDelay > 50 && Utils.rand(1, 5) < 3 && this.distance(player) <= 300) {
+            this.attackDelay = 0;
+            double f = 1.1;
+            double yaw = this.yaw + Utils.rand(-150.0, 150.0) / 10;
+            double pitch = this.pitch + Utils.rand(-75.0, 75.0) / 10;
+            Entity k = Entity.createEntity("EnderCharge", new Location(this.x + this.getLocation().getDirectionVector().multiply(5.0).x, this.y, this.z + this.getDirectionVector().multiply(5.0).z, this.level), this);
+            if (!(k instanceof EntityEnderCharge)) {
+                return;
+            }
+            EntityEnderCharge charge = (EntityEnderCharge) k;
+            charge.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
+                    Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
+            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(charge);
+            this.server.getPluginManager().callEvent(launch);
+            if (launch.isCancelled()) {
+                charge.kill();
+            } else {
+                charge.spawnToAll();
+            }
+        }
     }
 
     @Override
@@ -92,5 +134,10 @@ public class EnderDragon extends FlyingMonster implements Boss {
         }
 
         return super.entityBaseTick(tickDiff);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemBlock(new BlockDragonEgg())};
     }
 }

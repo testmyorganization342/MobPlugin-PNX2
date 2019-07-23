@@ -151,4 +151,13 @@ public class Enderman extends WalkingMonster {
         this.move(Utils.rand(-10, 10), 0, Utils.rand(-10, 10));
         this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
     }
+
+    @Override
+    public boolean canDespawn() {
+        if (this.getLevel().getName().equals("end")) {
+            return false;
+        }
+
+        return super.canDespawn();
+    }
 }
