@@ -6,27 +6,27 @@ entities:
   worlds-spawning-disabled: "exampleworld1, exampleworld2"
 
 autospawn:
-  bat: 2
+  bat: 1
   blaze: 2
   chicken: 2
   cod: 2
   cow: 2
   creeper: 2
-  dolphin: 2
-  donkey: 2
-  enderman: 2
+  dolphin: 1
+  donkey: 1
+  enderman: 1
   ghast: 2
   husk: 2
   horse: 2
   magmacube: 2
   mooshroom: 2
   ocelot: 2
-  parrot: 2
+  parrot: 1
   pig: 2
   polarbear: 2
-  pufferfish: 2
-  rabbit: 2
-  salmon: 2
+  pufferfish: 1
+  rabbit: 1
+  salmon: 3
   sheep: 2
   skeleton: 2
   slime: 2
@@ -35,8 +35,8 @@ autospawn:
   stray: 2
   tropicalfish: 2
   turtle: 2
-  witch: 2
+  witch: 1
   witherskeleton: 2
   wolf: 2
   zombie: 2
-  zombiepigman: 2
+  zombiepigman: 3

@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.autospawn;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -58,7 +59,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             }
         }
 
-        return true;
+        return level.getGameRules().getBoolean(GameRule.DO_MOB_SPAWNING);
     }
 
     protected SpawnResult spawn(Player player) {

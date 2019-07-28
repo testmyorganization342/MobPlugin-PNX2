@@ -19,7 +19,7 @@ public class PolarBear extends WalkingMonster {
 
     public static final int NETWORK_ID = 28;
 
-    int angry = 0;
+    private int angry = 0;
 
     public PolarBear(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -82,7 +82,7 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 10 && this.distanceSquared(player) < 1.44) {
+        if (this.attackDelay > 30 && this.distanceSquared(player) < 1.44) {
             this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
@@ -151,10 +151,6 @@ public class PolarBear extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
 
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             drops.add(Item.get(Item.RAW_FISH, 0, Utils.rand(0, 2)));

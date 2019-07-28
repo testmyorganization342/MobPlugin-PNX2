@@ -25,8 +25,6 @@ public class Witch extends WalkingMonster {
 
     public static final int NETWORK_ID = 45;
 
-    private static final int ATTACK_TICKS = 20;
-
     public Witch(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -69,7 +67,7 @@ public class Witch extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > ATTACK_TICKS && this.distanceSquared(player) <= 20) {
+        if (this.attackDelay > 60 && this.distanceSquared(player) <= 20) {
             this.attackDelay = 0;
             if (player.isAlive() && !player.closed) {
 
@@ -109,10 +107,6 @@ public class Witch extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
-
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             if (Utils.rand(1, 4) == 1) {
                 drops.add(Item.get(Item.STICK, 0, Utils.rand(0, 2)));
@@ -148,5 +142,15 @@ public class Witch extends WalkingMonster {
     @Override
     public int getKillExperience() {
         return this.isBaby() ? 0 : 5;
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (getServer().getDifficulty() == 0) {
+            this.close();
+            return true;
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

@@ -22,7 +22,7 @@ public class ZombiePigman extends WalkingMonster {
 
     public static final int NETWORK_ID = 36;
 
-    int angry = 0;
+    private int angry = 0;
 
     public ZombiePigman(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -78,7 +78,7 @@ public class ZombiePigman extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 10 && this.distanceSquared(player) < 1.44) {
+        if (this.attackDelay > 30 && this.distanceSquared(player) < 1.44) {
             this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
@@ -159,10 +159,6 @@ public class ZombiePigman extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
-
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             drops.add(Item.get(Item.ROTTEN_FLESH, 0, Utils.rand(0, 1)));
             drops.add(Item.get(Item.GOLD_NUGGET, 0, Utils.rand(0, 1)));
@@ -183,5 +179,15 @@ public class ZombiePigman extends WalkingMonster {
     @Override
     public String getName() {
         return "Zombie Pigman";
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (getServer().getDifficulty() == 0) {
+            this.close();
+            return true;
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

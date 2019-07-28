@@ -72,7 +72,7 @@ public class Wither extends FlyingMonster implements Boss {
 
     @Override
     public void attackEntity(Entity player) {
-    if (this.attackDelay > 20 && Utils.rand(1, 5) < 3 && this.distance(player) <= 100) {
+    if (this.attackDelay > 30 && Utils.rand(1, 5) < 3 && this.distance(player) <= 100) {
             this.attackDelay = 0;
 
             double f = 1;
@@ -124,5 +124,15 @@ public class Wither extends FlyingMonster implements Boss {
         addEntity.metadata = this.dataProperties;
         addEntity.attributes = new Attribute[]{Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(200).setValue(200)};
         return addEntity;
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (getServer().getDifficulty() == 0) {
+            this.close();
+            return true;
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

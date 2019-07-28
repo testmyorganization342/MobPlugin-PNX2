@@ -135,9 +135,4 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
         return super.entityBaseTick(tickDiff);
     }
-
-    @Override
-    public Item[] getDrops() {
-        return new Item[]{new ItemBlock(new BlockDragonEgg())};
-    }
 }

@@ -103,6 +103,11 @@ public class Guardian extends SwimmingMonster {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
+        if (getServer().getDifficulty() == 0) {
+            this.close();
+            return true;
+        }
+
         boolean hasUpdate = super.entityBaseTick(tickDiff);
         if (followTarget != null) {
             if (laserTargetEid !=followTarget.getId()) {
@@ -126,10 +131,6 @@ public class Guardian extends SwimmingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
 
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             for (int i = 0; i < Utils.rand(0, 2); i++) {

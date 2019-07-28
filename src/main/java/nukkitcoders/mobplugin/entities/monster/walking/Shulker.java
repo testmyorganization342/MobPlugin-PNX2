@@ -55,7 +55,7 @@ public class Shulker extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-    if (this.attackDelay > 23 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 55) {
+    if (this.attackDelay > 30 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 55) {
             this.attackDelay = 0;
 
             double f = 0.5;
@@ -100,10 +100,6 @@ public class Shulker extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
-
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby() && Utils.rand(1, 2) == 1) {
             drops.add(Item.get(Item.SHULKER_SHELL, 0, 1));
         }
@@ -118,5 +114,15 @@ public class Shulker extends WalkingMonster {
 
     @Override
     public void knockBack(Entity attacker, double damage, double x, double z, double base) {
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (getServer().getDifficulty() == 0) {
+            this.close();
+            return true;
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

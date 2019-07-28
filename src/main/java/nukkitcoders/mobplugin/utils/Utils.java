@@ -2,15 +2,14 @@ package nukkitcoders.mobplugin.utils;
 
 import cn.nukkit.math.Vector3;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.SplittableRandom;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (kniffo80)</a>
  */
 public class Utils {
 
-    private static final Random random = new Random(System.currentTimeMillis());
+    private static final SplittableRandom random = new SplittableRandom(System.currentTimeMillis());
 
     public static int rand(int min, int max) {
         if (min == max) {
@@ -23,14 +22,14 @@ public class Utils {
         if (min == max) {
             return max;
         }
-        return ThreadLocalRandom.current().nextDouble(min,max);
+        return min + Math.random() * (max-min);
     }
 
     public static float rand(float min, float max) {
         if (min == max) {
             return max;
         }
-        return min + (ThreadLocalRandom.current().nextFloat() * (max));
+        return min + (float) Math.random() * (max-min);
     }
 
     public static boolean rand() {

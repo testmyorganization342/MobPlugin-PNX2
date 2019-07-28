@@ -36,11 +36,6 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
     }
 
     @Override
-    public int getMaxJumpHeight() {
-        return 2;
-    }
-
-    @Override
     public boolean mountEntity(Entity entity) {
         Objects.requireNonNull(entity, "The target of the mounting entity can't be null");
 

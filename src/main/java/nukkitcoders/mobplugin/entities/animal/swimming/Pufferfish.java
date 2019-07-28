@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.animal.swimming;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -14,7 +15,7 @@ public class Pufferfish extends SwimmingAnimal {
 
     public static final int NETWORK_ID = 108;
 
-    protected boolean puffed = false;
+    private int puffed = 0;
 
     public Pufferfish(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -62,12 +63,28 @@ public class Pufferfish extends SwimmingAnimal {
         if (ev instanceof EntityDamageByEntityEvent) {
             Entity damager = ((EntityDamageByEntityEvent) ev).getDamager();
             if (damager instanceof Player) {
-                if (this.puffed) return true;
-                this.puffed = true;
+                if (this.puffed > 0) return true;
+                this.puffed = 200;
                 damager.addEffect(Effect.getEffect(Effect.POISON).setAmplifier(1).setDuration(140));
+                this.setDataProperty(new ByteEntityData(DATA_PUFFERFISH_SIZE, 2));
             }
         }
 
         return true;
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (puffed == 0) {
+            if (this.getDataPropertyByte(DATA_PUFFERFISH_SIZE) == 2) {
+                this.setDataProperty(new ByteEntityData(DATA_PUFFERFISH_SIZE, 0));
+            }
+        }
+
+        if (puffed > 0) {
+            puffed--;
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

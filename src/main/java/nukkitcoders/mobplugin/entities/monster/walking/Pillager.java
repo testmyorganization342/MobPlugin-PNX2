@@ -98,10 +98,6 @@ public class Pillager extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.hasCustomName()) {
-            drops.add(Item.get(Item.NAME_TAG, 0, 1));
-        }
-
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
             for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.ARROW, 0, 1));
@@ -129,5 +125,15 @@ public class Pillager extends WalkingMonster {
         pk.item = Item.get(471, 0, 1);
         pk.hotbarSlot = 0;
         player.dataPacket(pk);
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (getServer().getDifficulty() == 0) {
+            this.close();
+            return true;
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

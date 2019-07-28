@@ -71,11 +71,17 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
+        if (!this.getServer().getName().equals("Nukkit")) {
+            this.getServer().getLogger().error("MobPlugin does not support this software");
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         this.saveDefaultConfig();
         pluginConfig = getConfig();
 
         if (getConfig().getInt("config-version") != 8) {
-            this.getServer().getLogger().warning("MobPlugin's config file is outdated. Please delete old config.");
+            this.getServer().getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -84,6 +90,10 @@ public class MobPlugin extends PluginBase implements Listener {
 
         if (spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
+
+            if (!this.getServer().getPropertyBoolean("spawn-animals") || !this.getServer().getPropertyBoolean("spawn-mobs")) {
+                this.getServer().getLogger().notice("Disabling mob/animal spawning from server.properties does not disable spawning in MobPlugin");
+            }
         }
 
         this.getServer().getPluginManager().registerEvents(this, this);
