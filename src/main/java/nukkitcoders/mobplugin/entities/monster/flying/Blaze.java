@@ -55,7 +55,7 @@ public class Blaze extends FlyingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 30 && Utils.rand(1, 32) < 4 && this.distance(player) <= 100) {
+        if (this.attackDelay > 23 && Utils.rand(1, 32) < 4 && this.distance(player) <= 100) {
             this.attackDelay = 0;
 
             double f = 1.1;

@@ -67,7 +67,7 @@ public class Witch extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 60 && this.distanceSquared(player) <= 20) {
+        if (this.attackDelay > 60 && Utils.rand(1, 3) == 2 && this.distanceSquared(player) <= 20) {
             this.attackDelay = 0;
             if (player.isAlive() && !player.closed) {
 
