@@ -1,14 +1,11 @@
 package nukkitcoders.mobplugin.entities.monster.flying;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.BlockDragonEgg;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.item.EntityEndCrystal;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
-import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemBlock;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;

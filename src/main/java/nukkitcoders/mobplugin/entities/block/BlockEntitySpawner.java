@@ -9,6 +9,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ShortTag;
+import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -108,8 +109,13 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
                                 this.level
                         );
                 Entity entity = Entity.createEntity(this.entityId, pos);
-                if (entity == null) return true;
-                entity.spawnToAll();
+                if (entity != null) {
+                    if (entity instanceof Monster && this.level.getBlockLightAt((int) x, (int) y, (int) z) > 3) {
+                        entity.close();
+                        return true;
+                    }
+                    entity.spawnToAll();
+                }
             }
         }
         return true;
