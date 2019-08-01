@@ -2,17 +2,19 @@ package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
+import cn.nukkit.level.GameRule;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.CriticalParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.utils.FireBallExplosion;
 import nukkitcoders.mobplugin.utils.Utils;
 
-public class EntityFireBall extends EntityProjectile {
+public class EntityFireBall extends EntityProjectile implements EntityExplosive {
 
     public static final int NETWORK_ID = 85;
 
@@ -82,15 +84,7 @@ public class EntityFireBall extends EntityProjectile {
 
         if (this.age > 1200 || this.isCollided) {
             if (this.isCollided && this.canExplode) {
-                ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1);
-                this.server.getPluginManager().callEvent(ev);
-                if (!ev.isCancelled()) {
-                    FireBallExplosion explosion = new FireBallExplosion(this, (float) ev.getForce(), this.shootingEntity);
-                    if (ev.isBlockBreaking()) {
-                        explosion.explodeA();
-                    }
-                    explosion.explodeB();
-                }
+                this.explode();
             }
 
             this.close();
@@ -108,5 +102,19 @@ public class EntityFireBall extends EntityProjectile {
         }
 
         return true;
+    }
+
+    @Override
+    public void explode() {
+        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1);
+        this.server.getPluginManager().callEvent(ev);
+
+        if (!ev.isCancelled()) {
+            FireBallExplosion explosion = new FireBallExplosion(this, (float) ev.getForce(), this.shootingEntity);
+            if (ev.isBlockBreaking() && this.level.getGameRules().getBoolean(GameRule.MOB_GRIEFING)) {
+                explosion.explodeA();
+            }
+            explosion.explodeB();
+        }
     }
 }

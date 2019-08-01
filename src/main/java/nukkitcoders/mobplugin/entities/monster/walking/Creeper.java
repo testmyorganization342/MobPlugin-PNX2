@@ -11,10 +11,11 @@ import cn.nukkit.entity.mob.EntitySkeleton;
 import cn.nukkit.entity.mob.EntityStray;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.ExplosionPrimeEvent;
+import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemSkull;
 import cn.nukkit.level.Explosion;
+import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.HugeExplodeSeedParticle;
@@ -75,13 +76,13 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, this.isPowered() ? 3 : 2.8);
+        EntityExplosionPrimeEvent ev = new EntityExplosionPrimeEvent(this, this.isPowered() ? 3 : 2.8);
         this.server.getPluginManager().callEvent(ev);
 
         if (!ev.isCancelled()) {
             Explosion explosion = new Explosion(this, (float) ev.getForce(), this);
 
-            if (ev.isBlockBreaking()) {
+            if (ev.isBlockBreaking() && this.level.getGameRules().getBoolean(GameRule.MOB_GRIEFING)) {
                 explosion.explodeA();
             }
 
