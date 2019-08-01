@@ -99,7 +99,7 @@ public class IronGolem extends WalkingMonster {
     }
 
     public boolean targetOption(EntityCreature creature, double distance) {
-        return !(creature instanceof Player) && creature.isAlive() && distance <= 60;
+        return !(creature instanceof Player) && !(creature instanceof Wolf) && creature.isAlive() && distance <= 60;
     }
 
     @Override
