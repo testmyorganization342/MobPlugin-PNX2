@@ -1,16 +1,16 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
-import cn.nukkit.event.entity.ExplosionPrimeEvent;
-import nukkitcoders.mobplugin.utils.FireBallExplosion;
-import nukkitcoders.mobplugin.utils.Utils;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.projectile.EntityProjectile;
+import cn.nukkit.event.entity.ExplosionPrimeEvent;
+import cn.nukkit.level.Explosion;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.SmokeParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
+import nukkitcoders.mobplugin.utils.Utils;
 
 public class EntityBlueWitherSkull extends EntityProjectile implements EntityExplosive {
 
@@ -99,11 +99,11 @@ public class EntityBlueWitherSkull extends EntityProjectile implements EntityExp
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1);
+        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.1);
         this.server.getPluginManager().callEvent(ev);
 
         if (!ev.isCancelled()) {
-            FireBallExplosion explosion = new FireBallExplosion(this, (float) ev.getForce(), this.shootingEntity);
+            Explosion explosion = new Explosion(this, (float) ev.getForce(), this.shootingEntity);
             if (ev.isBlockBreaking() && this.level.getGameRules().getBoolean(GameRule.MOB_GRIEFING)) {
                 explosion.explodeA();
             }

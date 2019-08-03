@@ -9,6 +9,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ShortTag;
+import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -92,11 +93,13 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
             ArrayList<Entity> list = new ArrayList<>();
             boolean isValid = false;
             for (Entity entity : this.level.getEntities()) {
-                if (entity.distance(this) <= this.requiredPlayerRange) {
-                    if (entity instanceof Player) {
-                        isValid = true;
+                if (entity instanceof Player || entity instanceof BaseEntity) {
+                    if (entity.distance(this) <= this.requiredPlayerRange) {
+                        if (entity instanceof Player) {
+                            isValid = true;
+                        }
+                        list.add(entity);
                     }
-                    list.add(entity);
                 }
             }
 

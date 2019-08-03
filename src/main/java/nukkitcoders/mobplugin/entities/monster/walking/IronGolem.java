@@ -128,4 +128,9 @@ public class IronGolem extends WalkingMonster {
     public String getName() {
         return "Iron Golem";
     }
+
+    @Override
+    public boolean canDespawn() {
+        return false;
+    }
 }
