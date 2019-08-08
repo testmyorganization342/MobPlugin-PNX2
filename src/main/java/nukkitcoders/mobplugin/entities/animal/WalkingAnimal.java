@@ -16,6 +16,8 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     protected int inLoveTicks = 0;
 
+    private int panicTicks = 0;
+
     public WalkingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.route = null;
@@ -73,6 +75,13 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
             return true;
         }
 
+        if (this.panicTicks > 0) {
+            this.panicTicks--;
+            if (panicTicks == 0) {
+                doPanic(false);
+            }
+        }
+
         int tickDiff = currentTick - this.lastUpdate;
         this.lastUpdate = currentTick;
         this.entityBaseTick(tickDiff);
@@ -102,5 +111,28 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     public boolean isBreedingItem(Item item) {
         return item != null && item.getId() == Item.WHEAT;
+    }
+
+    public void doPanic(boolean panic) {
+        if (panic) {
+            int time = Utils.rand(60, 100);
+            this.panicTicks = time;
+            this.stayTime = 0;
+            this.moveTime = time;
+            this.moveMultifier = 1.8d;
+        } else {
+            this.moveMultifier = 1.0d;
+        }
+    }
+
+    @Override
+    public boolean attack(EntityDamageEvent ev) {
+        boolean result = super.attack(ev);
+
+        if (result && !ev.isCancelled()) {
+            this.doPanic(true);
+        }
+
+        return result;
     }
 }

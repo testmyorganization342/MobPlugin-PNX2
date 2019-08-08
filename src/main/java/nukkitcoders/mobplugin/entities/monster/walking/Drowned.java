@@ -9,6 +9,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
+import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -20,6 +21,8 @@ import java.util.List;
 public class Drowned extends WalkingMonster {
 
     public static final int NETWORK_ID = 110;
+
+    public Item tool;
 
     public Drowned(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -46,6 +49,8 @@ public class Drowned extends WalkingMonster {
 
         this.setDamage(new float[] { 0, 2, 3, 4 });
         this.setMaxHealth(20);
+
+        this.setRandomTool();
     }
 
     @Override
@@ -124,7 +129,13 @@ public class Drowned extends WalkingMonster {
                 drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
             }
 
-            drops.add(Item.get(Item.GOLD_INGOT, 0, Utils.rand(0, 1)));
+            if (Utils.rand(1, 100) <= 11) {
+                drops.add(Item.get(Item.GOLD_INGOT, 0, 1));
+            }
+
+            if (tool != null && Utils.rand(1, 100) == 50) {
+                drops.add(tool);
+            }
         }
 
         return drops.toArray(new Item[0]);
@@ -133,5 +144,37 @@ public class Drowned extends WalkingMonster {
     @Override
     public int getKillExperience() {
         return this.isBaby() ? 0 : 5;
+    }
+
+    private void setRandomTool() {
+        switch (Utils.rand(1, 3)) {
+            case 1:
+                if (Utils.rand(1, 100) <= 15) {
+                    this.tool = Item.get(Item.TRIDENT, Utils.rand(200, 246), 1);
+                }
+                return;
+            case 2:
+                if (Utils.rand(1, 100) == 50) {
+                    this.tool = Item.get(Item.FISHING_ROD, Utils.rand(51, 61), 1);
+                }
+                return;
+            case 3:
+                if (Utils.rand(1, 100) <= 8) {
+                    this.tool = Item.get(Item.NAUTILUS_SHELL, 0, 1);
+                }
+        }
+    }
+
+    @Override
+    public void spawnTo(Player player) {
+        super.spawnTo(player);
+
+        if (this.tool != null) {
+            MobEquipmentPacket pk = new MobEquipmentPacket();
+            pk.eid = this.getId();
+            pk.hotbarSlot = 0;
+            pk.item = this.tool;
+            player.dataPacket(pk);
+        }
     }
 }

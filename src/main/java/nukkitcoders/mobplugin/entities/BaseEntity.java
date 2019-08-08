@@ -20,6 +20,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     protected int stayTime = 0;
     protected int moveTime = 0;
+    protected double moveMultifier = 1.0d;
     protected Vector3 target = null;
     protected Entity followTarget = null;
     private boolean baby = false;
@@ -175,9 +176,9 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     @Override
     public boolean move(double dx, double dy, double dz) {
-        double movX = dx;
+        double movX = dx * moveMultifier;
         double movY = dy;
-        double movZ = dz;
+        double movZ = dz * moveMultifier;
 
         AxisAlignedBB[] list = this.level.getCollisionCubes(this, this.level.getTickRate() > 1 ? this.boundingBox.getOffsetBoundingBox(dx, dy, dz) : this.boundingBox.addCoord(dx, dy, dz));
         for (AxisAlignedBB bb : list) {

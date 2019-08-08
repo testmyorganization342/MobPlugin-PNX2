@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.monster.jumping;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.event.entity.CreatureSpawnEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -134,6 +135,13 @@ public class Slime extends JumpingMonster {
     @Override
     public Item[] getDrops() {
         if (this.size == SIZE_BIG) {
+            CreatureSpawnEvent ev = new CreatureSpawnEvent(NETWORK_ID, CreatureSpawnEvent.SpawnReason.SLIME_SPLIT);
+            level.getServer().getPluginManager().callEvent(ev);
+
+            if (ev.isCancelled()) {
+                return new Item[0];
+            }
+
             Slime entity = (Slime) Entity.createEntity("Slime", this);
 
             if (entity != null) {
@@ -144,6 +152,13 @@ public class Slime extends JumpingMonster {
 
             return new Item[0];
         } else if (this.size == SIZE_MEDIUM) {
+            CreatureSpawnEvent ev = new CreatureSpawnEvent(NETWORK_ID, CreatureSpawnEvent.SpawnReason.SLIME_SPLIT);
+            level.getServer().getPluginManager().callEvent(ev);
+
+            if (ev.isCancelled()) {
+                return new Item[0];
+            }
+
             Slime entity = (Slime) Entity.createEntity("Slime", this);
 
             if (entity != null) {

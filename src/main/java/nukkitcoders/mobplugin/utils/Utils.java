@@ -9,7 +9,7 @@ import java.util.SplittableRandom;
  */
 public class Utils {
 
-    private static final SplittableRandom random = new SplittableRandom(System.currentTimeMillis());
+    public static final SplittableRandom random = new SplittableRandom();
 
     public static int rand(int min, int max) {
         if (min == max) {

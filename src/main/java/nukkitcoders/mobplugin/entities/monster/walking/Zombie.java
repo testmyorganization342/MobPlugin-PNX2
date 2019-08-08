@@ -128,7 +128,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
 
         if (MobPlugin.getInstance().shouldMobBurn(level, this)) {
-            if (this.armor[0] == null || this.armor[0].getId() == 0) {
+            if (this.armor[0] == null) {
+                this.setOnFire(100);
+            } else if (this.armor[0].getId() == 0) {
                 this.setOnFire(100);
             }
         }
@@ -147,11 +149,11 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
             if (this.tool != null) {
                 if (tool instanceof ItemSwordIron && Utils.rand(1, 3) == 1) {
-                    drops.add(Item.get(Item.IRON_SWORD, Utils.rand(200, 246), 1));
+                    drops.add(tool);
                 }
 
                 if (tool instanceof ItemShovelIron && Utils.rand(1, 3) != 1) {
-                    drops.add(Item.get(Item.IRON_SHOVEL, Utils.rand(200, 246), 1));
+                    drops.add(tool);
                 }
             }
 
@@ -205,10 +207,10 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
     private void setRandomTool() {
         if (Utils.rand(1, 10) == 5) {
             if (Utils.rand(1, 3) == 1) {
-                this.tool = Item.get(Item.IRON_SWORD, 0, 1);
+                this.tool = Item.get(Item.IRON_SWORD, Utils.rand(200, 246), 1);
                 this.setDamage(new float[]{0, 4, 6, 8});
             } else {
-                this.tool = Item.get(Item.IRON_SHOVEL, 0, 1);
+                this.tool = Item.get(Item.IRON_SHOVEL, Utils.rand(200, 246), 1);
                 this.setDamage(new float[]{0, 3, 4, 5});
             }
         }

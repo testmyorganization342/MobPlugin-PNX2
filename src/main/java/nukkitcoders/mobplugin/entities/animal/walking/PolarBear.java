@@ -164,4 +164,13 @@ public class PolarBear extends WalkingMonster {
     public int getKillExperience() {
         return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (this.angry > 0) {
+            this.angry--;
+        }
+
+        return super.entityBaseTick(tickDiff);
+    }
 }

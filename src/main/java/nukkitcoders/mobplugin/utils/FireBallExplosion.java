@@ -24,7 +24,6 @@ import it.unimi.dsi.fastutil.longs.LongArraySet;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class FireBallExplosion extends Explosion {
 
@@ -57,7 +56,7 @@ public class FireBallExplosion extends Explosion {
                         double pointerX = this.source.x;
                         double pointerY = this.source.y;
                         double pointerZ = this.source.z;
-                        for (double blastForce = this.size * (ThreadLocalRandom.current().nextInt(700, 1301)) / 1000d; blastForce > 0; blastForce -= 0.3d * 0.75d) {
+                        for (double blastForce = this.size * (Utils.random.nextInt(700, 1301)) / 1000d; blastForce > 0; blastForce -= 0.3d * 0.75d) {
                             int x = (int) pointerX;
                             int y = (int) pointerY;
                             int z = (int) pointerZ;
@@ -134,7 +133,7 @@ public class FireBallExplosion extends Explosion {
         ItemBlock air = new ItemBlock(new BlockAir());
         for (Block block : this.affectedBlocks) {
             if (block.getId() == Block.TNT) {
-                ((BlockTNT) block).prime(new NukkitRandom().nextRange(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
+                ((BlockTNT) block).prime(Utils.rand(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
             } else if (Math.random() * 100 < yield) {
                 for (Item drop : block.getDrops(air)) {
                     this.level.dropItem(block.add(0.5, 0.5, 0.5), drop);

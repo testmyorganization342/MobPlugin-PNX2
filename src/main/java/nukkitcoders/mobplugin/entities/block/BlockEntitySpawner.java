@@ -5,10 +5,12 @@ import cn.nukkit.block.BlockID;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.event.entity.CreatureSpawnEvent;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ShortTag;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -38,7 +40,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
     public static final String TAG_MAX_NEARBY_ENTITIES = "MaxNearbyEntities";
     public static final String TAG_REQUIRED_PLAYER_RANGE = "RequiredPlayerRange";
 
-    public static final short SPAWN_RANGE = 8;
+    public static final short SPAWN_RANGE = (short) MobPlugin.getInstance().getConfig().getInt("other.spawner-spawn-range");
     public static final short MIN_SPAWN_DELAY = 200;
     public static final short MAX_SPAWN_DELAY = 5000;
     public static final short MAX_NEARBY_ENTITIES = 20;
@@ -104,6 +106,13 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
             }
 
             if (isValid && list.size() <= this.maxNearbyEntities) {
+                CreatureSpawnEvent ev = new CreatureSpawnEvent(this.entityId, CreatureSpawnEvent.SpawnReason.SPAWNER);
+                level.getServer().getPluginManager().callEvent(ev);
+
+                if (ev.isCancelled()) {
+                    return true;
+                }
+
                 Position pos = new Position
                         (
                                 this.x + Utils.rand(-this.spawnRange, this.spawnRange),
@@ -111,6 +120,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
                                 this.z + Utils.rand(-this.spawnRange, this.spawnRange),
                                 this.level
                         );
+
                 Entity entity = Entity.createEntity(this.entityId, pos);
                 if (entity != null) {
                     if (entity instanceof Monster && this.level.getBlockLightAt((int) x, (int) y, (int) z) > 3) {

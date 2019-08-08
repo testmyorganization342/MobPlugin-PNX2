@@ -58,8 +58,8 @@ public class Pillager extends WalkingMonster {
             this.attackDelay = 0;
 
             double f = 1.5;
-            double yaw = this.yaw + Utils.rand(-150.0, 150.0) / 10;
-            double pitch = this.pitch + Utils.rand(-75.0, 75.0) / 10;
+            double yaw = this.yaw + Utils.rand(-120.0, 120.0) / 10;
+            double pitch = this.pitch + Utils.rand(-70.0, 70.0) / 10;
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             if (this.getLevel().getBlockIdAt((int)pos.getX(),(int)pos.getY(),(int)pos.getZ()) == Block.AIR) {
@@ -86,7 +86,7 @@ public class Pillager extends WalkingMonster {
                     } else {
                         projectile.namedTag.putDouble("damage", 4);
                         projectile.spawnToAll();
-                        projectile.namedTag.putBoolean("canNotPickup", true);
+                        ((EntityArrow) projectile).setPickupMode(EntityArrow.PICKUP_NONE);
                         this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_CROSSBOW_SHOOT);
                     }
                 }
