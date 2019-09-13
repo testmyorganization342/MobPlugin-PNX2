@@ -51,7 +51,7 @@ public class AutoSpawnTask extends Thread {
     public void run() {
         if (plugin.getServer().getOnlinePlayers().size() > 0) {
             for (IEntitySpawner spawner : entitySpawners) {
-                spawner.spawn(plugin.getServer().getOnlinePlayers().values());
+                spawner.spawn();
             }
         }
     }

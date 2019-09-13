@@ -1,5 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
-public class SkeletonHorse extends HorseBase {
+public class SkeletonHorse extends HorseBase implements EntitySmite {
 
     public static final int NETWORK_ID = 26;
 

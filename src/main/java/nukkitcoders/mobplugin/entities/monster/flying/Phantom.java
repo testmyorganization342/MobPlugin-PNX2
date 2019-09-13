@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.monster.flying;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Phantom extends FlyingMonster {
+public class Phantom extends FlyingMonster implements EntitySmite {
 
     public static final int NETWORK_ID = 58;
 

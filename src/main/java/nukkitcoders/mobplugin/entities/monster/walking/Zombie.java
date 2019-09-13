@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Zombie extends WalkingMonster implements EntityAgeable {
+public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite {
 
     public static final int NETWORK_ID = 32;
 
@@ -197,11 +198,10 @@ public class Zombie extends WalkingMonster implements EntityAgeable {
 
         MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
         pk.eid = this.getId();
+        pk.slots = this.armor;
 
         if (java.time.LocalDate.now().toString().contains("-10-31")) {
             pk.slots[0] = new ItemBlock(Block.get(Block.JACK_O_LANTERN));
-        } else {
-            pk.slots = this.armor;
         }
 
         player.dataPacket(pk);

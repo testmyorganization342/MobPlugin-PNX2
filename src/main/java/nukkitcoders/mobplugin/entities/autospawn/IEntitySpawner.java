@@ -11,7 +11,7 @@ import java.util.Collection;
  */
 public interface IEntitySpawner {
 
-    void spawn(Collection<Player> onlinePlayers);
+    void spawn();
 
     SpawnResult spawn(Player player, Position pos, Level level);
 

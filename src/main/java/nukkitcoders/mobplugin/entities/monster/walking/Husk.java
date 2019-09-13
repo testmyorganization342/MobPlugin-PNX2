@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.item.Item;
@@ -17,7 +18,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Husk extends WalkingMonster implements EntityAgeable {
+public class Husk extends WalkingMonster implements EntityAgeable, EntitySmite {
 
     public static final int NETWORK_ID = 47;
 

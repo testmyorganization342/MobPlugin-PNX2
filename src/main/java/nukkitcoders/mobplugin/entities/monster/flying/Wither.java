@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -18,7 +19,7 @@ import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityBlueWitherSkull;
 import nukkitcoders.mobplugin.utils.Utils;
 
-public class Wither extends FlyingMonster implements Boss {
+public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
     public static final int NETWORK_ID = 52;
 

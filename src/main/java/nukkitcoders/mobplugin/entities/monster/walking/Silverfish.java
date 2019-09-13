@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityArthropod;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -12,7 +13,7 @@ import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 
 import java.util.HashMap;
 
-public class Silverfish extends WalkingMonster {
+public class Silverfish extends WalkingMonster implements EntityArthropod {
 
     public static final int NETWORK_ID = 39;
 

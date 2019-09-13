@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 import cn.nukkit.block.Block;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,7 +26,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Skeleton extends WalkingMonster {
+public class Skeleton extends WalkingMonster implements EntitySmite {
 
     public static final int NETWORK_ID = 34;
 
