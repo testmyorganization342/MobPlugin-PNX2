@@ -221,7 +221,8 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Ravager.class.getSimpleName(), Ravager.class);
 
         Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
-        Entity.registerEntity("FireBall", EntityFireBall.class);
+        Entity.registerEntity("BlazeFireBall", EntityBlazeFireBall.class);
+        Entity.registerEntity("GhastFireBall", EntityGhastFireBall.class);
         Entity.registerEntity("ShulkerBullet", EntityShulkerBullet.class);
         Entity.registerEntity("EnderCharge", EntityEnderCharge.class);
     }

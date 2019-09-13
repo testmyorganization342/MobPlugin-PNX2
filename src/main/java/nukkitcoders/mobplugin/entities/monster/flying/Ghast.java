@@ -12,7 +12,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
-import nukkitcoders.mobplugin.entities.projectile.EntityFireBall;
+import nukkitcoders.mobplugin.entities.projectile.EntityGhastFireBall;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -68,16 +68,16 @@ public class Ghast extends FlyingMonster {
             this.attackDelay = 0;
 
             double f = 1;
-            double yaw = this.yaw + Utils.rand(-120.0, 120.0) / 10;
+            double yaw = this.yaw + Utils.rand(-100.0, 100.0) / 10;
             double pitch = this.pitch + Utils.rand(-70.0, 70.0) / 10;
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
-            Entity k = Entity.createEntity("FireBall", pos, this);
-            if (!(k instanceof EntityFireBall)) {
+            Entity k = Entity.createEntity("GhastFireBall", pos, this);
+            if (!(k instanceof EntityGhastFireBall)) {
                 return;
             }
 
-            EntityFireBall fireball = (EntityFireBall) k;
+            EntityGhastFireBall fireball = (EntityGhastFireBall) k;
             fireball.setExplode(true);
             fireball.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
                     Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));

@@ -9,18 +9,16 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.level.particle.CriticalParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.utils.FireBallExplosion;
-import nukkitcoders.mobplugin.utils.Utils;
 
-public class EntityFireBall extends EntityProjectile implements EntityExplosive {
+public class EntityGhastFireBall extends EntityProjectile implements EntityExplosive {
 
     public static final int NETWORK_ID = 85;
 
-    protected boolean critical;
+    private boolean canExplode;
 
-    protected boolean canExplode = false;
+    private boolean directionChanged;
 
     @Override
     public int getNetworkId() {
@@ -47,22 +45,21 @@ public class EntityFireBall extends EntityProjectile implements EntityExplosive 
         return 0.01f;
     }
 
-    public EntityFireBall(FullChunk chunk, CompoundTag nbt) {
+    @Override
+    public double getDamage() {
+        return 5;
+    }
+
+    public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         this(chunk, nbt, shootingEntity, false);
     }
 
-    public EntityFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
+    public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
         super(chunk, nbt, shootingEntity);
-
-        this.critical = critical;
-    }
-
-    public boolean isExplode() {
-        return this.canExplode;
     }
 
     public void setExplode(boolean bool) {
@@ -75,18 +72,10 @@ public class EntityFireBall extends EntityProjectile implements EntityExplosive 
             return false;
         }
 
-        if (!this.hadCollision && this.critical) {
-            this.level.addParticle(new CriticalParticle(
-                    this.add(this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500)));
-        } else if (this.onGround) {
-            this.critical = false;
-        }
-
         if (this.age > 1200 || this.isCollided) {
             if (this.isCollided && this.canExplode) {
                 this.explode();
             }
-
             this.close();
         }
 
@@ -94,9 +83,15 @@ public class EntityFireBall extends EntityProjectile implements EntityExplosive 
     }
 
     @Override
+    public void onCollideWithEntity(Entity entity) {
+        this.isCollided = true;
+    }
+
+    @Override
     public boolean attack(EntityDamageEvent source) {
-        if (source instanceof EntityDamageByEntityEvent) {
+        if (!directionChanged && source instanceof EntityDamageByEntityEvent) {
             if (((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
+                directionChanged = true;
                 this.setMotion(((EntityDamageByEntityEvent) source).getDamager().getLocation().getDirectionVector());
             }
         }
@@ -106,9 +101,8 @@ public class EntityFireBall extends EntityProjectile implements EntityExplosive 
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1);
+        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.2);
         this.server.getPluginManager().callEvent(ev);
-
         if (!ev.isCancelled()) {
             FireBallExplosion explosion = new FireBallExplosion(this, (float) ev.getForce(), this.shootingEntity);
             if (ev.isBlockBreaking() && this.level.getGameRules().getBoolean(GameRule.MOB_GRIEFING)) {

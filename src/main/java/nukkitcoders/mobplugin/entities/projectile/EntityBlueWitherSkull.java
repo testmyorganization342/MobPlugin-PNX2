@@ -16,9 +16,7 @@ public class EntityBlueWitherSkull extends EntityProjectile implements EntityExp
 
     public static final int NETWORK_ID = 89;
 
-    protected boolean critical;
-
-    protected boolean canExplode = false;
+    private boolean canExplode;
 
     @Override
     public int getNetworkId() {
@@ -60,8 +58,6 @@ public class EntityBlueWitherSkull extends EntityProjectile implements EntityExp
 
     public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
         super(chunk, nbt, shootingEntity);
-
-        this.critical = critical;
     }
 
     public boolean isExplode() {
@@ -99,7 +95,7 @@ public class EntityBlueWitherSkull extends EntityProjectile implements EntityExp
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.1);
+        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.2);
         this.server.getPluginManager().callEvent(ev);
 
         if (!ev.isCancelled()) {
