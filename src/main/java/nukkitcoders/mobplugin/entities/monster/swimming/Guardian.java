@@ -13,9 +13,7 @@ import nukkitcoders.mobplugin.entities.animal.swimming.Squid;
 import nukkitcoders.mobplugin.entities.monster.SwimmingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Guardian extends SwimmingMonster {
 
@@ -130,13 +128,7 @@ public class Guardian extends SwimmingMonster {
 
     @Override
     public Item[] getDrops() {
-        List<Item> drops = new ArrayList<>();
-
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
-        }
-
-        return drops.toArray(new Item[0]);
+        return new Item[]{Item.get(Item.PRISMARINE_SHARD, 0, Utils.rand(0, 2))};
     }
 
     @Override
