@@ -2,7 +2,6 @@ package nukkitcoders.mobplugin.entities.animal.jumping;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.PunchBlockParticle;
@@ -67,7 +66,7 @@ public class Rabbit extends JumpingAnimal {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
+        if (!this.isBaby()) {
             drops.add(Item.get(Item.RABBIT_HIDE, 0, Utils.rand(0, 1)));
             drops.add(Item.get(this.isOnFire() ? Item.COOKED_RABBIT : Item.RAW_RABBIT, 0, Utils.rand(0, 1)));
 
@@ -89,7 +88,7 @@ public class Rabbit extends JumpingAnimal {
         boolean hasUpdate = super.onUpdate(currentTick);
         try {
             if (this.isOnGround()) this.level.addParticle(new PunchBlockParticle(this, this.level.getBlock((int) x, (int) y - 1, (int) z), BlockFace.UP));
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         return hasUpdate;
     }
 }

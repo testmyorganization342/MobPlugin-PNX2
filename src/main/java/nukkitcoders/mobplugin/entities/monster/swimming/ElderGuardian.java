@@ -2,7 +2,6 @@ package nukkitcoders.mobplugin.entities.monster.swimming;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -56,10 +55,8 @@ public class ElderGuardian extends SwimmingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
-            }
+        for (int i = 0; i < Utils.rand(0, 2); i++) {
+            drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
         }
 
         return drops.toArray(new Item[0]);
@@ -67,7 +64,7 @@ public class ElderGuardian extends SwimmingMonster {
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : 10;
+        return 10;
     }
 
     @Override

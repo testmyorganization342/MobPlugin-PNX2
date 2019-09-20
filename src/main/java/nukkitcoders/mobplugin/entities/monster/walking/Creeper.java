@@ -209,21 +209,19 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.GUNPOWDER, 0, 1));
-            }
+        for (int i = 0; i < Utils.rand(0, 2); i++) {
+            drops.add(Item.get(Item.GUNPOWDER, 0, 1));
+        }
 
-            Entity killer = ((EntityDamageByEntityEvent) this.lastDamageCause).getDamager();
+        Entity killer = ((EntityDamageByEntityEvent) this.lastDamageCause).getDamager();
 
-            if (killer instanceof EntitySkeleton || killer instanceof EntityStray) {
-                drops.add(Item.get(Utils.rand(500, 511), 0, 1));
-            }
+        if (killer instanceof EntitySkeleton || killer instanceof EntityStray) {
+            drops.add(Item.get(Utils.rand(500, 511), 0, 1));
+        }
 
-            if (killer instanceof EntityCreeper) {
-                if (((EntityCreeper) killer).isPowered()) {
-                    drops.add(Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1));
-                }
+        if (killer instanceof EntityCreeper) {
+            if (((EntityCreeper) killer).isPowered()) {
+                drops.add(Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1));
             }
         }
 
@@ -232,7 +230,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : 5;
+        return 5;
     }
 
     public int getMaxFallHeight() {

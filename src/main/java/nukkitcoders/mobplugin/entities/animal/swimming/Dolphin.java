@@ -1,13 +1,10 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
-import nukkitcoders.mobplugin.utils.Utils;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
-import java.util.ArrayList;
-import java.util.List;
+import nukkitcoders.mobplugin.utils.Utils;
 
 public class Dolphin extends SwimmingAnimal {
 
@@ -41,13 +38,7 @@ public class Dolphin extends SwimmingAnimal {
 
     @Override
     public Item[] getDrops() {
-        List<Item> drops = new ArrayList<>();
-
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            drops.add(Item.get(Item.RAW_FISH, 0, Utils.rand(0, 1)));
-        }
-
-        return drops.toArray(new Item[0]);
+        return new Item[]{Item.get(Item.RAW_FISH, 0, Utils.rand(0, 1))};
     }
 
     @Override

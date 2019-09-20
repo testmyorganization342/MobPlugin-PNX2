@@ -2,7 +2,6 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
@@ -13,9 +12,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.utils.Utils;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityShulkerBullet;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Shulker extends WalkingMonster {
 
@@ -98,13 +94,7 @@ public class Shulker extends WalkingMonster {
 
     @Override
     public Item[] getDrops() {
-        List<Item> drops = new ArrayList<>();
-
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby() && Utils.rand(1, 2) == 1) {
-            drops.add(Item.get(Item.SHULKER_SHELL, 0, 1));
-        }
-
-        return drops.toArray(new Item[0]);
+        return new Item[]{Item.get(Item.SHULKER_SHELL, 0, Utils.rand(0, 1))};
     }
 
     @Override

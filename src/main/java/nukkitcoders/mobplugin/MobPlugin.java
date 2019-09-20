@@ -47,7 +47,8 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public void onEnable() {
         if (!this.getServer().getName().equals("Nukkit")) {
-            this.getServer().getLogger().error("MobPlugin does not support this software");
+            this.getServer().getLogger().warning("MobPlugin does not support this software.");
+            this.getServer().getLogger().error("Incompatible server software. Plugin will be disabled.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -184,6 +185,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(TropicalFish.class.getSimpleName(), TropicalFish.class);
         Entity.registerEntity(Turtle.class.getSimpleName(), Turtle.class);
         Entity.registerEntity(Villager.class.getSimpleName(), Villager.class);
+        Entity.registerEntity(VillagerV2.class.getSimpleName(), VillagerV2.class);
         Entity.registerEntity(ZombieHorse.class.getSimpleName(), ZombieHorse.class);
         Entity.registerEntity(WanderingTrader.class.getSimpleName(), WanderingTrader.class);
 
@@ -217,6 +219,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Wolf.class.getSimpleName(), Wolf.class);
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
         Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
+        Entity.registerEntity(ZombieVillagerV2.class.getSimpleName(), ZombieVillagerV2.class);
         Entity.registerEntity(Pillager.class.getSimpleName(), Pillager.class);
         Entity.registerEntity(Ravager.class.getSimpleName(), Ravager.class);
 

@@ -132,10 +132,8 @@ public class Guardian extends SwimmingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent && !this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
-            }
+        for (int i = 0; i < Utils.rand(0, 2); i++) {
+            drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
         }
 
         return drops.toArray(new Item[0]);
@@ -143,6 +141,6 @@ public class Guardian extends SwimmingMonster {
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : 10;
+        return 10;
     }
 }
