@@ -213,15 +213,17 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             drops.add(Item.get(Item.GUNPOWDER, 0, 1));
         }
 
-        Entity killer = ((EntityDamageByEntityEvent) this.lastDamageCause).getDamager();
+        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
+            Entity killer = ((EntityDamageByEntityEvent) this.lastDamageCause).getDamager();
 
-        if (killer instanceof EntitySkeleton || killer instanceof EntityStray) {
-            drops.add(Item.get(Utils.rand(500, 511), 0, 1));
-        }
+            if (killer instanceof EntitySkeleton || killer instanceof EntityStray) {
+                drops.add(Item.get(Utils.rand(500, 511), 0, 1));
+            }
 
-        if (killer instanceof EntityCreeper) {
-            if (((EntityCreeper) killer).isPowered()) {
-                drops.add(Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1));
+            if (killer instanceof EntityCreeper) {
+                if (((EntityCreeper) killer).isPowered()) {
+                    drops.add(Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1));
+                }
             }
         }
 
