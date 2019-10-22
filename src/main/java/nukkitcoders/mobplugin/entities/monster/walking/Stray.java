@@ -141,4 +141,9 @@ public class Stray extends WalkingMonster implements EntitySmite {
     public int getKillExperience() {
         return 5;
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 10;
+    }
 }

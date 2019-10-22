@@ -426,4 +426,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public boolean canDespawn() {
         return despawnTicks > 0 && this.age > despawnTicks && !this.hasCustomName() && !(this instanceof Boss);
     }
+
+    public int nearbyDistanceMultiplier() {
+        return 1;
+    }
 }

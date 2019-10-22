@@ -136,4 +136,9 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
         return super.entityBaseTick(tickDiff);
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 30;
+    }
 }

@@ -98,4 +98,9 @@ public class Blaze extends FlyingMonster {
 
         return super.entityBaseTick(tickDiff);
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 30;
+    }
 }

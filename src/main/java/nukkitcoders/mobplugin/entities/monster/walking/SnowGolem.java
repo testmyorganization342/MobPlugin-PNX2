@@ -116,4 +116,9 @@ public class SnowGolem extends WalkingMonster {
     public String getName() {
         return "Snow Golem";
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 10;
+    }
 }

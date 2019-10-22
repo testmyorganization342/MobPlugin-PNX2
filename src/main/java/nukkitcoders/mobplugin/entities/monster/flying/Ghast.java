@@ -119,4 +119,9 @@ public class Ghast extends FlyingMonster {
 
         return super.entityBaseTick(tickDiff);
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 30;
+    }
 }

@@ -149,4 +149,9 @@ public class Witch extends WalkingMonster {
 
         return super.entityBaseTick(tickDiff);
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 8;
+    }
 }

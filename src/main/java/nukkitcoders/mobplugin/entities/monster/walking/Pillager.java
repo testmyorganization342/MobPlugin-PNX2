@@ -133,4 +133,9 @@ public class Pillager extends WalkingMonster {
 
         return super.entityBaseTick(tickDiff);
     }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 20;
+    }
 }
