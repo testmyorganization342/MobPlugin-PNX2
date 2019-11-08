@@ -183,7 +183,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
             strafe *= 0.4;
 
             double f = strafe * strafe + forward * forward;
-            double friction = 0.6;
+            double friction = 0.3;
 
             if (f >= 1.0E-4) {
                 f = Math.sqrt(f);
