@@ -29,7 +29,7 @@ public class BlazeSpawner extends AbstractEntitySpawner {
             result = SpawnResult.WRONG_BLOCK;
         } else if (biomeId != 8) {
             result = SpawnResult.WRONG_BIOME;
-        } else if ((pos.y > 255 || (level.getName().equals("nether") && pos.y > 127)) || pos.y < 1 || blockId == Block.AIR) {
+        } else if ((pos.y > 127) || pos.y < 1 || blockId == Block.AIR) {
             result = SpawnResult.POSITION_MISMATCH;
         } else {
             this.spawnTask.createEntity("Blaze", pos.add(0, 1, 0));

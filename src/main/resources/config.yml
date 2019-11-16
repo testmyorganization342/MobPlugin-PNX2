@@ -1,5 +1,5 @@
 # config version, do not edit!
-config-version: 9
+config-version: 10
 
 entities:
   # how often the spawn task should run
@@ -58,3 +58,5 @@ other:
   do-not-waste-spawn-eggs: false
   # give xp drops straight to player
   use-no-xp-orbs: false
+  # do not spawn mobs this near to spawn area
+  spawn-no-spawning-area: 1

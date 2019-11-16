@@ -24,9 +24,12 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     private List<String> disabledSpawnWorlds = new ArrayList<>();
 
+    private int spawnAreaSize;
+
     public AbstractEntitySpawner(AutoSpawnTask spawnTask) {
         this.spawnTask = spawnTask;
         this.server = Server.getInstance();
+        this.spawnAreaSize = MobPlugin.getInstance().pluginConfig.getInt("other.spawn-no-spawning-area");
         String disabledWorlds = MobPlugin.getInstance().pluginConfig.getString("entities.worlds-spawning-disabled");
         if (disabledWorlds != null && !disabledWorlds.trim().isEmpty()) {
             StringTokenizer tokenizer = new StringTokenizer(disabledWorlds, ", ");
@@ -51,7 +54,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         }
     }
 
-    private boolean isWorldSpawnAllowed (Level level) {
+    private boolean isWorldSpawnAllowed(Level level) {
         for (String worldName : this.disabledSpawnWorlds) {
             if (level.getName().equalsIgnoreCase(worldName)) {
                 return false;
@@ -70,6 +73,10 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 pos.x += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.z += this.spawnTask.getRandomSafeXZCoord(50, 26, 6);
                 pos.y = this.spawnTask.getSafeYCoord(level, pos, 3);
+
+                if (level.getSpawnLocation().distance(pos) < this.spawnAreaSize) {
+                    return SpawnResult.SPAWN_DENIED;
+                }
             } else {
                 return SpawnResult.POSITION_MISMATCH;
             }

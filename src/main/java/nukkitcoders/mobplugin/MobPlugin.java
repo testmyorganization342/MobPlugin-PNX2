@@ -47,8 +47,8 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public void onEnable() {
         if (!this.getServer().getName().equals("Nukkit")) {
-            this.getServer().getLogger().warning("MobPlugin does not support this software.");
-            this.getServer().getLogger().error("Incompatible server software. Plugin will be disabled.");
+            this.getLogger().warning("MobPlugin does not support this software.");
+            this.getLogger().error("Incompatible server software. Plugin will be disabled.");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -56,11 +56,18 @@ public class MobPlugin extends PluginBase implements Listener {
         this.saveDefaultConfig();
         pluginConfig = getConfig();
 
-        if (getConfig().getInt("config-version") != 9) {
-            this.getServer().getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
-            this.getServer().getLogger().error("Config error. Plugin will be disabled.");
-            this.getServer().getPluginManager().disablePlugin(this);
-            return;
+        if (pluginConfig.getInt("config-version") != 10) {
+            if (pluginConfig.getInt("config-version") == 9) {
+                pluginConfig.set("other.spawn-no-spawning-area", 1);
+                pluginConfig.set("config-version", 10);
+                pluginConfig.save();
+                this.getLogger().notice("Config file updated to version 10.");
+            } else {
+                this.getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
+                this.getLogger().error("Config error. Plugin will be disabled.");
+                this.getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
         }
 
         int spawnDelay = pluginConfig.getInt("entities.autospawn-ticks", 0);

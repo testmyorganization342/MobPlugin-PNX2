@@ -52,7 +52,7 @@ public class EventListener implements Listener {
         if (!(damager instanceof Player)) return;
         int killExperience = baseEntity.getKillExperience();
         if (killExperience > 0) {
-            if (MobPlugin.getInstance().getConfig().getBoolean("other.use-no-xp-orbs")) {
+            if (MobPlugin.getInstance().pluginConfig.getBoolean("other.use-no-xp-orbs")) {
                 ((Player) damager).addExperience(killExperience);
             } else {
                 damager.getLevel().dropExpOrb(baseEntity, killExperience);
@@ -75,7 +75,7 @@ public class EventListener implements Listener {
             SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), item.getDamage());
             Server.getInstance().getPluginManager().callEvent(event);
             if (((BlockEntitySpawner) blockEntity).getSpawnEntityType() == item.getDamage()) {
-                if (MobPlugin.getInstance().getConfig().getBoolean("other.do-not-waste-spawn-eggs")) {
+                if (MobPlugin.getInstance().pluginConfig.getBoolean("other.do-not-waste-spawn-eggs")) {
                     event.setCancelled(true);
                     return;
                 }
