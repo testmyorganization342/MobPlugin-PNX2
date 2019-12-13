@@ -13,6 +13,7 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
+import nukkitcoders.mobplugin.entities.animal.flying.Bee;
 import nukkitcoders.mobplugin.entities.animal.flying.Parrot;
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.*;
@@ -199,6 +200,7 @@ public class MobPlugin extends PluginBase implements Listener {
         BlockEntity.registerBlockEntity("MobSpawner", BlockEntitySpawner.class);
 
         Entity.registerEntity(Bat.class.getSimpleName(), Bat.class);
+        Entity.registerEntity(Bee.class.getSimpleName(), Bee.class);
         Entity.registerEntity(Cat.class.getSimpleName(), Cat.class);
         Entity.registerEntity(Chicken.class.getSimpleName(), Chicken.class);
         Entity.registerEntity(Cod.class.getSimpleName(), Cod.class);
