@@ -30,7 +30,10 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
         if (this.namedTag != null) {
             String ownerName = namedTag.getString(NAMED_TAG_OWNER);
             if (ownerName != null && ownerName.length() > 0) {
-                this.setOwner(Server.getInstance().getPlayer(ownerName));
+                Player player = Server.getInstance().getPlayer(ownerName);
+                if (player != null) {
+                    this.setOwner(player);
+                }
                 this.setSitting(namedTag.getBoolean(NAMED_TAG_SITTING));
             }
         }
