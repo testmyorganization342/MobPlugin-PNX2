@@ -41,14 +41,10 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
 
     @Override
     public void spawn() {
-        if (isSpawnAllowedByDifficulty()) {
-            SpawnResult lastSpawnResult;
-            for (Player player : server.getOnlinePlayers().values()) {
-                if (isWorldSpawnAllowed(player.getLevel())) {
-                    lastSpawnResult = spawn(player);
-                    if (lastSpawnResult.equals(SpawnResult.MAX_SPAWN_REACHED)) {
-                        break;
-                    }
+        for (Player player : server.getOnlinePlayers().values()) {
+            if (isWorldSpawnAllowed(player.getLevel())) {
+                if (isSpawnAllowedByDifficulty()) {
+                    spawnTo(player);
                 }
             }
         }
@@ -64,7 +60,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         return level.getGameRules().getBoolean(GameRule.DO_MOB_SPAWNING);
     }
 
-    protected SpawnResult spawn(Player player) {
+    private void spawnTo(Player player) {
         Position pos = player.getPosition();
         Level level = player.getLevel();
 
@@ -75,16 +71,16 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 pos.y = this.spawnTask.getSafeYCoord(level, pos, 3);
 
                 if (level.getSpawnLocation().distance(pos) < this.spawnAreaSize) {
-                    return SpawnResult.SPAWN_DENIED;
+                    return;
                 }
             } else {
-                return SpawnResult.POSITION_MISMATCH;
+                return;
             }
         } else {
-            return SpawnResult.MAX_SPAWN_REACHED;
+            return;
         }
 
-        return spawn(player, pos, level);
+        spawn(player, pos, level);
     }
 
     private boolean isSpawnAllowedByDifficulty() {

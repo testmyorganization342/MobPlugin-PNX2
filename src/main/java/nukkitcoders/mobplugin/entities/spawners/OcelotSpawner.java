@@ -8,7 +8,6 @@ import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.walking.Ocelot;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
-import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -21,30 +20,23 @@ public class OcelotSpawner extends AbstractEntitySpawner {
         super(spawnTask);
     }
 
-    public SpawnResult spawn(Player player, Position pos, Level level) {
-        SpawnResult result = SpawnResult.OK;
-
+    public void spawn(Player player, Position pos, Level level) {
         if (Utils.rand(1, 3) == 1) {
-            return SpawnResult.SPAWN_DENIED;
+            return;
         }
 
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
 
         if (biomeId != 21 && biomeId != 149 && biomeId != 23 && biomeId != 151) {
-            result = SpawnResult.WRONG_BIOME;
         } else if (blockId != Block.GRASS && blockId != Block.LEAVES) {
-            result = SpawnResult.WRONG_BLOCK;
         } else if (pos.y > 255 || pos.y < 1) {
-            result = SpawnResult.POSITION_MISMATCH;
         } else if (MobPlugin.getInstance().isAnimalSpawningAllowedByTime(level)) {
             BaseEntity entity = this.spawnTask.createEntity("Ocelot", pos.add(0, 1, 0));
             if (Utils.rand(1, 20) == 1) {
                 entity.setBaby(true);
             }
         }
-
-        return result;
     }
 
     @Override

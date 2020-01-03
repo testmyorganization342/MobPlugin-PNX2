@@ -7,7 +7,6 @@ import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
-import nukkitcoders.mobplugin.entities.autospawn.SpawnResult;
 import nukkitcoders.mobplugin.entities.monster.walking.Zombie;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -22,21 +21,15 @@ public class ZombieSpawner extends AbstractEntitySpawner {
     }
 
     @Override
-    public SpawnResult spawn(Player player, Position pos, Level level) {
-        SpawnResult result = SpawnResult.OK;
-
+    public void spawn(Player player, Position pos, Level level) {
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
         int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
         if (blockLightLevel > 7) {
-            result = SpawnResult.WRONG_LIGHTLEVEL;
         } else if (biomeId == 8) {
-            result = SpawnResult.WRONG_BIOME;
         } else if (pos.y > 255 || pos.y < 1 || blockId == Block.AIR) {
-            result = SpawnResult.POSITION_MISMATCH;
         } else if (Block.transparent[blockId]) {
-            result = SpawnResult.WRONG_BLOCK;
         } else if (MobPlugin.getInstance().isMobSpawningAllowedByTime(level)) {
             if (Utils.rand(1, 40) == 30) {
                 BaseEntity entity = this.spawnTask.createEntity("ZombieVillager", pos.add(0, 1, 0));
@@ -50,8 +43,6 @@ public class ZombieSpawner extends AbstractEntitySpawner {
                 }
             }
         }
-
-        return result;
     }
 
     @Override
