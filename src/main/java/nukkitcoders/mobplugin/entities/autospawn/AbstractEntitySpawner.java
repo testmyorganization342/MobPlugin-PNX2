@@ -29,8 +29,8 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     public AbstractEntitySpawner(AutoSpawnTask spawnTask) {
         this.spawnTask = spawnTask;
         this.server = Server.getInstance();
-        this.spawnAreaSize = MobPlugin.getInstance().pluginConfig.getInt("other.spawn-no-spawning-area");
-        String disabledWorlds = MobPlugin.getInstance().pluginConfig.getString("entities.worlds-spawning-disabled");
+        this.spawnAreaSize = MobPlugin.getInstance().config.pluginConfig.getInt("other.spawn-no-spawning-area");
+        String disabledWorlds = MobPlugin.getInstance().config.pluginConfig.getString("entities.worlds-spawning-disabled");
         if (disabledWorlds != null && !disabledWorlds.trim().isEmpty()) {
             StringTokenizer tokenizer = new StringTokenizer(disabledWorlds, ", ");
             while (tokenizer.hasMoreTokens()) {

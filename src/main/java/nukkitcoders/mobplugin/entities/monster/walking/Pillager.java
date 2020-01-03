@@ -76,12 +76,12 @@ public class Pillager extends WalkingMonster {
 
                 EntityProjectile projectile = ev.getProjectile();
                 if (ev.isCancelled()) {
-                    projectile.kill();
+                    projectile.close();
                 } else {
                     ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
                     this.server.getPluginManager().callEvent(launch);
                     if (launch.isCancelled()) {
-                        projectile.kill();
+                        projectile.close();
                     } else {
                         projectile.namedTag.putDouble("damage", 4);
                         projectile.spawnToAll();

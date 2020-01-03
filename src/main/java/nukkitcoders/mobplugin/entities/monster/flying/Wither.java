@@ -94,7 +94,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(blueskull);
             this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
-                blueskull.kill();
+                blueskull.close();
             } else {
                 blueskull.spawnToAll();
                 this.level.addSound(this, Sound.MOB_WITHER_SHOOT);

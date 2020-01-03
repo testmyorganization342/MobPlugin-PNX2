@@ -40,7 +40,7 @@ public class AutoSpawnTask extends Thread {
     private MobPlugin plugin;
 
     public AutoSpawnTask(MobPlugin plugin) {
-        this.pluginConfig = plugin.pluginConfig;
+        this.pluginConfig = plugin.config.pluginConfig;
         this.plugin = plugin;
 
         prepareMaxSpawns();

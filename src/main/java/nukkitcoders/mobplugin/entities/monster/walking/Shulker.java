@@ -72,7 +72,7 @@ public class Shulker extends WalkingMonster {
             this.server.getPluginManager().callEvent(launch);
 
             if (launch.isCancelled()) {
-                bullet.kill();
+                bullet.close();
             } else {
                 bullet.spawnToAll();
                 this.level.addSound(this, Sound.MOB_SHULKER_SHOOT);

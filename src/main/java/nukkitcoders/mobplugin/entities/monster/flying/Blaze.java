@@ -71,7 +71,7 @@ public class Blaze extends FlyingMonster {
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
             this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
-                fireball.kill();
+                fireball.close();
             } else {
                 fireball.spawnToAll();
                 this.level.addSound(this, Sound.MOB_BLAZE_SHOOT);

@@ -1,5 +1,5 @@
 # config version, do not edit!
-config-version: 10
+config-version: 11
 
 entities:
   # how often the spawn task should run
@@ -60,3 +60,5 @@ other:
   use-no-xp-orbs: false
   # do not spawn mobs this near to spawn area
   spawn-no-spawning-area: 1
+  # kill entities instead of despawning them
+  kill-mobs-on-despawn: false

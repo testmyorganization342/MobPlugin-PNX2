@@ -85,7 +85,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(charge);
             this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
-                charge.kill();
+                charge.close();
             } else {
                 charge.spawnToAll();
             }

@@ -40,7 +40,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
     public static final String TAG_MAX_NEARBY_ENTITIES = "MaxNearbyEntities";
     public static final String TAG_REQUIRED_PLAYER_RANGE = "RequiredPlayerRange";
 
-    public static final short SPAWN_RANGE = (short) MobPlugin.getInstance().pluginConfig.getInt("other.spawner-spawn-range");
+    public static final short SPAWN_RANGE = (short) MobPlugin.getInstance().config.spawnerRange;
     public static final short MIN_SPAWN_DELAY = 200;
     public static final short MAX_SPAWN_DELAY = 5000;
     public static final short MAX_NEARBY_ENTITIES = 20;

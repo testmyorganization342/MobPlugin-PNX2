@@ -26,7 +26,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     private boolean baby = false;
     private boolean movement = true;
     private boolean friendly = false;
-    private static final int despawnTicks = MobPlugin.getInstance().pluginConfig.getInt("entities.despawn-ticks", 6000);
     protected int attackDelay = 0;
     public Item[] armor;
 
@@ -143,7 +142,11 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         super.entityBaseTick(tickDiff);
 
         if (this.canDespawn()) {
-            this.close();
+            if (MobPlugin.getInstance().config.killOnDespawn) {
+                this.kill();
+            } else {
+                this.close();
+            }
         }
 
         if (this instanceof Monster && this.attackDelay < 400) {
@@ -424,6 +427,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     }
 
     public boolean canDespawn() {
+        int despawnTicks = MobPlugin.getInstance().config.despawnTicks;
         return despawnTicks > 0 && this.age > despawnTicks && !this.hasCustomName() && !(this instanceof Boss);
     }
 

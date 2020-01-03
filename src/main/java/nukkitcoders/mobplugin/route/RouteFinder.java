@@ -157,7 +157,10 @@ public abstract class RouteFinder {
     }
 
     public boolean hasNext() {
-        return this.current + 1 < nodes.size() && this.nodes.get(this.current+1)!= null;
+        if (this.current + 1 < nodes.size()) {
+            return this.nodes.get(this.current + 1) != null;
+        }
+        return false;
     }
 
     public Vector3 next() {

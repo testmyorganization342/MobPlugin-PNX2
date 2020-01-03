@@ -82,12 +82,12 @@ public class SnowGolem extends WalkingMonster {
 
             EntityProjectile projectile = ev.getProjectile();
             if (ev.isCancelled()) {
-                projectile.kill();
+                if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth() + 0.0d) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
             } else if (projectile != null) {
                 ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
                 this.server.getPluginManager().callEvent(launch);
                 if (launch.isCancelled()) {
-                    projectile.kill();
+                    if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth() + 0.0d) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
                 } else {
                     projectile.spawnToAll();
                     this.level.addSound(this, Sound.MOB_SNOWGOLEM_SHOOT);

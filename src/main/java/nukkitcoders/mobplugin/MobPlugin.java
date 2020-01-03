@@ -10,7 +10,6 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Bee;
@@ -32,7 +31,7 @@ import nukkitcoders.mobplugin.entities.projectile.*;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    public Config pluginConfig;
+    public Config config;
 
     private static MobPlugin instance;
 
@@ -54,35 +53,22 @@ public class MobPlugin extends PluginBase implements Listener {
             return;
         }
 
-        this.saveDefaultConfig();
-        pluginConfig = getConfig();
+        config = new Config(this);
 
-        if (pluginConfig.getInt("config-version") != 10) {
-            if (pluginConfig.getInt("config-version") == 9) {
-                pluginConfig.set("other.spawn-no-spawning-area", 1);
-                pluginConfig.set("config-version", 10);
-                pluginConfig.save();
-                this.getLogger().notice("Config file updated to version 10.");
-            } else {
-                this.getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
-                this.getLogger().error("Config error. Plugin will be disabled.");
-                this.getServer().getPluginManager().disablePlugin(this);
-                return;
-            }
+        if (!config.init(this)) {
+            return;
         }
 
-        int spawnDelay = pluginConfig.getInt("entities.autospawn-ticks", 0);
+        this.getServer().getPluginManager().registerEvents(new EventListener(), this);
+        this.registerEntities();
 
-        if (spawnDelay > 0) {
-            this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), spawnDelay, spawnDelay);
+        if (config.spawnDelay > 0) {
+            this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), config.spawnDelay, config.spawnDelay);
 
             if (!this.getServer().getPropertyBoolean("spawn-animals") || !this.getServer().getPropertyBoolean("spawn-mobs")) {
                 this.getServer().getLogger().notice("Disabling mob/animal spawning from server.properties does not disable spawning in MobPlugin");
             }
         }
-
-        this.getServer().getPluginManager().registerEvents(new EventListener(), this);
-        this.registerEntities();
     }
 
     @Override
