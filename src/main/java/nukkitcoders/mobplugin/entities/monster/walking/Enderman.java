@@ -128,7 +128,7 @@ public class Enderman extends WalkingMonster {
             tp();
         }
 
-        if (this.age % 20 == 0 && (this.level.isRaining() || this.level.isThundering())) {
+        if (this.age % 20 == 0 && this.level.isRaining() && this.level.canBlockSeeSky(this)) {
             this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
             if (isAngry()) {
                 setAngry(false);

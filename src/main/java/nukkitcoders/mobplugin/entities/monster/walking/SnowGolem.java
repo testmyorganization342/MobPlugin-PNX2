@@ -5,6 +5,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.entity.projectile.EntitySnowball;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityShootBowEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
@@ -13,6 +14,7 @@ import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -22,6 +24,8 @@ import java.util.List;
 public class SnowGolem extends WalkingMonster {
 
     public static final int NETWORK_ID = 21;
+
+    public boolean sheared = false;
 
     public SnowGolem(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -47,6 +51,10 @@ public class SnowGolem extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(4);
+
+        if (this.namedTag.getBoolean("Sheared")) {
+            this.shear(true);
+        }
     }
 
     @Override
@@ -120,5 +128,37 @@ public class SnowGolem extends WalkingMonster {
     @Override
     public int nearbyDistanceMultiplier() {
         return 10;
+    }
+
+    @Override
+    public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
+        if (item.equals(Item.get(Item.SHEARS, 0, 1), false) && !this.sheared) {
+            this.shear(true);
+            this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_SHEAR);
+            player.getInventory().getItemInHand().setDamage(item.getDamage() + 1);
+            return true;
+        }
+
+        return super.onInteract(player, item, clickedPos);
+    }
+
+    public void shear(boolean shear) {
+        this.sheared = shear;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, shear);
+    }
+
+    public void saveNBT() {
+        super.saveNBT();
+
+        this.namedTag.putBoolean("Sheared", this.sheared);
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (this.age % 20 == 0 && this.level.isRaining() && this.level.canBlockSeeSky(this)) {
+            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.FIRE_TICK, 1));
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }
