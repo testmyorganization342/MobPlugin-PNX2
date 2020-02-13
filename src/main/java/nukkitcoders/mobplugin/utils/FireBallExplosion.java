@@ -90,7 +90,6 @@ public class FireBallExplosion extends Explosion {
     @Override
     public boolean explodeB() {
         LongArraySet updateBlocks = new LongArraySet();
-        Vector3 source = (new Vector3(this.source.x, this.source.y, this.source.z)).floor();
         double yield = (1d / this.size) * 100d;
         if (this.what instanceof Entity) {
             EntityExplodeEvent ev = new EntityExplodeEvent((Entity) this.what, this.source, this.affectedBlocks, yield);

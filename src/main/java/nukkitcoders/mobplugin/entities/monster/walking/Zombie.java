@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntitySmite;
@@ -10,7 +9,6 @@ import cn.nukkit.event.entity.CreatureSpawnEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemShovelIron;
 import cn.nukkit.item.ItemSwordIron;
 import cn.nukkit.level.format.FullChunk;
@@ -176,11 +174,6 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
         MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
         pk.eid = this.getId();
         pk.slots = this.armor;
-
-        if (java.time.LocalDate.now().toString().contains("-10-31")) {
-            pk.slots[0] = new ItemBlock(Block.get(Block.JACK_O_LANTERN));
-        }
-
         player.dataPacket(pk);
 
         if (this.tool != null) {
