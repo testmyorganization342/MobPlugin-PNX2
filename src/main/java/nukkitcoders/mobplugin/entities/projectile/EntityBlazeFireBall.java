@@ -53,13 +53,9 @@ public class EntityBlazeFireBall extends EntityProjectile {
             return false;
         }
 
-        this.timing.startTiming();
-
         if (this.age > 1200 || this.isCollided) {
             this.close();
         }
-
-        this.timing.startTiming();
 
         return super.onUpdate(currentTick);
     }
