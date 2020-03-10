@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AutoSpawnTask extends Thread {
+public class AutoSpawnTask implements Runnable {
 
     private Map<Integer, Integer> maxSpawns = new HashMap<>();
 
@@ -185,7 +185,7 @@ public class AutoSpawnTask extends Thread {
         return addX;
     }
 
-    public int getSafeYCoord(Level level, Position pos, int needDegree) {
+    public int getSafeYCoord(Level level, Position pos) {
         int x = (int) pos.x;
         int y = (int) pos.y;
         int z = (int) pos.z;
@@ -202,7 +202,7 @@ public class AutoSpawnTask extends Thread {
                     break;
                 }
                 if (level.getBlockIdAt(x, y, z) != Block.AIR) {
-                    int checkNeedDegree = needDegree;
+                    int checkNeedDegree = 3;
                     int checkY = y;
                     while (true) {
                         checkY++;
@@ -231,7 +231,7 @@ public class AutoSpawnTask extends Thread {
                 }
 
                 if (level.getBlockIdAt(x, y, z) != Block.AIR) {
-                    int checkNeedDegree = needDegree;
+                    int checkNeedDegree = 3;
                     int checkY = y;
                     while (true) {
                         checkY--;
