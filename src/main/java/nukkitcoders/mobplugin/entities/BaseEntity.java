@@ -75,7 +75,13 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     }
 
     public Entity getFollowTarget() {
-        return this.followTarget != null ? this.followTarget : (this.target instanceof Entity ? (Entity) this.target : null);
+        if (this.followTarget != null) {
+            return this.followTarget;
+        } else if (this.target instanceof Entity) {
+            return (Entity) this.target;
+        } else {
+            return null;
+        }
     }
 
     public void setFollowTarget(Entity target) {
@@ -149,7 +155,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             }
         }
 
-        if (this instanceof Monster && this.attackDelay < 400) {
+        if (this instanceof Monster && this.attackDelay < 200) {
             this.attackDelay++;
         }
 
