@@ -131,8 +131,12 @@ public class AutoSpawnTask implements Runnable {
     }
 
     public boolean entitySpawnAllowed(Level level, int networkId, Vector3 pos) {
+        if (!spawningAllowedByDimension(networkId, level.getDimension())) {
+            return false;
+        }
+
         int count = 0;
-        int max = maxSpawns.getOrDefault(networkId, 0);
+        int max = networkId == Enderman.NETWORK_ID && level.getDimension() == Level.DIMENSION_THE_END ? plugin.config.endEndermanSpawnRate : maxSpawns.getOrDefault(networkId, 0);
 
         if (max < 1) {
             return false;
@@ -257,5 +261,20 @@ public class AutoSpawnTask implements Runnable {
             }
         }
         return y;
+    }
+
+    private static boolean spawningAllowedByDimension(int id, int dimension) {
+        switch (id) {
+            case Enderman.NETWORK_ID:
+                return true;
+            case Blaze.NETWORK_ID:
+            case Ghast.NETWORK_ID:
+            case MagmaCube.NETWORK_ID:
+            case WitherSkeleton.NETWORK_ID:
+            case ZombiePigman.NETWORK_ID:
+                return Level.DIMENSION_NETHER == dimension;
+            default:
+                return Level.DIMENSION_OVERWORLD == dimension;
+        }
     }
 }

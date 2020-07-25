@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -49,14 +48,14 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
         if (!this.hasEffect(Effect.WATER_BREATHING) && Utils.entityInsideWaterFast(this)) {
             hasUpdate = true;
-            int airTicks = this.getDataPropertyShort(DATA_AIR) - tickDiff;
+            int airTicks = this.getAirTicks() - tickDiff;
             if (airTicks <= -20) {
                 airTicks = 0;
                 this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
             }
-            this.setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
+            this.setAirTicks(airTicks);
         } else {
-            this.setDataProperty(new ShortEntityData(DATA_AIR, 300));
+            this.setAirTicks(300);
         }
 
         return hasUpdate;
