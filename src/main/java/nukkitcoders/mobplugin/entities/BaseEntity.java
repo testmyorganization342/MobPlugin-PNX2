@@ -11,6 +11,8 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.MoveEntityAbsolutePacket;
+import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
@@ -454,5 +456,33 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     @Override
     public void setAirTicks(int ticks) {
         this.airTicks = ticks;
+    }
+
+    @Override
+    public void addMovement(double x, double y, double z, double yaw, double pitch, double headYaw) {
+        MoveEntityAbsolutePacket pk = new MoveEntityAbsolutePacket();
+        pk.eid = this.id;
+        pk.x = (float) x;
+        pk.y = (float) y;
+        pk.z = (float) z;
+        pk.yaw = (float) yaw;
+        pk.headYaw = (float) headYaw;
+        pk.pitch = (float) pitch;
+        pk.onGround = this.onGround;
+        for (Player p : this.hasSpawned.values()) {
+            p.batchDataPacket(pk);
+        }
+    }
+
+    @Override
+    public void addMotion(double motionX, double motionY, double motionZ) {
+        SetEntityMotionPacket pk = new SetEntityMotionPacket();
+        pk.eid = this.id;
+        pk.motionX = (float) motionX;
+        pk.motionY = (float) motionY;
+        pk.motionZ = (float) motionZ;
+        for (Player p : this.hasSpawned.values()) {
+            p.batchDataPacket(pk);
+        }
     }
 }
