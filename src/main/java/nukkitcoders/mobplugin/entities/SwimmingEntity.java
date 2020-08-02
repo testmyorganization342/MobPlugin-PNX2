@@ -180,4 +180,11 @@ public abstract class SwimmingEntity extends BaseEntity {
     public void setRoute(RouteFinder route) {
         this.route = route;
     }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        boolean hasUpdate = super.entityBaseTick(tickDiff);
+        this.setAirTicks(300);
+        return hasUpdate;
+    }
 }

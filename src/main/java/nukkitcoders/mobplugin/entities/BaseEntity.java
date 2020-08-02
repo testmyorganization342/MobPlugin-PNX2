@@ -36,6 +36,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         super(chunk, nbt);
 
         this.setHealth(this.getMaxHealth());
+        this.setAirTicks(300);
     }
 
     public abstract Vector3 updateMove(int tickDiff);

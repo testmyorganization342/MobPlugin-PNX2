@@ -19,19 +19,34 @@ public class Config {
     }
 
     boolean init(MobPlugin plugin) {
-        if (pluginConfig.getInt("config-version") != 12) {
-            if (pluginConfig.getInt("config-version") == 11) {
+        int ver = 13;
+
+        if (pluginConfig.getInt("config-version") != ver) {
+            if (pluginConfig.getInt("config-version") == 12) {
+                pluginConfig.set("autospawn.fox", 0);
+                pluginConfig.set("autospawn.panda", 0);
+                pluginConfig.set("autospawn.drowned", 0);
+            } else if (pluginConfig.getInt("config-version") == 11) {
                 pluginConfig.set("other.spawners-enabled", true);
                 pluginConfig.set("other.end-enderman-spawning", 10);
+                pluginConfig.set("autospawn.fox", 0);
+                pluginConfig.set("autospawn.panda", 0);
+                pluginConfig.set("autospawn.drowned", 0);
             } else if (pluginConfig.getInt("config-version") == 10) {
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
                 pluginConfig.set("other.spawners-enabled", true);
                 pluginConfig.set("other.end-enderman-spawning", 10);
+                pluginConfig.set("autospawn.fox", 0);
+                pluginConfig.set("autospawn.panda", 0);
+                pluginConfig.set("autospawn.drowned", 0);
             } else if (pluginConfig.getInt("config-version") == 9) {
                 pluginConfig.set("other.spawn-no-spawning-area", -1);
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
                 pluginConfig.set("other.spawners-enabled", true);
                 pluginConfig.set("other.end-enderman-spawning", 10);
+                pluginConfig.set("autospawn.fox", 0);
+                pluginConfig.set("autospawn.panda", 0);
+                pluginConfig.set("autospawn.drowned", 0);
             } else {
                 plugin.getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
                 plugin.getLogger().error("Config error. The plugin will be disabled.");
@@ -39,9 +54,9 @@ public class Config {
                 return false;
             }
 
-            pluginConfig.set("config-version", 12);
+            pluginConfig.set("config-version", ver);
             pluginConfig.save();
-            plugin.getLogger().notice("Config file updated to version 12");
+            plugin.getLogger().notice("Config file updated to version " + ver);
         }
 
         spawnDelay = pluginConfig.getInt("entities.autospawn-ticks");

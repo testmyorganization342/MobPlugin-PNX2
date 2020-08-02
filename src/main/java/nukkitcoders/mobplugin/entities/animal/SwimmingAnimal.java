@@ -24,14 +24,6 @@ public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
     }
 
     @Override
-    public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate;
-        hasUpdate = super.entityBaseTick(tickDiff);
-        this.setAirTicks(300);
-        return hasUpdate;
-    }
-
-    @Override
     public boolean onUpdate(int currentTick) {
         if (this.closed) {
             return false;

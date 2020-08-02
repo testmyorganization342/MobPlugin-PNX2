@@ -7,7 +7,6 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.HeartParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.WalkingEntity;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -33,9 +32,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate;
-
-        hasUpdate = super.entityBaseTick(tickDiff);
+        boolean hasUpdate = super.entityBaseTick(tickDiff);
 
         if (this.isInLove()) {
             this.inLoveTicks -= tickDiff;
@@ -44,18 +41,6 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
                     this.level.addParticle(new HeartParticle(this.add(Utils.rand(-1.0,1.0),this.getMountedYOffset()+ Utils.rand(-1.0,1.0),Utils.rand(-1.0,1.0))));
                 }
             }
-        }
-
-        if (!this.hasEffect(Effect.WATER_BREATHING) && Utils.entityInsideWaterFast(this)) {
-            hasUpdate = true;
-            int airTicks = this.getAirTicks() - tickDiff;
-            if (airTicks <= -20) {
-                airTicks = 0;
-                this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
-            }
-            this.setAirTicks(airTicks);
-        } else {
-            this.setAirTicks(300);
         }
 
         return hasUpdate;

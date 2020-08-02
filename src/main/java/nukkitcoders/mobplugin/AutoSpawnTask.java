@@ -91,6 +91,9 @@ public class AutoSpawnTask implements Runnable {
         entitySpawners.add(new WolfSpawner(this));
         entitySpawners.add(new ZombieSpawner(this));
         entitySpawners.add(new ZombiePigmanSpawner(this));
+        entitySpawners.add(new FoxSpawner(this));
+        entitySpawners.add(new PandaSpawner(this));
+        entitySpawners.add(new DrownedSpawner(this));
     }
 
     private void prepareMaxSpawns() {
@@ -128,6 +131,9 @@ public class AutoSpawnTask implements Runnable {
         maxSpawns.put(Wolf.NETWORK_ID, this.pluginConfig.getInt("autospawn.wolf"));
         maxSpawns.put(Zombie.NETWORK_ID, this.pluginConfig.getInt("autospawn.zombie"));
         maxSpawns.put(ZombiePigman.NETWORK_ID, this.pluginConfig.getInt("autospawn.zombiepigman"));
+        maxSpawns.put(Fox.NETWORK_ID, this.pluginConfig.getInt("autospawn.fox"));
+        maxSpawns.put(Panda.NETWORK_ID, this.pluginConfig.getInt("autospawn.panda"));
+        maxSpawns.put(Drowned.NETWORK_ID, this.pluginConfig.getInt("autospawn.drowned"));
     }
 
     public boolean entitySpawnAllowed(Level level, int networkId, Vector3 pos) {

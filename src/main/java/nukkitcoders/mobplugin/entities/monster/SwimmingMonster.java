@@ -161,12 +161,4 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
         }
         return true;
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        boolean hasUpdate;
-        hasUpdate = super.entityBaseTick(tickDiff);
-        this.setAirTicks(300);
-        return hasUpdate;
-    }
 }
