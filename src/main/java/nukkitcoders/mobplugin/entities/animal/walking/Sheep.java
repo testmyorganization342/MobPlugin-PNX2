@@ -55,8 +55,9 @@ public class Sheep extends WalkingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(8);
-
+        
         if (!this.namedTag.contains("Color")) {
             this.setColor(randomColor());
         } else {

@@ -44,11 +44,17 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
 
     @Override
     public float getWidth() {
+        if (this.isBaby()) {
+            return 0.3f;
+        }
         return 0.6f;
     }
 
     @Override
     public float getHeight() {
+        if (this.isBaby()) {
+            return 0.975f;
+        }
         return 1.95f;
     }
 
@@ -63,7 +69,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
 
         this.setDamage(new float[] { 0, 2, 3, 4 });
         this.setMaxHealth(20);
-
+        
         this.armor = getRandomArmor();
 
         if (this.namedTag.contains("Item")) {

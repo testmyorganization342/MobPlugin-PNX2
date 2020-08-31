@@ -44,10 +44,21 @@ public class Rabbit extends JumpingAnimal {
     public double getSpeed() {
         return 1.2;
     }
+    
+    @Override
+    public float getBabyScale() {
+        return 0.4f;
+    }
+    
+    @Override
+    public float getDefaultScale() {
+        return 0.6f;
+    }
 
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(3);
     }
 

@@ -49,6 +49,7 @@ public class Horse extends HorseBase {
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(15);
 
         if (this.namedTag.contains("Variant")) {

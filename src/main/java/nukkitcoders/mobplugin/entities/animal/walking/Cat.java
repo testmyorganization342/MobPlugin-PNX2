@@ -39,7 +39,17 @@ public class Cat extends WalkingAnimal {
         }
         return 0.7f;
     }
-
+    
+    @Override
+    public float getBabyScale() {
+        return 0.4f;
+    }
+    
+    @Override
+    public float getDefaultScale() {
+        return 0.8f;
+    }
+    
     @Override
     public void initEntity() {
         super.initEntity();

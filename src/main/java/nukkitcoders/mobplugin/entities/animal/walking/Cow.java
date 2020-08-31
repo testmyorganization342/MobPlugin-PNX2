@@ -46,6 +46,7 @@ public class Cow extends WalkingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(10);
     }
 

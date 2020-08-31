@@ -48,6 +48,7 @@ public class Mooshroom extends WalkingAnimal {
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(10);
 
         if (this.namedTag.contains("Variant")) {

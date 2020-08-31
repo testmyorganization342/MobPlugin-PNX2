@@ -20,17 +20,29 @@ public class Turtle extends SwimmingAnimal {
 
     @Override
     public float getWidth() {
+        if (this.isBaby()) {
+            return 0.36f;
+        }
         return 1.2f;
     }
 
     @Override
     public float getHeight() {
+        if (this.isBaby()) {
+            return 0.12f;
+        }
         return 0.4f;
     }
-
+    
+    @Override
+    public float getBabyScale() {
+        return 0.16f;
+    }
+    
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(30);
     }
 

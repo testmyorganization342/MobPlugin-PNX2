@@ -45,6 +45,7 @@ public class Ocelot extends WalkingAnimal {
     @Override
     protected void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(10);
     }
 

@@ -55,7 +55,12 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
     public float getHeight() {
         return 2.4f;
     }
-
+    
+    @Override
+    public float getDefaultScale() {
+        return 1.2f;
+    }
+    
     @Override
     public void attackEntity(Entity player) {
         if (this.attackDelay > 23 && player.distanceSquared(this) <= 1) {

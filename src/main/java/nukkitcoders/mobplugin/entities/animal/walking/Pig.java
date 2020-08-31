@@ -56,8 +56,9 @@ public class Pig extends WalkingAnimal implements EntityRideable {
     @Override
     public void initEntity() {
         super.initEntity();
+        
         this.setMaxHealth(10);
-
+        
         if (this.namedTag.contains("Saddle")) {
            this.setSaddled(this.namedTag.getBoolean("Saddle"));
         }
