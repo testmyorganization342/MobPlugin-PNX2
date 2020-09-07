@@ -124,6 +124,6 @@ public class ZombieVillager extends WalkingMonster implements EntitySmite {
 
     @Override
     public String getName() {
-        return "Zombie Villager";
+        return this.hasCustomName() ? this.getNameTag() : "Zombie Villager";
     }
 }

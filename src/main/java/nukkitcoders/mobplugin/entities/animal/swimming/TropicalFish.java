@@ -51,6 +51,6 @@ public class TropicalFish extends SwimmingAnimal {
 
     @Override
     public String getName() {
-        return "Tropical Fish";
+        return this.hasCustomName() ? this.getNameTag() : "Tropical Fish";
     }
 }

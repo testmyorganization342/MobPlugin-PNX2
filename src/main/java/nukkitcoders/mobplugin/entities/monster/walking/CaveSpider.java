@@ -92,7 +92,7 @@ public class CaveSpider extends Spider implements EntityArthropod {
 
     @Override
     public String getName() {
-        return "Cave Spider";
+        return this.hasCustomName() ? this.getNameTag() : "Cave Spider";
     }
 
     @Override

@@ -34,7 +34,7 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
 
     @Override
     public String getName() {
-        return "Wither Skeleton";
+        return this.hasCustomName() ? this.getNameTag() : "Wither Skeleton";
     }
 
     @Override

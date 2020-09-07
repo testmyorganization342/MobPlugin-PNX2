@@ -99,7 +99,7 @@ public class IronGolem extends WalkingMonster {
 
     @Override
     public String getName() {
-        return "Iron Golem";
+        return this.hasCustomName() ? this.getNameTag() : "Iron Golem";
     }
 
     @Override

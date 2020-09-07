@@ -256,6 +256,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Hoglin.class.getSimpleName(), Hoglin.class);
         Entity.registerEntity(Piglin.class.getSimpleName(), Piglin.class);
         Entity.registerEntity(Zoglin.class.getSimpleName(), Zoglin.class);
+        Entity.registerEntity(PiglinBrute.class.getSimpleName(), PiglinBrute.class);
 
         Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
         Entity.registerEntity("BlazeFireBall", EntityBlazeFireBall.class);

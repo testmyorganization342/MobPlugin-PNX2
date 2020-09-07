@@ -154,7 +154,7 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
 
     @Override
     public String getName() {
-        return "Zombie Pigman";
+        return this.hasCustomName() ? this.getNameTag() : "Zombie Pigman";
     }
 
     @Override

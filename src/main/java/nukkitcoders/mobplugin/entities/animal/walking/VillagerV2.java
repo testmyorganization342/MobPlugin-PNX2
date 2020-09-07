@@ -18,6 +18,6 @@ public class VillagerV2 extends Villager {
 
     @Override
     public String getName() {
-        return "Villager";
+        return this.hasCustomName() ? this.getNameTag() : "Villager";
     }
 }

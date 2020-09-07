@@ -94,7 +94,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
     @Override
     public String getName() {
-        return "Ender Dragon";
+        return this.hasCustomName() ? this.getNameTag() : "Ender Dragon";
     }
 
     @Override
