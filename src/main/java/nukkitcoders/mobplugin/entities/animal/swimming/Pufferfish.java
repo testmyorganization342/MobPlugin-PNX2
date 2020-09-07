@@ -35,16 +35,10 @@ public class Pufferfish extends SwimmingAnimal {
     public float getHeight() {
         return 0.35f;
     }
-    
-    @Override
-    public float getDefaultScale() {
-        return 1.2f;
-    }
-    
+
     @Override
     public void initEntity() {
         super.initEntity();
-        
         this.setMaxHealth(3);
     }
 

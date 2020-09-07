@@ -32,7 +32,6 @@ public class Piglin extends WalkingMonster {
     @Override
     protected void initEntity() {
         super.initEntity();
-        
         this.setMaxHealth(16);
         this.setDamage(new float[]{0, 5, 9, 13});
     }

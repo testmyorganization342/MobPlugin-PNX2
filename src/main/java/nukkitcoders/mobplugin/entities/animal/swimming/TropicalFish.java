@@ -27,12 +27,7 @@ public class TropicalFish extends SwimmingAnimal {
     public float getHeight() {
         return 0.4f;
     }
-    
-    @Override
-    public float getDefaultScale() {
-        return 1.3f;
-    }
-    
+
     @Override
     public void initEntity() {
         super.initEntity();

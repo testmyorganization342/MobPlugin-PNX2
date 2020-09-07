@@ -69,15 +69,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
         return 1;
     }
-    
-    public float getBabyScale() {
-        return 0.5f;
-    }
-    
-    public float getDefaultScale() {
-        return 1.0f;
-    }
-    
+
     public Vector3 getTarget() {
         return this.target;
     }
@@ -111,7 +103,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public void setBaby(boolean baby) {
         this.baby = baby;
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, baby);
-        this.setScale(this.getBabyScale());
+        this.setScale((float) 0.5);
     }
 
     @Override
@@ -128,8 +120,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
         if (this.namedTag.getBoolean("Baby")) {
             this.setBaby(true);
-        } else if (this.getDefaultScale() != 1.0f) {
-            this.setScale(this.getDefaultScale());
         }
     }
 

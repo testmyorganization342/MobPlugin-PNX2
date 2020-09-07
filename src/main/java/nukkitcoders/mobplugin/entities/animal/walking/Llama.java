@@ -43,7 +43,6 @@ public class Llama extends HorseBase {
     @Override
     public void initEntity() {
         super.initEntity();
-        
         this.setMaxHealth(15);
     }
 

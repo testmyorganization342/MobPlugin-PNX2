@@ -46,7 +46,6 @@ public class Donkey extends HorseBase {
     @Override
     public void initEntity() {
         super.initEntity();
-        
         this.setMaxHealth(15);
     }
 

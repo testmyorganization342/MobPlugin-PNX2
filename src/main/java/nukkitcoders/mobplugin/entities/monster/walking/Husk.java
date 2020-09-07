@@ -46,21 +46,10 @@ public class Husk extends WalkingMonster implements EntityAgeable, EntitySmite {
     public double getSpeed() {
         return 1.1;
     }
-    
-    @Override
-    public float getBabyScale() {
-        return 0.53125f;
-    }
-    
-    @Override
-    public float getDefaultScale() {
-        return 1.0625f;
-    }
-    
+
     @Override
     protected void initEntity() {
         super.initEntity();
-        
         this.setDamage(new float[]{0, 3, 4, 6});
         this.setMaxHealth(20);
     }

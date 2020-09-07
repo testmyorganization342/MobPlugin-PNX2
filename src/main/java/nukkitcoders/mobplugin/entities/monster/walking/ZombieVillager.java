@@ -35,17 +35,11 @@ public class ZombieVillager extends WalkingMonster implements EntitySmite {
 
     @Override
     public float getWidth() {
-        if (this.isBaby()) {
-            return 0.3f;
-        }
         return 0.6f;
     }
 
     @Override
     public float getHeight() {
-        if (this.isBaby()) {
-            return 0.975f;
-        }
         return 1.95f;
     }
 

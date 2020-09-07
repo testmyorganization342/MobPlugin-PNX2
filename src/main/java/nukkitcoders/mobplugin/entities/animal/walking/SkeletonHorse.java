@@ -45,7 +45,6 @@ public class SkeletonHorse extends HorseBase implements EntitySmite {
     @Override
     public void initEntity() {
         super.initEntity();
-        
         this.setMaxHealth(15);
     }
 

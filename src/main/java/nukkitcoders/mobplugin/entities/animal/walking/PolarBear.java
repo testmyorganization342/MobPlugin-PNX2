@@ -59,7 +59,6 @@ public class PolarBear extends WalkingMonster {
     @Override
     public void initEntity() {
         super.initEntity();
-        
         this.setDamage(new float[] { 0, 4, 6, 9 });
         this.setMaxHealth(30);
         if (this.namedTag.contains("Angry")) {
