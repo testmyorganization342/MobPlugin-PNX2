@@ -81,7 +81,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.age > 220 && this.attackDelay > 23 && Utils.rand(1, 5) < 3 && this.distance(player) <= 100) {
+        if (this.age > 220 && this.attackDelay > 23 && Utils.rand(1, 5) < 3 && this.distanceSquared(player) <= 10000) {
             this.attackDelay = 0;
 
             double f = 1;

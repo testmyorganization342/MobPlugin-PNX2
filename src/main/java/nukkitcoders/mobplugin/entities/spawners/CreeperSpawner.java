@@ -21,8 +21,9 @@ public class CreeperSpawner extends AbstractEntitySpawner {
     public void spawn(Player player, Position pos, Level level) {
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
+        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
-        if (!Block.solid[blockId]) {
+        if (!Block.solid[blockId] || biomeId == 14 || biomeId == 15) {
         } else if (blockLightLevel > 7) {
         } else if (pos.y > 255 || pos.y < 1 || blockId == Block.AIR) {
         } else if (MobPlugin.isMobSpawningAllowedByTime(level)) {

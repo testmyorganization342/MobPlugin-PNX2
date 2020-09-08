@@ -26,8 +26,9 @@ public class EndermanSpawner extends AbstractEntitySpawner {
 
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         int blockLightLevel = level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z);
+        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
 
-        if (Block.transparent[blockId]) {
+        if (Block.transparent[blockId] || biomeId == 14 || biomeId == 15) {
         } else if (blockLightLevel > 7 && level.getDimension() != Level.DIMENSION_NETHER && level.getDimension() != Level.DIMENSION_THE_END) {
         } else if ((pos.y > 255 || (level.getDimension() == Level.DIMENSION_NETHER && pos.y > 127)) || pos.y < 1 || blockId == Block.AIR) {
         } else if (MobPlugin.isMobSpawningAllowedByTime(level) || level.getDimension() == Level.DIMENSION_NETHER || level.getDimension() == Level.DIMENSION_THE_END) {

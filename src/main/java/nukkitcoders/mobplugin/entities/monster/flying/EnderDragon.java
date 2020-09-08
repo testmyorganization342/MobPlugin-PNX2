@@ -70,7 +70,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 60 && Utils.rand(1, 5) < 3 && this.distance(player) <= 300) {
+        if (this.attackDelay > 60 && Utils.rand(1, 5) < 3 && this.distanceSquared(player) <= 90000) {
             this.attackDelay = 0;
             double f = 1.1;
             double yaw = this.yaw + Utils.rand(-12.0, 12.0);
