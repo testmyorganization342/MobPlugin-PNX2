@@ -69,4 +69,9 @@ public class ZombieHorse extends HorseBase implements EntitySmite {
     public String getName() {
         return this.hasCustomName() ? this.getNameTag() : "Zombie Horse";
     }
+
+    @Override
+    public boolean isFeedItem(Item item) {
+        return false;
+    }
 }

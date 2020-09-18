@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -14,6 +15,10 @@ import java.util.List;
 public class Llama extends HorseBase {
 
     public static final int NETWORK_ID = 29;
+
+    public int variant;
+
+    private static final int[] VARIANTS = {0, 1, 2, 3};
 
     public Llama(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -44,6 +49,19 @@ public class Llama extends HorseBase {
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(15);
+        if (this.namedTag.contains("Variant")) {
+            this.variant = this.namedTag.getInt("Variant");
+        } else {
+            this.variant = getRandomVariant();
+        }
+
+        this.setDataProperty(new IntEntityData(DATA_VARIANT, this.variant));
+    }
+
+    @Override
+    public void saveNBT() {
+        super.saveNBT();
+        this.namedTag.putInt("Variant", this.variant);
     }
 
     @Override
@@ -61,11 +79,27 @@ public class Llama extends HorseBase {
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (creature instanceof Player) {
+        boolean canTarget = super.targetOption(creature, distance);
+
+        if (canTarget && (creature instanceof Player)) {
             Player player = (Player) creature;
-            return player.isAlive() && !player.closed && player.getInventory().getItemInHand().getId() == Item.WHEAT && distance <= 40;
+            return player.isAlive() && !player.closed && this.isFeedItem(player.getInventory().getItemInHand()) && distance <= 40;
         }
 
         return false;
+    }
+
+    @Override
+    public boolean canBeSaddled() {
+        return false;
+    }
+
+    @Override
+    public boolean isFeedItem(Item item) {
+        return item.getId() == Item.WHEAT;
+    }
+
+    private static int getRandomVariant() {
+        return VARIANTS[Utils.rand(0, VARIANTS.length - 1)];
     }
 }

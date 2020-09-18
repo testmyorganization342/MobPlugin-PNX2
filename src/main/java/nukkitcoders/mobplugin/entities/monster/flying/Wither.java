@@ -168,6 +168,10 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
     @Override
     public void kill() {
+        if (!this.isAlive()) {
+            return;
+        }
+
         if (this.lastDamageCause != null && EntityDamageEvent.DamageCause.SUICIDE != this.lastDamageCause.getCause()) {
             this.explode();
         }

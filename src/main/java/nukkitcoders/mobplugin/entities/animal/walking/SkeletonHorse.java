@@ -67,4 +67,9 @@ public class SkeletonHorse extends HorseBase implements EntitySmite {
     public String getName() {
         return this.hasCustomName() ? this.getNameTag() : "Skeleton Horse";
     }
+
+    @Override
+    public boolean isFeedItem(Item item) {
+        return false;
+    }
 }

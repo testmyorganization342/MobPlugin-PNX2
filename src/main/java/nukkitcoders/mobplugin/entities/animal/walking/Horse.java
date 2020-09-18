@@ -19,7 +19,10 @@ public class Horse extends HorseBase {
 
     public static final int NETWORK_ID = 23;
 
-    private int variant = this.getRandomVariant();
+    public int variant;
+
+    private static final int[] VARIANTS = {0, 1, 2, 3, 4, 5, 6, 256, 257, 258, 259, 260, 261, 262, 512, 513, 514, 515, 516, 517, 518,
+            768, 769, 770, 771, 772, 773, 774, 1024, 1025, 1026, 1027, 1028, 1029, 1030};
 
     public Horse(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -54,7 +57,7 @@ public class Horse extends HorseBase {
         if (this.namedTag.contains("Variant")) {
             this.variant = this.namedTag.getInt("Variant");
         } else {
-            this.namedTag.putInt("Variant", this.variant = this.getRandomVariant());
+            this.variant = getRandomVariant();
         }
 
         this.setDataProperty(new IntEntityData(DATA_VARIANT, this.variant));
@@ -68,17 +71,12 @@ public class Horse extends HorseBase {
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (creature instanceof Player) {
+        boolean canTarget = super.targetOption(creature, distance);
+
+        if (canTarget && (creature instanceof Player)) {
             Player player = (Player) creature;
-            return player.spawned && player.isAlive() && !player.closed
-                    && (player.getInventory().getItemInHand().getId() == Item.WHEAT
-                    || player.getInventory().getItemInHand().getId() == Item.APPLE
-                    || player.getInventory().getItemInHand().getId() == Item.HAY_BALE
-                    || player.getInventory().getItemInHand().getId() == Item.GOLDEN_APPLE
-                    || player.getInventory().getItemInHand().getId() == Item.SUGAR
-                    || player.getInventory().getItemInHand().getId() == Item.BREAD
-                    || player.getInventory().getItemInHand().getId() == Item.GOLDEN_CARROT)
-                    && distance <= 49;
+            return player.spawned && player.isAlive() && !player.closed &&
+                    this.isFeedItem(player.getInventory().getItemInHand()) && distance <= 49;
         }
         return false;
     }
@@ -98,8 +96,6 @@ public class Horse extends HorseBase {
 
 
     private int getRandomVariant() {
-        int[] variantList = {0, 1, 2, 3, 4, 5, 6, 256, 257, 258, 259, 260, 261, 262, 512, 513, 514, 515, 516, 517, 518,
-                768, 769, 770, 771, 772, 773, 774, 1024, 1025, 1026, 1027, 1028, 1029, 1030};
-        return variantList[Utils.rand(0, variantList.length - 1)];
+        return VARIANTS[Utils.rand(0, VARIANTS.length - 1)];
     }
 }

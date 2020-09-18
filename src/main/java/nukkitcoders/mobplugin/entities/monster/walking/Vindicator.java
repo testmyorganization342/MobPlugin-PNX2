@@ -20,6 +20,8 @@ public class Vindicator extends WalkingMonster {
 
     public static final int NETWORK_ID = 57;
 
+    private boolean angry;
+    
     public Vindicator(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.route = new WalkerRouteFinder(this);
@@ -92,14 +94,16 @@ public class Vindicator extends WalkingMonster {
         }
 
         if (this.getFollowTarget() != null) {
-            if (!this.getDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY)) {
+            if (!this.angry) {
+                this.angry = true;
                 this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true); // show the axe
             }
             if (this.getDataPropertyLong(DATA_TARGET_EID) != this.getFollowTarget().getId()) {
                 this.setDataProperty(new LongEntityData(DATA_TARGET_EID, this.getFollowTarget().getId())); // raise the axe
             }
         } else {
-            if (this.getDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY)) {
+            if (this.angry) {
+                this.angry = false;
                 this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, false);
             }
             if (this.getDataPropertyLong(DATA_TARGET_EID) != 0) {
