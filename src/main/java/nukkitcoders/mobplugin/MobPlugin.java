@@ -214,8 +214,8 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Squid.class.getSimpleName(), Squid.class);
         Entity.registerEntity(TropicalFish.class.getSimpleName(), TropicalFish.class);
         Entity.registerEntity(Turtle.class.getSimpleName(), Turtle.class);
-        Entity.registerEntity(Villager.class.getSimpleName(), Villager.class);
-        Entity.registerEntity(VillagerV2.class.getSimpleName(), VillagerV2.class);
+        Entity.registerEntity("VillagerV1", Villager.class);
+        Entity.registerEntity("Villager", VillagerV2.class);
         Entity.registerEntity(ZombieHorse.class.getSimpleName(), ZombieHorse.class);
         Entity.registerEntity(WanderingTrader.class.getSimpleName(), WanderingTrader.class);
         Entity.registerEntity(Strider.class.getSimpleName(), Strider.class);
@@ -249,8 +249,8 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Wither.class.getSimpleName(), Wither.class);
         Entity.registerEntity(Wolf.class.getSimpleName(), Wolf.class);
         Entity.registerEntity(Zombie.class.getSimpleName(), Zombie.class);
-        Entity.registerEntity(ZombieVillager.class.getSimpleName(), ZombieVillager.class);
-        Entity.registerEntity(ZombieVillagerV2.class.getSimpleName(), ZombieVillagerV2.class);
+        Entity.registerEntity("ZombieVillagerV1", ZombieVillager.class);
+        Entity.registerEntity("ZombieVillager", ZombieVillagerV2.class);
         Entity.registerEntity(Pillager.class.getSimpleName(), Pillager.class);
         Entity.registerEntity(Ravager.class.getSimpleName(), Ravager.class);
         Entity.registerEntity(Hoglin.class.getSimpleName(), Hoglin.class);
