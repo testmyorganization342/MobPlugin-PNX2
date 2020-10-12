@@ -180,7 +180,7 @@ public class AutoSpawnTask implements Runnable {
 
     private boolean tooNearOfPlayer(Position pos) {
         for (Player p : pos.getLevel().getPlayers().values()) {
-            if (p.distanceSquared(pos) < 144) {
+            if (p.distanceSquared(pos) < 196) {
                 return true;
             }
         }

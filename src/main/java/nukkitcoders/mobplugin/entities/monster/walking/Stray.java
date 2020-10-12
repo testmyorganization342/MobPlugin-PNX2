@@ -7,7 +7,6 @@ import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.event.entity.EntityShootBowEvent;
-import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBow;
 import cn.nukkit.level.Location;
@@ -18,6 +17,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import nukkitcoders.mobplugin.entities.projectile.EntitySlownessArrow;
 import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -92,14 +92,9 @@ public class Stray extends WalkingMonster implements EntitySmite {
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             if (this.getLevel().getBlockIdAt((int) pos.getX(),(int) pos.getY(),(int) pos.getZ()) == Block.AIR) {
-                Entity k = Entity.createEntity("Arrow", pos, this);
-                if (!(k instanceof EntityArrow)) {
-                    return;
-                }
-
-                EntityArrow arrow = (EntityArrow) k;
-                arrow.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
-                        Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
+                EntitySlownessArrow arrow = new EntitySlownessArrow(pos.getChunk(), EntitySlownessArrow.getDefaultNBT(pos,
+                        new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
+                        Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f)), this);
 
                 EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), arrow, f);
                 this.server.getPluginManager().callEvent(ev);
@@ -114,7 +109,7 @@ public class Stray extends WalkingMonster implements EntitySmite {
                         if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
                     } else {
                         projectile.spawnToAll();
-                        ((EntityArrow) projectile).setPickupMode(EntityArrow.PICKUP_NONE);
+                        ((EntitySlownessArrow) projectile).setPickupMode(EntitySlownessArrow.PICKUP_NONE);
                         this.level.addSound(this, Sound.RANDOM_BOW);
                     }
                 }

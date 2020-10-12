@@ -71,7 +71,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
                 return false;
             }
         }
-        return creature.isAlive() && !creature.closed && distance <= 200;
+        return creature.isAlive() && !creature.closed && distance <= 256;
     }
 
     @Override
