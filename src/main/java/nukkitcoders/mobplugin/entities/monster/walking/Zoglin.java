@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -12,7 +13,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.HashMap;
 
-public class Zoglin extends WalkingMonster {
+public class Zoglin extends WalkingMonster implements EntitySmite {
 
     public final static int NETWORK_ID = 126;
 
