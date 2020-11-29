@@ -190,9 +190,6 @@ public class Spider extends WalkingMonster implements EntityArthropod {
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (distance <= 100 && this.isAngry() && creature instanceof Spider && !((Spider) creature).isAngry()) {
-            ((Spider) creature).setAngry(2400);
-        }
         return this.isAngry() && super.targetOption(creature, distance);
     }
 }

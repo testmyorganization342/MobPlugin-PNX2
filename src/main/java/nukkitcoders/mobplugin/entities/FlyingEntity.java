@@ -25,7 +25,7 @@ public abstract class FlyingEntity extends BaseEntity {
         if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
             double near = Integer.MAX_VALUE;
 
-            for (Entity entity : this.getLevel().getEntities()) {
+            for (Entity entity : this.getViewers().values()) {
                 if (entity == this || !(entity instanceof EntityCreature) || entity instanceof Animal) {
                     continue;
                 }

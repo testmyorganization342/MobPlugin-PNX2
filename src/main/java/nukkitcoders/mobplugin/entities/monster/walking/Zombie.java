@@ -171,10 +171,12 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
     public void spawnTo(Player player) {
         super.spawnTo(player);
 
-        MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
-        pk.eid = this.getId();
-        pk.slots = this.armor;
-        player.dataPacket(pk);
+        if (this.armor[0] != null && (this.armor[0].getId() != 0 || this.armor[1].getId() != 0 || this.armor[2].getId() != 0 || this.armor[3].getId() != 0)) {
+            MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
+            pk.eid = this.getId();
+            pk.slots = this.armor;
+            player.dataPacket(pk);
+        }
 
         if (this.tool != null) {
             MobEquipmentPacket pk2 = new MobEquipmentPacket();

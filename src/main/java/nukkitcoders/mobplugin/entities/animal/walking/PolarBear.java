@@ -74,9 +74,6 @@ public class PolarBear extends WalkingMonster {
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (distance <= 100 && this.isAngry() && creature instanceof PolarBear && !((PolarBear) creature).isAngry()) {
-            ((PolarBear) creature).setAngry(2400);
-        }
         return this.isAngry() && super.targetOption(creature, distance);
     }
 
