@@ -65,16 +65,6 @@ public class PiglinBrute extends WalkingMonster {
     }
 
     @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (server.getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
-
-    @Override
     public String getName() {
         return this.hasCustomName() ? this.getNameTag() : "Piglin Brute";
     }

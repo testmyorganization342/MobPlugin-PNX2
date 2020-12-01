@@ -89,16 +89,6 @@ public class Blaze extends FlyingMonster {
     }
 
     @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
-
-    @Override
     public int nearbyDistanceMultiplier() {
         return 30;
     }

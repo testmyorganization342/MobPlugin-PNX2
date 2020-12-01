@@ -74,14 +74,4 @@ public class Endermite extends WalkingMonster implements EntityArthropod {
     public int getKillExperience() {
         return 3;
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
 }

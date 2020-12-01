@@ -66,14 +66,4 @@ public class Piglin extends WalkingMonster {
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
         }
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (server.getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
 }

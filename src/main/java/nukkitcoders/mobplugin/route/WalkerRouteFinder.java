@@ -19,8 +19,8 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     private final static int DIRECT_MOVE_COST = 10;
     private final static int OBLIQUE_MOVE_COST = 14;
 
-    private PriorityQueue<Node> openList = new PriorityQueue<>();
-    private ArrayList<Node> closeList = new ArrayList<>();
+    private final PriorityQueue<Node> openList = new PriorityQueue<>();
+    private final ArrayList<Node> closeList = new ArrayList<>();
 
     private int searchLimit = 100;
 

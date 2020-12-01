@@ -76,14 +76,4 @@ public class Silverfish extends WalkingMonster implements EntityArthropod {
     public int getKillExperience() {
         return 5;
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
 }

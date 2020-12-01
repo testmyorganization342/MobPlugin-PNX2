@@ -89,14 +89,4 @@ public class Phantom extends FlyingMonster implements EntitySmite {
     public int getKillExperience() {
         return 5;
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
 }

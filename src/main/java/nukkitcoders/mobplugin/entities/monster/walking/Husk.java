@@ -84,14 +84,4 @@ public class Husk extends WalkingMonster implements EntityAgeable, EntitySmite {
     public int getKillExperience() {
         return this.isBaby() ? 0 : 5;
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
 }

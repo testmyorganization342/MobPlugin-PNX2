@@ -94,14 +94,4 @@ public class CaveSpider extends Spider implements EntityArthropod {
     public String getName() {
         return this.hasCustomName() ? this.getNameTag() : "Cave Spider";
     }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        return super.entityBaseTick(tickDiff);
-    }
 }
