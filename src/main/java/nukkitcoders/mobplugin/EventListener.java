@@ -215,7 +215,7 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void BlockBreakEvent(BlockBreakEvent ev) {
         Block block = ev.getBlock();
-        if ((block.getId() == Block.MONSTER_EGG) && block.level.getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12 && Utils.rand(1, 5) == 1) {
+        if ((block.getId() == Block.MONSTER_EGG) && Utils.rand(1, 5) == 1 && block.level.getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12) {
             Silverfish entity = (Silverfish) Entity.createEntity("Silverfish", block.add(0.5, 0, 0.5));
             if (entity == null) return;
             entity.spawnToAll();

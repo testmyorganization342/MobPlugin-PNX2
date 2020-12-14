@@ -6,6 +6,7 @@ import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
@@ -61,6 +62,9 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
         this.fireProof = true;
         this.setMaxHealth(witherMaxHealth());
         this.setDamage(new float[]{0, 2, 4, 6});
+        if (this.age == 0) {
+            this.setDataProperty(new IntEntityData(DATA_WITHER_INVULNERABLE_TICKS, 200));
+        }
     }
 
     @Override
@@ -156,6 +160,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
         if (this.age == 200) {
             this.explode();
+            this.setDataProperty(new IntEntityData(DATA_WITHER_INVULNERABLE_TICKS, 0));
         }
 
         return super.entityBaseTick(tickDiff);
