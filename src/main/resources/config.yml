@@ -1,5 +1,5 @@
 # config version, do not edit!
-config-version: 13
+config-version: 14
 
 entities:
   # how often the spawn task should run
@@ -17,7 +17,7 @@ entities:
 # per player, in 100 blocks range
 autospawn:
   bat: 0
-  blaze: 2
+  blaze: 0
   chicken: 2
   cod: 2
   cow: 2
@@ -53,6 +53,7 @@ autospawn:
   fox: 2
   panda: 1
   drowned: 2
+  piglin: 2
 
 other:
   # mob spawner spawning range

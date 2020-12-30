@@ -8,6 +8,7 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -68,7 +69,10 @@ public class CaveSpider extends Spider implements EntityArthropod {
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
-            player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
+            EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage);
+            if (player.attack(ev) && !ev.isCancelled() && this.server.getDifficulty() > 0) {
+                player.addEffect(Effect.getEffect(Effect.POISON).setDuration(this.server.getDifficulty() > 1 ? 300 : 140));
+            }
         }
     }
 

@@ -27,6 +27,7 @@ public class DonkeySpawner extends AbstractEntitySpawner {
         } else if (pos.y > 255 || pos.y < 1) {
         } else if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
             BaseEntity entity = this.spawnTask.createEntity("Donkey", pos.add(0, 1, 0));
+            if (entity == null) return;
             if (Utils.rand(1, 20) == 1) {
                 entity.setBaby(true);
             }

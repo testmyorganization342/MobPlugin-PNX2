@@ -31,13 +31,16 @@ import java.util.Map;
 
 public class AutoSpawnTask implements Runnable {
 
-    private Map<Integer, Integer> maxSpawns = new HashMap<>();
+    private final Map<Integer, Integer> maxSpawns = new HashMap<>();
 
-    private List<IEntitySpawner> entitySpawners = new ArrayList<>();
+    private final List<IEntitySpawner> animalSpawners = new ArrayList<>();
+    private final List<IEntitySpawner> monsterSpawners = new ArrayList<>();
 
-    private Config pluginConfig;
+    private final Config pluginConfig;
 
-    private MobPlugin plugin;
+    private final MobPlugin plugin;
+
+    private boolean mobsNext;
 
     public AutoSpawnTask(MobPlugin plugin) {
         this.pluginConfig = plugin.config.pluginConfig;
@@ -50,50 +53,59 @@ public class AutoSpawnTask implements Runnable {
     @Override
     public void run() {
         if (!plugin.getServer().getOnlinePlayers().isEmpty()) {
-            for (IEntitySpawner spawner : entitySpawners) {
-                spawner.spawn();
+            if (mobsNext) {
+                mobsNext = false;
+                for (IEntitySpawner spawner : monsterSpawners) {
+                    spawner.spawn();
+                }
+            } else {
+                mobsNext = true;
+                for (IEntitySpawner spawner : animalSpawners) {
+                    spawner.spawn();
+                }
             }
         }
     }
 
     private void prepareSpawnerClasses() {
-        entitySpawners.add(new BatSpawner(this));
-        entitySpawners.add(new BlazeSpawner(this));
-        entitySpawners.add(new ChickenSpawner(this));
-        entitySpawners.add(new CodSpawner(this));
-        entitySpawners.add(new CowSpawner(this));
-        entitySpawners.add(new CreeperSpawner(this));
-        entitySpawners.add(new DolphinSpawner(this));
-        entitySpawners.add(new DonkeySpawner(this));
-        entitySpawners.add(new EndermanSpawner(this));
-        entitySpawners.add(new GhastSpawner(this));
-        entitySpawners.add(new HorseSpawner(this));
-        entitySpawners.add(new HuskSpawner(this));
-        entitySpawners.add(new MagmaCubeSpawner(this));
-        entitySpawners.add(new MooshroomSpawner(this));
-        entitySpawners.add(new OcelotSpawner(this));
-        entitySpawners.add(new ParrotSpawner(this));
-        entitySpawners.add(new PigSpawner(this));
-        entitySpawners.add(new PolarBearSpawner(this));
-        entitySpawners.add(new PufferfishSpawner(this));
-        entitySpawners.add(new RabbitSpawner(this));
-        entitySpawners.add(new SalmonSpawner(this));
-        entitySpawners.add(new SheepSpawner(this));
-        entitySpawners.add(new SkeletonSpawner(this));
-        entitySpawners.add(new SlimeSpawner(this));
-        entitySpawners.add(new SpiderSpawner(this));
-        entitySpawners.add(new StraySpawner(this));
-        entitySpawners.add(new SquidSpawner(this));
-        entitySpawners.add(new TropicalFishSpawner(this));
-        entitySpawners.add(new TurtleSpawner(this));
-        entitySpawners.add(new WitchSpawner(this));
-        entitySpawners.add(new WitherSkeletonSpawner(this));
-        entitySpawners.add(new WolfSpawner(this));
-        entitySpawners.add(new ZombieSpawner(this));
-        entitySpawners.add(new ZombiePigmanSpawner(this));
-        entitySpawners.add(new FoxSpawner(this));
-        entitySpawners.add(new PandaSpawner(this));
-        entitySpawners.add(new DrownedSpawner(this));
+        animalSpawners.add(new BatSpawner(this));
+        monsterSpawners.add(new BlazeSpawner(this));
+        animalSpawners.add(new ChickenSpawner(this));
+        animalSpawners.add(new CodSpawner(this));
+        animalSpawners.add(new CowSpawner(this));
+        monsterSpawners.add(new CreeperSpawner(this));
+        animalSpawners.add(new DolphinSpawner(this));
+        animalSpawners.add(new DonkeySpawner(this));
+        monsterSpawners.add(new EndermanSpawner(this));
+        monsterSpawners.add(new GhastSpawner(this));
+        animalSpawners.add(new HorseSpawner(this));
+        monsterSpawners.add(new HuskSpawner(this));
+        monsterSpawners.add(new MagmaCubeSpawner(this));
+        animalSpawners.add(new MooshroomSpawner(this));
+        animalSpawners.add(new OcelotSpawner(this));
+        animalSpawners.add(new ParrotSpawner(this));
+        animalSpawners.add(new PigSpawner(this));
+        animalSpawners.add(new PolarBearSpawner(this));
+        animalSpawners.add(new PufferfishSpawner(this));
+        animalSpawners.add(new RabbitSpawner(this));
+        animalSpawners.add(new SalmonSpawner(this));
+        animalSpawners.add(new SheepSpawner(this));
+        monsterSpawners.add(new SkeletonSpawner(this));
+        monsterSpawners.add(new SlimeSpawner(this));
+        monsterSpawners.add(new SpiderSpawner(this));
+        monsterSpawners.add(new StraySpawner(this));
+        animalSpawners.add(new SquidSpawner(this));
+        animalSpawners.add(new TropicalFishSpawner(this));
+        animalSpawners.add(new TurtleSpawner(this));
+        monsterSpawners.add(new WitchSpawner(this));
+        monsterSpawners.add(new WitherSkeletonSpawner(this));
+        animalSpawners.add(new WolfSpawner(this));
+        monsterSpawners.add(new ZombieSpawner(this));
+        monsterSpawners.add(new ZombiePigmanSpawner(this));
+        animalSpawners.add(new FoxSpawner(this));
+        animalSpawners.add(new PandaSpawner(this));
+        monsterSpawners.add(new DrownedSpawner(this));
+        monsterSpawners.add(new PiglinSpawner(this));
     }
 
     private void prepareMaxSpawns() {
@@ -134,6 +146,7 @@ public class AutoSpawnTask implements Runnable {
         maxSpawns.put(Fox.NETWORK_ID, this.pluginConfig.getInt("autospawn.fox"));
         maxSpawns.put(Panda.NETWORK_ID, this.pluginConfig.getInt("autospawn.panda"));
         maxSpawns.put(Drowned.NETWORK_ID, this.pluginConfig.getInt("autospawn.drowned"));
+        maxSpawns.put(Piglin.NETWORK_ID, this.pluginConfig.getInt("autospawn.piglin"));
     }
 
     public boolean entitySpawnAllowed(Level level, int networkId, Vector3 pos) {
@@ -170,9 +183,11 @@ public class AutoSpawnTask implements Runnable {
                     entity.spawnToAll();
                 } else {
                     entity.close();
+                    entity = null;
                 }
             } else {
                 entity.close();
+                entity = null;
             }
         }
         return entity;
@@ -276,6 +291,7 @@ public class AutoSpawnTask implements Runnable {
             case Blaze.NETWORK_ID:
             case Ghast.NETWORK_ID:
             case MagmaCube.NETWORK_ID:
+            case Piglin.NETWORK_ID:
             case WitherSkeleton.NETWORK_ID:
             case ZombiePigman.NETWORK_ID:
                 return Level.DIMENSION_NETHER == dimension;

@@ -2,9 +2,12 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemID;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
@@ -14,6 +17,8 @@ import java.util.HashMap;
 public class Piglin extends WalkingMonster {
 
     public final static int NETWORK_ID = 123;
+
+    private int angry = 0;
 
     @Override
     public int getNetworkId() {
@@ -65,5 +70,40 @@ public class Piglin extends WalkingMonster {
             }
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
         }
+    }
+
+    public boolean isAngry() {
+        return this.angry > 0;
+    }
+
+    public void setAngry(int val) {
+        this.angry = val;
+    }
+
+    private static boolean isWearingGold(Player p) {
+        PlayerInventory i = p.getInventory();
+        return i.getHelmet().getId() == ItemID.GOLD_HELMET || i.getChestplate().getId() == ItemID.GOLD_CHESTPLATE || i.getLeggings().getId() == ItemID.GOLD_LEGGINGS || i.getBoots().getId() == ItemID.GOLD_BOOTS;
+    }
+
+    @Override
+    public boolean attack(EntityDamageEvent ev) {
+        super.attack(ev);
+
+        if (!ev.isCancelled() && ev instanceof EntityDamageByEntityEvent) {
+            if (((EntityDamageByEntityEvent) ev).getDamager() instanceof Player) {
+                this.setAngry(600);
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean targetOption(EntityCreature creature, double distance) {
+        if (!(creature instanceof Player)) return false;
+        if (distance <= 100 && this.isAngry() && creature instanceof Piglin && !((Piglin) creature).isAngry()) {
+            ((Piglin) creature).setAngry(600);
+        }
+        return (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
     }
 }

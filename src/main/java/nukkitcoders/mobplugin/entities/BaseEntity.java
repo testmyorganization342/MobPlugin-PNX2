@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -17,6 +18,9 @@ import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.apache.commons.math3.util.FastMath;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class BaseEntity extends EntityCreature implements EntityAgeable {
 
@@ -485,5 +489,34 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         for (Player p : this.hasSpawned.values()) {
             p.batchDataPacket(pk);
         }
+    }
+
+    @Override
+    protected void checkGroundState(double movX, double movY, double movZ, double dx, double dy, double dz) {
+        if (onGround && movX == 0 && movY == 0 && movZ == 0 && dx == 0 && dy == 0 && dz == 0) {
+            return;
+        }
+        this.isCollidedVertically = movY != dy;
+        this.isCollidedHorizontally = (movX != dx || movZ != dz);
+        this.isCollided = (this.isCollidedHorizontally || this.isCollidedVertically);
+        this.onGround = (movY != dy && movY < 0);
+    }
+
+    public static void setProjectileMotion(EntityProjectile projectile, double pitch, double yawR, double pitchR, double speed) {
+        double verticalMultiplier = Math.cos(pitchR);
+        double x = verticalMultiplier * Math.sin(-yawR);
+        double z = verticalMultiplier * Math.cos(yawR);
+        double y = Math.sin(-(FastMath.toRadians(pitch)));
+        double magnitude = Math.sqrt(x * x + y * y + z * z);
+        if (magnitude > 0) {
+            x += (x * (speed - magnitude)) / magnitude;
+            y += (y * (speed - magnitude)) / magnitude;
+            z += (z * (speed - magnitude)) / magnitude;
+        }
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+        x += rand.nextGaussian() * 0.007499999832361937 * 6;
+        y += rand.nextGaussian() * 0.007499999832361937 * 6;
+        z += rand.nextGaussian() * 0.007499999832361937 * 6;
+        projectile.setMotion(new Vector3(x, y, z));
     }
 }

@@ -26,7 +26,7 @@ public class Wolf extends TameableMonster {
 
     private static final String NBT_KEY_COLLAR_COLOR = "CollarColor";
 
-    private int angry = 0;
+    private boolean angry;
 
     private DyeColor collarColor = DyeColor.RED;
 
@@ -79,7 +79,7 @@ public class Wolf extends TameableMonster {
     public void saveNBT() {
         super.saveNBT();
 
-        this.namedTag.putByte(NBT_KEY_ANGRY, this.angry);
+        this.namedTag.putBoolean(NBT_KEY_ANGRY, this.angry);
         this.namedTag.putByte(NBT_KEY_COLLAR_COLOR, this.collarColor.getDyeData());
     }
 
@@ -89,17 +89,12 @@ public class Wolf extends TameableMonster {
     }
 
     public boolean isAngry() {
-        return this.angry > 0;
+        return this.angry;
     }
 
     public void setAngry(boolean angry) {
-        this.angry = angry ? 1 : 0;
-
-        if (this.isAngry()) {
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true);
-        } else {
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, false);
-        }
+        this.angry = angry;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, angry);
     }
 
     @Override
@@ -130,26 +125,21 @@ public class Wolf extends TameableMonster {
                 return true;
             }
         } else if (this.hasOwner() && player.equals(this.getOwner()) && !this.isAngry()) {
-            if (this.isSitting()) {
-                this.setSitting(false);
-            } else {
-                this.setSitting(true);
-            }
+            this.setSitting(!this.isSitting());
         }
         return super.onInteract(player, item, clickedPos);
     }
 
     @Override
     public boolean attack(EntityDamageEvent ev) {
-        super.attack(ev);
-
-        if (!ev.isCancelled() && ev instanceof EntityDamageByEntityEvent) {
-            if (((EntityDamageByEntityEvent) ev).getDamager() instanceof Player) {
+        if (super.attack(ev)) {
+            if (ev instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) ev).getDamager() instanceof Player) {
                 this.setAngry(true);
             }
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
