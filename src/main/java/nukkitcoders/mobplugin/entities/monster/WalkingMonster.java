@@ -17,6 +17,8 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     protected boolean canAttack = true;
 
+    public long isAngryTo;
+
     public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -154,7 +156,7 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
         this.entityBaseTick(tickDiff);
 
         Vector3 target = this.updateMove(tickDiff);
-        if ((!this.isFriendly() || !(target instanceof Player)) && target instanceof Entity) {
+        if (target instanceof Entity && (!this.isFriendly() || !(target instanceof Player) || ((Entity) target).getId() == this.isAngryTo)) {
             if (target != this.followTarget || this.canAttack) {
                 this.attackEntity((Entity) target);
             }
