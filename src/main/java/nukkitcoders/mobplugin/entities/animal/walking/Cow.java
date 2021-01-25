@@ -51,12 +51,12 @@ public class Cow extends WalkingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.equals(Item.get(Item.BUCKET, 0), true)) {
+        if (item.getId() == Item.BUCKET) {
             player.getInventory().addItem(Item.get(Item.BUCKET, 1, 1));
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.MOB_COW_MILK);
             return true;
-        } else if (item.equals(Item.get(Item.WHEAT, 0)) && !this.isBaby()) {
+        } else if (item.getId() == Item.WHEAT && !this.isBaby()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.WHEAT)));

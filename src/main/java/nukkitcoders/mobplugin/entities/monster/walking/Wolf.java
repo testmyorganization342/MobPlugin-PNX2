@@ -99,7 +99,7 @@ public class Wolf extends TameableMonster {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.equals(Item.get(Item.BONE))) {
+        if (item.getId() == Item.BONE) {
             if (!this.hasOwner() && !this.isAngry()) {
                 player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
                 if (Utils.rand(0, 3) == 3) {
@@ -119,7 +119,7 @@ public class Wolf extends TameableMonster {
                     player.dataPacket(packet);
                 }
             }
-        } else if (item.equals(Item.get(Item.DYE), false)) {
+        } else if (item.getId() == Item.DYE) {
             if (this.hasOwner() && player.equals(this.getOwner())) {
                 this.setCollarColor(((ItemDye) item).getDyeColor());
                 return true;
