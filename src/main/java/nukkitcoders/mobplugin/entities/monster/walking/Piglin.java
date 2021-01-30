@@ -81,6 +81,7 @@ public class Piglin extends WalkingMonster {
     }
 
     private static boolean isWearingGold(Player p) {
+        if (p.getInventory() == null) return false;
         PlayerInventory i = p.getInventory();
         return i.getHelmet().getId() == ItemID.GOLD_HELMET || i.getChestplate().getId() == ItemID.GOLD_CHESTPLATE || i.getLeggings().getId() == ItemID.GOLD_LEGGINGS || i.getBoots().getId() == ItemID.GOLD_BOOTS;
     }
@@ -100,10 +101,9 @@ public class Piglin extends WalkingMonster {
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
-        if (!(creature instanceof Player)) return false;
         if (distance <= 100 && this.isAngry() && creature instanceof Piglin && !((Piglin) creature).isAngry()) {
             ((Piglin) creature).setAngry(600);
         }
-        return (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
+        return creature instanceof Player && (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
     }
 }

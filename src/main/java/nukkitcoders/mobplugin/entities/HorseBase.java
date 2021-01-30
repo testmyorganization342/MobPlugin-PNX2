@@ -27,6 +27,8 @@ import java.util.Objects;
  */
 public class HorseBase extends WalkingAnimal implements EntityRideable {
 
+    private boolean saddled;
+
     public HorseBase(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -163,7 +165,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
 
     @Override
     public boolean canDespawn() {
-        if (!this.getPassengers().isEmpty()) {
+        if (this.isSaddled()) {
             return false;
         }
 
@@ -196,11 +198,12 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
     }
 
     public boolean isSaddled() {
-        return this.canBeSaddled() && this.getDataFlag(DATA_FLAGS, DATA_FLAG_SADDLED);
+        return this.saddled;
     }
 
     public void setSaddled(boolean saddled) {
         if (this.canBeSaddled()) {
+            this.saddled = true;
             this.setDataFlag(DATA_FLAGS, DATA_FLAG_SADDLED, saddled);
         }
     }
