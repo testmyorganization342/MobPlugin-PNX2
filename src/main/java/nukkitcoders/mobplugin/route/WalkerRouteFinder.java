@@ -58,8 +58,9 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         }
 
         if (this.destination == null) {
-            if (entity.getFollowTarget() != null) {
-                this.destination = entity.getFollowTarget();
+            Vector3 vec = entity.getTargetVector();
+            if (vec != null) {
+                this.destination = vec;
             } else {
                 this.searching = false;
                 this.finished = true;

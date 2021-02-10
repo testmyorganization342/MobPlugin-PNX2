@@ -92,6 +92,16 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
     }
 
+    public Vector3 getTargetVector() {
+        if (this.followTarget != null) {
+            return this.followTarget;
+        } else if (this.target instanceof Entity) {
+            return this.target;
+        } else {
+            return null;
+        }
+    }
+
     public void setFollowTarget(Entity target) {
         this.followTarget = target;
         this.moveTime = 0;
