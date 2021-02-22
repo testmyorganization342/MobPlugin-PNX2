@@ -19,6 +19,7 @@ import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
@@ -67,10 +68,11 @@ public class EventListener implements Listener {
     public void PlayerInteractEvent(PlayerInteractEvent ev) {
         if (ev.getFace() == null || ev.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) return;
 
+        Player player = ev.getPlayer();
+        if (player.isAdventure()) return;
+
         Item item = ev.getItem();
         Block block = ev.getBlock();
-        Player player = ev.getPlayer();
-
         if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
 
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
@@ -215,7 +217,7 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void BlockBreakEvent(BlockBreakEvent ev) {
         Block block = ev.getBlock();
-        if ((block.getId() == Block.MONSTER_EGG) && Utils.rand(1, 5) == 1 && block.level.getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12) {
+        if ((block.getId() == Block.MONSTER_EGG) && Utils.rand(1, 5) == 1 && !ev.getItem().hasEnchantment(Enchantment.ID_SILK_TOUCH) && block.level.getBlockLightAt((int) block.x, (int) block.y, (int) block.z) < 12) {
             Silverfish entity = (Silverfish) Entity.createEntity("Silverfish", block.add(0.5, 0, 0.5));
             if (entity == null) return;
             entity.spawnToAll();

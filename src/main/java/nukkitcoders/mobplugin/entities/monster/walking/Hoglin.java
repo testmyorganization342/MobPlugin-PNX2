@@ -8,6 +8,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.HashMap;
 
@@ -26,7 +27,7 @@ public class Hoglin extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 5;
+        return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
 
     @Override

@@ -3,9 +3,9 @@ package nukkitcoders.mobplugin.entities.animal.swimming;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
+import nukkitcoders.mobplugin.utils.Utils;
 
-public class TropicalFish extends SwimmingAnimal {
+public class TropicalFish extends Fish {
 
     public static final int NETWORK_ID = 111;
 
@@ -35,13 +35,8 @@ public class TropicalFish extends SwimmingAnimal {
     }
 
     @Override
-    public int getKillExperience() {
-        return 0;
-    }
-
-    @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.CLOWNFISH, 0, 1)};
+        return new Item[]{Item.get(Item.CLOWNFISH, 0, 1), Item.get(Item.BONE, 0, Utils.rand(0, 2))};
     }
 
     @Override

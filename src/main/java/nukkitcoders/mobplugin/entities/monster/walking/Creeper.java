@@ -32,6 +32,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     public static final int NETWORK_ID = 33;
 
     private int bombTime = 0;
+    private boolean exploding;
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -75,6 +76,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public void explode() {
+        if (this.closed) return;
+
         EntityExplosionPrimeEvent ev = new EntityExplosionPrimeEvent(this, this.isPowered() ? 6 : 3);
         this.server.getPluginManager().callEvent(ev);
 
@@ -131,9 +134,12 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.getId() == Item.FLINT_AND_STEEL) {
+        if (item.getId() == Item.FLINT_AND_STEEL && !exploding) {
+            this.exploding = true;
             this.level.addSound(this, Sound.FIRE_IGNITE);
-            this.explode();
+            this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
+            this.level.addSound(this, Sound.RANDOM_FUSE);
+            level.getServer().getScheduler().scheduleDelayedTask(null, this::explode, 30);
             return true;
         }
         return super.onInteract(player, item, clickedPos);
@@ -182,23 +188,27 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             double distance = followTarget.distance(this);
             if (distance <= 4) {
                 if (followTarget instanceof EntityCreature) {
-                    if (bombTime >= 0) {
-                        this.level.addSound(this, Sound.RANDOM_FUSE);
-                        this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH, bombTime));
-                        this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
-                    }
-                    this.bombTime += tickDiff;
-                    if (this.bombTime >= 30) {
-                        this.explode();
-                        return false;
+                    if (!exploding) {
+                        if (bombTime >= 0) {
+                            this.level.addSound(this, Sound.RANDOM_FUSE);
+                            this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH, bombTime));
+                            this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
+                        }
+                        this.bombTime += tickDiff;
+                        if (this.bombTime >= 30) {
+                            this.explode();
+                            return false;
+                        }
                     }
                     if (distance <= 1) {
                         this.stayTime = 10;
                     }
                 }
             } else {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
-                this.bombTime = 0;
+                if (!exploding) {
+                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
+                    this.bombTime = 0;
+                }
 
                 this.motionX = this.getSpeed() * 0.15 * (x / diff);
                 this.motionZ = this.getSpeed() * 0.15 * (z / diff);

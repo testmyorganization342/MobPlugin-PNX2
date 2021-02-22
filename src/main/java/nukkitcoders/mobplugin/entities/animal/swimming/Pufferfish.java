@@ -10,9 +10,9 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
-import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
+import nukkitcoders.mobplugin.utils.Utils;
 
-public class Pufferfish extends SwimmingAnimal {
+public class Pufferfish extends Fish {
 
     public static final int NETWORK_ID = 108;
 
@@ -45,12 +45,7 @@ public class Pufferfish extends SwimmingAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.PUFFERFISH, 0, 1)};
-    }
-
-    @Override
-    public int getKillExperience() {
-        return 0;
+        return new Item[]{Item.get(Item.PUFFERFISH, 0, 1), Item.get(Item.BONE, 0, Utils.rand(0, 2))};
     }
 
     @Override
