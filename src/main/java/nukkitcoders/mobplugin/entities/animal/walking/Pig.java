@@ -69,11 +69,12 @@ public class Pig extends WalkingAnimal implements EntityRideable {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
+            int id = player.getInventory().getItemInHand().getId();
             return player.spawned && player.isAlive() && !player.closed
-                    && (player.getInventory().getItemInHand().getId() == Item.CARROT
-                    || player.getInventory().getItemInHand().getId() == Item.POTATO
-                    || player.getInventory().getItemInHand().getId() == Item.BEETROOT
-                    || player.getInventory().getItemInHand().getId() == Item.CARROT_ON_A_STICK)
+                    && (id == Item.CARROT
+                    || id == Item.POTATO
+                    || id == Item.BEETROOT
+                    || id == Item.CARROT_ON_A_STICK)
                     && distance <= 49;
         }
         return false;

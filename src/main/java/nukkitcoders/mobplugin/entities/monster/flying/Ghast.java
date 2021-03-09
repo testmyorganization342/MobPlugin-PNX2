@@ -53,6 +53,7 @@ public class Ghast extends FlyingMonster {
         this.fireProof = true;
         this.setMaxHealth(10);
         this.setDamage(new float[]{0, 0, 0, 0});
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_FIRE_IMMUNE, true);
     }
 
     public boolean targetOption(EntityCreature creature, double distance) {

@@ -82,11 +82,12 @@ public class Chicken extends WalkingAnimal {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
+            int id = player.getInventory().getItemInHand().getId();
             return player.isAlive() && !player.closed
-                    && (player.getInventory().getItemInHand().getId() == Item.SEEDS
-                            || player.getInventory().getItemInHand().getId() == Item.BEETROOT_SEEDS
-                            || player.getInventory().getItemInHand().getId() == Item.MELON_SEEDS
-                            || player.getInventory().getItemInHand().getId() == Item.PUMPKIN_SEEDS)
+                    && (id == Item.SEEDS
+                            || id == Item.BEETROOT_SEEDS
+                            || id == Item.MELON_SEEDS
+                            || id == Item.PUMPKIN_SEEDS)
                     && distance <= 49;
         }
         return false;

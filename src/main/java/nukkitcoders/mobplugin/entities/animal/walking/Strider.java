@@ -15,6 +15,7 @@ import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.SetEntityLinkPacket;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.apache.commons.math3.util.FastMath;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -124,6 +125,8 @@ public class Strider extends WalkingAnimal implements EntityRideable {
         if (player.getInventory().getItemInHand().getId() == Item.WARPED_FUNGUS_ON_A_STICK) {
             this.stayTime = 0;
             this.moveTime = 10;
+            this.route = null;
+            this.target = null;
             this.yaw = player.yaw;
 
             strafe *= 0.4;
@@ -141,8 +144,8 @@ public class Strider extends WalkingAnimal implements EntityRideable {
                 f = friction / f;
                 strafe *= f;
                 forward *= f;
-                double f1 = Math.sin(this.yaw * 0.017453292);
-                double f2 = Math.cos(this.yaw * 0.017453292);
+                double f1 = FastMath.sin(this.yaw * 0.017453292);
+                double f2 = FastMath.cos(this.yaw * 0.017453292);
                 this.motionX = (strafe * f2 - forward * f1);
                 this.motionZ = (forward * f2 + strafe * f1);
             } else {
@@ -220,7 +223,7 @@ public class Strider extends WalkingAnimal implements EntityRideable {
         if (creature instanceof Player) {
             Player player = (Player) creature;
             return player.spawned && player.isAlive() && !player.closed && distance <= 40
-                    && player.getInventory().getItemInHand().getId() == Item.CARROT_ON_A_STICK;
+                    && player.getInventory().getItemInHand().getId() == Item.WARPED_FUNGUS_ON_A_STICK;
         }
         return false;
     }
