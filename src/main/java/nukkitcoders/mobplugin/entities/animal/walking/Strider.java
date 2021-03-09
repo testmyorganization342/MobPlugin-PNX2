@@ -121,7 +121,7 @@ public class Strider extends WalkingAnimal implements EntityRideable {
     }
 
     public void onPlayerInput(Player player, double strafe, double forward) {
-        if (player.getInventory().getItemInHand().getId() == Item.CARROT_ON_A_STICK) {
+        if (player.getInventory().getItemInHand().getId() == Item.WARPED_FUNGUS_ON_A_STICK) {
             this.stayTime = 0;
             this.moveTime = 10;
             this.yaw = player.yaw;
