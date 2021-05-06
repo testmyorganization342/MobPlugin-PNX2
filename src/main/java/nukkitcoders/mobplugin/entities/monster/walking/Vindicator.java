@@ -96,10 +96,10 @@ public class Vindicator extends WalkingMonster {
         if (this.getFollowTarget() != null) {
             if (!this.angry) {
                 this.angry = true;
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true); // show the axe
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true);
             }
             if (this.getDataPropertyLong(DATA_TARGET_EID) != this.getFollowTarget().getId()) {
-                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, this.getFollowTarget().getId())); // raise the axe
+                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, this.getFollowTarget().getId()));
             }
         } else {
             if (this.angry) {

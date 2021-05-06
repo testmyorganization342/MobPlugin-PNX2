@@ -14,6 +14,11 @@ public class Cod extends Fish {
     }
 
     @Override
+    int getBucketMeta() {
+        return 2;
+    }
+
+    @Override
     public int getNetworkId() {
         return NETWORK_ID;
     }

@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -512,7 +511,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         this.onGround = (movY != dy && movY < 0);
     }
 
-    public static void setProjectileMotion(EntityProjectile projectile, double pitch, double yawR, double pitchR, double speed) {
+    public static void setProjectileMotion(Entity projectile, double pitch, double yawR, double pitchR, double speed) {
         double verticalMultiplier = Math.cos(pitchR);
         double x = verticalMultiplier * Math.sin(-yawR);
         double z = verticalMultiplier * Math.cos(yawR);
@@ -528,5 +527,21 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         y += rand.nextGaussian() * 0.007499999832361937 * 6;
         z += rand.nextGaussian() * 0.007499999832361937 * 6;
         projectile.setMotion(new Vector3(x, y, z));
+    }
+
+    @Override
+    public void resetFallDistance() {
+        this.highestPosition = this.y;
+    }
+
+    @Override
+    public boolean setMotion(Vector3 motion) {
+        this.motionX = motion.x;
+        this.motionY = motion.y;
+        this.motionZ = motion.z;
+        if (!this.justCreated) {
+            this.updateMovement();
+        }
+        return true;
     }
 }

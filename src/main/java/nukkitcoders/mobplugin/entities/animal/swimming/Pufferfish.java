@@ -23,6 +23,11 @@ public class Pufferfish extends Fish {
     }
 
     @Override
+    int getBucketMeta() {
+        return 5;
+    }
+
+    @Override
     public int getNetworkId() {
         return NETWORK_ID;
     }

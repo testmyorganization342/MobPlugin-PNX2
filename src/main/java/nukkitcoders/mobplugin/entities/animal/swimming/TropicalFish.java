@@ -14,6 +14,11 @@ public class TropicalFish extends Fish {
     }
 
     @Override
+    int getBucketMeta() {
+        return 4;
+    }
+
+    @Override
     public int getNetworkId() {
         return NETWORK_ID;
     }

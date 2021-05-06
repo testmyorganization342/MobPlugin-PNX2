@@ -69,12 +69,12 @@ public class EventListener implements Listener {
     public void PlayerInteractEvent(PlayerInteractEvent ev) {
         if (ev.getFace() == null || ev.getAction() != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) return;
 
-        Player player = ev.getPlayer();
-        if (player.isAdventure()) return;
-
         Item item = ev.getItem();
         Block block = ev.getBlock();
         if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
+
+        Player player = ev.getPlayer();
+        if (player.isAdventure()) return;
 
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
         if (blockEntity instanceof BlockEntitySpawner) {

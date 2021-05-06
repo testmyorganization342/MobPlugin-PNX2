@@ -14,6 +14,11 @@ public class Salmon extends Fish {
     }
 
     @Override
+    int getBucketMeta() {
+        return 3;
+    }
+
+    @Override
     public int getNetworkId() {
         return NETWORK_ID;
     }

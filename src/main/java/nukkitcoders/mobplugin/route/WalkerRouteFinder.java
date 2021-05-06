@@ -139,7 +139,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         double radius = (this.entity.getWidth() * this.entity.getScale()) / 2;
         float height = this.entity.getHeight() * this.entity.getScale();
         AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius, vector3.getY(), vector3.getZ() - radius, vector3.getX() + radius, vector3.getY() + height, vector3.getZ() + radius);
-        return this.level.getCollisionBlocks(bb, true).length == 0 && !this.level.getBlock(vector3.add(0, -1, 0), false).canPassThrough();
+        return !Utils.hasCollisionBlocks(this.level, bb) && !this.level.getBlock(vector3.add(0, -1, 0), false).canPassThrough();
     }
 
     private int getWalkableHorizontalOffset(Vector3 vector3) {
@@ -360,7 +360,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
         double height = this.entity.getHeight() * this.entity.getScale();
         for (Vector3 vector3 : list) {
             AxisAlignedBB bb = new SimpleAxisAlignedBB(vector3.getX() - radius, vector3.getY(), vector3.getZ() - radius, vector3.getX() + radius, vector3.getY() + height, vector3.getZ() + radius);
-            if (this.level.getCollisionBlocks(bb, true).length != 0) return true;
+            if (Utils.hasCollisionBlocks(level, bb)) return true;
 
             boolean xIsInt = vector3.getX() % 1 == 0;
             boolean zIsInt = vector3.getZ() % 1 == 0;

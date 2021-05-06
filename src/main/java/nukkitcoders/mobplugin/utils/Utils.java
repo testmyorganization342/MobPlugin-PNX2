@@ -1,7 +1,10 @@
 package nukkitcoders.mobplugin.utils;
 
+import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.level.Level;
+import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
 
@@ -63,5 +66,27 @@ public class Utils {
         double y = ent.y + ent.getEyeHeight();
         int b = ent.level.getBlockIdAt(NukkitMath.floorDouble(ent.x), NukkitMath.floorDouble(y), NukkitMath.floorDouble(ent.z));
         return b == BlockID.WATER || b == BlockID.STILL_WATER;
+    }
+
+    public static boolean hasCollisionBlocks(Level level, AxisAlignedBB bb) {
+        int minX = NukkitMath.floorDouble(bb.getMinX());
+        int minY = NukkitMath.floorDouble(bb.getMinY());
+        int minZ = NukkitMath.floorDouble(bb.getMinZ());
+        int maxX = NukkitMath.ceilDouble(bb.getMaxX());
+        int maxY = NukkitMath.ceilDouble(bb.getMaxY());
+        int maxZ = NukkitMath.ceilDouble(bb.getMaxZ());
+
+        for (int z = minZ; z <= maxZ; ++z) {
+            for (int x = minX; x <= maxX; ++x) {
+                for (int y = minY; y <= maxY; ++y) {
+                    Block block = level.getBlock(x, y, z, false);
+                    if (block != null && block.getId() != 0 && block.collidesWithBB(bb)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

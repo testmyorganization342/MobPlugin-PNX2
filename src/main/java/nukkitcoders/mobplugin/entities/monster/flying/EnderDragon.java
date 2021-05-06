@@ -45,6 +45,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
         super.initEntity();
 
         this.fireProof = true;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_FIRE_IMMUNE, true);
 
         this.setMaxHealth(200);
         this.setHealth(200);

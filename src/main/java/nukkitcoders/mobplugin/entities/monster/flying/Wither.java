@@ -31,6 +31,8 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
     public static final int NETWORK_ID = 52;
 
+    private boolean exploded;
+
     public Wither(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -177,7 +179,8 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
             return;
         }
 
-        if (this.lastDamageCause != null && EntityDamageEvent.DamageCause.SUICIDE != this.lastDamageCause.getCause()) {
+        if (!this.exploded && this.lastDamageCause != null && EntityDamageEvent.DamageCause.SUICIDE != this.lastDamageCause.getCause()) {
+            this.exploded = true;
             this.explode();
         }
 
