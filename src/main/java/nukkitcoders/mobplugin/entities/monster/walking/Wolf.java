@@ -123,7 +123,7 @@ public class Wolf extends TameableMonster {
                     stayTime = 40;
                 }
                 return true;
-            } else if (this.hasOwner() && ((Player) creature).equals(this.getOwner())) {
+            } else if (this.hasOwner() && creature.equals(this.getOwner())) {
                 if (distance <= 4) {
                     return false;
                 } else if (distance <= 100) {
@@ -238,7 +238,7 @@ public class Wolf extends TameableMonster {
     public void attackEntity(Entity entity) {
         if (entity instanceof Player && (
             (!this.isAngry() && this.isBeggingItem(((Player) entity).getInventory().getItemInHand())) ||
-            (this.hasOwner() && ((Player) entity).equals(this.getOwner()))
+            (this.hasOwner() && entity.equals(this.getOwner()))
             )
         ) {
             return;
@@ -357,7 +357,7 @@ public class Wolf extends TameableMonster {
             if (this.route == null && this.passengers.isEmpty()) this.target = creature;
         }
 
-        if (this.followTarget instanceof EntityCreature && !((EntityCreature) this.followTarget).closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
+        if (this.followTarget instanceof EntityCreature && !this.followTarget.closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
             return;
         }
 

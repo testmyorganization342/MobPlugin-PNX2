@@ -345,7 +345,7 @@ public class EventListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void PlayerMoveEvent(PlayerMoveEvent ev) {
         Player player = ev.getPlayer();
-        if (player.getLevel().getCurrentTick() % 20 == 0) {
+        if (player.ticksLived % 20 == 0) {
             AxisAlignedBB aab = new SimpleAxisAlignedBB(
                     player.getX() - 0.6f,
                     player.getY() + 1.45f,
@@ -390,7 +390,7 @@ public class EventListener implements Listener {
                 
                 if (entity instanceof Wolf) {
                     if (((Wolf) entity).hasOwner()) {
-                        if (((Wolf) entity).getOwner().equals((Player) ev.getDamager())) {
+                        if (((Wolf) entity).getOwner().equals(ev.getDamager())) {
                             ((Wolf) entity).isAngryTo = ev.getEntity().getId();
                             ((Wolf) entity).setAngry(true);
                         }

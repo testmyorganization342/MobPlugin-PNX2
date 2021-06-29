@@ -1,5 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
+import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
@@ -70,6 +71,11 @@ public class SkeletonHorse extends HorseBase implements EntitySmite {
 
     @Override
     public boolean isFeedItem(Item item) {
+        return false;
+    }
+
+    @Override
+    public boolean targetOption(EntityCreature creature, double distance) {
         return false;
     }
 }

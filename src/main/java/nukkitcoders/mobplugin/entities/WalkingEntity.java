@@ -13,6 +13,7 @@ import nukkitcoders.mobplugin.RouteFinderThreadPool;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.animal.walking.Llama;
 import nukkitcoders.mobplugin.entities.animal.walking.Pig;
+import nukkitcoders.mobplugin.entities.animal.walking.SkeletonHorse;
 import nukkitcoders.mobplugin.entities.monster.walking.Drowned;
 import nukkitcoders.mobplugin.route.RouteFinder;
 import nukkitcoders.mobplugin.runnable.RouteFinderSearchTask;
@@ -69,7 +70,7 @@ public abstract class WalkingEntity extends BaseEntity {
 
         }
 
-        if (this.followTarget instanceof EntityCreature && !((EntityCreature) this.followTarget).closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
+        if (this.followTarget instanceof EntityCreature && !this.followTarget.closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
             return;
         }
 
@@ -99,7 +100,7 @@ public abstract class WalkingEntity extends BaseEntity {
         if (this.motionY == this.getGravity() * 2) {
             int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z));
             return b == BlockID.WATER || b == BlockID.STILL_WATER;
-        } else {
+        } else if (!(this instanceof SkeletonHorse)) {
             int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z));
             if (b == BlockID.WATER || b == BlockID.STILL_WATER) {
                 if (!this.isDrowned || this.target == null) {

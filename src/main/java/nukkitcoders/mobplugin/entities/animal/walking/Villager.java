@@ -93,4 +93,9 @@ public class Villager extends WalkingAnimal {
             super.onStruckByLightning(entity);
         }
     }
+
+    @Override
+    public boolean canDespawn() {
+        return false;
+    }
 }
