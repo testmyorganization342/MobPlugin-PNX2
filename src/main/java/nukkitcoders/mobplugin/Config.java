@@ -12,6 +12,7 @@ public class Config {
     public boolean noSpawnEggWasting;
     public boolean killOnDespawn;
     public boolean spawnersEnabled;
+    public boolean checkTamedEntityAttack;
 
     Config(MobPlugin plugin) {
         plugin.saveDefaultConfig();
@@ -19,16 +20,19 @@ public class Config {
     }
 
     boolean init(MobPlugin plugin) {
-        int ver = 14;
+        int ver = 15;
 
         if (pluginConfig.getInt("config-version") != ver) {
-            if (pluginConfig.getInt("config-version") == 13) {
+            if (pluginConfig.getInt("config-version") == 14) {
+                pluginConfig.set("other.check-tamed-entity-attack", true);
+            } else if (pluginConfig.getInt("config-version") == 13) {
                 pluginConfig.set("autospawn.piglin", 0);
             } else if (pluginConfig.getInt("config-version") == 12) {
                 pluginConfig.set("autospawn.fox", 0);
                 pluginConfig.set("autospawn.panda", 0);
                 pluginConfig.set("autospawn.drowned", 0);
                 pluginConfig.set("autospawn.piglin", 0);
+                pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 11) {
                 pluginConfig.set("other.spawners-enabled", true);
                 pluginConfig.set("other.end-enderman-spawning", 10);
@@ -36,6 +40,7 @@ public class Config {
                 pluginConfig.set("autospawn.panda", 0);
                 pluginConfig.set("autospawn.drowned", 0);
                 pluginConfig.set("autospawn.piglin", 0);
+                pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 10) {
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
                 pluginConfig.set("other.spawners-enabled", true);
@@ -44,6 +49,7 @@ public class Config {
                 pluginConfig.set("autospawn.panda", 0);
                 pluginConfig.set("autospawn.drowned", 0);
                 pluginConfig.set("autospawn.piglin", 0);
+                pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 9) {
                 pluginConfig.set("other.spawn-no-spawning-area", -1);
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
@@ -53,6 +59,7 @@ public class Config {
                 pluginConfig.set("autospawn.panda", 0);
                 pluginConfig.set("autospawn.drowned", 0);
                 pluginConfig.set("autospawn.piglin", 0);
+                pluginConfig.set("other.check-tamed-entity-attack", true);
             } else {
                 plugin.getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
                 plugin.getLogger().error("Config error. The plugin will be disabled.");
@@ -73,6 +80,7 @@ public class Config {
         killOnDespawn = pluginConfig.getBoolean("other.kill-mobs-on-despawn");
         endEndermanSpawnRate = pluginConfig.getInt("other.end-enderman-spawning");
         spawnersEnabled = pluginConfig.getBoolean("other.spawners-enabled");
+        checkTamedEntityAttack = pluginConfig.getBoolean("other.check-tamed-entity-attack");
         return true;
     }
 }
