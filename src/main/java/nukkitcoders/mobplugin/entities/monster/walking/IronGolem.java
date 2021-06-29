@@ -125,4 +125,9 @@ public class IronGolem extends WalkingMonster {
 
         return false;
     }
+
+    @Override
+    public boolean canTarget(Entity entity) {
+        return entity.getId() == this.isAngryTo;
+    }
 }

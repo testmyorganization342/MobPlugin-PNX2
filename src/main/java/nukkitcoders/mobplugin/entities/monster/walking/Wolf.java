@@ -5,8 +5,6 @@ import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.data.ByteEntityData;
-import cn.nukkit.entity.data.EntityData;
-import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -462,5 +460,10 @@ public class Wolf extends TameableMonster {
             default:
                 return 0;
         }
+    }
+
+    @Override
+    public boolean canTarget(Entity entity) {
+        return true;
     }
 }
