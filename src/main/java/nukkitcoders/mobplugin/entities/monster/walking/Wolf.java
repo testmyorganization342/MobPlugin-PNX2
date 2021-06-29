@@ -4,6 +4,8 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.ByteEntityData;
+import cn.nukkit.entity.data.EntityData;
 import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -389,8 +391,8 @@ public class Wolf extends TameableMonster {
     }
 
     public void setCollarColor(DyeColor color) {
-        this.namedTag.putInt(NBT_KEY_COLLAR_COLOR, color.getDyeData());
-        this.setDataProperty(new IntEntityData(DATA_COLOUR, color.getColor().getRGB()));
+        this.namedTag.putByte(NBT_KEY_COLLAR_COLOR, color.getDyeData());
+        this.setDataProperty(new ByteEntityData(DATA_COLOUR, color.getWoolData()));
         this.collarColor = color;
     }
     
