@@ -10,7 +10,6 @@ import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.RouteFinderThreadPool;
-import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.animal.walking.Llama;
 import nukkitcoders.mobplugin.entities.animal.walking.Pig;
 import nukkitcoders.mobplugin.entities.animal.walking.SkeletonHorse;
@@ -47,8 +46,8 @@ public abstract class WalkingEntity extends BaseEntity {
 
         double near = Integer.MAX_VALUE;
 
-        for (Entity entity : this.getViewers().values()) {
-            if (entity == this || !(entity instanceof EntityCreature) || entity instanceof Animal) {
+        for (Entity entity : this.getLevel().getEntities()) {
+            if (entity == this || !(entity instanceof EntityCreature) || !this.canTarget(entity)) {
                 continue;
             }
 
@@ -67,7 +66,6 @@ public abstract class WalkingEntity extends BaseEntity {
             this.moveTime = 0;
             this.followTarget = creature;
             if (this.route == null && this.passengers.isEmpty()) this.target = creature;
-
         }
 
         if (this.followTarget instanceof EntityCreature && !this.followTarget.closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {

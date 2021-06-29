@@ -544,4 +544,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
         return true;
     }
+
+    public boolean canTarget(Entity entity) {
+        return entity instanceof Player;
+    }
 }
