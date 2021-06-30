@@ -5,11 +5,13 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.BubbleParticle;
+import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.RouteFinderThreadPool;
+import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.animal.walking.Llama;
 import nukkitcoders.mobplugin.entities.animal.walking.Pig;
 import nukkitcoders.mobplugin.entities.animal.walking.SkeletonHorse;
@@ -21,6 +23,7 @@ import org.apache.commons.math3.util.FastMath;
 
 public abstract class WalkingEntity extends BaseEntity {
 
+    private static final double FLOW_MULTIPLIER = .1;
     protected RouteFinder route = null;
 
     protected final boolean isDrowned = this instanceof Drowned;
@@ -154,20 +157,31 @@ public abstract class WalkingEntity extends BaseEntity {
                 return null;
             }
 
+            Block blockInEntityLocation = getLevelBlock();
+            boolean inWater = blockInEntityLocation.getId() == 8 || blockInEntityLocation.getId() == 9;
+            int downFaceID = blockInEntityLocation.getSide(BlockFace.DOWN).getId();
+            if(inWater && (downFaceID == 0 || downFaceID == 8 || downFaceID == 9 || downFaceID == BlockID.LAVA || downFaceID == BlockID.STILL_LAVA || downFaceID == BlockID.SIGN_POST || downFaceID == BlockID.WALL_SIGN)) onGround = false;
+            if(downFaceID == 0 || downFaceID == BlockID.SIGN_POST || downFaceID == BlockID.WALL_SIGN) onGround = false;
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
 
                 double x = this.target.x - this.x;
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth()) / 2 + 0.05) {
+                if (!inWater && (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth()) / 2 + 0.05)) {
                     this.motionX = 0;
                     this.motionZ = 0;
                 } else {
-                    if (Utils.entityInsideWaterFast(this)) {
+                    if (blockInEntityLocation.getId() == 8) {
+                        BlockWater blockWater = (BlockWater) blockInEntityLocation;
+                        Vector3 flowVector = blockWater.getFlowVector();
+                        motionX = flowVector.getX() * FLOW_MULTIPLIER;
+                        motionZ = flowVector.getZ() * FLOW_MULTIPLIER;
+                    } else if(blockInEntityLocation.getId() == 9) {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.05 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.05 * (z / diff);
-                        if (!this.isDrowned) this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
+                        if (!this.isDrowned)
+                            this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
                     } else {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.1 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.1 * (z / diff);
@@ -183,14 +197,20 @@ public abstract class WalkingEntity extends BaseEntity {
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) {
+                if (!inWater && (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier())) {
                     this.motionX = 0;
                     this.motionZ = 0;
                 } else {
-                    if (Utils.entityInsideWaterFast(this)) {
+                    if (blockInEntityLocation.getId() == 8) {
+                        BlockWater blockWater = (BlockWater) blockInEntityLocation;
+                        Vector3 flowVector = blockWater.getFlowVector();
+                        motionX = flowVector.getX() * FLOW_MULTIPLIER;
+                        motionZ = flowVector.getZ() * FLOW_MULTIPLIER;
+                    } else if(blockInEntityLocation.getId() == 9) {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.05 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.05 * (z / diff);
-                        if (!this.isDrowned) this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
+                        if (!this.isDrowned)
+                            this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
                     } else {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.15 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.15 * (z / diff);
@@ -202,7 +222,7 @@ public abstract class WalkingEntity extends BaseEntity {
             double dx = this.motionX;
             double dz = this.motionZ;
             boolean isJump = this.checkJump(dx, dz);
-            if (this.stayTime > 0) {
+            if (this.stayTime > 0 && !inWater) {
                 this.stayTime -= tickDiff;
                 this.move(0, this.motionY, 0);
             } else {
@@ -216,7 +236,7 @@ public abstract class WalkingEntity extends BaseEntity {
             }
 
             if (!isJump) {
-                if (this.onGround) {
+                if (this.onGround && !inWater) {
                     this.motionY = 0;
                 } else if (this.motionY > -this.getGravity() * 4) {
                     if (!(this.level.getBlock(new Vector3(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z))) instanceof BlockLiquid)) {
