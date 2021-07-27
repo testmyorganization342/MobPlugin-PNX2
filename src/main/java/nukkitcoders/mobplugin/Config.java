@@ -13,6 +13,7 @@ public class Config {
     public boolean killOnDespawn;
     public boolean spawnersEnabled;
     public boolean checkTamedEntityAttack;
+    public boolean creeperExplodeBlocks;
 
     Config(MobPlugin plugin) {
         plugin.saveDefaultConfig();
@@ -25,11 +26,14 @@ public class Config {
         if (pluginConfig.getInt("config-version") != ver) {
             if (pluginConfig.getInt("config-version") == 15) {
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
+                pluginConfig.set("other.creeper-explode-blocks", true);
             } else if (pluginConfig.getInt("config-version") == 14) {
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
+                pluginConfig.set("other.creeper-explode-blocks", true);
                 pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 13) {
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
+                pluginConfig.set("other.creeper-explode-blocks", true);
                 pluginConfig.set("autospawn.piglin", 0);
             } else if (pluginConfig.getInt("config-version") == 12) {
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
@@ -37,8 +41,10 @@ public class Config {
                 pluginConfig.set("autospawn.panda", 0);
                 pluginConfig.set("autospawn.drowned", 0);
                 pluginConfig.set("autospawn.piglin", 0);
+                pluginConfig.set("other.creeper-explode-blocks", true);
                 pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 11) {
+                pluginConfig.set("other.creeper-explode-blocks", true);
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
                 pluginConfig.set("other.spawners-enabled", true);
                 pluginConfig.set("other.end-enderman-spawning", 10);
@@ -48,6 +54,7 @@ public class Config {
                 pluginConfig.set("autospawn.piglin", 0);
                 pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 10) {
+                pluginConfig.set("other.creeper-explode-blocks", true);
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
                 pluginConfig.set("other.spawners-enabled", true);
@@ -59,6 +66,7 @@ public class Config {
                 pluginConfig.set("other.check-tamed-entity-attack", true);
             } else if (pluginConfig.getInt("config-version") == 9) {
                 pluginConfig.set("entities.entity-creation-disabled", "exampledworld1, exampleworld2");
+                pluginConfig.set("other.creeper-explode-blocks", true);
                 pluginConfig.set("other.spawn-no-spawning-area", -1);
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
                 pluginConfig.set("other.spawners-enabled", true);
@@ -89,6 +97,7 @@ public class Config {
         endEndermanSpawnRate = pluginConfig.getInt("other.end-enderman-spawning");
         spawnersEnabled = pluginConfig.getBoolean("other.spawners-enabled");
         checkTamedEntityAttack = pluginConfig.getBoolean("other.check-tamed-entity-attack");
+        creeperExplodeBlocks = pluginConfig.getBoolean("other.creeper-explode-blocks");
         return true;
     }
 }
