@@ -12,8 +12,6 @@ entities:
   despawn-ticks: 12000
   # Do not spawn entities in these worlds
   worlds-spawning-disabled: "exampleworld1, exampleworld2"
-  # do not allow creating snow golems, iron golems and withers in these worlds
-  entity-creation-disabled: "exampleworld1, exampleworld2"
 
 # Spawning limit settings
 # Per player, in 100 blocks range
@@ -57,15 +55,23 @@ autospawn:
   drowned: 2
   piglin: 2
 
-other:
+spawners:
+  # Enable mob spawner blocks
+  enabled: true
   # Mob spawner spawning range
-  spawner-spawn-range: 4
+  spawn-range: 4
   # Minimum amount of mobs spawned from spawner
-  minimum-spawner-count: 1
+  minimum-spawn-count: 1
   # Maximum amount of mobs spawned from spawner
-  maximum-spawner-count: 4
-  # Don't reduce spawn eggs if there is same entity already in the spawner (non vanilla behavior)
+  maximum-spawn-count: 4
+  minimum-delay: 200
+  maximum-delay: 5000
+  maximum-nearby-entities: 16
+  required-player-range: 16
+  # Don't reduce spawn eggs if there is an entity already in the spawner (non-vanilla behavior)
   do-not-waste-spawn-eggs: false
+
+other:
   # Give xp drops straight to player
   use-no-xp-orbs: false
   # Do not spawn mobs this near to spawn area
@@ -73,11 +79,11 @@ other:
   spawn-no-spawning-area: -1
   # Kill entities instead of despawning them
   kill-mobs-on-despawn: false
-  # Enable mob spawner blocks
-  spawners-enabled: true
-  # Custom enderman max spawns rule for the end world
+  # Custom enderman max spawns rule for the_end world
   end-enderman-spawning: 10
-  # If tamed entity owner attacked or attack entity, it will be angry
+  # If tamed entity owner attacked or attack entity, it will become angry
   check-tamed-entity-attack: true
-  # if set to true, creeper explode blocks
+  # Let creepers explode blocks
   creeper-explode-blocks: true
+  # Do not allow creating snow golems, iron golems and withers in these worlds
+  worlds-entity-creation-disabled: "exampleworld1, exampleworld2"

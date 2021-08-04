@@ -7,13 +7,11 @@ import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.CreatureSpawnEvent;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ShortTag;
-import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -36,7 +34,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
     private int minSpawnCount;
     private int maxSpawnCount;
 
-    private NukkitRandom nukkitRandom = new NukkitRandom();
+    private final NukkitRandom nukkitRandom = new NukkitRandom();
 
     public static final String TAG_ID = "id";
     public static final String TAG_X = "x";
@@ -51,13 +49,13 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
     public static final String TAG_MINIMUM_SPAWN_COUNT = "MinimumSpawnerCount";
     public static final String TAG_MAXIMUM_SPAWN_COUNT = "MaximumSpawnerCount";
 
-    public static final short SPAWN_RANGE = (short) MobPlugin.getInstance().config.spawnerRange;
-    public static final short MINIMUM_SPAWN_COUNT = (short) MobPlugin.getInstance().config.minSpawnerSpawnCount;
-    public static final short MAXIMUM_SPAWN_COUNT = (short) MobPlugin.getInstance().config.maxSpawnerSpawnCount;
-    public static final short MIN_SPAWN_DELAY = 200;
-    public static final short MAX_SPAWN_DELAY = 5000;
-    public static final short MAX_NEARBY_ENTITIES = 20;
-    public static final short REQUIRED_PLAYER_RANGE = 16;
+    public static final int SPAWN_RANGE = MobPlugin.getInstance().config.spawnerRange;
+    public static final int MINIMUM_SPAWN_COUNT = MobPlugin.getInstance().config.spawnerMinSpawnCount;
+    public static final int MAXIMUM_SPAWN_COUNT = MobPlugin.getInstance().config.spawnerMaxSpawnCount;
+    public static final int MIN_SPAWN_DELAY = MobPlugin.getInstance().config.spawnerMinDelay;
+    public static final int MAX_SPAWN_DELAY = MobPlugin.getInstance().config.spawnerMaxDelay;
+    public static final int MAX_NEARBY_ENTITIES = MobPlugin.getInstance().config.spawnerMaxNearby;
+    public static final int REQUIRED_PLAYER_RANGE = MobPlugin.getInstance().config.spawnerRequiredPlayerRange;
 
     public BlockEntitySpawner(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -116,21 +114,22 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
             this.delay = 0;
 
             ArrayList<Entity> list = new ArrayList<>();
-            boolean isValid = false;
+            boolean playerInRange = false;
             for (Entity entity : this.level.getEntities()) {
-                if (entity instanceof Player || entity instanceof BaseEntity) {
+                if (!playerInRange && entity instanceof Player) {
                     if (entity.distance(this) <= this.requiredPlayerRange) {
-                        if (entity instanceof Player) {
-                            isValid = true;
-                        }
+                        playerInRange = true;
+                    }
+                } else if (entity instanceof BaseEntity) {
+                    if (entity.distance(this) <= this.requiredPlayerRange) {
                         list.add(entity);
                     }
                 }
             }
 
             int amountToSpawn = minSpawnCount + nukkitRandom.nextBoundedInt(maxSpawnCount);
-            for(int i = 0; i < amountToSpawn; i++) {
-                if (isValid && list.size() <= this.maxNearbyEntities) {
+            for (int i = 0; i < amountToSpawn; i++) {
+                if (playerInRange && list.size() <= this.maxNearbyEntities) {
                     Position pos = new Position
                             (
                                     this.x + Utils.rand(-this.spawnRange, this.spawnRange),
@@ -240,5 +239,4 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
     public void setMaxNearbyEntities(int count) {
         this.maxNearbyEntities = count;
     }
-
 }
