@@ -127,7 +127,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
 
             int amountToSpawn = minSpawnCount + nukkitRandom.nextBoundedInt(maxSpawnCount);
             for (int i = 0; i < amountToSpawn; i++) {
-                if (playerInRange && nearbyEntities++ <= this.maxNearbyEntities) {
+                if (playerInRange && nearbyEntities <= this.maxNearbyEntities) {
                     Position pos = new Position
                             (
                                     this.x + Utils.rand(-this.spawnRange, this.spawnRange),
@@ -159,6 +159,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
                             continue;
                         }
                         entity.spawnToAll();
+                        nearbyEntities++;
                     }
                 }
             }
