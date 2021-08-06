@@ -17,8 +17,6 @@ import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
-
 public class BlockEntitySpawner extends BlockEntitySpawnable {
 
     private int entityId;
@@ -113,7 +111,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
         if (this.delay++ >= Utils.rand(this.minSpawnDelay, this.maxSpawnDelay)) {
             this.delay = 0;
 
-            ArrayList<Entity> list = new ArrayList<>();
+            int nearbyEntities = 0;
             boolean playerInRange = false;
             for (Entity entity : this.level.getEntities()) {
                 if (!playerInRange && entity instanceof Player) {
@@ -122,14 +120,14 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
                     }
                 } else if (entity instanceof BaseEntity) {
                     if (entity.distance(this) <= this.requiredPlayerRange) {
-                        list.add(entity);
+                        nearbyEntities++;
                     }
                 }
             }
 
             int amountToSpawn = minSpawnCount + nukkitRandom.nextBoundedInt(maxSpawnCount);
             for (int i = 0; i < amountToSpawn; i++) {
-                if (playerInRange && list.size() <= this.maxNearbyEntities) {
+                if (playerInRange && nearbyEntities++ <= this.maxNearbyEntities) {
                     Position pos = new Position
                             (
                                     this.x + Utils.rand(-this.spawnRange, this.spawnRange),
