@@ -10,7 +10,9 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Hoglin extends WalkingMonster {
 
@@ -27,7 +29,7 @@ public class Hoglin extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 3);
+        return Utils.rand(1, 3);
     }
 
     @Override
@@ -66,5 +68,22 @@ public class Hoglin extends WalkingMonster {
             }
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
         }
+    }
+
+    @Override
+    public Item[] getDrops() {
+        List<Item> drops = new ArrayList<>();
+
+        if (!this.isBaby()) {
+            for (int i = 0; i < Utils.rand(2, 4); i++) {
+                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
+            }
+
+            if (Utils.rand()) {
+                drops.add(Item.get(Item.LEATHER));
+            }
+        }
+
+        return drops.toArray(new Item[0]);
     }
 }
