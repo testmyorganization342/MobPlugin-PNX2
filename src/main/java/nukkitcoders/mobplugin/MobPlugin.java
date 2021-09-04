@@ -221,6 +221,9 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(ZombieHorse.class.getSimpleName(), ZombieHorse.class);
         Entity.registerEntity(WanderingTrader.class.getSimpleName(), WanderingTrader.class);
         Entity.registerEntity(Strider.class.getSimpleName(), Strider.class);
+        Entity.registerEntity(GlowSquid.class.getSimpleName(), GlowSquid.class);
+        Entity.registerEntity(Goat.class.getSimpleName(), Goat.class);
+        Entity.registerEntity(Axolotl.class.getSimpleName(), Axolotl.class);
 
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);
