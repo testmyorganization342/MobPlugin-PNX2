@@ -62,8 +62,8 @@ public class MobPlugin extends PluginBase implements Listener {
             return;
         }
 
-        this.getServer().getPluginManager().registerEvents(new EventListener(), this);
         this.registerEntities();
+        this.getServer().getPluginManager().registerEvents(new EventListener(), this);
 
         if (config.spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this, config.pluginConfig), config.spawnDelay, config.spawnDelay);
@@ -71,6 +71,8 @@ public class MobPlugin extends PluginBase implements Listener {
             if (!this.getServer().getPropertyBoolean("spawn-animals") || !this.getServer().getPropertyBoolean("spawn-mobs")) {
                 this.getServer().getLogger().notice("Disabling mob/animal spawning from server.properties does not disable spawning in MobPlugin");
             }
+        } else {
+            this.getServer().getLogger().notice("Mob spawning is disabled (autospawn-ticks <= 0)");
         }
     }
 

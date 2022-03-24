@@ -137,9 +137,10 @@ public abstract class SwimmingEntity extends BaseEntity {
             double dx = this.motionX;
             double dz = this.motionZ;
 
-            if (Utils.entityInsideWaterFast(this) && (this.motionX > 0 || this.motionZ > 0)) {
+            boolean inWater = Utils.entityInsideWaterFast(this);
+            if (inWater && (this.motionX > 0 || this.motionZ > 0)) {
                 this.motionY = Utils.rand(-0.12, 0.12);
-            } else if (!this.isOnGround() && !Utils.entityInsideWaterFast(this)) {
+            } else if (!this.isOnGround() && !inWater) {
                 this.motionY -= this.getGravity();
             } else {
                 this.motionY = 0;
