@@ -94,7 +94,7 @@ public class Stray extends WalkingMonster implements EntitySmite {
             Location pos = new Location(this.x - Math.sin(yawR) * Math.cos(pitchR) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
 
-            if (this.getLevel().getBlockIdAt((int) pos.getX(),(int) pos.getY(),(int) pos.getZ()) == Block.AIR) {
+            if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
                 EntitySlownessArrow arrow = new EntitySlownessArrow(pos.getChunk(), EntitySlownessArrow.getDefaultNBT(pos), this);
                 setProjectileMotion(arrow, pitch, yawR, pitchR, f);
 
