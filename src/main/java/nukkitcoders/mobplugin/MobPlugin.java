@@ -47,15 +47,6 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public void onEnable() {
-        if (!this.getServer().getName().equals("Nukkit")) {
-            this.getLogger().warning("MobPlugin does not support this software.");
-            this.getLogger().error("Incompatible server software. The plugin will be disabled.");
-            this.getServer().getPluginManager().disablePlugin(this);
-            return;
-        } else if (!this.getServer().getCodename().isEmpty()) {
-            this.getLogger().warning("MobPlugin does not support unofficial Nukkit versions!");
-        }
-
         config = new Config(this);
 
         if (!config.init(this)) {
