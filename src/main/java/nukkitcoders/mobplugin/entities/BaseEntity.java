@@ -141,9 +141,9 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             this.age = this.namedTag.getShort("Age");
         }
 
-        if (this.namedTag.contains("Baby")) {
-            this.baby = this.namedTag.getBoolean("Baby");
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, this.baby);
+        if (this.namedTag.getBoolean("Baby")) {
+            this.baby = true;
+            this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, true);
         }
     }
 
