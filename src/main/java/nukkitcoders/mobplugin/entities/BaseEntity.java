@@ -5,6 +5,8 @@ import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.EntityRideable;
+import cn.nukkit.entity.data.EntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -20,6 +22,7 @@ import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
 import nukkitcoders.mobplugin.utils.Utils;
 import org.apache.commons.math3.util.FastMath;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class BaseEntity extends EntityCreature implements EntityAgeable {
@@ -139,7 +142,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
 
         if (this.namedTag.getBoolean("Baby")) {
-            this.setBaby(true);
+            this.baby = true;
+            this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, true);
         }
     }
 
@@ -524,7 +528,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         pk.pitch = (float) pitch;
         pk.onGround = this.onGround;
         for (Player p : this.hasSpawned.values()) {
-            p.batchDataPacket(pk);
+            p.dataPacket(pk);
         }
     }
 
@@ -536,7 +540,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         pk.motionY = (float) motionY;
         pk.motionZ = (float) motionZ;
         for (Player p : this.hasSpawned.values()) {
-            p.batchDataPacket(pk);
+            p.dataPacket(pk);
         }
     }
 
@@ -592,5 +596,17 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     @Override
     protected boolean applyNameTag(Player player, Item item) {
         return !(this instanceof EnderDragon) && super.applyNameTag(player, item);
+    }
+
+    @Override
+    public boolean setDataProperty(EntityData data, boolean send) {
+        if (!Objects.equals(data, this.dataProperties.get(data.getId()))) {
+            this.dataProperties.put(data);
+            if (send && (data.getId() != DATA_HEALTH || this instanceof EntityRideable || this instanceof Boss)) {
+                this.sendData(this.hasSpawned.values().toArray(new Player[0]), this.dataProperties);
+            }
+            return true;
+        }
+        return false;
     }
 }
