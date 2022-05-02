@@ -82,7 +82,7 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>com.blocklynukkit</groupId>
+            <groupId>cn.powernukkitx</groupId>
             <artifactId>powernukkitx</artifactId>
             <version>1.6.0.0-PNX-SNAPSHOT</version>
             <scope>provided</scope>
