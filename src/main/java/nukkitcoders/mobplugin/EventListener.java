@@ -304,7 +304,7 @@ public class EventListener implements Listener {
             EntityEventPacket pk = new EntityEventPacket();
             pk.eid = entity.getId();
             pk.event = 27;
-            entity.level.addChunkPacket(entity.getChunkX() >> 4, entity.getChunkZ() >> 4, pk);
+            entity.level.addChunkPacket(entity.getChunkX(), entity.getChunkZ(), pk);
         }
     }
 

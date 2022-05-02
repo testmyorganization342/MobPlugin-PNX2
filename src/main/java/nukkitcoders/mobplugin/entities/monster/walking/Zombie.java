@@ -100,7 +100,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
             EntityEventPacket pk = new EntityEventPacket();
             pk.eid = this.getId();
             pk.event = 4;
-            this.level.addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4, pk);
+            this.level.addChunkPacket(this.getChunkX(), this.getChunkZ(), pk);
         }
     }
 
