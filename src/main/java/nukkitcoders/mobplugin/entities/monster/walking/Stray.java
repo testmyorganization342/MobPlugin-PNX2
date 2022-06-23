@@ -18,8 +18,8 @@ import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntitySlownessArrow;
 import nukkitcoders.mobplugin.route.WalkerRouteFinder;
+import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
-import org.apache.commons.math3.util.FastMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +89,8 @@ public class Stray extends WalkingMonster implements EntitySmite {
             double f = 1.3;
             double yaw = this.yaw;
             double pitch = this.pitch;
-            double yawR = FastMath.toRadians(yaw);
-            double pitchR = FastMath.toRadians(pitch);
+            double yawR = FastMathLite.toRadians(yaw);
+            double pitchR = FastMathLite.toRadians(pitch);
             Location pos = new Location(this.x - Math.sin(yawR) * Math.cos(pitchR) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
 

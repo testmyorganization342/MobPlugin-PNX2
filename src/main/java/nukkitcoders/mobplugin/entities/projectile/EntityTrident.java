@@ -13,7 +13,8 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
-import org.apache.commons.math3.util.FastMath;
+import nukkitcoders.mobplugin.utils.FastMathLite;
+import nukkitcoders.mobplugin.utils.Utils;
 
 public class EntityTrident extends Entity {
 
@@ -140,7 +141,7 @@ public class EntityTrident extends Entity {
             MovingObjectPosition movingObjectPosition = null;
 
             if (!this.isCollided) {
-                if (this.isInsideOfWater()) {
+                if (Utils.entityInsideWaterFast(this)) {
                     this.motionY -= this.getGravity() - (this.getGravity() / 2);
                 } else {
                     this.motionY -= this.getGravity();
@@ -215,8 +216,8 @@ public class EntityTrident extends Entity {
 
     public void updateRotation() {
         double f = Math.sqrt((this.motionX * this.motionX) + (this.motionZ * this.motionZ));
-        this.yaw = FastMath.atan2(this.motionX, this.motionZ) * 180 / Math.PI;
-        this.pitch = FastMath.atan2(this.motionY, f) * 180 / Math.PI;
+        this.yaw = FastMathLite.atan2(this.motionX, this.motionZ) * 180 / Math.PI;
+        this.pitch = FastMathLite.atan2(this.motionY, f) * 180 / Math.PI;
     }
 
     protected void onHit() {

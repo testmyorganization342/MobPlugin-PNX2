@@ -12,6 +12,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
 import nukkitcoders.mobplugin.entities.BaseEntity;
+import nukkitcoders.mobplugin.entities.animal.flying.Allay;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Bee;
 import nukkitcoders.mobplugin.entities.animal.flying.Parrot;
@@ -226,6 +227,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(GlowSquid.class.getSimpleName(), GlowSquid.class);
         Entity.registerEntity(Goat.class.getSimpleName(), Goat.class);
         Entity.registerEntity(Axolotl.class.getSimpleName(), Axolotl.class);
+        Entity.registerEntity(Allay.class.getSimpleName(), Allay.class);
 
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);

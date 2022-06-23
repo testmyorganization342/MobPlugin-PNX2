@@ -36,7 +36,7 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
     }
 
     public float getDamage(Integer difficulty) {
-        return Utils.rand(this.getMinDamage(difficulty), this.getMaxDamage(difficulty));
+        return (float) Utils.rand(this.getMinDamage(difficulty), this.getMaxDamage(difficulty));
     }
 
     public float getMinDamage() {
