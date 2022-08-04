@@ -21,8 +21,8 @@ public class EntityTrident extends Entity {
     public static final int NETWORK_ID = 73;
 
     public Entity shootingEntity;
-    public boolean hadCollision = false;
-    public boolean alreadyCollided;
+    protected boolean hadCollision = false;
+    protected boolean alreadyCollided;
 
     @Override
     public int getNetworkId() {

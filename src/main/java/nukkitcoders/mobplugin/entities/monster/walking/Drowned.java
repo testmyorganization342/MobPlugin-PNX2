@@ -29,7 +29,7 @@ public class Drowned extends WalkingMonster implements EntitySmite {
 
     public static final int NETWORK_ID = 110;
 
-    public Item tool;
+    protected Item tool;
 
     public Drowned(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -193,5 +193,9 @@ public class Drowned extends WalkingMonster implements EntitySmite {
         if (tool != null) {
             this.namedTag.put("Item", NBTIO.putItemHelper(tool));
         }
+    }
+
+    public Item getTool() {
+        return this.tool;
     }
 }
