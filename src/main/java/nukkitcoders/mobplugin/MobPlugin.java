@@ -16,6 +16,7 @@ import nukkitcoders.mobplugin.entities.animal.flying.Allay;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Bee;
 import nukkitcoders.mobplugin.entities.animal.flying.Parrot;
+import nukkitcoders.mobplugin.entities.animal.jumping.Frog;
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.*;
 import nukkitcoders.mobplugin.entities.animal.walking.*;
@@ -228,6 +229,8 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Goat.class.getSimpleName(), Goat.class);
         Entity.registerEntity(Axolotl.class.getSimpleName(), Axolotl.class);
         Entity.registerEntity(Allay.class.getSimpleName(), Allay.class);
+        Entity.registerEntity(Frog.class.getSimpleName(), Frog.class);
+        Entity.registerEntity(Tadpole.class.getSimpleName(), Tadpole.class);
 
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);
@@ -266,6 +269,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(Piglin.class.getSimpleName(), Piglin.class);
         Entity.registerEntity(Zoglin.class.getSimpleName(), Zoglin.class);
         Entity.registerEntity(PiglinBrute.class.getSimpleName(), PiglinBrute.class);
+        Entity.registerEntity(Warden.class.getSimpleName(), Warden.class);
 
         Entity.registerEntity("BlueWitherSkull", EntityBlueWitherSkull.class);
         Entity.registerEntity("BlazeFireBall", EntityBlazeFireBall.class);
