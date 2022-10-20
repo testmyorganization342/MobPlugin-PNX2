@@ -108,13 +108,13 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
                 ((EntityBlueWitherSkull) skull).setExplode(true);
                 skull.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
                         Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
-                launch = new ProjectileLaunchEvent(skull);
+                launch = new ProjectileLaunchEvent(skull, this);
             } else {
                 k = Entity.createEntity("WitherSkull", pos, this);
                 skull = (EntityWitherSkull) k;
                 skull.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
                         Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
-                launch = new ProjectileLaunchEvent(skull);
+                launch = new ProjectileLaunchEvent(skull, this);
             }
 
             this.server.getPluginManager().callEvent(launch);

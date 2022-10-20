@@ -67,7 +67,7 @@ public class Blaze extends FlyingMonster {
             fireball.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
                     Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
 
-            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
+            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball, this);
             this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
                 fireball.close();

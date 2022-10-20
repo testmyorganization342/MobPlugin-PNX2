@@ -83,7 +83,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
             EntityEnderCharge charge = (EntityEnderCharge) k;
             charge.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
                     Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
-            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(charge);
+            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(charge, this);
             this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
                 charge.close();
