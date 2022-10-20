@@ -97,7 +97,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
         if (this.panicTicks > 0) {
             this.panicTicks--;
             if (panicTicks == 0) {
-                doPanic(false);
+                this.doPanic(false);
             }
         }
 
@@ -146,6 +146,10 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
         return item != null && item.getId() == Item.WHEAT;
     }
 
+    public int getPanicTicks() {
+        return this.panicTicks;
+    }
+
     public void doPanic(boolean panic) {
         if (panic) {
             int time = Utils.rand(60, 100);
@@ -154,6 +158,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
             this.moveTime = time;
             this.moveMultiplier = 1.8f;
         } else {
+            this.panicTicks = 0;
             this.moveMultiplier = 1.0f;
         }
     }

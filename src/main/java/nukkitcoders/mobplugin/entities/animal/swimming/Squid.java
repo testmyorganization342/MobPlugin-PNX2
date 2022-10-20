@@ -25,12 +25,12 @@ public class Squid extends SwimmingAnimal {
 
     @Override
     public float getWidth() {
-        return 0.8f;
+        return 0.95f;
     }
 
     @Override
     public float getHeight() {
-        return 0.8f;
+        return 0.95f;
     }
 
     @Override

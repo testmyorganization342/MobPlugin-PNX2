@@ -19,8 +19,8 @@ import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
+import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
-import org.apache.commons.math3.util.FastMath;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -149,7 +149,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName();
+        return this.hasCustomName() ? this.getNameTag() : this.getClass().getSimpleName();
     }
 
     public void saveNBT() {
@@ -559,7 +559,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         double verticalMultiplier = Math.cos(pitchR);
         double x = verticalMultiplier * Math.sin(-yawR);
         double z = verticalMultiplier * Math.cos(yawR);
-        double y = Math.sin(-(FastMath.toRadians(pitch)));
+        double y = Math.sin(-(FastMathLite.toRadians(pitch)));
         double magnitude = Math.sqrt(x * x + y * y + z * z);
         if (magnitude > 0) {
             x += (x * (speed - magnitude)) / magnitude;

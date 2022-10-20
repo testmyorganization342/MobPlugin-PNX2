@@ -29,7 +29,7 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
-import cn.nukkit.network.protocol.PlayerInputPacket;
+import cn.nukkit.network.protocol.PlayerAuthInputPacket;
 import cn.nukkit.network.protocol.TextPacket;
 
 import nukkitcoders.mobplugin.entities.BaseEntity;
@@ -47,9 +47,9 @@ import nukkitcoders.mobplugin.event.entity.SpawnGolemEvent;
 import nukkitcoders.mobplugin.event.entity.SpawnWitherEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
+import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import org.apache.commons.math3.util.FastMath;
 
 import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
 
@@ -332,15 +332,22 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void DataPacketReceiveEvent(DataPacketReceiveEvent ev) {
-        if (ev.getPacket() instanceof PlayerInputPacket) {
-            PlayerInputPacket ipk = (PlayerInputPacket) ev.getPacket();
+        if (ev.getPacket() instanceof PlayerAuthInputPacket) {
             Player p = ev.getPlayer();
-            if (p.riding instanceof HorseBase && !(p.riding instanceof Llama)) {
-                ((HorseBase) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
-            } else if (p.riding instanceof Pig) {
-                ((Pig) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
-            } else if (p.riding instanceof Strider) {
-                ((Strider) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
+            if (!p.locallyInitialized) {
+                return;
+            }
+            PlayerAuthInputPacket pk = (PlayerAuthInputPacket) ev.getPacket();
+            double inputX = pk.getMotion().getX();
+            double inputY = pk.getMotion().getY();
+            if (inputX >= -1.0 && inputX <= 1.0 && inputY >= -1.0 && inputY <= 1.0) {
+                if (p.riding instanceof HorseBase && !(p.riding instanceof Llama)) {
+                    ((HorseBase) p.riding).onPlayerInput(p, inputX, inputY);
+                } else if (p.riding instanceof Pig) {
+                    ((Pig) p.riding).onPlayerInput(p, inputX, inputY);
+                } else if (p.riding instanceof Strider) {
+                    ((Strider) p.riding).onPlayerInput(p, inputX, inputY);
+                }
             }
         }
     }
@@ -359,7 +366,7 @@ public class EventListener implements Listener {
             );
 
             for (int i = 0; i < 8; i++) {
-                aab.offset(-FastMath.sin(player.getYaw() * Math.PI / 180) * i, i * (Math.tan(player.getPitch() * -3.141592653589793 / 180)), FastMath.cos(player.getYaw() * Math.PI / 180) * i);
+                aab.offset(-FastMathLite.sin(player.getYaw() * Math.PI / 180) * i, i * (Math.tan(player.getPitch() * -3.141592653589793 / 180)), FastMathLite.cos(player.getYaw() * Math.PI / 180) * i);
                 Entity[] entities = player.getLevel().getCollidingEntities(aab);
                 if (entities.length > 0) {
                     for (Entity e : entities) {

@@ -30,7 +30,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
 
     public static final int NETWORK_ID = 32;
 
-    public Item tool;
+    protected Item tool;
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -231,5 +231,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
         if (tool != null) {
             this.namedTag.put("Item", NBTIO.putItemHelper(tool));
         }
+    }
+
+    public Item getTool() {
+        return this.tool;
     }
 }
