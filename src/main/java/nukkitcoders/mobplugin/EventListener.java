@@ -29,7 +29,7 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
-import cn.nukkit.network.protocol.PlayerAuthInputPacket;
+import cn.nukkit.network.protocol.PlayerInputPacket;
 import cn.nukkit.network.protocol.TextPacket;
 
 import nukkitcoders.mobplugin.entities.BaseEntity;
@@ -332,7 +332,8 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void DataPacketReceiveEvent(DataPacketReceiveEvent ev) {
-        if (ev.getPacket() instanceof PlayerAuthInputPacket) {
+        //PNX没有使用PlayerAuthInputPacket
+        /*if (ev.getPacket() instanceof PlayerAuthInputPacket) {
             Player p = ev.getPlayer();
             if (!p.locallyInitialized) {
                 return;
@@ -348,6 +349,17 @@ public class EventListener implements Listener {
                 } else if (p.riding instanceof Strider) {
                     ((Strider) p.riding).onPlayerInput(p, inputX, inputY);
                 }
+            }
+        }*/
+        if (ev.getPacket() instanceof PlayerInputPacket) {
+            PlayerInputPacket ipk = (PlayerInputPacket) ev.getPacket();
+            Player p = ev.getPlayer();
+            if (p.riding instanceof HorseBase && !(p.riding instanceof Llama)) {
+                ((HorseBase) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
+            } else if (p.riding instanceof Pig) {
+                ((Pig) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
+            } else if (p.riding instanceof Strider) {
+                ((Strider) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
             }
         }
     }
