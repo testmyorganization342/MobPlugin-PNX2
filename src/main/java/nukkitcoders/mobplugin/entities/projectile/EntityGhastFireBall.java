@@ -6,7 +6,7 @@ import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.ExplosionPrimeEvent;
+import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -72,11 +72,13 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             if (this.isCollided && this.canExplode) {
                 this.explode();
+            } else {
+                this.close();
             }
-            this.close();
+            return false;
         }
 
         return super.onUpdate(currentTick);
@@ -84,14 +86,14 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
 
     @Override
     public void onCollideWithEntity(Entity entity) {
-        this.isCollided = true;
+        this.explode();
     }
 
     @Override
     public boolean attack(EntityDamageEvent source) {
-        if (!directionChanged && source instanceof EntityDamageByEntityEvent) {
+        if (!this.directionChanged && source instanceof EntityDamageByEntityEvent) {
             if (((EntityDamageByEntityEvent) source).getDamager() instanceof Player) {
-                directionChanged = true;
+                this.directionChanged = true;
                 this.setMotion(((EntityDamageByEntityEvent) source).getDamager().getLocation().getDirectionVector());
             }
         }
@@ -101,7 +103,11 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.2);
+        if (this.closed) {
+            return;
+        }
+        this.close();
+        EntityExplosionPrimeEvent ev = new EntityExplosionPrimeEvent(this, 1.2);
         this.server.getPluginManager().callEvent(ev);
         if (!ev.isCancelled()) {
             FireBallExplosion explosion = new FireBallExplosion(this, (float) ev.getForce(), this.shootingEntity);
