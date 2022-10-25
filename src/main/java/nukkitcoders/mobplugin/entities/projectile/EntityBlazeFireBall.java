@@ -53,17 +53,13 @@ public class EntityBlazeFireBall extends EntityProjectile {
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             this.close();
+            return false;
+        } else {
+            this.fireTicks = 2;
         }
 
         return super.onUpdate(currentTick);
-    }
-
-    @Override
-    public void onCollideWithEntity(Entity entity) {
-        super.onCollideWithEntity(entity);
-        this.isCollided = true;
-        entity.setOnFire(5);
     }
 }
