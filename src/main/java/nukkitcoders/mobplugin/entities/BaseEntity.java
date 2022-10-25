@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
@@ -14,6 +15,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MoveEntityAbsolutePacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import nukkitcoders.mobplugin.MobPlugin;
@@ -608,5 +610,12 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             return true;
         }
         return false;
+    }
+
+    protected void playAttack() {
+        EntityEventPacket pk = new EntityEventPacket();
+        pk.eid = this.getId();
+        pk.event = EntityEventPacket.ARM_SWING;
+        Server.broadcastPacket(this.getViewers().values(), pk);
     }
 }

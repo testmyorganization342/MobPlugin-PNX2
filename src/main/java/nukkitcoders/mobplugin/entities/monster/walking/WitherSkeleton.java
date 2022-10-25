@@ -72,6 +72,7 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
             if (player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage))) {
+                this.playAttack();
                 player.addEffect(Effect.getEffect(Effect.WITHER).setDuration(200));
             }
         }
