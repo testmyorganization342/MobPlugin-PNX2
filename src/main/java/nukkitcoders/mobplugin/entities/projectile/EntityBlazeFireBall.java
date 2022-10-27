@@ -60,6 +60,7 @@ public class EntityBlazeFireBall extends EntityProjectile {
             this.fireTicks = 2;
         }
 
-        return super.onUpdate(currentTick);
+        super.onUpdate(currentTick);
+        return !this.closed;
     }
 }

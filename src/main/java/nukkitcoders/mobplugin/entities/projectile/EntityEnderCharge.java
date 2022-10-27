@@ -63,6 +63,7 @@ public class EntityEnderCharge extends EntityProjectile {
             return false;
         }
 
-        return super.onUpdate(currentTick);
+        super.onUpdate(currentTick);
+        return !this.closed;
     }
 }

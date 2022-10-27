@@ -81,7 +81,8 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
             return false;
         }
 
-        return super.onUpdate(currentTick);
+        super.onUpdate(currentTick);
+        return !this.closed;
     }
 
     @Override
