@@ -24,6 +24,7 @@ public abstract class FlyingEntity extends BaseEntity {
 
         Vector3 target = this.target;
         if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
+            this.followTarget = null;
             double near = Integer.MAX_VALUE;
 
             for (Entity entity : this.getLevel().getEntities()) {
@@ -44,6 +45,7 @@ public abstract class FlyingEntity extends BaseEntity {
 
                 this.moveTime = 0;
                 this.target = creature;
+                this.followTarget = creature;
             }
         }
 
@@ -142,7 +144,6 @@ public abstract class FlyingEntity extends BaseEntity {
             double dx = this.motionX;
             double dy = this.motionY;
             double dz = this.motionZ;
-            Vector3 target = this.target;
             if (this.stayTime > 0) {
                 this.stayTime -= tickDiff;
                 this.move(0, dy, 0);
@@ -156,14 +157,18 @@ public abstract class FlyingEntity extends BaseEntity {
                 }
             }
 
-            if (this.isOnGround()) {
-                this.motionY = Utils.rand(0.1, 0.15);
-            } else {
-                this.motionY = Utils.rand(-0.1, 0.1);
+            if (this.stayTime <= 0) {
+                if (this.isOnGround()) {
+                    this.motionY = Utils.rand(0.05, 0.1);
+                } else if (this.followTarget != null) {
+                    this.motionY = Math.min(0.2, Math.max(-0.2, (this.followTarget.x - this.x) / 100));
+                } else {
+                    this.motionY = Utils.rand(-0.05, 0.05);
+                }
             }
 
             this.updateMovement();
-            return target;
+            return this.target;
         }
         return null;
     }
