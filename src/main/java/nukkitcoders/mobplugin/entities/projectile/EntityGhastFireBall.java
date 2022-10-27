@@ -27,17 +27,17 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
 
     @Override
     public float getWidth() {
-        return 0.45f;
+        return 0.31f;
     }
 
     @Override
     public float getHeight() {
-        return 0.45f;
+        return 0.31f;
     }
 
     @Override
     public float getGravity() {
-        return 0.01f;
+        return 0.005f;
     }
 
     @Override

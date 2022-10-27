@@ -61,8 +61,9 @@ public class EntityShulkerBullet extends EntityProjectile {
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             this.close();
+            return false;
         }
 
         return super.onUpdate(currentTick);

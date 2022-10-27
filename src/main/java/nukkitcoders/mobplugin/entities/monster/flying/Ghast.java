@@ -7,12 +7,13 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.LevelEventPacket;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityGhastFireBall;
+import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -52,47 +53,50 @@ public class Ghast extends FlyingMonster {
 
         this.fireProof = true;
         this.setMaxHealth(10);
-        this.setDamage(new float[]{0, 0, 0, 0});
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_FIRE_IMMUNE, true);
     }
 
+    @Override
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance <= 256;
+            return !player.closed && player.spawned && player.isAlive() && (player.isSurvival() || player.isAdventure()) && distance <= 4096;
         }
-        return creature.isAlive() && !creature.closed && distance <= 256;
+        return false;
     }
 
+    @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 60 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 10000) {
-            this.attackDelay = 0;
-
-            double f = 1;
-            double yaw = this.yaw + Utils.rand(-7.0, 7.0);
-            double pitch = this.pitch + Utils.rand(-5.0, 5.0);
-            Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
-                    this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
-            if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
-                return;
+        if (this.distanceSquared(player) <= 4096) { // 64 blocks)
+            if (this.attackDelay == 50) {
+                this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST);
             }
-            Entity k = Entity.createEntity("GhastFireBall", pos, this);
-            if (!(k instanceof EntityGhastFireBall)) {
-                return;
-            }
+            if (this.attackDelay > 60 && Utils.rand(1, 32) < 4) {
+                this.attackDelay = 0;
 
-            EntityGhastFireBall fireball = (EntityGhastFireBall) k;
-            fireball.setExplode(true);
-            fireball.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
-                    Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
+                double f = 1;
+                double yaw = this.yaw + Utils.rand(-7.0, 7.0);
+                double pitch = this.pitch + Utils.rand(-4.0, 4.0);
+                Location pos = new Location(this.x - Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight() - 1, // below eyes
+                        this.z + Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
 
-            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
-            this.server.getPluginManager().callEvent(launch);
-            if (launch.isCancelled()) {
-                fireball.close();
-            } else {
-                fireball.spawnToAll();
-                this.level.addSound(this, Sound.MOB_GHAST_FIREBALL);
+                if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
+                    return;
+                }
+
+                EntityGhastFireBall fireball = (EntityGhastFireBall) Entity.createEntity("GhastFireBall", pos, this);
+                fireball.setExplode(true);
+                fireball.setMotion(new Vector3(-Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f, -Math.sin(FastMathLite.toRadians(pitch)) * f * f,
+                        Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f));
+
+                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
+                this.server.getPluginManager().callEvent(launch);
+                if (launch.isCancelled()) {
+                    fireball.close();
+                } else {
+                    fireball.spawnToAll();
+                    this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST_SHOOT);
+                }
             }
         }
     }

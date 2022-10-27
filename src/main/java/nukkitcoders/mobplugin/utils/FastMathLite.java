@@ -1090,9 +1090,7 @@ public class FastMathLite {
             ra = copySign(0d, y);
         }
 
-        final double result = atan(ra, rb, x < 0);
-
-        return result;
+        return atan(ra, rb, x < 0);
     }
 
     public static double asin(double x) {

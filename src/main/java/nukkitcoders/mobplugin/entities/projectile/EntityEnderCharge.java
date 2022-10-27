@@ -39,7 +39,7 @@ public class EntityEnderCharge extends EntityProjectile {
 
     @Override
     public float getGravity() {
-        return 0.01f;
+        return 0.005f;
     }
 
     @Override
@@ -58,8 +58,9 @@ public class EntityEnderCharge extends EntityProjectile {
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             this.close();
+            return false;
         }
 
         return super.onUpdate(currentTick);
