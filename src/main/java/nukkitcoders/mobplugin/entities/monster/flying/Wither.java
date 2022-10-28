@@ -88,8 +88,8 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
             this.attackDelay = 0;
 
             double f = 1;
-            double yaw = this.yaw + Utils.rand(-12.0, 12.0);
-            double pitch = this.pitch + Utils.rand(-7.0, 7.0);
+            double yaw = this.yaw + Utils.rand(-4.0, 4.0);
+            double pitch = this.pitch + Utils.rand(-4.0, 4.0);
             Location pos = new Location(this.x - Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
                     this.z + Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
 

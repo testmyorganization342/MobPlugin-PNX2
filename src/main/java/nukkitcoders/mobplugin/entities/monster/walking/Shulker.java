@@ -56,8 +56,8 @@ public class Shulker extends WalkingMonster {
             this.attackDelay = 0;
 
             double f = 0.5;
-            double yaw = this.yaw + Utils.rand(-12.0, 12.0);
-            double pitch = this.pitch + Utils.rand(-7.0, 7.0);
+            double yaw = this.yaw + Utils.rand(-4.0, 4.0);
+            double pitch = this.pitch + Utils.rand(-4.0, 4.0);
             Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
