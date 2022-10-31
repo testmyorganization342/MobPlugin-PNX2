@@ -1,13 +1,16 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.NukkitMath;
@@ -148,15 +151,37 @@ public class Enderman extends WalkingMonster {
     }
 
     public void teleport() {
-        this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
-        int dx = Utils.rand(-16, 16);
-        int dz = Utils.rand(-16, 16);
-        double x = this.x + dx;
-        double z = this.z + dz;
-        if (this.teleport(this.level.getSafeSpawn(new Vector3(x, this.y, z)))) {
+        Location to = this.getSafeTpLocation();
+        if (to != null) {
             this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
-            this.teleported = true;
+            if (this.teleport(to, PlayerTeleportEvent.TeleportCause.UNKNOWN)) {
+                this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+                this.teleported = true;
+            }
         }
+    }
+
+    private Location getSafeTpLocation() {
+        double dx = this.x + Utils.rand(-16, 16);
+        double dz = this.z + Utils.rand(-16, 16);
+        Vector3 pos = new Vector3(Math.floor(dx), (int) Math.floor(this.y + 0.1) + 16, Math.floor(dz));
+        FullChunk chunk = this.level.getChunk((int) pos.x >> 4, (int) pos.z >> 4, false);
+        int x = (int) pos.x & 0x0f;
+        int z = (int) pos.z & 0x0f;
+        int previousY1 = -1;
+        int previousY2 = -1;
+        if (chunk != null && chunk.isGenerated()) {
+            for (int y = Math.min(255, (int) pos.y); y >= 0; y--) {
+                if (previousY1 > -1 && previousY2 > -1) {
+                    if (Block.solid[chunk.getBlockId(x, y, z)] && chunk.getBlockId(x, previousY1, z) == 0 && chunk.getBlockId(x, previousY2, z) == 0) {
+                        return new Location(pos.x + 0.5, previousY1 + 0.1, pos.z + 0.5, this.level);
+                    }
+                }
+                previousY2 = previousY1;
+                previousY1 = y;
+            }
+        }
+        return null;
     }
 
     @Override
