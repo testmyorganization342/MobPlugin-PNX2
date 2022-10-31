@@ -24,6 +24,8 @@ public class Enderman extends WalkingMonster {
 
     private int angry = 0;
 
+    private boolean teleported;
+
     public Enderman(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -94,7 +96,7 @@ public class Enderman extends WalkingMonster {
                 ev.setCancelled(true);
                 this.teleport();
                 return false;
-            } else if (Utils.rand(1, 10) == 1) {
+            } else if (!this.teleported && Utils.rand(1, 10) == 1) {
                 this.teleport();
             }
         }
@@ -122,27 +124,24 @@ public class Enderman extends WalkingMonster {
             return false;
         }
 
-        int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z));
-        if (b == BlockID.WATER || b == BlockID.STILL_WATER) {
-            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 2));
-            if (isAngry()) {
-                setAngry(0);
-            }
-            this.teleport();
-        } else if (Utils.rand(0, 500) == 20) {
-            this.teleport();
-        }
-
-        if (this.level.isRaining() && Utils.rand(1, 5) == 1 && this.level.canBlockSeeSky(this)) {
-            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 1f));
-            if (isAngry()) {
-                setAngry(0);
-            }
-            this.teleport();
-        }
+        this.teleported = false;
 
         if (this.angry > 0) {
-            this.angry--;
+            if (this.angry == 1) {
+                this.setAngry(0);
+            } else {
+                this.angry--;
+            }
+        }
+
+        int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z));
+        if (b == BlockID.WATER || b == BlockID.STILL_WATER || (this.level.isRaining() && Utils.rand() && this.level.canBlockSeeSky(this))) {
+            this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 1));
+            this.setAngry(0);
+            this.teleport();
+        } else if (Utils.rand(0, 500) == 20) {
+            this.setAngry(0);
+            this.teleport();
         }
 
         return super.entityBaseTick(tickDiff);
@@ -156,6 +155,7 @@ public class Enderman extends WalkingMonster {
         double z = this.z + dz;
         if (this.teleport(this.level.getSafeSpawn(new Vector3(x, this.y, z)))) {
             this.level.addSound(this, Sound.MOB_ENDERMEN_PORTAL);
+            this.teleported = true;
         }
     }
 
