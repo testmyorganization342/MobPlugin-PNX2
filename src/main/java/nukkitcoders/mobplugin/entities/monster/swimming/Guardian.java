@@ -82,7 +82,7 @@ public class Guardian extends SwimmingMonster {
         }
 
         boolean hasUpdate = super.entityBaseTick(tickDiff);
-        if (followTarget != null) {
+        if (!this.closed && followTarget != null) {
             if (laserTargetEid !=followTarget.getId()) {
                 this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = followTarget.getId()));
                 laserChargeTick = 40;

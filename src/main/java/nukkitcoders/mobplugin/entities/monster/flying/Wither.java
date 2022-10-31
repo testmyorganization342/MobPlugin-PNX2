@@ -155,7 +155,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
             return true;
         }
 
-        if (this.age == 200) {
+        if (!this.closed && this.age == 200) {
             this.explode();
             this.setDataProperty(new IntEntityData(DATA_WITHER_INVULNERABLE_TICKS, 0));
         }

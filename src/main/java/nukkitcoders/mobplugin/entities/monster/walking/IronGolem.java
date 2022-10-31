@@ -47,8 +47,8 @@ public class IronGolem extends WalkingMonster {
 
     @Override
     public void initEntity() {
-        this.setMaxHealth(100);
         super.initEntity();
+        this.setMaxHealth(100);
 
         this.setDamage(new float[] { 0, 11, 21, 31 });
         this.setMinDamage(new float[] { 0, 4, 7, 11 });

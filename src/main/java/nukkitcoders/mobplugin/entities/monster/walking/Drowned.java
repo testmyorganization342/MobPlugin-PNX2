@@ -112,7 +112,7 @@ public class Drowned extends WalkingMonster implements EntitySmite {
 
         this.setAirTicks(300);
 
-        if (MobPlugin.shouldMobBurn(level, this)) {
+        if (!this.closed && MobPlugin.shouldMobBurn(level, this)) {
             this.setOnFire(100);
         }
 

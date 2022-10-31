@@ -115,7 +115,7 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
 
         boolean hasUpdate = super.entityBaseTick(tickDiff);
 
-        if (MobPlugin.shouldMobBurn(level, this)) {
+        if (!this.closed && MobPlugin.shouldMobBurn(level, this)) {
             this.setOnFire(100);
         }
 
