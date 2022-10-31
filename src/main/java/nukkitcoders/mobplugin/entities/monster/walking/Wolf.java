@@ -250,11 +250,9 @@ public class Wolf extends TameableMonster {
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (entity instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
                 float points = 0;
                 for (Item i : ((Player) entity).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,

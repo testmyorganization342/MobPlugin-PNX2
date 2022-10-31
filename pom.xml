@@ -8,7 +8,7 @@
      </properties>
     <groupId>nukkitcoders.mobplugin</groupId>
     <artifactId>MobPlugin</artifactId>
-    <version>1.22.2</version>
+    <version>1.22.3.dev</version>
     <build>
         <defaultGoal>install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>

@@ -18,6 +18,8 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MoveEntityAbsolutePacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
@@ -42,6 +44,36 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public Item[] armor;
     //private int inEndPortal;
     //private int inNetherPortal;
+
+    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<Float>() {
+        {
+            put(Item.LEATHER_CAP, new Float(1));
+            put(Item.LEATHER_TUNIC, new Float(3));
+            put(Item.LEATHER_PANTS, new Float(2));
+            put(Item.LEATHER_BOOTS, new Float(1));
+            put(Item.CHAIN_HELMET, new Float(2));
+            put(Item.CHAIN_CHESTPLATE, new Float(5));
+            put(Item.CHAIN_LEGGINGS, new Float(4));
+            put(Item.CHAIN_BOOTS, new Float(1));
+            put(Item.GOLD_HELMET, new Float(2));
+            put(Item.GOLD_CHESTPLATE, new Float(5));
+            put(Item.GOLD_LEGGINGS, new Float(3));
+            put(Item.GOLD_BOOTS, new Float(1));
+            put(Item.IRON_HELMET, new Float(2));
+            put(Item.IRON_CHESTPLATE, new Float(6));
+            put(Item.IRON_LEGGINGS, new Float(5));
+            put(Item.IRON_BOOTS, new Float(2));
+            put(Item.DIAMOND_HELMET, new Float(3));
+            put(Item.DIAMOND_CHESTPLATE, new Float(8));
+            put(Item.DIAMOND_LEGGINGS, new Float(6));
+            put(Item.DIAMOND_BOOTS, new Float(3));
+            put(Item.NETHERITE_HELMET, new Float(3));
+            put(Item.NETHERITE_CHESTPLATE, new Float(8));
+            put(Item.NETHERITE_LEGGINGS, new Float(6));
+            put(Item.NETHERITE_BOOTS, new Float(3));
+            put(Item.TURTLE_SHELL, new Float(2));
+        }
+    };
 
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -610,6 +642,12 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             return true;
         }
         return false;
+    }
+
+    protected float getArmorPoints(int item) {
+        Float points = ARMOR_POINTS.get(item);
+        if (points == null) return 0;
+        return points;
     }
 
     protected void playAttack() {
