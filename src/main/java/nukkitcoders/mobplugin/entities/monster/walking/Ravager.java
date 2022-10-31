@@ -34,12 +34,17 @@ public class Ravager extends WalkingMonster {
 
     @Override
     public float getHeight() {
-        return 1.9f;
+        return 2.2f;
     }
 
     @Override
     public float getWidth() {
-        return 1.2f;
+        return 1.95f;
+    }
+
+    @Override
+    public double getSpeed() {
+        return 1.1;
     }
 
     @Override
