@@ -3,10 +3,16 @@ package nukkitcoders.mobplugin.utils;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemSkull;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
+import nukkitcoders.mobplugin.entities.monster.walking.Creeper;
+import nukkitcoders.mobplugin.entities.monster.walking.Skeleton;
+import nukkitcoders.mobplugin.entities.monster.walking.WitherSkeleton;
+import nukkitcoders.mobplugin.entities.monster.walking.Zombie;
 
 import java.util.SplittableRandom;
 
@@ -81,5 +87,20 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static Item getMobHead(int mob) {
+        switch (mob) {
+            case Skeleton.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.SKELETON_SKULL, 1);
+            case WitherSkeleton.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.WITHER_SKELETON_SKULL, 1);
+            case Zombie.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.ZOMBIE_HEAD, 1);
+            case Creeper.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1);
+            default:
+                return null;
+        }
     }
 }
