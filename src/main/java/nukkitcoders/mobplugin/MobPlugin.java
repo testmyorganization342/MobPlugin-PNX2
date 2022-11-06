@@ -85,6 +85,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!sender.hasPermission("mobplugin.command")) return false;
         if (cmd.getName().equals("summon")) {
             if (args.length == 0 || (args.length == 1 && !(sender instanceof Player))) {
                 return false;
