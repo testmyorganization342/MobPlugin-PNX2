@@ -25,6 +25,8 @@ public class Config {
     public boolean spawnersEnabled;
     public boolean checkTamedEntityAttack;
     public boolean creeperExplodeBlocks;
+    public boolean allowBreeding;
+    public boolean showBossBar;
     public List<String> mobSpawningDisabledWorlds;
     public List<String> mobCreationDisabledWorlds;
 
@@ -34,7 +36,7 @@ public class Config {
     }
 
     boolean init(MobPlugin plugin) {
-        int ver = 16;
+        int ver = 17;
         int current = pluginConfig.getInt("config-version");
 
         if (current != ver) {
@@ -44,7 +46,12 @@ public class Config {
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 return false;
             }
-            
+
+            if (current < 17) {
+                pluginConfig.set("other.allow-breeding", true);
+                pluginConfig.set("other.show-boss-bar", true);
+            }
+
             if (current < 16) {
                 pluginConfig.set("spawners.enabled", true);
                 pluginConfig.set("spawners.spawn-range", 4);
@@ -115,6 +122,8 @@ public class Config {
         checkTamedEntityAttack = pluginConfig.getBoolean("other.check-tamed-entity-attack");
         creeperExplodeBlocks = pluginConfig.getBoolean("other.creeper-explode-blocks");
         mobCreationDisabledWorlds = loadStringList("other.worlds-entity-creation-disabled");
+        allowBreeding = pluginConfig.getBoolean("other.allow-breeding");
+        showBossBar = pluginConfig.getBoolean("other.show-boss-bar");
         return true;
     }
 

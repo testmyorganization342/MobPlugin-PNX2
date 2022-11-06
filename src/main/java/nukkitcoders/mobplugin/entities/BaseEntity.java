@@ -158,6 +158,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, baby);
         if (baby) {
             this.setScale(0.5f);
+            this.age = Utils.rand(-2400, -1800);
         } else {
             this.setScale(1.0f);
         }
@@ -294,6 +295,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     @Override
     public boolean move(double dx, double dy, double dz) {
         if (dy < -10 || dy > 10) {
+            return false;
+        }
+
+        if (dx == 0 && dz == 0 && dy == 0) {
             return false;
         }
 

@@ -1,5 +1,5 @@
 # Config version, do not edit!
-config-version: 16
+config-version: 17
 
 entities:
   # How often the spawn task should run
@@ -54,7 +54,7 @@ autospawn:
   panda: 1
   drowned: 2
   piglin: 2
-  hoglin: 2
+  hoglin: 0
 
 spawners:
   # Enable mob spawner blocks
@@ -93,3 +93,8 @@ other:
   creeper-explode-blocks: true
   # Do not allow creating snow golems, iron golems and withers in these worlds
   worlds-entity-creation-disabled: "exampleworld1, exampleworld2"
+  # Allow players to breed mobs
+  allow-breeding: true
+  # Show boss bar for wither & ender dragon (work in progress)
+  show-boss-bar: true
+

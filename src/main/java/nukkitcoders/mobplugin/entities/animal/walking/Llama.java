@@ -69,9 +69,7 @@ public class Llama extends HorseBase {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.LEATHER, 0, 1));
-            }
+            drops.add(Item.get(Item.LEATHER, 0, Utils.rand(0, 2)));
         }
 
         return drops.toArray(new Item[0]);

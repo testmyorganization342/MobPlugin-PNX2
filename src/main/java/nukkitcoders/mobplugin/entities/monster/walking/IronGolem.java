@@ -80,15 +80,10 @@ public class IronGolem extends WalkingMonster {
     @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
-
-        for (int i = 0; i < Utils.rand(3, 5); i++) {
-            drops.add(Item.get(Item.IRON_INGOT, 0, 1));
-        }
-
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.POPPY, 0, 1));
-        }
-
+        int c = Utils.rand(3, 5);
+        if (c > 0) drops.add(Item.get(Item.IRON_INGOT, 0, c));
+        int c2 = Utils.rand(3, 5);
+        if (c2 > 0) drops.add(Item.get(Item.POPPY, 0, c2));
         return drops.toArray(new Item[0]);
     }
 

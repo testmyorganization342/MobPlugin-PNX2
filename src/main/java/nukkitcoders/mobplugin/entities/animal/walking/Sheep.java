@@ -84,7 +84,7 @@ public class Sheep extends WalkingAnimal {
         if (item.getId() == Item.DYE) {
             this.setColor(((ItemDye) item).getDyeColor().getWoolData());
             return true;
-        } else if (item.getId() == Item.WHEAT && !this.isBaby()) {
+        } else if (item.getId() == Item.WHEAT && !this.isBaby() && !this.isInLoveCooldown()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.WHEAT)));
@@ -116,7 +116,7 @@ public class Sheep extends WalkingAnimal {
             Player player = (Player) creature;
             return player.spawned && player.isAlive() && !player.closed && player.getInventory().getItemInHand().getId() == Item.WHEAT && distance <= 49;
         }
-        return false;
+        return super.targetOption(creature, distance);
     }
 
     @Override
@@ -125,10 +125,7 @@ public class Sheep extends WalkingAnimal {
 
         if (!this.isBaby()) {
             if (!sheared) drops.add(Item.get(Item.WOOL, this.getColor(), 1));
-
-            for (int i = 0; i < Utils.rand(1, 2); i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
-            }
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, Utils.rand(1, 2)));
         }
 
         return drops.toArray(new Item[0]);

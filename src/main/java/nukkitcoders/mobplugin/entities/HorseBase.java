@@ -1,9 +1,7 @@
 package nukkitcoders.mobplugin.entities;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.EntityRideable;
+import cn.nukkit.entity.*;
 import cn.nukkit.entity.data.Vector3fEntityData;
 import cn.nukkit.entity.passive.EntitySkeletonHorse;
 import cn.nukkit.item.Item;
@@ -87,7 +85,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (this.isFeedItem(item)) {
+        if (this.isFeedItem(item) && !this.isInLoveCooldown()) {
             this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(), 0), Item.get(item.getId(), 0, 1)));
             this.setInLove();
             return true;

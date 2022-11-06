@@ -137,10 +137,7 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
         if (!this.isBaby()) {
             drops.add(Item.get(Item.ROTTEN_FLESH, 0, Utils.rand(0, 1)));
             drops.add(Item.get(Item.GOLD_NUGGET, 0, Utils.rand(0, 1)));
-
-            for (int i = 0; i < (Utils.rand(0, 101) <= 9 ? 1 : 0); i++) {
-                drops.add(Item.get(Item.GOLD_SWORD, Utils.rand(20, 30), 1));
-            }
+            drops.add(Item.get(Item.GOLD_SWORD, Utils.rand(20, 30), Utils.rand(0, 101) <= 9 ? 1 : 0));
         }
 
         return drops.toArray(new Item[0]);

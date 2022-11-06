@@ -18,13 +18,11 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.utils.DyeColor;
-
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.Turtle;
 import nukkitcoders.mobplugin.entities.animal.walking.Fox;
 import nukkitcoders.mobplugin.entities.animal.walking.Sheep;
 import nukkitcoders.mobplugin.entities.monster.TameableMonster;
-import nukkitcoders.mobplugin.entities.monster.walking.Skeleton;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.HashMap;
@@ -306,7 +304,7 @@ public class Wolf extends TameableMonster {
     
     public void setInLove() {
         this.inLoveTicks = 600;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);
+        //this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);
     }
     
     public boolean isInLove() {
@@ -380,7 +378,7 @@ public class Wolf extends TameableMonster {
             this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         }
     }
-    
+
     @Override
     public int getKillExperience() {
         return this.isBaby() ? 0 : 3;

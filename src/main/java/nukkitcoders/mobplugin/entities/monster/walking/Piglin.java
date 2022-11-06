@@ -7,7 +7,6 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemID;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
@@ -81,7 +80,7 @@ public class Piglin extends WalkingMonster {
     private static boolean isWearingGold(Player p) {
         if (p.getInventory() == null) return false;
         PlayerInventory i = p.getInventory();
-        return i.getHelmet().getId() == ItemID.GOLD_HELMET || i.getChestplate().getId() == ItemID.GOLD_CHESTPLATE || i.getLeggings().getId() == ItemID.GOLD_LEGGINGS || i.getBoots().getId() == ItemID.GOLD_BOOTS;
+        return i.getHelmet().getId() == Item.GOLD_HELMET || i.getChestplate().getId() == Item.GOLD_CHESTPLATE || i.getLeggings().getId() == Item.GOLD_LEGGINGS || i.getBoots().getId() == Item.GOLD_BOOTS;
     }
 
     @Override

@@ -77,24 +77,24 @@ public class Pig extends WalkingAnimal implements EntityRideable {
                     || id == Item.CARROT_ON_A_STICK)
                     && distance <= 49;
         }
-        return false;
+        return super.targetOption(creature, distance);
     }
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.getId() == Item.CARROT && !this.isBaby()) {
+        if (item.getId() == Item.CARROT && !this.isBaby() && !this.isInLoveCooldown()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.CARROT)));
             this.setInLove();
             return true;
-        } else if (item.getId() == Item.POTATO && !this.isBaby()) {
+        } else if (item.getId() == Item.POTATO && !this.isBaby() && !this.isInLoveCooldown()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.POTATO)));
             this.setInLove();
             return true;
-        } else if (item.getId() == Item.BEETROOT && !this.isBaby()) {
+        } else if (item.getId() == Item.BEETROOT && !this.isBaby() && !this.isInLoveCooldown()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.BEETROOT)));
@@ -117,9 +117,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(1, 3); i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
-            }
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, Utils.rand(1, 3)));
             if (this.isSaddled()) {
                 drops.add(Item.get(Item.SADDLE));
             }

@@ -97,9 +97,7 @@ public class Pillager extends WalkingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.ARROW, 0, 1));
-        }
+        drops.add(Item.get(Item.ARROW, 0, Utils.rand(0, 2)));
 
         if (Utils.rand(1, 12) == 1) {
             drops.add(Item.get(471, Utils.rand(300, 380), Utils.rand(0, 1)));

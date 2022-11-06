@@ -6,8 +6,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
-import cn.nukkit.event.entity.EntityShootBowEvent;
-import cn.nukkit.event.entity.ProjectileLaunchEvent;
+import cn.nukkit.event.entity.*;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBow;
 import cn.nukkit.level.Location;
@@ -126,13 +125,8 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.BONE, 0, 1));
-        }
-
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.ARROW, 0, 1));
-        }
+        drops.add(Item.get(Item.BONE, 0, Utils.rand(0, 2)));
+        drops.add(Item.get(Item.ARROW, 0, Utils.rand(0, 2)));
 
         return drops.toArray(new Item[0]);
     }

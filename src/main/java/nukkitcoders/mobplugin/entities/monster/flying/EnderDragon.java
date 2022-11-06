@@ -11,7 +11,9 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
+import cn.nukkit.network.protocol.BossEventPacket;
 import cn.nukkit.network.protocol.DataPacket;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityEnderCharge;
@@ -134,5 +136,19 @@ public class EnderDragon extends FlyingMonster implements Boss {
         }
 
         return super.entityBaseTick(tickDiff);
+    }
+
+    @Override
+    public void spawnTo(Player player) {
+        super.spawnTo(player);
+        if (!MobPlugin.getInstance().config.showBossBar) {
+            return;
+        }
+        BossEventPacket pkBoss = new BossEventPacket();
+        pkBoss.bossEid = this.id;
+        pkBoss.type = BossEventPacket.TYPE_SHOW;
+        pkBoss.title = this.getName();
+        pkBoss.healthPercent = this.health / 100;
+        player.dataPacket(pkBoss);
     }
 }
