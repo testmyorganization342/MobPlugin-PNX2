@@ -139,7 +139,7 @@ public class Sheep extends WalkingAnimal {
     }
 
     public int getColor() {
-        return namedTag.getByte("Color");
+        return this.color;
     }
 
     private int randomColor() {
