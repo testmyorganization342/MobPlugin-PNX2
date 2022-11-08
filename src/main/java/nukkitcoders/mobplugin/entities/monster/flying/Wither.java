@@ -237,4 +237,10 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
         pkBoss.healthPercent = this.health / 100;
         player.dataPacket(pkBoss);
     }
+
+    @Override
+    public String getName() {
+        String name = this.getNameTag();
+        return !name.isEmpty() ? name : "Wither";
+    }
 }
