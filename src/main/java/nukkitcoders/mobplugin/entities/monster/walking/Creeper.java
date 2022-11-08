@@ -172,8 +172,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             double z = this.target.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
-            double distance = followTarget.distance(this);
-            if (distance <= 4) {
+            double distance = followTarget.distanceSquared(this);
+            if (distance <= 16) { // 4 blocks
                 if (followTarget instanceof EntityCreature) {
                     if (!exploding) {
                         if (bombTime >= 0) {
