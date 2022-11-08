@@ -46,8 +46,8 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
     }
 
     @Override
-    public double getDamage() {
-        return 5;
+    protected double getBaseDamage() {
+        return 6;
     }
 
     public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt) {

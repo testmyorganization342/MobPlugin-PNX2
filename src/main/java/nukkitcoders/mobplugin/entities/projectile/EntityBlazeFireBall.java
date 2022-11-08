@@ -43,7 +43,7 @@ public class EntityBlazeFireBall extends EntityProjectile {
     }
 
     @Override
-    public double getDamage() {
+    public double getBaseDamage() {
         return 5;
     }
 

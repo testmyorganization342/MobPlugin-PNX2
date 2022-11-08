@@ -43,7 +43,7 @@ public class EntityShulkerBullet extends EntityProjectile {
     }
 
     @Override
-    protected double getDamage() {
+    protected double getBaseDamage() {
         return 4;
     }
 

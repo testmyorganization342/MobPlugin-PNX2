@@ -54,7 +54,7 @@ public class EntityTrident extends Entity {
         return 0.01f;
     }
 
-    protected double getDamage() {
+    protected double getBaseDamage() {
         return namedTag.contains("damage") ? namedTag.getDouble("damage") : 8;
     }
 

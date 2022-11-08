@@ -48,7 +48,7 @@ public class EntityEnderCharge extends EntityProjectile {
     }
 
     @Override
-    protected double getDamage() {
+    protected double getBaseDamage() {
         return 5;
     }
 
