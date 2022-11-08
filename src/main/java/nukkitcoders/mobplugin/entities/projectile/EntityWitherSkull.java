@@ -13,7 +13,11 @@ public class EntityWitherSkull extends EntityProjectile {
     public static final int NETWORK_ID = 89;
 
     public EntityWitherSkull(FullChunk chunk, CompoundTag nbt) {
-        super(chunk, nbt);
+        this(chunk, nbt, null);
+    }
+
+    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+        super(chunk, nbt, shootingEntity);
     }
 
     @Override
@@ -56,14 +60,6 @@ public class EntityWitherSkull extends EntityProjectile {
             default:
                 return 5;
         }
-    }
-
-    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
-        this(chunk, nbt, shootingEntity, false);
-    }
-
-    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
-        super(chunk, nbt, shootingEntity);
     }
 
     @Override

@@ -55,10 +55,6 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
     }
 
     public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
-        this(chunk, nbt, shootingEntity, false);
-    }
-
-    public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
         super(chunk, nbt, shootingEntity);
     }
 

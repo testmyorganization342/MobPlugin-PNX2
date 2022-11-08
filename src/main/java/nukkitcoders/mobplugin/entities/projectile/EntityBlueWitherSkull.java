@@ -17,20 +17,16 @@ public class EntityBlueWitherSkull extends EntityWitherSkull implements EntityEx
     private boolean canExplode;
 
     public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt) {
-        super(chunk, nbt);
+        this(chunk, nbt, null);
+    }
+
+    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+        super(chunk, nbt, shootingEntity);
     }
 
     @Override
     public int getNetworkId() {
         return NETWORK_ID;
-    }
-
-    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
-        this(chunk, nbt, shootingEntity, false);
-    }
-
-    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
-        super(chunk, nbt, shootingEntity);
     }
 
     public void setExplode(boolean bool) {
