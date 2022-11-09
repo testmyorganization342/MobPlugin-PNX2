@@ -47,6 +47,7 @@ public class Shulker extends WalkingMonster {
         super.initEntity();
 
         this.fireProof = true;
+        this.noFallDamage = true;
         this.setMaxHealth(15);
     }
 

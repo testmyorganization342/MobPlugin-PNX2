@@ -52,6 +52,7 @@ public class MagmaCube extends JumpingMonster {
         super.initEntity();
 
         this.fireProof = true;
+        this.noFallDamage = true;
 
         if (this.namedTag.contains("Size")) {
             this.size = this.namedTag.getInt("Size");

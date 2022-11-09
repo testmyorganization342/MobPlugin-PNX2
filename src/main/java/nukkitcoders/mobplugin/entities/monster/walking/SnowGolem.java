@@ -53,6 +53,7 @@ public class SnowGolem extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(4);
+        this.noFallDamage = true;
 
         if (this.namedTag.getBoolean("Sheared")) {
             this.shear(true);

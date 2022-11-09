@@ -42,6 +42,7 @@ public class Cat extends WalkingAnimal {
         super.initEntity();
 
         this.setMaxHealth(10);
+        this.noFallDamage = true;
     }
 
     @Override

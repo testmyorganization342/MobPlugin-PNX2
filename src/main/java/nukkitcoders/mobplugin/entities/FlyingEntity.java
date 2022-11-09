@@ -15,6 +15,7 @@ public abstract class FlyingEntity extends BaseEntity {
 
     public FlyingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.noFallDamage = true;
     }
 
     protected void checkTarget() {

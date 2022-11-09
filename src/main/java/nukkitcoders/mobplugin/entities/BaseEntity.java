@@ -3,14 +3,18 @@ package nukkitcoders.mobplugin.entities;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityRideable;
 import cn.nukkit.entity.data.EntityData;
+import cn.nukkit.event.Event;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityInteractEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.GameRule;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
@@ -18,6 +22,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MoveEntityAbsolutePacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
+import cn.nukkit.potion.Effect;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import nukkitcoders.mobplugin.MobPlugin;
@@ -41,6 +46,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     private boolean movement = true;
     private boolean friendly = false;
     protected int attackDelay = 0;
+    protected boolean noFallDamage;
     public Item[] armor;
     //private int inEndPortal;
     //private int inNetherPortal;
@@ -660,5 +666,31 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         pk.eid = this.getId();
         pk.event = EntityEventPacket.ARM_SWING;
         Server.broadcastPacket(this.getViewers().values(), pk);
+    }
+
+    @Override
+    public void fall(float fallDistance) {
+        if (fallDistance > 0.75) {
+            if (!this.hasEffect(Effect.SLOW_FALLING)) {
+                Block down = this.level.getBlock(this.down());
+                if (!this.noFallDamage) {
+                    float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(Effect.JUMP) ? this.getEffect(Effect.JUMP).getAmplifier() + 1 : 0));
+                    if (down.getId() == BlockID.HAY_BALE) {
+                        damage -= (damage * 0.8f);
+                    }
+                    if (damage > 0) {
+                        this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.FALL, damage));
+                    }
+                }
+                if (down.getId() == BlockID.FARMLAND) {
+                    Event ev = new EntityInteractEvent(this, down);
+                    this.server.getPluginManager().callEvent(ev);
+                    if (ev.isCancelled()) {
+                        return;
+                    }
+                    this.level.setBlock(down, Block.get(BlockID.DIRT), false, true);
+                }
+            }
+        }
     }
 }
