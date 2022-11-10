@@ -110,6 +110,6 @@ public class Blaze extends FlyingMonster {
 
     @Override
     public int nearbyDistanceMultiplier() {
-        return 30;
+        return 1000; // don't follow
     }
 }

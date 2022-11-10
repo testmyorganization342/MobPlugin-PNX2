@@ -4,6 +4,8 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
@@ -22,6 +24,8 @@ import java.util.List;
 public class Ghast extends FlyingMonster {
 
     public static final int NETWORK_ID = 41;
+
+    private boolean attacked;
 
     public Ghast(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -67,14 +71,18 @@ public class Ghast extends FlyingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.distanceSquared(player) <= 4096) { // 64 blocks)
+        if (this.distanceSquared(player) <= (this.attacked ? 4096 : 784)) { // 28 blocks or 64 blocks if attacked)
+            if (Utils.rand()) {
+                this.attackDelay--;
+                return;
+            }
             if (this.attackDelay == 50) {
                 this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST);
             }
-            if (this.attackDelay > 60 && Utils.rand(1, 32) < 4) {
+            if (this.attackDelay > 60) {
                 this.attackDelay = 0;
 
-                double f = 1;
+                double f = 1.01;
                 double yaw = this.yaw + Utils.rand(-4.0, 4.0);
                 double pitch = this.pitch + Utils.rand(-4.0, 4.0);
                 Location pos = new Location(this.x - Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight() - 1, // below eyes
@@ -102,6 +110,19 @@ public class Ghast extends FlyingMonster {
     }
 
     @Override
+    public boolean attack(EntityDamageEvent ev) {
+        boolean result = super.attack(ev);
+
+        if (!ev.isCancelled() && ev instanceof EntityDamageByEntityEvent) {
+            if (((EntityDamageByEntityEvent) ev).getDamager() instanceof Player) {
+                this.attacked = true;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
@@ -118,6 +139,6 @@ public class Ghast extends FlyingMonster {
 
     @Override
     public int nearbyDistanceMultiplier() {
-        return 30;
+        return 1000; // don't follow
     }
 }
