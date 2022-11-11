@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityRideable;
@@ -230,5 +231,10 @@ public class Strider extends WalkingAnimal implements EntityRideable {
                     && player.getInventory().getItemInHand().getId() == Item.WARPED_FUNGUS_ON_A_STICK;
         }
         return false;
+    }
+
+    @Override
+    protected boolean canSwimIn(int block) {
+        return block == BlockID.WATER || block == BlockID.STILL_WATER || block == BlockID.LAVA || block == BlockID.STILL_LAVA;
     }
 }

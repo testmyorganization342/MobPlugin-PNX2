@@ -336,10 +336,18 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return true;
     }
 
+    /**
+     * Get mounted entity y offset. Used to determine the height for heart particle spawning.
+     * @return entity height * 0.75
+     */
     protected float getMountedYOffset() {
         return getHeight() * 0.75F;
     }
 
+    /**
+     * Get a random set of armor and increase mob's health according to that
+     * @return armor items
+     */
     protected Item[] getRandomArmor() {
         Item[] slots = new Item[4];
         Item helmet = Item.get(0);
@@ -536,16 +544,31 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return slots;
     }
 
+    /**
+     * Increase the maximum health and health. Used for armored mobs.
+     *
+     * @param health amount of health to add
+     */
     private void addHealth(int health) {
         this.setMaxHealth(this.getMaxHealth() + health);
         this.setHealth(this.getHealth() + health);
     }
 
+    /**
+     * Check whether a mob is allowed to despawn
+     *
+     * @return can despawn
+     */
     public boolean canDespawn() {
         int despawnTicks = MobPlugin.getInstance().config.despawnTicks;
         return despawnTicks > 0 && this.age > despawnTicks && !this.hasCustomName() && !(this instanceof Boss);
     }
 
+    /**
+     * How near a player the mob should get before it starts attacking
+     *
+     * @return distance
+     */
     public int nearbyDistanceMultiplier() {
         return 1;
     }
@@ -654,12 +677,20 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return false;
     }
 
+    /**
+     * Get armor defense points for item
+     * @param item item id
+     * @return defense points
+     */
     protected float getArmorPoints(int item) {
         Float points = ARMOR_POINTS.get(item);
         if (points == null) return 0;
         return points;
     }
 
+    /**
+     * Play attack animation to viewers
+     */
     protected void playAttack() {
         EntityEventPacket pk = new EntityEventPacket();
         pk.eid = this.getId();
@@ -691,5 +722,14 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 }
             }
         }
+    }
+
+    /**
+     * Override this to allow the mob to swim in lava
+     * @param block block id
+     * @return can swim
+     */
+    protected boolean canSwimIn(int block) {
+        return block == BlockID.WATER || block == BlockID.STILL_WATER;
     }
 }
