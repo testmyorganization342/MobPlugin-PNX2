@@ -1,23 +1,32 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.projectile.EntityArrow;
+import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityShootBowEvent;
+import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.LevelSoundEventPacket;
+import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-
-import java.util.HashMap;
+import nukkitcoders.mobplugin.utils.FastMathLite;
+import nukkitcoders.mobplugin.utils.Utils;
 
 public class Piglin extends WalkingMonster {
 
     public final static int NETWORK_ID = 123;
 
-    private int angry = 0;
+    private int angry;
+    private boolean angryFlagSet;
 
     @Override
     public int getNetworkId() {
@@ -30,14 +39,13 @@ public class Piglin extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return 0;
+        return 5;
     }
 
     @Override
     protected void initEntity() {
         super.initEntity();
         this.setMaxHealth(16);
-        this.setDamage(new float[]{0, 3, 5, 7});
     }
 
     @Override
@@ -52,20 +60,45 @@ public class Piglin extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 30 && player.distanceSquared(this) <= 1) {
+        if (this.attackDelay > 80 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 100) {
             this.attackDelay = 0;
-            HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
-            if (player instanceof Player) {
-                float points = 0;
-                for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += this.getArmorPoints(i.getId());
+            double f = 1.5;
+            double yaw = this.yaw;
+            double pitch = this.pitch;
+            double yawR = FastMathLite.toRadians(yaw);
+            double pitchR = FastMathLite.toRadians(pitch);
+            Location pos = new Location(this.x - Math.sin(yawR) * Math.cos(pitchR) * 0.5, this.y + this.getHeight() - 0.18,
+                    this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
+
+            if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
+                Entity k = Entity.createEntity("Arrow", pos, this);
+                if (!(k instanceof EntityArrow)) {
+                    return;
                 }
 
-                damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
+                EntityArrow arrow = (EntityArrow) k;
+                setProjectileMotion(arrow, pitch, yawR, pitchR, f);
+
+                EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), arrow, f);
+                this.server.getPluginManager().callEvent(ev);
+
+                EntityProjectile projectile = ev.getProjectile();
+                if (ev.isCancelled()) {
+                    projectile.close();
+                } else {
+                    ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
+                    this.server.getPluginManager().callEvent(launch);
+                    if (launch.isCancelled()) {
+                        projectile.close();
+                    } else {
+                        projectile.namedTag.putDouble("damage", 4);
+                        projectile.spawnToAll();
+                        ((EntityArrow) projectile).setPickupMode(EntityArrow.PICKUP_NONE);
+                        this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_CROSSBOW_SHOOT);
+                    }
+                }
             }
-            player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
         }
     }
 
@@ -75,6 +108,8 @@ public class Piglin extends WalkingMonster {
 
     public void setAngry(int val) {
         this.angry = val;
+        this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, val > 0);
+        this.angryFlagSet = val > 0;
     }
 
     private static boolean isWearingGold(Player p) {
@@ -101,6 +136,48 @@ public class Piglin extends WalkingMonster {
         if (distance <= 100 && this.isAngry() && creature instanceof Piglin && !((Piglin) creature).isAngry()) {
             ((Piglin) creature).setAngry(600);
         }
-        return creature instanceof Player && (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
+        boolean hasTarget = creature instanceof Player && (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
+        if (hasTarget) {
+            if (!this.angryFlagSet) {
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, true);
+                this.angryFlagSet = true;
+            }
+        } else {
+            if (this.angryFlagSet) {
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, false);
+                this.angryFlagSet = false;
+                this.stayTime = 100;
+            }
+        }
+        return hasTarget;
+    }
+
+    @Override
+    public void spawnTo(Player player) {
+        super.spawnTo(player);
+
+        MobEquipmentPacket pk = new MobEquipmentPacket();
+        pk.eid = this.getId();
+        pk.item = Item.get(Item.CROSSBOW, 0, 1);
+        pk.hotbarSlot = 0;
+        player.dataPacket(pk);
+    }
+
+    @Override
+    public int nearbyDistanceMultiplier() {
+        return 20;
+    }
+
+    @Override
+    public boolean entityBaseTick(int tickDiff) {
+        if (this.angry > 0) {
+            if (this.angry == 1) {
+                this.setAngry(0); // Reset flag
+            } else {
+                this.angry--;
+            }
+        }
+
+        return super.entityBaseTick(tickDiff);
     }
 }

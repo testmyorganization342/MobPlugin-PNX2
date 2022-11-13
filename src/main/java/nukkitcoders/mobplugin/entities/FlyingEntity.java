@@ -44,6 +44,7 @@ public abstract class FlyingEntity extends BaseEntity {
                 }
                 near = distance;
 
+                this.stayTime = 0;
                 this.moveTime = 0;
                 this.target = creature;
                 this.followTarget = creature;
