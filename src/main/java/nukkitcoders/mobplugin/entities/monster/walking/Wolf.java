@@ -178,8 +178,7 @@ public class Wolf extends TameableMonster {
                     this.setOwner(player);
                     this.setCollarColor(DyeColor.RED);
                     this.setRoute(null);
-                    this.saveNBT();
-                    
+
                     this.getLevel().dropExpOrb(this, Utils.rand(1, 7));
                     
                     return true;

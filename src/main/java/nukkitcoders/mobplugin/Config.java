@@ -36,7 +36,7 @@ public class Config {
     }
 
     boolean init(MobPlugin plugin) {
-        int ver = 17;
+        int ver = 18;
         int current = pluginConfig.getInt("config-version");
 
         if (current != ver) {
@@ -45,6 +45,11 @@ public class Config {
                 plugin.getLogger().error("Config error. The plugin will be disabled.");
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 return false;
+            }
+
+            if (current < 18) {
+                pluginConfig.set("autospawn.llama", 0);
+                pluginConfig.set("autospawn.strider", 0);
             }
 
             if (current < 17) {

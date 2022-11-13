@@ -55,7 +55,7 @@ public abstract class FlyingEntity extends BaseEntity {
         }
 
         int x, y, z;
-        int maxY = Math.max(this.getLevel().getHighestBlockAt((int) this.x, (int) this.z) + 15, 120);
+        int maxY = Math.max(this.getLevel().getHighestBlockAt(this.getFloorX(), this.getFloorZ()) + 15, 120);
         if (this.stayTime > 0) {
             if (Utils.rand(1, 100) > 5) {
                 return;

@@ -86,7 +86,7 @@ public class Llama extends HorseBase {
 
         if (ev instanceof EntityDamageByEntityEvent) {
             Entity damager = ((EntityDamageByEntityEvent) ev).getDamager();
-            if (damager instanceof Player) {
+            if (damager instanceof Player && (((Player) damager).isSurvival() || ((Player) damager).isAdventure())) {
                 if (this.attackTicks <= 0) {
                     this.attackTicks = 60;
                     this.damagedBy = damager;

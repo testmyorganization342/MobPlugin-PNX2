@@ -1,6 +1,5 @@
 package nukkitcoders.mobplugin;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
@@ -107,6 +106,8 @@ public class AutoSpawnTask implements Runnable {
         monsterSpawners.add(new DrownedSpawner(this));
         monsterSpawners.add(new PiglinSpawner(this));
         monsterSpawners.add(new HoglinSpawner(this));
+        animalSpawners.add(new LlamaSpawner(this));
+        animalSpawners.add(new StriderSpawner(this));
     }
 
     private void prepareMaxSpawns() {
@@ -149,6 +150,8 @@ public class AutoSpawnTask implements Runnable {
         maxSpawns.put(Drowned.NETWORK_ID, this.pluginConfig.getInt("autospawn.drowned"));
         maxSpawns.put(Piglin.NETWORK_ID, this.pluginConfig.getInt("autospawn.piglin"));
         maxSpawns.put(Hoglin.NETWORK_ID, this.pluginConfig.getInt("autospawn.hoglin"));
+        maxSpawns.put(Llama.NETWORK_ID, this.pluginConfig.getInt("autospawn.llama"));
+        maxSpawns.put(Strider.NETWORK_ID, this.pluginConfig.getInt("autospawn.strider"));
     }
 
     public boolean entitySpawnAllowed(Level level, int networkId, Vector3 pos) {
@@ -178,7 +181,7 @@ public class AutoSpawnTask implements Runnable {
     public BaseEntity createEntity(Object type, Position pos) {
         BaseEntity entity = (BaseEntity) Entity.createEntity((String) type, pos);
         if (entity != null) {
-            if (!entity.isInsideOfSolid() && !tooNearOfPlayer(pos)) {
+            if (!entity.isInsideOfSolid()) {
                 CreatureSpawnEvent ev = new CreatureSpawnEvent(entity.getNetworkId(), pos, entity.namedTag, CreatureSpawnEvent.SpawnReason.NATURAL);
                 Server.getInstance().getPluginManager().callEvent(ev);
                 if (!ev.isCancelled()) {
@@ -193,15 +196,6 @@ public class AutoSpawnTask implements Runnable {
             }
         }
         return entity;
-    }
-
-    private boolean tooNearOfPlayer(Position pos) {
-        for (Player p : pos.getLevel().getPlayers().values()) {
-            if (p.distanceSquared(pos) < 196) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int getRandomSafeXZCoord(int degree, int safeDegree, int correctionDegree) {
@@ -243,7 +237,7 @@ public class AutoSpawnTask implements Runnable {
                     while (true) {
                         checkY++;
                         checkNeedDegree--;
-                        if (checkY > 255 || checkY < 1 || level.getBlockIdAt(x, checkY, z) != Block.AIR) {
+                        if (checkY > 255 || level.getBlockIdAt(x, checkY, z) != Block.AIR) {
                             break;
                         }
 
@@ -272,7 +266,7 @@ public class AutoSpawnTask implements Runnable {
                     while (true) {
                         checkY--;
                         checkNeedDegree--;
-                        if (checkY > 255 || checkY < 1 || level.getBlockIdAt(x, checkY, z) != Block.AIR) {
+                        if (checkY < 1 || level.getBlockIdAt(x, checkY, z) != Block.AIR) {
                             break;
                         }
 
@@ -297,6 +291,7 @@ public class AutoSpawnTask implements Runnable {
             case WitherSkeleton.NETWORK_ID:
             case ZombiePigman.NETWORK_ID:
             case Hoglin.NETWORK_ID:
+            case Strider.NETWORK_ID:
                 return Level.DIMENSION_NETHER == dimension;
             default:
                 return Level.DIMENSION_OVERWORLD == dimension;
