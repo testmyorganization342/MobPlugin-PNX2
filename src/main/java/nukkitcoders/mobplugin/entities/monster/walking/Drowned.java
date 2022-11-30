@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.entity.projectile.EntityThrownTrident;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -91,16 +92,16 @@ public class Drowned extends WalkingMonster implements EntitySmite {
                     this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
                 Entity k = Entity.createEntity("ThrownTrident", pos, this);
-                if (!(k instanceof EntityThrownTrident)) {
-                    return;
+                if (k instanceof EntityThrownTrident) {
+                    ((EntityThrownTrident) k).setPickupMode(EntityProjectile.PICKUP_NONE);
+                    setProjectileMotion(k, pitch, yawR, pitchR, f);
+                    k.spawnToAll();
+                    this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_ITEM_TRIDENT_THROW);
                 }
-                setProjectileMotion(k, pitch, yawR, pitchR, f);
-                k.spawnToAll();
-                this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_ITEM_TRIDENT_THROW);
             }
         }
     }
-    
+
     @Override
     public boolean entityBaseTick(int tickDiff) {
         if (getServer().getDifficulty() == 0) {

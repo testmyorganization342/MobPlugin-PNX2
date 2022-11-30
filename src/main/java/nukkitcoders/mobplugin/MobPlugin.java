@@ -280,6 +280,7 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity("WitherSkull", EntityWitherSkull.class);
         Entity.registerEntity("SlownessArrow", EntitySlownessArrow.class);
         Entity.registerEntity("LlamaSpit", EntityLlamaSpit.class);
+        Entity.registerEntity("ThrownTrident", DespawnableThrownTrident.class);
     }
 
     public static boolean isAnimalSpawningAllowedByTime(Level level) {
