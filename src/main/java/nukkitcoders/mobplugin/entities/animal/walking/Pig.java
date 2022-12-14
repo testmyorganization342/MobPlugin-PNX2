@@ -77,7 +77,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
                     || id == Item.CARROT_ON_A_STICK)
                     && distance <= 49;
         }
-        return false;
+        return super.targetOption(creature, distance);
     }
 
     @Override
@@ -117,9 +117,7 @@ public class Pig extends WalkingAnimal implements EntityRideable {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(1, 3); i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
-            }
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, Utils.rand(1, 3)));
             if (this.isSaddled()) {
                 drops.add(Item.get(Item.SADDLE));
             }

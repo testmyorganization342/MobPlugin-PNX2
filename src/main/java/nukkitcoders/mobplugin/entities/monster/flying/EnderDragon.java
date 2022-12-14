@@ -11,7 +11,9 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
+import cn.nukkit.network.protocol.BossEventPacket;
 import cn.nukkit.network.protocol.DataPacket;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityEnderCharge;
@@ -74,8 +76,8 @@ public class EnderDragon extends FlyingMonster implements Boss {
         if (this.attackDelay > 60 && Utils.rand(1, 5) < 3 && this.distanceSquared(player) <= 90000) {
             this.attackDelay = 0;
             double f = 1.1;
-            double yaw = this.yaw + Utils.rand(-12.0, 12.0);
-            double pitch = this.pitch + Utils.rand(-7.0, 7.0);
+            double yaw = this.yaw + Utils.rand(-4.0, 4.0);
+            double pitch = this.pitch + Utils.rand(-4.0, 4.0);
             Entity k = Entity.createEntity("EnderCharge", new Location(this.x + this.getLocation().getDirectionVector().multiply(5.0).x, this.y, this.z + this.getDirectionVector().multiply(5.0).z, this.level), this);
             if (!(k instanceof EntityEnderCharge)) {
                 return;
@@ -134,5 +136,19 @@ public class EnderDragon extends FlyingMonster implements Boss {
         }
 
         return super.entityBaseTick(tickDiff);
+    }
+
+    @Override
+    public void spawnTo(Player player) {
+        super.spawnTo(player);
+        if (!MobPlugin.getInstance().config.showBossBar) {
+            return;
+        }
+        BossEventPacket pkBoss = new BossEventPacket();
+        pkBoss.bossEid = this.id;
+        pkBoss.type = BossEventPacket.TYPE_SHOW;
+        pkBoss.title = this.getName();
+        pkBoss.healthPercent = this.health / 100;
+        player.dataPacket(pkBoss);
     }
 }

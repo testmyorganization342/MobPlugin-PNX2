@@ -59,11 +59,9 @@ public class CaveSpider extends Spider implements EntityArthropod {
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
                 float points = 0;
                 for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
@@ -81,10 +79,7 @@ public class CaveSpider extends Spider implements EntityArthropod {
         List<Item> drops = new ArrayList<>();
 
         drops.add(Item.get(Item.STRING, 0, Utils.rand(0, 2)));
-
-        for (int i = 0; i < (Utils.rand(0, 2) == 0 ? 1 : 0); i++) {
-            drops.add(Item.get(Item.SPIDER_EYE, 0, 1));
-        }
+        drops.add(Item.get(Item.SPIDER_EYE, 0, Utils.rand(0, 2) == 0 ? 1 : 0));
 
         return drops.toArray(new Item[0]);
     }

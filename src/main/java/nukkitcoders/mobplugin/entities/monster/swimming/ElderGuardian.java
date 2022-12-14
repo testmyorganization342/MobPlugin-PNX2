@@ -58,9 +58,7 @@ public class ElderGuardian extends SwimmingMonster {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.PRISMARINE_SHARD, 0, 1));
-        }
+        drops.add(Item.get(Item.PRISMARINE_SHARD, 0, Utils.rand(0, 2)));
 
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             if (((EntityDamageByEntityEvent) this.lastDamageCause).getDamager() instanceof Player) {

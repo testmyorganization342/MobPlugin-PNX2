@@ -8,9 +8,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Cat extends WalkingAnimal {
 
     public static final int NETWORK_ID = 75;
@@ -45,19 +42,17 @@ public class Cat extends WalkingAnimal {
         super.initEntity();
 
         this.setMaxHealth(10);
+        this.noFallDamage = true;
     }
 
     @Override
     public Item[] getDrops() {
-        List<Item> drops = new ArrayList<>();
-
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.STRING, 0, 1));
-            }
+            int c = Utils.rand(0, 2);
+            if (c > 0) return new Item[]{Item.get(Item.STRING, 0, c)};
         }
 
-        return drops.toArray(new Item[0]);
+        return new Item[0];
     }
 
     @Override

@@ -1,21 +1,29 @@
 package nukkitcoders.mobplugin.entities;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityRideable;
 import cn.nukkit.entity.data.EntityData;
+import cn.nukkit.event.Event;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityInteractEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MoveEntityAbsolutePacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
+import cn.nukkit.potion.Effect;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
@@ -37,9 +45,40 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     private boolean movement = true;
     private boolean friendly = false;
     protected int attackDelay = 0;
+    protected boolean noFallDamage;
     public Item[] armor;
     //private int inEndPortal;
     //private int inNetherPortal;
+
+    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<Float>() {
+        {
+            put(Item.LEATHER_CAP, new Float(1));
+            put(Item.LEATHER_TUNIC, new Float(3));
+            put(Item.LEATHER_PANTS, new Float(2));
+            put(Item.LEATHER_BOOTS, new Float(1));
+            put(Item.CHAIN_HELMET, new Float(2));
+            put(Item.CHAIN_CHESTPLATE, new Float(5));
+            put(Item.CHAIN_LEGGINGS, new Float(4));
+            put(Item.CHAIN_BOOTS, new Float(1));
+            put(Item.GOLD_HELMET, new Float(2));
+            put(Item.GOLD_CHESTPLATE, new Float(5));
+            put(Item.GOLD_LEGGINGS, new Float(3));
+            put(Item.GOLD_BOOTS, new Float(1));
+            put(Item.IRON_HELMET, new Float(2));
+            put(Item.IRON_CHESTPLATE, new Float(6));
+            put(Item.IRON_LEGGINGS, new Float(5));
+            put(Item.IRON_BOOTS, new Float(2));
+            put(Item.DIAMOND_HELMET, new Float(3));
+            put(Item.DIAMOND_CHESTPLATE, new Float(8));
+            put(Item.DIAMOND_LEGGINGS, new Float(6));
+            put(Item.DIAMOND_BOOTS, new Float(3));
+            put(Item.NETHERITE_HELMET, new Float(3));
+            put(Item.NETHERITE_CHESTPLATE, new Float(8));
+            put(Item.NETHERITE_LEGGINGS, new Float(6));
+            put(Item.NETHERITE_BOOTS, new Float(3));
+            put(Item.TURTLE_SHELL, new Float(2));
+        }
+    };
 
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -124,6 +163,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, baby);
         if (baby) {
             this.setScale(0.5f);
+            this.age = Utils.rand(-2400, -1800);
         } else {
             this.setScale(1.0f);
         }
@@ -263,6 +303,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             return false;
         }
 
+        if (dx == 0 && dz == 0 && dy == 0) {
+            return false;
+        }
+
         double movX = dx * moveMultiplier;
         double movY = dy;
         double movZ = dz * moveMultiplier;
@@ -292,10 +336,18 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return true;
     }
 
+    /**
+     * Get mounted entity y offset. Used to determine the height for heart particle spawning.
+     * @return entity height * 0.75
+     */
     protected float getMountedYOffset() {
         return getHeight() * 0.75F;
     }
 
+    /**
+     * Get a random set of armor
+     * @return armor items
+     */
     protected Item[] getRandomArmor() {
         Item[] slots = new Item[4];
         Item helmet = Item.get(0);
@@ -307,40 +359,35 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             case 1:
                 if (Utils.rand(1, 100) < 39) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.LEATHER_CAP, 0, 1);
-                        this.addHealth(1);
+                        helmet = Item.get(Item.LEATHER_CAP, Utils.rand(30, 48), 1);
                     }
                 }
                 break;
             case 2:
                 if (Utils.rand(1, 100) < 50) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.GOLD_HELMET, 0, 1);
-                        this.addHealth(1);
+                        helmet = Item.get(Item.GOLD_HELMET, Utils.rand(40, 70), 1);
                     }
                 }
                 break;
             case 3:
                 if (Utils.rand(1, 100) < 14) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.CHAIN_HELMET, 0, 1);
-                        this.addHealth(1);
+                        helmet = Item.get(Item.CHAIN_HELMET, Utils.rand(100, 160), 1);
                     }
                 }
                 break;
             case 4:
                 if (Utils.rand(1, 100) < 3) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.IRON_HELMET, 0, 1);
-                        this.addHealth(1);
+                        helmet = Item.get(Item.IRON_HELMET, Utils.rand(100, 160), 1);
                     }
                 }
                 break;
             case 5:
                 if (Utils.rand(1, 100) == 100) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.DIAMOND_HELMET, 0, 1);
-                        this.addHealth(2);
+                        helmet = Item.get(Item.DIAMOND_HELMET, Utils.rand(190, 256), 1);
                     }
                 }
                 break;
@@ -353,40 +400,35 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case 1:
                     if (Utils.rand(1, 100) < 39) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.LEATHER_TUNIC, 0, 1);
-                            this.addHealth(1);
+                            chestplate = Item.get(Item.LEATHER_TUNIC, Utils.rand(60, 73), 1);
                         }
                     }
                     break;
                 case 2:
                     if (Utils.rand(1, 100) < 50) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.GOLD_CHESTPLATE, 0, 1);
-                            this.addHealth(1);
+                            chestplate = Item.get(Item.GOLD_CHESTPLATE, Utils.rand(65, 105), 1);
                         }
                     }
                     break;
                 case 3:
                     if (Utils.rand(1, 100) < 14) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.CHAIN_CHESTPLATE, 0, 1);
-                            this.addHealth(1);
+                            chestplate = Item.get(Item.CHAIN_CHESTPLATE, Utils.rand(170, 233), 1);
                         }
                     }
                     break;
                 case 4:
                     if (Utils.rand(1, 100) < 3) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.IRON_CHESTPLATE, 0, 1);
-                            this.addHealth(2);
+                            chestplate = Item.get(Item.IRON_CHESTPLATE, Utils.rand(170, 233), 1);
                         }
                     }
                     break;
                 case 5:
                     if (Utils.rand(1, 100) == 100) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.DIAMOND_CHESTPLATE, 0, 1);
-                            this.addHealth(3);
+                            chestplate = Item.get(Item.DIAMOND_CHESTPLATE, Utils.rand(421, 521), 1);
                         }
                     }
                     break;
@@ -400,40 +442,35 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case 1:
                     if (Utils.rand(1, 100) < 39) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.LEATHER_PANTS, 0, 1);
-                            this.addHealth(1);
+                            leggings = Item.get(Item.LEATHER_PANTS, Utils.rand(35, 68), 1);
                         }
                     }
                     break;
                 case 2:
                     if (Utils.rand(1, 100) < 50) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.GOLD_LEGGINGS, 0, 1);
-                            this.addHealth(1);
+                            leggings = Item.get(Item.GOLD_LEGGINGS, Utils.rand(50, 98), 1);
                         }
                     }
                     break;
                 case 3:
                     if (Utils.rand(1, 100) < 14) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.CHAIN_LEGGINGS, 0, 1);
-                            this.addHealth(1);
+                            leggings = Item.get(Item.CHAIN_LEGGINGS, Utils.rand(170, 218), 1);
                         }
                     }
                     break;
                 case 4:
                     if (Utils.rand(1, 100) < 3) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.IRON_LEGGINGS, 0, 1);
-                            this.addHealth(1);
+                            leggings = Item.get(Item.IRON_LEGGINGS, Utils.rand(170, 218), 1);
                         }
                     }
                     break;
                 case 5:
                     if (Utils.rand(1, 100) == 100) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.DIAMOND_LEGGINGS, 0, 1);
-                            this.addHealth(2);
+                            leggings = Item.get(Item.DIAMOND_LEGGINGS, Utils.rand(388, 488), 1);
                         }
                     }
                     break;
@@ -447,40 +484,35 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case 1:
                     if (Utils.rand(1, 100) < 39) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.LEATHER_BOOTS, 0, 1);
-                            this.addHealth(1);
+                            boots = Item.get(Item.LEATHER_BOOTS, Utils.rand(35, 58), 1);
                         }
                     }
                     break;
                 case 2:
                     if (Utils.rand(1, 100) < 50) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.GOLD_BOOTS, 0, 1);
-                            this.addHealth(1);
+                            boots = Item.get(Item.GOLD_BOOTS, Utils.rand(50, 86), 1);
                         }
                     }
                     break;
                 case 3:
                     if (Utils.rand(1, 100) < 14) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.CHAIN_BOOTS, 0, 1);
-                            this.addHealth(1);
+                            boots = Item.get(Item.CHAIN_BOOTS, Utils.rand(100, 188), 1);
                         }
                     }
                     break;
                 case 4:
                     if (Utils.rand(1, 100) < 3) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.IRON_BOOTS, 0, 1);
-                            this.addHealth(1);
+                            boots = Item.get(Item.IRON_BOOTS, Utils.rand(100, 188), 1);
                         }
                     }
                     break;
                 case 5:
                     if (Utils.rand(1, 100) == 100) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.DIAMOND_BOOTS, 0, 1);
-                            this.addHealth(2);
+                            boots = Item.get(Item.DIAMOND_BOOTS, Utils.rand(350, 428), 1);
                         }
                     }
                     break;
@@ -492,16 +524,94 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return slots;
     }
 
-    private void addHealth(int health) {
-        this.setMaxHealth(this.getMaxHealth() + health);
-        this.setHealth(this.getHealth() + health);
+    /**
+     * Increases mob's health according to armor the mob has (temporary workaround until armor damage modifiers are implemented for mobs)
+     */
+    protected void addArmorExtraHealth() {
+        if (this.armor != null && this.armor.length == 4) {
+            switch (armor[0].getId()) {
+                case Item.LEATHER_CAP:
+                    this.addHealth(1);
+                    break;
+                case Item.GOLD_HELMET:
+                case Item.CHAIN_HELMET:
+                case Item.IRON_HELMET:
+                    this.addHealth(2);
+                    break;
+                case Item.DIAMOND_HELMET:
+                    this.addHealth(3);
+                    break;
+            }
+            switch (armor[1].getId()) {
+                case Item.LEATHER_TUNIC:
+                    this.addHealth(2);
+                    break;
+                case Item.GOLD_CHESTPLATE:
+                case Item.CHAIN_CHESTPLATE:
+                case Item.IRON_CHESTPLATE:
+                    this.addHealth(3);
+                    break;
+                case Item.DIAMOND_CHESTPLATE:
+                    this.addHealth(4);
+                    break;
+            }
+            switch (armor[2].getId()) {
+                case Item.LEATHER_PANTS:
+                    this.addHealth(1);
+                    break;
+                case Item.GOLD_LEGGINGS:
+                case Item.CHAIN_LEGGINGS:
+                case Item.IRON_LEGGINGS:
+                    this.addHealth(2);
+                    break;
+                case Item.DIAMOND_LEGGINGS:
+                    this.addHealth(3);
+                    break;
+            }
+            switch (armor[3].getId()) {
+                case Item.LEATHER_BOOTS:
+                    this.addHealth(1);
+                    break;
+                case Item.GOLD_BOOTS:
+                case Item.CHAIN_BOOTS:
+                case Item.IRON_BOOTS:
+                    this.addHealth(2);
+                    break;
+                case Item.DIAMOND_BOOTS:
+                    this.addHealth(3);
+                    break;
+            }
+        }
     }
 
+    /**
+     * Increase the maximum health and health. Used for armored mobs.
+     *
+     * @param health amount of health to add
+     */
+    private void addHealth(int health) {
+        boolean wasMaxHealth = this.getHealth() == this.getMaxHealth();
+        this.setMaxHealth(this.getMaxHealth() + health);
+        if (wasMaxHealth) {
+            this.setHealth(this.getHealth() + health);
+        }
+    }
+
+    /**
+     * Check whether a mob is allowed to despawn
+     *
+     * @return can despawn
+     */
     public boolean canDespawn() {
         int despawnTicks = MobPlugin.getInstance().config.despawnTicks;
         return despawnTicks > 0 && this.age > despawnTicks && !this.hasCustomName() && !(this instanceof Boss);
     }
 
+    /**
+     * How near a player the mob should get before it starts attacking
+     *
+     * @return distance
+     */
     public int nearbyDistanceMultiplier() {
         return 1;
     }
@@ -608,5 +718,61 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get armor defense points for item
+     * @param item item id
+     * @return defense points
+     */
+    protected float getArmorPoints(int item) {
+        Float points = ARMOR_POINTS.get(item);
+        if (points == null) return 0;
+        return points;
+    }
+
+    /**
+     * Play attack animation to viewers
+     */
+    protected void playAttack() {
+        EntityEventPacket pk = new EntityEventPacket();
+        pk.eid = this.getId();
+        pk.event = EntityEventPacket.ARM_SWING;
+        Server.broadcastPacket(this.getViewers().values(), pk);
+    }
+
+    @Override
+    public void fall(float fallDistance) {
+        if (fallDistance > 0.75) {
+            if (!this.hasEffect(Effect.SLOW_FALLING)) {
+                Block down = this.level.getBlock(this.down());
+                if (!this.noFallDamage) {
+                    float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(Effect.JUMP) ? this.getEffect(Effect.JUMP).getAmplifier() + 1 : 0));
+                    if (down.getId() == BlockID.HAY_BALE) {
+                        damage -= (damage * 0.8f);
+                    }
+                    if (damage > 0) {
+                        this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.FALL, damage));
+                    }
+                }
+                if (down.getId() == BlockID.FARMLAND) {
+                    Event ev = new EntityInteractEvent(this, down);
+                    this.server.getPluginManager().callEvent(ev);
+                    if (ev.isCancelled()) {
+                        return;
+                    }
+                    this.level.setBlock(down, Block.get(BlockID.DIRT), false, true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Override this to allow the mob to swim in lava
+     * @param block block id
+     * @return can swim
+     */
+    protected boolean canSwimIn(int block) {
+        return block == BlockID.WATER || block == BlockID.STILL_WATER;
     }
 }

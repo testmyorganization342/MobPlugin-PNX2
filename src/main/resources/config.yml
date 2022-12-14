@@ -1,5 +1,5 @@
 # Config version, do not edit!
-config-version: 16
+config-version: 18
 
 entities:
   # How often the spawn task should run
@@ -19,24 +19,24 @@ autospawn:
   bat: 0
   blaze: 0
   chicken: 2
-  cod: 2
+  cod: 4
   cow: 2
   creeper: 2
-  dolphin: 1
-  donkey: 1
-  enderman: 1
+  dolphin: 2
+  donkey: 2
+  enderman: 2
   ghast: 2
   husk: 2
   horse: 2
   magmacube: 2
   mooshroom: 2
   ocelot: 2
-  parrot: 1
+  parrot: 2
   pig: 2
   polarbear: 2
-  pufferfish: 1
-  rabbit: 1
-  salmon: 3
+  pufferfish: 2
+  rabbit: 2
+  salmon: 4
   sheep: 2
   skeleton: 2
   slime: 2
@@ -49,12 +49,14 @@ autospawn:
   witherskeleton: 2
   wolf: 2
   zombie: 2
-  zombiepigman: 3
+  zombiepigman: 4
   fox: 2
-  panda: 1
+  panda: 2
   drowned: 2
-  piglin: 2
-  hoglin: 2
+  piglin: 4
+  hoglin: 0
+  llama: 2
+  strider: 2
 
 spawners:
   # Enable mob spawner blocks
@@ -93,3 +95,8 @@ other:
   creeper-explode-blocks: true
   # Do not allow creating snow golems, iron golems and withers in these worlds
   worlds-entity-creation-disabled: "exampleworld1, exampleworld2"
+  # Allow players to breed mobs
+  allow-breeding: true
+  # Show boss bar for wither & ender dragon (work in progress)
+  show-boss-bar: true
+

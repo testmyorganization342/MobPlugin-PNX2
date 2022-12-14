@@ -64,6 +64,7 @@ public class Chicken extends WalkingAnimal {
         this.isChickenJockey = this.namedTag.contains("IsChickenJockey") && this.namedTag.getBoolean("IsChickenJockey");
 
         this.setMaxHealth(4);
+        this.noFallDamage = true;
     }
 
     @Override
@@ -91,7 +92,7 @@ public class Chicken extends WalkingAnimal {
                             || id == Item.PUMPKIN_SEEDS)
                     && distance <= 49;
         }
-        return false;
+        return super.targetOption(creature, distance);
     }
 
     @Override
@@ -131,10 +132,7 @@ public class Chicken extends WalkingAnimal {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.FEATHER, 0, 1));
-            }
-
+            drops.add(Item.get(Item.FEATHER, 0, Utils.rand(0, 2)));
             drops.add(Item.get(this.isOnFire() ? Item.COOKED_CHICKEN : Item.RAW_CHICKEN, 0, 1));
         }
 

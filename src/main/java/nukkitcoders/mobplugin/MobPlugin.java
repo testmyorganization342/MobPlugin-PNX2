@@ -76,6 +76,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!sender.hasPermission("mobplugin.command")) return false;
         if (cmd.getName().equals("summon")) {
             if (args.length == 0 || (args.length == 1 && !(sender instanceof Player))) {
                 return false;
@@ -269,7 +270,8 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity("EnderCharge", EntityEnderCharge.class);
         Entity.registerEntity("WitherSkull", EntityWitherSkull.class);
         Entity.registerEntity("SlownessArrow", EntitySlownessArrow.class);
-        Entity.registerEntity("Trident", EntityTrident.class);
+        Entity.registerEntity("LlamaSpit", EntityLlamaSpit.class);
+        Entity.registerEntity("ThrownTrident", DespawnableThrownTrident.class);
     }
 
     public static boolean isAnimalSpawningAllowedByTime(Level level) {

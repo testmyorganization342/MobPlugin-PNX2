@@ -6,6 +6,8 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import nukkitcoders.mobplugin.entities.animal.Animal;
+import nukkitcoders.mobplugin.entities.monster.flying.Wither;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -13,6 +15,7 @@ public abstract class FlyingEntity extends BaseEntity {
 
     public FlyingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.noFallDamage = true;
     }
 
     protected void checkTarget() {
@@ -22,15 +25,16 @@ public abstract class FlyingEntity extends BaseEntity {
 
         Vector3 target = this.target;
         if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
+            this.followTarget = null;
             double near = Integer.MAX_VALUE;
 
             for (Entity entity : this.getLevel().getEntities()) {
-                if (entity == this || !(entity instanceof EntityCreature) || !this.canTarget(entity)) {
+                if (entity == this || !(entity instanceof EntityCreature) || (entity instanceof Animal && !(this instanceof Wither))) {
                     continue;
                 }
 
                 EntityCreature creature = (EntityCreature) entity;
-                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
+                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly() && !(this instanceof Wither)) {
                     continue;
                 }
 
@@ -40,8 +44,10 @@ public abstract class FlyingEntity extends BaseEntity {
                 }
                 near = distance;
 
+                this.stayTime = 0;
                 this.moveTime = 0;
                 this.target = creature;
+                this.followTarget = creature;
             }
         }
 
@@ -50,7 +56,7 @@ public abstract class FlyingEntity extends BaseEntity {
         }
 
         int x, y, z;
-        int maxY = Math.max(this.getLevel().getHighestBlockAt((int) this.x, (int) this.z) + 15, 120);
+        int maxY = Math.max(this.getLevel().getHighestBlockAt(this.getFloorX(), this.getFloorZ()) + 15, 120);
         if (this.stayTime > 0) {
             if (Utils.rand(1, 100) > 5) {
                 return;
@@ -140,7 +146,6 @@ public abstract class FlyingEntity extends BaseEntity {
             double dx = this.motionX;
             double dy = this.motionY;
             double dz = this.motionZ;
-            Vector3 target = this.target;
             if (this.stayTime > 0) {
                 this.stayTime -= tickDiff;
                 this.move(0, dy, 0);
@@ -154,14 +159,18 @@ public abstract class FlyingEntity extends BaseEntity {
                 }
             }
 
-            if (this.isOnGround()) {
-                this.motionY = Utils.rand(0.15, 0.20);
-            } else {
-                this.motionY = Utils.rand(-0.15, 0.15);
+            if (this.stayTime <= 0) {
+                if (this.isOnGround()) {
+                    this.motionY = Utils.rand(0.05, 0.1);
+                } else if (this.followTarget != null) {
+                    this.motionY = Math.min(0.2, Math.max(-0.2, (this.followTarget.x - this.x) / 100));
+                } else {
+                    this.motionY = Utils.rand(-0.05, 0.05);
+                }
             }
 
             this.updateMovement();
-            return target;
+            return this.target;
         }
         return null;
     }

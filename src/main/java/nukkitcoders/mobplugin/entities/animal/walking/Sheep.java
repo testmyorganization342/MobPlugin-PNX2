@@ -116,7 +116,7 @@ public class Sheep extends WalkingAnimal {
             Player player = (Player) creature;
             return player.spawned && player.isAlive() && !player.closed && player.getInventory().getItemInHand().getId() == Item.WHEAT && distance <= 49;
         }
-        return false;
+        return super.targetOption(creature, distance);
     }
 
     @Override
@@ -125,10 +125,7 @@ public class Sheep extends WalkingAnimal {
 
         if (!this.isBaby()) {
             if (!sheared) drops.add(Item.get(Item.WOOL, this.getColor(), 1));
-
-            for (int i = 0; i < Utils.rand(1, 2); i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, 1));
-            }
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_MUTTON : Item.RAW_MUTTON, 0, Utils.rand(1, 2)));
         }
 
         return drops.toArray(new Item[0]);
@@ -142,7 +139,7 @@ public class Sheep extends WalkingAnimal {
     }
 
     public int getColor() {
-        return namedTag.getByte("Color");
+        return this.color;
     }
 
     private int randomColor() {

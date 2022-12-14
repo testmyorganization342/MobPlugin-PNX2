@@ -24,17 +24,17 @@ public class EntityBlazeFireBall extends EntityProjectile {
 
     @Override
     public float getWidth() {
-        return 0.3125f;
+        return 0.31f;
     }
 
     @Override
     public float getHeight() {
-        return 0.3125f;
+        return 0.31f;
     }
 
     @Override
     public float getGravity() {
-        return 0.01f;
+        return 0.005f;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class EntityBlazeFireBall extends EntityProjectile {
     }
 
     @Override
-    public double getDamage() {
+    public double getBaseDamage() {
         return 5;
     }
 
@@ -53,17 +53,14 @@ public class EntityBlazeFireBall extends EntityProjectile {
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             this.close();
+            return false;
+        } else {
+            this.fireTicks = 2;
         }
 
-        return super.onUpdate(currentTick);
-    }
-
-    @Override
-    public void onCollideWithEntity(Entity entity) {
-        super.onCollideWithEntity(entity);
-        this.isCollided = true;
-        entity.setOnFire(5);
+        super.onUpdate(currentTick);
+        return !this.closed;
     }
 }

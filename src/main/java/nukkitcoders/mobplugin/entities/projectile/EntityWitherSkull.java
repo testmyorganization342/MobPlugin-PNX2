@@ -13,7 +13,11 @@ public class EntityWitherSkull extends EntityProjectile {
     public static final int NETWORK_ID = 89;
 
     public EntityWitherSkull(FullChunk chunk, CompoundTag nbt) {
-        super(chunk, nbt);
+        this(chunk, nbt, null);
+    }
+
+    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+        super(chunk, nbt, shootingEntity);
     }
 
     @Override
@@ -38,7 +42,7 @@ public class EntityWitherSkull extends EntityProjectile {
 
     @Override
     public float getGravity() {
-        return 0.01f;
+        return 0.005f;
     }
 
     @Override
@@ -47,16 +51,15 @@ public class EntityWitherSkull extends EntityProjectile {
     }
 
     @Override
-    protected double getDamage() {
-        return 5;
-    }
-
-    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
-        this(chunk, nbt, shootingEntity, false);
-    }
-
-    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
-        super(chunk, nbt, shootingEntity);
+    protected double getBaseDamage() {
+        switch (server.getDifficulty()) {
+            case 2: // normal
+                return 8;
+            case 3: // hard
+                return 12;
+            default:
+                return 5;
+        }
     }
 
     @Override
@@ -65,13 +68,14 @@ public class EntityWitherSkull extends EntityProjectile {
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             this.close();
-        } else {
+        } else if (this.age % 4 == 0) {
             this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500)));
         }
 
-        return super.onUpdate(currentTick);
+        super.onUpdate(currentTick);
+        return !this.closed;
     }
 
     @Override

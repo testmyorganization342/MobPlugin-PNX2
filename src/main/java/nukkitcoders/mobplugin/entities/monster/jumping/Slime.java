@@ -11,9 +11,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.JumpingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Slime extends JumpingMonster {
 
@@ -92,11 +90,9 @@ public class Slime extends JumpingMonster {
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
                 float points = 0;
                 for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
@@ -144,13 +140,7 @@ public class Slime extends JumpingMonster {
 
             return new Item[0];
         } else {
-            List<Item> drops = new ArrayList<>();
-
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.SLIMEBALL, 0, 1));
-            }
-
-            return drops.toArray(new Item[0]);
+            return new Item[]{Item.get(Item.SLIMEBALL, 0, Utils.rand(0, 2))};
         }
     }
 

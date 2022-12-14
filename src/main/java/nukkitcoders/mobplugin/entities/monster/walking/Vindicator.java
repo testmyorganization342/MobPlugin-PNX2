@@ -62,11 +62,9 @@ public class Vindicator extends WalkingMonster {
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
                 float points = 0;
                 for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
@@ -93,21 +91,23 @@ public class Vindicator extends WalkingMonster {
             return true;
         }
 
-        if (this.getFollowTarget() != null) {
-            if (!this.angry) {
-                this.angry = true;
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true);
-            }
-            if (this.getDataPropertyLong(DATA_TARGET_EID) != this.getFollowTarget().getId()) {
-                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, this.getFollowTarget().getId()));
-            }
-        } else {
-            if (this.angry) {
-                this.angry = false;
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, false);
-            }
-            if (this.getDataPropertyLong(DATA_TARGET_EID) != 0) {
-                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, 0));
+        if (!this.closed) {
+            if (this.getFollowTarget() != null) {
+                if (!this.angry) {
+                    this.angry = true;
+                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true);
+                }
+                if (this.getDataPropertyLong(DATA_TARGET_EID) != this.getFollowTarget().getId()) {
+                    this.setDataProperty(new LongEntityData(DATA_TARGET_EID, this.getFollowTarget().getId()));
+                }
+            } else {
+                if (this.angry) {
+                    this.angry = false;
+                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, false);
+                }
+                if (this.getDataPropertyLong(DATA_TARGET_EID) != 0) {
+                    this.setDataProperty(new LongEntityData(DATA_TARGET_EID, 0));
+                }
             }
         }
 

@@ -14,6 +14,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
@@ -23,6 +24,7 @@ import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.lang.TranslationContainer;
+import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
@@ -61,6 +63,21 @@ public class EventListener implements Listener {
             this.handleExperienceOrb(ev.getEntity());
             this.handleTamedEntityDeathMessage(ev.getEntity());
             this.handleAttackedEntityAngry(ev.getEntity());
+            if (ev.getEntity() instanceof BaseEntity && ev.getEntity().getLevel().getGameRules().getBoolean(GameRule.DO_MOB_LOOT)) {
+                BaseEntity baseEntity = (BaseEntity) ev.getEntity();
+                if (!(baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
+                Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
+                if (damager instanceof Creeper && damager != baseEntity && baseEntity.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
+                    if (((Creeper) damager).isPowered()) {
+                        Item skull = Utils.getMobHead(baseEntity.getNetworkId());
+                        if (skull != null) {
+                            baseEntity.getLevel().dropItem(baseEntity, skull);
+                        }
+                    }
+                } else if (baseEntity instanceof Creeper && (damager instanceof Skeleton || damager instanceof Stray) && baseEntity.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+                    baseEntity.getLevel().dropItem(baseEntity, Item.get(Utils.rand(500, 511), 0, 1));
+                }
+            }
         }
     }
 

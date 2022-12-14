@@ -14,7 +14,7 @@ import cn.nukkit.item.ItemSwordIron;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.network.protocol.EntityEventPacket;
+import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.MobArmorEquipmentPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
@@ -30,7 +30,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
 
     public static final int NETWORK_ID = 32;
 
-    protected Item tool;
+    private Item tool;
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -64,7 +64,29 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
         this.setDamage(new float[] { 0, 2, 3, 4 });
         this.setMaxHealth(20);
 
-        this.armor = getRandomArmor();
+        if (this.namedTag.contains("Armor") && this.namedTag.get("Armor") instanceof ListTag) {
+            ListTag<CompoundTag> listTag = this.namedTag.getList("Armor", CompoundTag.class);
+            Item[] loadedArmor = new Item[4];
+            int count = 0;
+            for (CompoundTag item : listTag.getAll()) {
+                int slot = item.getByte("Slot");
+                if (slot < 0 || slot > 3) {
+                    this.server.getLogger().error("Failed to load zombie armor: Invalid slot: " + slot);
+                    break;
+                }
+                if (slot < count) {
+                    this.server.getLogger().error("Failed to load zombie armor: Duplicated slot: " + slot);
+                    break;
+                }
+                loadedArmor[slot] = NBTIO.getItemHelper(item);
+                count++;
+            }
+            this.armor = loadedArmor;
+        } else {
+            this.armor = getRandomArmor();
+        }
+
+        this.addArmorExtraHealth();
 
         if (this.namedTag.contains("Item")) {
             this.tool = NBTIO.getItemHelper(this.namedTag.getCompound("Item"));
@@ -79,31 +101,25 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
     }
 
     @Override
-    public void attackEntity(Entity player) {
-        if (this.attackDelay > 23 && player.distanceSquared(this) <= 1) {
+    public void attackEntity(Entity target) {
+        if (this.attackDelay > 23 && target.distanceSquared(this) <= 1) {
             this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-            damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
+            damage.put(EntityDamageEvent.DamageModifier.BASE, (float) this.getDamage());
 
-            if (player instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
+            if (target instanceof Player) {
                 float points = 0;
-                for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                for (Item i : ((Player) target).getInventory().getArmorContents()) {
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
-            player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
-            EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = this.getId();
-            pk.event = 4;
-            this.level.addChunkPacket(this.getChunkX(), this.getChunkZ(), pk);
+            target.attack(new EntityDamageByEntityEvent(this, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
+            this.playAttack();
         }
     }
-
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
@@ -114,7 +130,7 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
 
         boolean hasUpdate = super.entityBaseTick(tickDiff);
 
-        if (MobPlugin.shouldMobBurn(level, this)) {
+        if (!this.closed && MobPlugin.shouldMobBurn(level, this)) {
             if (this.armor[0] == null) {
                 this.setOnFire(100);
             } else if (this.armor[0].getId() == 0) {
@@ -135,13 +151,13 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
             }
 
             if (this.tool != null) {
-                if (tool instanceof ItemSwordIron && Utils.rand(1, 3) == 1) {
+                if (Utils.rand(1, 3) == 1) {
                     drops.add(tool);
                 }
+            }
 
-                if (tool instanceof ItemShovelIron && Utils.rand(1, 3) != 1) {
-                    drops.add(tool);
-                }
+            if (this.armor != null && armor.length == 4 && Utils.rand(1, 3) == 1) {
+                drops.add(armor[Utils.rand(0, 3)]);
             }
 
             if (Utils.rand(1, 3) == 1) {
@@ -207,17 +223,13 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
             CreatureSpawnEvent cse = new CreatureSpawnEvent(EntityDrowned.NETWORK_ID, this, new CompoundTag(), CreatureSpawnEvent.SpawnReason.DROWNED);
             level.getServer().getPluginManager().callEvent(cse);
 
-            if (cse.isCancelled()) {
-                this.close();
-                return true;
-            }
-
-            Entity ent = Entity.createEntity("Drowned", this);
-            if (ent != null) {
-                this.close();
-                ent.spawnToAll();
-            } else {
-                this.close();
+            if (!cse.isCancelled()) {
+                Entity ent = Entity.createEntity("Drowned", this);
+                if (ent != null) {
+                    ent.setHealth(this.getHealth());
+                    this.close();
+                    ent.spawnToAll();
+                }
             }
         }
 
@@ -228,11 +240,30 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
     public void saveNBT() {
         super.saveNBT();
 
+        this.saveTool();
+        this.saveArmor();
+    }
+
+    private void saveTool() {
         if (tool != null) {
             this.namedTag.put("Item", NBTIO.putItemHelper(tool));
         }
     }
 
+    private void saveArmor() {
+        if (this.armor != null && this.armor.length == 4) {
+            ListTag<CompoundTag> listTag = new ListTag<>("Armor");
+            for (int slot = 0; slot < 4; ++slot) {
+                listTag.add(NBTIO.putItemHelper(this.armor[slot], slot));
+            }
+            this.namedTag.putList(listTag);
+        }
+    }
+
+    /**
+     * Get held tool
+     * @return the tool this zombie has in hand or null
+     */
     public Item getTool() {
         return this.tool;
     }

@@ -2,10 +2,7 @@ package nukkitcoders.mobplugin.entities.monster.flying;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.Attribute;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.*;
 import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
@@ -18,13 +15,15 @@ import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.network.Network;
 import cn.nukkit.network.protocol.AddEntityPacket;
+import cn.nukkit.network.protocol.BossEventPacket;
 import cn.nukkit.network.protocol.DataPacket;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityBlueWitherSkull;
 import nukkitcoders.mobplugin.entities.projectile.EntityWitherSkull;
+import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
 public class Wither extends FlyingMonster implements Boss, EntitySmite {
@@ -77,7 +76,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
                 return false;
             }
         }
-        return creature.isAlive() && !creature.closed && distance <= 256;
+        return creature.isAlive() && !creature.closed && distance <= 10000;
     }
 
     @Override
@@ -87,17 +86,19 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.age > 220 && this.attackDelay > 23 && Utils.rand(1, 5) < 3 && this.distanceSquared(player) <= 10000) {
+        if (this.age > 220 && this.attackDelay > 40 && this.distanceSquared(player) <= 4096) {
             this.attackDelay = 0;
 
             double f = 1;
-            double yaw = this.yaw + Utils.rand(-12.0, 12.0);
-            double pitch = this.pitch + Utils.rand(-7.0, 7.0);
-            Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
-                    this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
+            double yaw = this.yaw + Utils.rand(-4.0, 4.0);
+            double pitch = this.pitch + Utils.rand(-4.0, 4.0);
+            Location pos = new Location(this.x - Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
+                    this.z + Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
+
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
                 return;
             }
+
             Entity k;
             ProjectileLaunchEvent launch;
             EntityWitherSkull skull;
@@ -106,16 +107,13 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
                 k = Entity.createEntity("BlueWitherSkull", pos, this);
                 skull = (EntityBlueWitherSkull) k;
                 ((EntityBlueWitherSkull) skull).setExplode(true);
-                skull.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
-                        Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
-                launch = new ProjectileLaunchEvent(skull, this);
             } else {
                 k = Entity.createEntity("WitherSkull", pos, this);
                 skull = (EntityWitherSkull) k;
-                skull.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
-                        Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
-                launch = new ProjectileLaunchEvent(skull, this);
             }
+            skull.setMotion(new Vector3(-Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f, -Math.sin(FastMathLite.toRadians(pitch)) * f * f,
+                    Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f));
+            launch = new ProjectileLaunchEvent(skull);
 
             this.server.getPluginManager().callEvent(launch);
             if (launch.isCancelled()) {
@@ -149,7 +147,6 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
         addEntity.speedZ = (float) this.motionZ;
         addEntity.metadata = this.dataProperties;
         addEntity.attributes = new Attribute[]{Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(witherMaxHealth()).setValue(witherMaxHealth())};
-        addEntity.setChannel(Network.CHANNEL_ENTITY_SPAWNING);
         return addEntity;
     }
 
@@ -160,7 +157,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
             return true;
         }
 
-        if (this.age == 200) {
+        if (!this.closed && this.age == 200) {
             this.explode();
             this.setDataProperty(new IntEntityData(DATA_WITHER_INVULNERABLE_TICKS, 0));
         }
@@ -225,5 +222,25 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
     @Override
     public boolean canTarget(Entity entity) {
         return true;
+    }
+
+    @Override
+    public void spawnTo(Player player) {
+        super.spawnTo(player);
+        if (!MobPlugin.getInstance().config.showBossBar) {
+            return;
+        }
+        BossEventPacket pkBoss = new BossEventPacket();
+        pkBoss.bossEid = this.id;
+        pkBoss.type = BossEventPacket.TYPE_SHOW;
+        pkBoss.title = this.getName();
+        pkBoss.healthPercent = this.health / 100;
+        player.dataPacket(pkBoss);
+    }
+
+    @Override
+    public String getName() {
+        String name = this.getNameTag();
+        return !name.isEmpty() ? name : "Wither";
     }
 }

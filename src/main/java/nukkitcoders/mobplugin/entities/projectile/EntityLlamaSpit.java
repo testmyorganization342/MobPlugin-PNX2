@@ -5,17 +5,9 @@ import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-public class EntityEnderCharge extends EntityProjectile {
+public class EntityLlamaSpit extends EntityProjectile {
 
-    public static final int NETWORK_ID = 79;
-
-    public EntityEnderCharge(FullChunk chunk, CompoundTag nbt) {
-        this(chunk, nbt, null);
-    }
-
-    public EntityEnderCharge(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
-        super(chunk, nbt, shootingEntity);
-    }
+    public static final int NETWORK_ID = 102;
 
     @Override
     public int getNetworkId() {
@@ -24,17 +16,12 @@ public class EntityEnderCharge extends EntityProjectile {
 
     @Override
     public float getWidth() {
-        return 0.25f;
-    }
-
-    @Override
-    public float getLength() {
-        return 0.25f;
+        return 0.3f;
     }
 
     @Override
     public float getHeight() {
-        return 0.25f;
+        return 0.3f;
     }
 
     @Override
@@ -49,7 +36,15 @@ public class EntityEnderCharge extends EntityProjectile {
 
     @Override
     protected double getBaseDamage() {
-        return 5;
+        return 1;
+    }
+
+    public EntityLlamaSpit(FullChunk chunk, CompoundTag nbt) {
+        this(chunk, nbt, null);
+    }
+
+    public EntityLlamaSpit(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+        super(chunk, nbt, shootingEntity);
     }
 
     @Override
@@ -58,7 +53,7 @@ public class EntityEnderCharge extends EntityProjectile {
             return false;
         }
 
-        if (this.age > 1200 || this.isCollided || this.hadCollision) {
+        if (this.age > 100 || this.isCollided || this.hadCollision) {
             this.close();
             return false;
         }

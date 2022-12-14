@@ -3,10 +3,19 @@ package nukkitcoders.mobplugin.utils;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.mob.*;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemSkull;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import nukkitcoders.mobplugin.entities.monster.walking.Creeper;
+import nukkitcoders.mobplugin.entities.monster.walking.Skeleton;
+import nukkitcoders.mobplugin.entities.monster.walking.WitherSkeleton;
+import nukkitcoders.mobplugin.entities.monster.walking.Zombie;
 
 import java.util.SplittableRandom;
 
@@ -82,4 +91,21 @@ public class Utils {
 
         return false;
     }
+
+    public static Item getMobHead(int mob) {
+        switch (mob) {
+            case Skeleton.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.SKELETON_SKULL, 1);
+            case WitherSkeleton.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.WITHER_SKELETON_SKULL, 1);
+            case Zombie.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.ZOMBIE_HEAD, 1);
+            case Creeper.NETWORK_ID:
+                return Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1);
+            default:
+                return null;
+        }
+    }
+
+    public static final IntSet monstersList = new IntOpenHashSet(new int[]{EntityBlaze.NETWORK_ID, EntityCaveSpider.NETWORK_ID, EntityCreeper.NETWORK_ID, EntityDrowned.NETWORK_ID, EntityElderGuardian.NETWORK_ID, EntityEnderman.NETWORK_ID, EntityEndermite.NETWORK_ID, EntityEvoker.NETWORK_ID, EntityGhast.NETWORK_ID, EntityGuardian.NETWORK_ID, EntityHoglin.NETWORK_ID, EntityHusk.NETWORK_ID, EntityPiglinBrute.NETWORK_ID, EntityPillager.NETWORK_ID, EntityRavager.NETWORK_ID, EntityShulker.NETWORK_ID, EntitySilverfish.NETWORK_ID, EntitySkeleton.NETWORK_ID, EntitySlime.NETWORK_ID, EntitySpider.NETWORK_ID, EntityStray.NETWORK_ID, EntityVex.NETWORK_ID, EntityVindicator.NETWORK_ID, EntityWitch.NETWORK_ID, EntityWither.NETWORK_ID, EntityWitherSkeleton.NETWORK_ID, EntityZoglin.NETWORK_ID, EntityZombie.NETWORK_ID, EntityZombiePigman.NETWORK_ID, EntityZombieVillagerV1.NETWORK_ID, EntityZombieVillager.NETWORK_ID});
 }

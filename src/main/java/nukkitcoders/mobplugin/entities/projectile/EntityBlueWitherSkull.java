@@ -2,12 +2,11 @@ package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityExplosive;
-import cn.nukkit.event.entity.ExplosionPrimeEvent;
+import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.SmokeParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.utils.Utils;
 import nukkitcoders.mobplugin.utils.WitherSkullExplosion;
 
@@ -18,20 +17,16 @@ public class EntityBlueWitherSkull extends EntityWitherSkull implements EntityEx
     private boolean canExplode;
 
     public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt) {
-        super(chunk, nbt);
+        this(chunk, nbt, null);
+    }
+
+    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+        super(chunk, nbt, shootingEntity);
     }
 
     @Override
     public int getNetworkId() {
         return NETWORK_ID;
-    }
-
-    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
-        this(chunk, nbt, shootingEntity, false);
-    }
-
-    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
-        super(chunk, nbt, shootingEntity);
     }
 
     public void setExplode(boolean bool) {
@@ -44,28 +39,28 @@ public class EntityBlueWitherSkull extends EntityWitherSkull implements EntityEx
             return false;
         }
 
-        if (this.age > 1200 || this.hadCollision) {
+        if (this.age > 1200 || this.isCollided || this.hadCollision) {
             if (this.canExplode) {
                 this.explode();
+            } else {
+                this.close();
             }
-
-            this.close();
         } else if (this.age % 4 == 0) {
             this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + Utils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + Utils.rand(-100.0, 100.0) / 500)));
         }
 
-        return super.onUpdate(currentTick);
-    }
-
-    @Override
-    public void onCollideWithEntity(Entity entity) {
-        super.onCollideWithEntity(entity);
-        entity.addEffect(Effect.getEffect(Effect.WITHER).setDuration(200));
+        super.onUpdate(currentTick);
+        return !this.closed;
     }
 
     @Override
     public void explode() {
-        ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.2);
+        if (this.closed) {
+            return;
+        }
+        this.close();
+
+        EntityExplosionPrimeEvent ev = new EntityExplosionPrimeEvent(this, 1.2);
         this.server.getPluginManager().callEvent(ev);
 
         if (!ev.isCancelled()) {

@@ -3,11 +3,12 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 import cn.nukkit.block.Block;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
-import cn.nukkit.event.entity.EntityShootBowEvent;
-import cn.nukkit.event.entity.ProjectileLaunchEvent;
+import cn.nukkit.event.entity.*;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBow;
 import cn.nukkit.level.Location;
@@ -26,6 +27,8 @@ import java.util.List;
 public class Skeleton extends WalkingMonster implements EntitySmite {
 
     public static final int NETWORK_ID = 34;
+
+    private boolean angryFlagSet;
 
     public Skeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -115,7 +118,7 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
 
         boolean hasUpdate = super.entityBaseTick(tickDiff);
 
-        if (MobPlugin.shouldMobBurn(level, this)) {
+        if (!this.closed && MobPlugin.shouldMobBurn(level, this)) {
             this.setOnFire(100);
         }
 
@@ -126,13 +129,8 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.BONE, 0, 1));
-        }
-
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.ARROW, 0, 1));
-        }
+        drops.add(Item.get(Item.BONE, 0, Utils.rand(0, 2)));
+        drops.add(Item.get(Item.ARROW, 0, Utils.rand(0, 2)));
 
         return drops.toArray(new Item[0]);
     }
@@ -145,5 +143,23 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
     @Override
     public int nearbyDistanceMultiplier() {
         return 10;
+    }
+
+    @Override
+    public boolean targetOption(EntityCreature creature, double distance) {
+        boolean hasTarget = super.targetOption(creature, distance);
+        if (hasTarget) {
+            if (!this.angryFlagSet && creature != null) {
+                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, creature.getId()));
+                this.angryFlagSet = true;
+            }
+        } else {
+            if (this.angryFlagSet) {
+                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, 0));
+                this.angryFlagSet = false;
+                this.stayTime = 100;
+            }
+        }
+        return hasTarget;
     }
 }

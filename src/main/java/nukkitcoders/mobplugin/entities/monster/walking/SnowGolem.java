@@ -53,6 +53,7 @@ public class SnowGolem extends WalkingMonster {
     public void initEntity() {
         super.initEntity();
         this.setMaxHealth(4);
+        this.noFallDamage = true;
 
         if (this.namedTag.getBoolean("Sheared")) {
             this.shear(true);
@@ -70,8 +71,8 @@ public class SnowGolem extends WalkingMonster {
             this.attackDelay = 0;
 
             double f = 1.2;
-            double yaw = this.yaw + Utils.rand(-12.0, 12.0);
-            double pitch = this.pitch + Utils.rand(-7.0, 7.0);
+            double yaw = this.yaw + Utils.rand(-4.0, 4.0);
+            double pitch = this.pitch + Utils.rand(-4.0, 4.0);
             Location location = new Location(this.x + (-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), this.y + this.getEyeHeight(),
                     this.z + (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5), yaw, pitch, this.level);
             Entity k = Entity.createEntity("Snowball", location, this);

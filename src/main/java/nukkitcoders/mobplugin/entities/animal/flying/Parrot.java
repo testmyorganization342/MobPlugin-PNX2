@@ -9,14 +9,11 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.FlyingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Parrot extends FlyingAnimal {
 
     public static final int NETWORK_ID = 30;
 
-    protected int variant;
+    private int variant;
 
     private static final int[] VARIANTS = {0, 1, 2, 3, 4};
 
@@ -61,13 +58,7 @@ public class Parrot extends FlyingAnimal {
 
     @Override
     public Item[] getDrops() {
-        List<Item> drops = new ArrayList<>();
-
-        for (int i = 0; i < Utils.rand(1, 2); i++) {
-            drops.add(Item.get(Item.FEATHER, 0, 1));
-        }
-
-        return drops.toArray(new Item[0]);
+        return new Item[]{Item.get(Item.FEATHER, 0, Utils.rand(1, 2))};
     }
 
     @Override

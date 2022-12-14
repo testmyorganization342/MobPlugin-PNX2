@@ -5,14 +5,10 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.data.IntEntityData;
-import cn.nukkit.entity.mob.EntityCreeper;
-import cn.nukkit.entity.mob.EntitySkeleton;
-import cn.nukkit.entity.mob.EntityStray;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemSkull;
 import cn.nukkit.level.Explosion;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Sound;
@@ -109,23 +105,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     public Item[] getDrops() {
         List<Item> drops = new ArrayList<>();
 
-        for (int i = 0; i < Utils.rand(0, 2); i++) {
-            drops.add(Item.get(Item.GUNPOWDER, 0, 1));
-        }
-
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            Entity killer = ((EntityDamageByEntityEvent) this.lastDamageCause).getDamager();
-
-            if (killer instanceof EntitySkeleton || killer instanceof EntityStray) {
-                drops.add(Item.get(Utils.rand(500, 511), 0, 1));
-            }
-
-            if (killer instanceof EntityCreeper) {
-                if (((EntityCreeper) killer).isPowered()) {
-                    drops.add(Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1));
-                }
-            }
-        }
+        drops.add(Item.get(Item.GUNPOWDER, 0, Utils.rand(0, 2)));
 
         return drops.toArray(new Item[0]);
     }
@@ -192,8 +172,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             double z = this.target.z - this.z;
 
             double diff = Math.abs(x) + Math.abs(z);
-            double distance = followTarget.distance(this);
-            if (distance <= 4) {
+            double distance = followTarget.distanceSquared(this);
+            if (distance <= 16) { // 4 blocks
                 if (followTarget instanceof EntityCreature) {
                     if (!exploding) {
                         if (bombTime >= 0) {

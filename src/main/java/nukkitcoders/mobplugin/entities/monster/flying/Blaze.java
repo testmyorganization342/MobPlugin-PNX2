@@ -1,21 +1,26 @@
 package nukkitcoders.mobplugin.entities.monster.flying;
 
+import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.LevelEventPacket;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityBlazeFireBall;
+import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
 public class Blaze extends FlyingMonster {
 
     public static final int NETWORK_ID = 43;
+
+    private int fireball;
 
     public Blaze(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -42,30 +47,45 @@ public class Blaze extends FlyingMonster {
 
         this.fireProof = true;
         this.setMaxHealth(20);
-        this.setDamage(new float[]{0, 0, 0, 0});
+    }
+
+    @Override
+    public boolean targetOption(EntityCreature creature, double distance) {
+        if (creature instanceof Player) {
+            Player player = (Player) creature;
+            return !player.closed && player.spawned && player.isAlive() && (player.isSurvival() || player.isAdventure()) && distance <= 2304; // 48 blocks
+        }
+        return false;
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 23 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 10000) {
+        if (this.attackDelay == 60 && this.fireball == 0) {
+            this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, true);
+        }
+        if (((this.fireball > 0 && this.fireball < 3 && this.attackDelay > 5) || (this.attackDelay > 120 && Utils.rand(1, 32) < 4)) && this.distanceSquared(player) <= 256) { // 16 blocks
             this.attackDelay = 0;
+            this.fireball++;
+
+            if (this.fireball == 3) {
+                this.fireball = 0;
+                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, false);
+            }
 
             double f = 1.1;
-            double yaw = this.yaw + Utils.rand(-7.0, 7.0);
-            double pitch = this.pitch + Utils.rand(-5.0, 5.0);
-            Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
-                    this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
+            double yaw = this.yaw + Utils.rand(-4.0, 4.0);
+            double pitch = this.pitch + Utils.rand(-4.0, 4.0);
+            Location pos = new Location(this.x - Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
+                    this.z + Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
+
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
                 return;
             }
-            Entity k = Entity.createEntity("BlazeFireBall", pos, this);
-            if (!(k instanceof EntityBlazeFireBall)) {
-                return;
-            }
 
-            EntityBlazeFireBall fireball = (EntityBlazeFireBall) k;
-            fireball.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
-                    Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
+            EntityBlazeFireBall fireball = (EntityBlazeFireBall) Entity.createEntity("BlazeFireBall", pos, this);
+
+            fireball.setMotion(new Vector3(-Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f, -Math.sin(FastMathLite.toRadians(pitch)) * f * f,
+                    Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f));
 
             ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball, this);
             this.server.getPluginManager().callEvent(launch);
@@ -73,7 +93,7 @@ public class Blaze extends FlyingMonster {
                 fireball.close();
             } else {
                 fireball.spawnToAll();
-                this.level.addSound(this, Sound.MOB_BLAZE_SHOOT);
+                this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_BLAZE_SHOOT);
             }
         }
     }
@@ -90,6 +110,6 @@ public class Blaze extends FlyingMonster {
 
     @Override
     public int nearbyDistanceMultiplier() {
-        return 30;
+        return 1000; // don't follow
     }
 }

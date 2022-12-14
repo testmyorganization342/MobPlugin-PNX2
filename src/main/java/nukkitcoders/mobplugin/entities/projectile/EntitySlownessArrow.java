@@ -9,6 +9,10 @@ import cn.nukkit.potion.Effect;
 
 public class EntitySlownessArrow extends EntityArrow {
 
+    public EntitySlownessArrow(FullChunk chunk, CompoundTag nbt) {
+        this(chunk, nbt, null);
+    }
+
     public EntitySlownessArrow(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
         this.setDataProperty(new ByteEntityData(DATA_HAS_DISPLAY, 19), false);

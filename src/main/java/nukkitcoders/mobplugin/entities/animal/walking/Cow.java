@@ -67,13 +67,14 @@ public class Cow extends WalkingAnimal {
             }
             this.level.addSound(this, Sound.MOB_COW_MILK);
             return false;
-        } else if (item.getId() == Item.WHEAT && !this.isBaby() && !this.isInLoveCooldown()) {
+        } else if (item.getId() == Item.WHEAT && !this.isBaby() && !isInLoveCooldown()) {
             if (!player.isCreative()) {
                 player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             }
             this.level.addSound(this, Sound.RANDOM_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.WHEAT)));
             this.setInLove();
+            this.lastInteract = player;
         }
         return super.onInteract(player, item, clickedPos);
     }
@@ -84,7 +85,7 @@ public class Cow extends WalkingAnimal {
             Player player = (Player) creature;
             return player.isAlive() && !player.closed && player.getInventory().getItemInHand().getId() == Item.WHEAT && distance <= 49;
         }
-        return false;
+        return super.targetOption(creature, distance);
     }
 
     @Override
@@ -92,13 +93,8 @@ public class Cow extends WalkingAnimal {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.LEATHER, 0, 1));
-            }
-
-            for (int i = 0; i < Utils.rand(1, 3); i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, 1));
-            }
+            drops.add(Item.get(Item.LEATHER, 0, Utils.rand(0, 2)));
+            drops.add(Item.get(this.isOnFire() ? Item.STEAK : Item.RAW_BEEF, 0, Utils.rand(1, 3)));
         }
 
         return drops.toArray(new Item[0]);

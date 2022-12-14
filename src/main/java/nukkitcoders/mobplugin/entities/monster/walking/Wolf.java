@@ -18,13 +18,11 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.utils.DyeColor;
-
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.Turtle;
 import nukkitcoders.mobplugin.entities.animal.walking.Fox;
 import nukkitcoders.mobplugin.entities.animal.walking.Sheep;
 import nukkitcoders.mobplugin.entities.monster.TameableMonster;
-import nukkitcoders.mobplugin.entities.monster.walking.Skeleton;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.HashMap;
@@ -180,8 +178,7 @@ public class Wolf extends TameableMonster {
                     this.setOwner(player);
                     this.setCollarColor(DyeColor.RED);
                     this.setRoute(null);
-                    this.saveNBT();
-                    
+
                     this.getLevel().dropExpOrb(this, Utils.rand(1, 7));
                     
                     return true;
@@ -250,11 +247,9 @@ public class Wolf extends TameableMonster {
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (entity instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
                 float points = 0;
                 for (Item i : ((Player) entity).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
@@ -308,7 +303,7 @@ public class Wolf extends TameableMonster {
     
     public void setInLove() {
         this.inLoveTicks = 600;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);
+        //this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE);
     }
     
     public boolean isInLove() {
@@ -382,7 +377,7 @@ public class Wolf extends TameableMonster {
             this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         }
     }
-    
+
     @Override
     public int getKillExperience() {
         return this.isBaby() ? 0 : 3;

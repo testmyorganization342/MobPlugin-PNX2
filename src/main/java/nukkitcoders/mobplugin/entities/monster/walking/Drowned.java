@@ -1,10 +1,11 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.projectile.EntityProjectile;
+import cn.nukkit.entity.projectile.EntityThrownTrident;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -12,12 +13,10 @@ import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.entities.projectile.EntityTrident;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -72,21 +71,16 @@ public class Drowned extends WalkingMonster implements EntitySmite {
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 
             if (player instanceof Player) {
-                HashMap<Integer, Float> armorValues = new ArmorPoints();
-
                 float points = 0;
                 for (Item i : ((Player) player).getInventory().getArmorContents()) {
-                    points += armorValues.getOrDefault(i.getId(), 0f);
+                    points += this.getArmorPoints(i.getId());
                 }
 
                 damage.put(EntityDamageEvent.DamageModifier.ARMOR,
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
             player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
-            EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = this.getId();
-            pk.event = 4;
-            Server.broadcastPacket(this.getViewers().values(), pk);
+            this.playAttack();
         } else if (tool != null && tool.getId() == Item.TRIDENT && this.attackDelay > 120 && Utils.rand(1, 32) < 4 && this.distanceSquared(player) <= 55) {
             this.attackDelay = 0;
             double f = 1.3;
@@ -97,17 +91,17 @@ public class Drowned extends WalkingMonster implements EntitySmite {
             Location pos = new Location(this.x - Math.sin(yawR) * Math.cos(pitchR) * 0.5, this.y + this.getHeight() - 0.18,
                     this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
-                Entity k = Entity.createEntity("Trident", pos, this);
-                if (!(k instanceof EntityTrident)) {
-                    return;
+                Entity k = Entity.createEntity("ThrownTrident", pos, this);
+                if (k instanceof EntityThrownTrident) {
+                    ((EntityThrownTrident) k).setPickupMode(EntityProjectile.PICKUP_NONE);
+                    setProjectileMotion(k, pitch, yawR, pitchR, f);
+                    k.spawnToAll();
+                    this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_ITEM_TRIDENT_THROW);
                 }
-                setProjectileMotion(k, pitch, yawR, pitchR, f);
-                k.spawnToAll();
-                this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_ITEM_TRIDENT_THROW);
             }
         }
     }
-    
+
     @Override
     public boolean entityBaseTick(int tickDiff) {
         if (getServer().getDifficulty() == 0) {
@@ -119,7 +113,7 @@ public class Drowned extends WalkingMonster implements EntitySmite {
 
         this.setAirTicks(300);
 
-        if (MobPlugin.shouldMobBurn(level, this)) {
+        if (!this.closed && MobPlugin.shouldMobBurn(level, this)) {
             this.setOnFire(100);
         }
 
@@ -131,9 +125,7 @@ public class Drowned extends WalkingMonster implements EntitySmite {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            for (int i = 0; i < Utils.rand(0, 2); i++) {
-                drops.add(Item.get(Item.ROTTEN_FLESH, 0, 1));
-            }
+            drops.add(Item.get(Item.ROTTEN_FLESH, 0, Utils.rand(0, 2)));
 
             if (Utils.rand(1, 100) <= 11) {
                 drops.add(Item.get(Item.GOLD_INGOT, 0, 1));
