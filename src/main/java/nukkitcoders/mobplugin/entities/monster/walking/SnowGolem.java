@@ -98,7 +98,7 @@ public class SnowGolem extends WalkingMonster {
             if (ev.isCancelled()) {
                 if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
             } else if (projectile != null) {
-                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
+                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile, this);
                 this.server.getPluginManager().callEvent(launch);
                 if (launch.isCancelled()) {
                     if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();

@@ -121,7 +121,7 @@ public class Llama extends HorseBase {
                                 EntityLlamaSpit spit = (EntityLlamaSpit) k;
                                 spit.setMotion(new Vector3(-Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f, -Math.sin(FastMathLite.toRadians(pitch)) * f * f,
                                         Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f));
-                                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(spit);
+                                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(spit, this);
                                 this.server.getPluginManager().callEvent(launch);
                                 if (launch.isCancelled()) {
                                     spit.close();

@@ -94,7 +94,7 @@ public class Witch extends WalkingMonster {
 
                 thrownPotion.setMotion(new Vector3(-Math.sin(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f, -Math.sin(Math.toDegrees(pitch)) * f * f,
                         Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
-                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(thrownPotion);
+                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(thrownPotion, this);
                 this.server.getPluginManager().callEvent(launch);
                 if (launch.isCancelled()) {
                     thrownPotion.close();

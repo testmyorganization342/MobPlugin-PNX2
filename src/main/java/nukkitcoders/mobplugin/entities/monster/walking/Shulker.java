@@ -73,7 +73,7 @@ public class Shulker extends WalkingMonster {
             bullet.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f,
                     Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
 
-            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(bullet);
+            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(bullet, this);
             this.server.getPluginManager().callEvent(launch);
 
             if (launch.isCancelled()) {

@@ -87,7 +87,7 @@ public class Piglin extends WalkingMonster {
                 if (ev.isCancelled()) {
                     projectile.close();
                 } else {
-                    ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile);
+                    ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile, this);
                     this.server.getPluginManager().callEvent(launch);
                     if (launch.isCancelled()) {
                         projectile.close();

@@ -97,7 +97,7 @@ public class Ghast extends FlyingMonster {
                 fireball.setMotion(new Vector3(-Math.sin(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f, -Math.sin(FastMathLite.toRadians(pitch)) * f * f,
                         Math.cos(FastMathLite.toRadians(yaw)) * Math.cos(FastMathLite.toRadians(pitch)) * f * f));
 
-                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball);
+                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(fireball, this);
                 this.server.getPluginManager().callEvent(launch);
                 if (launch.isCancelled()) {
                     fireball.close();
