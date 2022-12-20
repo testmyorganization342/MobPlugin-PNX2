@@ -2,11 +2,11 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
-import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.walking.Fox;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -28,7 +28,7 @@ public class FoxSpawner extends AbstractEntitySpawner {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     int count = Utils.rand(2, 4); // They spawn in groups of 2-4
                     for (int i = 0; i < count; i++) {
-                        BaseEntity entity = this.spawnTask.createEntity("Fox", pos.add(0.5, 1, 0.5));
+                        EntityCreature entity = this.spawnTask.createEntity("Fox", pos.add(0.5, 1, 0.5));
                         if (entity == null) return;
                         if (Utils.rand(1, 20) == 1) {
                             entity.setBaby(true);

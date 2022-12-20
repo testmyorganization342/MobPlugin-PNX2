@@ -11,7 +11,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.RouteFinderThreadPool;
 import nukkitcoders.mobplugin.entities.animal.walking.Llama;
-import nukkitcoders.mobplugin.entities.animal.walking.Pig;
 import nukkitcoders.mobplugin.entities.animal.walking.SkeletonHorse;
 import nukkitcoders.mobplugin.entities.monster.walking.Drowned;
 import nukkitcoders.mobplugin.route.RouteFinder;
@@ -41,7 +40,7 @@ public abstract class WalkingEntity extends BaseEntity {
 
         this.followTarget = null;
 
-        if (!this.passengers.isEmpty() && !(this instanceof Llama) && !(this instanceof Pig)) {
+        if (!this.passengers.isEmpty() && !(this instanceof Llama)) {
             return;
         }
 
@@ -156,7 +155,7 @@ public abstract class WalkingEntity extends BaseEntity {
             Block levelBlock = getLevelBlock();
             boolean inWater = levelBlock.getId() == 8 || levelBlock.getId() == 9;
             int downId = level.getBlockIdAt(getFloorX(), getFloorY() - 1, getFloorZ());
-            if (inWater && (downId == 0 || downId == 8 || downId == 9 || downId == BlockID.LAVA || downId == BlockID.STILL_LAVA || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN)) onGround = false;
+            if (inWater && (downId == 0 || downId == 8 || downId == 9 || downId == BlockID.FLOWING_LAVA || downId == BlockID.STILL_LAVA || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN)) onGround = false;
             if (downId == 0 || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN) onGround = false;
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
                 double x = this.target.x - this.x;
@@ -182,7 +181,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.1 * (z / diff);
                     }
                 }
-                if ((this.passengers.isEmpty() || this instanceof Llama || this instanceof Pig) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
             }
 
             Vector3 before = this.target;
@@ -211,7 +210,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.15 * (z / diff);
                     }
                 }
-                if ((this.passengers.isEmpty() || this instanceof Llama || this instanceof Pig) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
             }
 
             double dx = this.motionX;

@@ -5,8 +5,6 @@ import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.projectile.EntityEgg;
 import cn.nukkit.entity.projectile.EntityEnderPearl;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
@@ -14,8 +12,6 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
-import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
@@ -23,8 +19,6 @@ import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
-import cn.nukkit.lang.TranslationContainer;
-import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
@@ -32,19 +26,16 @@ import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.PlayerInputPacket;
-import cn.nukkit.network.protocol.TextPacket;
-
-import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.HorseBase;
-import nukkitcoders.mobplugin.entities.Tameable;
-import nukkitcoders.mobplugin.entities.animal.walking.Chicken;
 import nukkitcoders.mobplugin.entities.animal.walking.Llama;
-import nukkitcoders.mobplugin.entities.animal.walking.Pig;
 import nukkitcoders.mobplugin.entities.animal.walking.Strider;
 import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.entities.monster.flying.Wither;
-import nukkitcoders.mobplugin.entities.monster.walking.*;
+import nukkitcoders.mobplugin.entities.monster.walking.Enderman;
+import nukkitcoders.mobplugin.entities.monster.walking.IronGolem;
+import nukkitcoders.mobplugin.entities.monster.walking.Silverfish;
+import nukkitcoders.mobplugin.entities.monster.walking.SnowGolem;
 import nukkitcoders.mobplugin.event.entity.SpawnGolemEvent;
 import nukkitcoders.mobplugin.event.entity.SpawnWitherEvent;
 import nukkitcoders.mobplugin.event.spawner.SpawnerChangeTypeEvent;
@@ -52,108 +43,20 @@ import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
-
 import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
 
 public class EventListener implements Listener {
-
-    @EventHandler(ignoreCancelled = true)
-    public void EntityDeathEvent(EntityDeathEvent ev) {
-        if (ev.getEntity() instanceof EntityCreature) {
-            this.handleExperienceOrb(ev.getEntity());
-            this.handleTamedEntityDeathMessage(ev.getEntity());
-            this.handleAttackedEntityAngry(ev.getEntity());
-            if (ev.getEntity() instanceof BaseEntity && ev.getEntity().getLevel().getGameRules().getBoolean(GameRule.DO_MOB_LOOT)) {
-                BaseEntity baseEntity = (BaseEntity) ev.getEntity();
-                if (!(baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
-                Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
-                if (damager instanceof Creeper && damager != baseEntity && baseEntity.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
-                    if (((Creeper) damager).isPowered()) {
-                        Item skull = Utils.getMobHead(baseEntity.getNetworkId());
-                        if (skull != null) {
-                            baseEntity.getLevel().dropItem(baseEntity, skull);
-                        }
-                    }
-                } else if (baseEntity instanceof Creeper && (damager instanceof Skeleton || damager instanceof Stray) && baseEntity.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-                    baseEntity.getLevel().dropItem(baseEntity, Item.get(Utils.rand(500, 511), 0, 1));
-                }
-            }
-        }
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void PlayerDeathEvent(PlayerDeathEvent ev) {
         this.handleAttackedEntityAngry(ev.getEntity());
     }
 
-    private void handleExperienceOrb(Entity entity) {
-        if (!(entity instanceof BaseEntity)) return;
-        
-        BaseEntity baseEntity = (BaseEntity) entity;
-        
-        if (!(baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
-        
-        Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
-        if (!(damager instanceof Player)) return;
-        int killExperience = baseEntity.getKillExperience();
-        if (killExperience > 0) {
-            if (MobPlugin.getInstance().config.noXpOrbs) {
-                ((Player) damager).addExperience(killExperience);
-            } else {
-                damager.getLevel().dropExpOrb(baseEntity, killExperience);
-            }
-        }
-    }
-    
-    private void handleTamedEntityDeathMessage(Entity entity) {
-        if (!(entity instanceof BaseEntity)) return;
-        
-        BaseEntity baseEntity = (BaseEntity) entity;
-        
-        if (baseEntity instanceof Tameable) {
-            if (!((Tameable) baseEntity).hasOwner()) {
-                return;
-            }
-            
-            if (((Tameable) baseEntity).getOwner() == null) {
-                return;
-            }
-            
-            // TODO: More detailed death messages
-            String killedEntity;
-            if (baseEntity instanceof Wolf) {
-                killedEntity = "%entity.wolf.name";
-            } else {
-                killedEntity = baseEntity.getName();
-            }
-            
-            TranslationContainer deathMessage = new TranslationContainer("death.attack.generic", killedEntity);
-            if (baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-                Entity damageEntity = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
-                if (damageEntity instanceof Player) {
-                    deathMessage = new TranslationContainer("death.attack.player", killedEntity, damageEntity.getName());
-                } else {
-                    deathMessage = new TranslationContainer("death.attack.mob", killedEntity, damageEntity.getName());
-                }
-            }
-            
-            TextPacket tameDeathMessage = new TextPacket();
-            tameDeathMessage.type = TextPacket.TYPE_TRANSLATION;
-            tameDeathMessage.message = deathMessage.getText();
-            tameDeathMessage.parameters = deathMessage.getParameters();
-            tameDeathMessage.isLocalized = true;
-            ((Tameable) baseEntity).getOwner().dataPacket(tameDeathMessage);
-        }
-    }
-
     private void handleAttackedEntityAngry(Entity entity) {
         if (!(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
 
         Entity damager = ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager();
-        if (damager instanceof Wolf) {
-            ((Wolf) damager).isAngryTo = -1L;
-            ((Wolf) damager).setAngry(false);
-        } else if (damager instanceof IronGolem || damager instanceof SnowGolem) {
+        if (damager instanceof IronGolem || damager instanceof SnowGolem) {
             ((WalkingMonster) damager).isAngryTo = -1L;
         }
     }
@@ -164,7 +67,7 @@ public class EventListener implements Listener {
 
         Item item = ev.getItem();
         Block block = ev.getBlock();
-        if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MONSTER_SPAWNER) return;
+        if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MOB_SPAWNER) return;
 
         Player player = ev.getPlayer();
         if (player.isAdventure()) return;
@@ -217,7 +120,7 @@ public class EventListener implements Listener {
         }
         Player player = ev.getPlayer();
         Item item = ev.getItem();
-        if (block.getId() == Block.JACK_O_LANTERN || block.getId() == Block.PUMPKIN) {
+        if (block.getId() == Block.LIT_PUMPKIN || block.getId() == Block.PUMPKIN) {
             if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
 
                 Position pos = block.add(0.5, -1, 0.5);
@@ -327,7 +230,7 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void ProjectileHitEvent(ProjectileHitEvent ev) {
-        if (ev.getEntity() instanceof EntityEgg) {
+        /*if (ev.getEntity() instanceof EntityEgg) {
             if (Utils.rand(1, 20) == 5) {
                 Chicken entity = (Chicken) Entity.createEntity("Chicken", ev.getEntity().add(0.5, 1, 0.5));
                 if (entity != null) {
@@ -335,7 +238,7 @@ public class EventListener implements Listener {
                     entity.setBaby(true);
                 }
             }
-        }
+        }*/
 
         if (ev.getEntity() instanceof EntityEnderPearl) {
             if (Utils.rand(1, 20) == 5) {
@@ -373,9 +276,9 @@ public class EventListener implements Listener {
             Player p = ev.getPlayer();
             if (p.riding instanceof HorseBase && !(p.riding instanceof Llama)) {
                 ((HorseBase) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
-            } else if (p.riding instanceof Pig) {
+            }/* else if (p.riding instanceof Pig) {
                 ((Pig) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
-            } else if (p.riding instanceof Strider) {
+            } */else if (p.riding instanceof Strider) {
                 ((Strider) p.riding).onPlayerInput(p, ipk.motionX, ipk.motionY);
             }
         }
@@ -397,45 +300,13 @@ public class EventListener implements Listener {
             for (int i = 0; i < 8; i++) {
                 aab.offset(-FastMathLite.sin(player.getYaw() * Math.PI / 180) * i, i * (Math.tan(player.getPitch() * -3.141592653589793 / 180)), FastMathLite.cos(player.getYaw() * Math.PI / 180) * i);
                 Entity[] entities = player.getLevel().getCollidingEntities(aab);
-                if (entities.length > 0) {
-                    for (Entity e : entities) {
-                        if (e instanceof Enderman) {
-                            ((Enderman) e).stareToAngry();
-                        }
+                for (Entity e : entities) {
+                    if (e instanceof Enderman) {
+                        ((Enderman) e).stareToAngry();
                     }
                 }
             }
         }
     }
-    
-    @EventHandler(ignoreCancelled = true)
-    public void EntityDamageByEntityEvent(EntityDamageByEntityEvent ev) {
-        if (!MobPlugin.getInstance().config.checkTamedEntityAttack) {
-            return;
-        }
-        
-        if (ev.getEntity() instanceof Player)  {
-            for (Entity entity : ev.getEntity().getLevel().getNearbyEntities(ev.getEntity().getBoundingBox().grow(17, 17, 17), ev.getEntity())) {
-                if (entity instanceof Wolf) {
-                    if (((Wolf) entity).hasOwner()) {
-                        ((Wolf) entity).isAngryTo = ev.getDamager().getId();
-                        ((Wolf) entity).setAngry(true);
-                    }
-                }
-            }
-        } else if (ev.getDamager() instanceof Player) {
-            for (Entity entity : ev.getDamager().getLevel().getNearbyEntities(ev.getDamager().getBoundingBox().grow(17, 17, 17), ev.getDamager())) {
-                if (entity.getId() == ev.getEntity().getId()) return;
-                
-                if (entity instanceof Wolf) {
-                    if (((Wolf) entity).hasOwner()) {
-                        if (((Wolf) entity).getOwner().equals(ev.getDamager())) {
-                            ((Wolf) entity).isAngryTo = ev.getEntity().getId();
-                            ((Wolf) entity).setAngry(true);
-                        }
-                    }
-                }
-            }
-        }
-    }
+
 }

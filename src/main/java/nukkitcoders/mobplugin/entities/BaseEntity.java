@@ -50,33 +50,33 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     //private int inEndPortal;
     //private int inNetherPortal;
 
-    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<Float>() {
+    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<>() {
         {
-            put(Item.LEATHER_CAP, new Float(1));
-            put(Item.LEATHER_TUNIC, new Float(3));
-            put(Item.LEATHER_PANTS, new Float(2));
-            put(Item.LEATHER_BOOTS, new Float(1));
-            put(Item.CHAIN_HELMET, new Float(2));
-            put(Item.CHAIN_CHESTPLATE, new Float(5));
-            put(Item.CHAIN_LEGGINGS, new Float(4));
-            put(Item.CHAIN_BOOTS, new Float(1));
-            put(Item.GOLD_HELMET, new Float(2));
-            put(Item.GOLD_CHESTPLATE, new Float(5));
-            put(Item.GOLD_LEGGINGS, new Float(3));
-            put(Item.GOLD_BOOTS, new Float(1));
-            put(Item.IRON_HELMET, new Float(2));
-            put(Item.IRON_CHESTPLATE, new Float(6));
-            put(Item.IRON_LEGGINGS, new Float(5));
-            put(Item.IRON_BOOTS, new Float(2));
-            put(Item.DIAMOND_HELMET, new Float(3));
-            put(Item.DIAMOND_CHESTPLATE, new Float(8));
-            put(Item.DIAMOND_LEGGINGS, new Float(6));
-            put(Item.DIAMOND_BOOTS, new Float(3));
-            put(Item.NETHERITE_HELMET, new Float(3));
-            put(Item.NETHERITE_CHESTPLATE, new Float(8));
-            put(Item.NETHERITE_LEGGINGS, new Float(6));
-            put(Item.NETHERITE_BOOTS, new Float(3));
-            put(Item.TURTLE_SHELL, new Float(2));
+            put(Item.LEATHER_CAP, Float.valueOf(1));
+            put(Item.LEATHER_TUNIC, Float.valueOf(3));
+            put(Item.LEATHER_PANTS, Float.valueOf(2));
+            put(Item.LEATHER_BOOTS, Float.valueOf(1));
+            put(Item.CHAIN_HELMET, Float.valueOf(2));
+            put(Item.CHAIN_CHESTPLATE, Float.valueOf(5));
+            put(Item.CHAIN_LEGGINGS, Float.valueOf(4));
+            put(Item.CHAIN_BOOTS, Float.valueOf(1));
+            put(Item.GOLD_HELMET, Float.valueOf(2));
+            put(Item.GOLD_CHESTPLATE, Float.valueOf(5));
+            put(Item.GOLD_LEGGINGS, Float.valueOf(3));
+            put(Item.GOLD_BOOTS, Float.valueOf(1));
+            put(Item.IRON_HELMET, Float.valueOf(2));
+            put(Item.IRON_CHESTPLATE, Float.valueOf(6));
+            put(Item.IRON_LEGGINGS, Float.valueOf(5));
+            put(Item.IRON_BOOTS, Float.valueOf(2));
+            put(Item.DIAMOND_HELMET, Float.valueOf(3));
+            put(Item.DIAMOND_CHESTPLATE, Float.valueOf(8));
+            put(Item.DIAMOND_LEGGINGS, Float.valueOf(6));
+            put(Item.DIAMOND_BOOTS, Float.valueOf(3));
+            put(Item.NETHERITE_HELMET, Float.valueOf(3));
+            put(Item.NETHERITE_CHESTPLATE, Float.valueOf(8));
+            put(Item.NETHERITE_LEGGINGS, Float.valueOf(6));
+            put(Item.NETHERITE_BOOTS, Float.valueOf(3));
+            put(Item.TURTLE_SHELL, Float.valueOf(2));
         }
     };
 
@@ -747,7 +747,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             if (!this.hasEffect(Effect.SLOW_FALLING)) {
                 Block down = this.level.getBlock(this.down());
                 if (!this.noFallDamage) {
-                    float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(Effect.JUMP) ? this.getEffect(Effect.JUMP).getAmplifier() + 1 : 0));
+                    float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(Effect.JUMP_BOOST) ? this.getEffect(Effect.JUMP_BOOST).getAmplifier() + 1 : 0));
                     if (down.getId() == BlockID.HAY_BALE) {
                         damage -= (damage * 0.8f);
                     }
@@ -773,6 +773,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
      * @return can swim
      */
     protected boolean canSwimIn(int block) {
-        return block == BlockID.WATER || block == BlockID.STILL_WATER;
+        return block == BlockID.FLOWING_WATER || block == BlockID.STILL_WATER;
     }
 }

@@ -23,6 +23,7 @@ public class Config {
     public boolean noSpawnEggWasting;
     public boolean killOnDespawn;
     public boolean spawnersEnabled;
+    @Deprecated
     public boolean checkTamedEntityAttack;
     public boolean creeperExplodeBlocks;
     public boolean allowBreeding;
@@ -124,7 +125,7 @@ public class Config {
         spawnNoSpawningArea = pluginConfig.getInt("other.spawn-no-spawning-area");
         killOnDespawn = pluginConfig.getBoolean("other.kill-mobs-on-despawn");
         endEndermanSpawnRate = pluginConfig.getInt("other.end-enderman-spawning");
-        checkTamedEntityAttack = pluginConfig.getBoolean("other.check-tamed-entity-attack");
+        //checkTamedEntityAttack = pluginConfig.getBoolean("other.check-tamed-entity-attack");
         creeperExplodeBlocks = pluginConfig.getBoolean("other.creeper-explode-blocks");
         mobCreationDisabledWorlds = loadStringList("other.worlds-entity-creation-disabled");
         allowBreeding = pluginConfig.getBoolean("other.allow-breeding");

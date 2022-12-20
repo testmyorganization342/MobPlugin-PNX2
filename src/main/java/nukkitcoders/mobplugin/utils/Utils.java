@@ -12,10 +12,8 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import nukkitcoders.mobplugin.entities.monster.walking.Creeper;
 import nukkitcoders.mobplugin.entities.monster.walking.Skeleton;
 import nukkitcoders.mobplugin.entities.monster.walking.WitherSkeleton;
-import nukkitcoders.mobplugin.entities.monster.walking.Zombie;
 
 import java.util.SplittableRandom;
 
@@ -67,7 +65,7 @@ public class Utils {
     public static boolean entityInsideWaterFast(Entity ent) {
         double y = ent.y + ent.getEyeHeight();
         int b = ent.level.getBlockIdAt(NukkitMath.floorDouble(ent.x), NukkitMath.floorDouble(y), NukkitMath.floorDouble(ent.z));
-        return b == BlockID.WATER || b == BlockID.STILL_WATER;
+        return b == BlockID.FLOWING_WATER || b == BlockID.STILL_WATER;
     }
 
     public static boolean hasCollisionBlocks(Level level, AxisAlignedBB bb) {
@@ -98,9 +96,9 @@ public class Utils {
                 return Item.get(Item.SKULL, ItemSkull.SKELETON_SKULL, 1);
             case WitherSkeleton.NETWORK_ID:
                 return Item.get(Item.SKULL, ItemSkull.WITHER_SKELETON_SKULL, 1);
-            case Zombie.NETWORK_ID:
+            case EntityZombie.NETWORK_ID:
                 return Item.get(Item.SKULL, ItemSkull.ZOMBIE_HEAD, 1);
-            case Creeper.NETWORK_ID:
+            case EntityCreeper.NETWORK_ID:
                 return Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1);
             default:
                 return null;

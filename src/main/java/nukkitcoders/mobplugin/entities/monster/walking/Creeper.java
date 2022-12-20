@@ -25,6 +25,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public static final int NETWORK_ID = 33;

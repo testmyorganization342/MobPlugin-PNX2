@@ -1,12 +1,12 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.mob.EntityCreeper;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
-import nukkitcoders.mobplugin.entities.monster.walking.Creeper;
 
 public class CreeperSpawner extends AbstractEntitySpawner {
 
@@ -25,6 +25,6 @@ public class CreeperSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return Creeper.NETWORK_ID;
+        return EntityCreeper.NETWORK_ID;
     }
 }
