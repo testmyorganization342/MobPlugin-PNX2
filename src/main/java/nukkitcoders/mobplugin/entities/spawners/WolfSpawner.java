@@ -2,12 +2,12 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.passive.EntityWolf;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
-import nukkitcoders.mobplugin.entities.monster.walking.Wolf;
 import nukkitcoders.mobplugin.utils.Utils;
 
 public class WolfSpawner extends AbstractEntitySpawner {
@@ -32,6 +32,6 @@ public class WolfSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return Wolf.NETWORK_ID;
+        return EntityWolf.NETWORK_ID;
     }
 }

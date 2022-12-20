@@ -1,9 +1,11 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
+import cn.nukkit.entity.passive.EntityVillager;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-public class VillagerV2 extends Villager {
+@Deprecated
+public class VillagerV2 extends EntityVillager {
 
     public static final int NETWORK_ID = 115;
 
@@ -11,13 +13,4 @@ public class VillagerV2 extends Villager {
         super(chunk, nbt);
     }
 
-    @Override
-    public int getNetworkId() {
-        return NETWORK_ID;
-    }
-
-    @Override
-    public String getName() {
-        return this.hasCustomName() ? this.getNameTag() : "Villager";
-    }
 }
