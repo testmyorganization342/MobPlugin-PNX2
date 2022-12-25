@@ -58,7 +58,7 @@ public class Drowned extends WalkingMonster implements EntitySmite {
 
         if (this.namedTag.contains("Item")) {
             this.tool = NBTIO.getItemHelper(this.namedTag.getCompound("Item"));
-        } else {
+        } else if (!this.namedTag.getBoolean("HandItemSet")) {
             this.setRandomTool();
         }
     }
@@ -182,6 +182,7 @@ public class Drowned extends WalkingMonster implements EntitySmite {
     public void saveNBT() {
         super.saveNBT();
 
+        this.namedTag.putBoolean("HandItemSet", true); // Can be air but don't try to set a new tool next time
         if (tool != null) {
             this.namedTag.put("Item", NBTIO.putItemHelper(tool));
         }

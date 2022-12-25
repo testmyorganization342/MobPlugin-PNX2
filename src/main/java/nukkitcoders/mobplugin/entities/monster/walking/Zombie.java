@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntitySmite;
-import cn.nukkit.entity.mob.EntityDrowned;
 import cn.nukkit.event.entity.CreatureSpawnEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -220,13 +219,13 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
         super.attack(ev);
 
         if (!ev.isCancelled() && ev.getCause() == EntityDamageEvent.DamageCause.DROWNING) {
-            CreatureSpawnEvent cse = new CreatureSpawnEvent(EntityDrowned.NETWORK_ID, this, new CompoundTag(), CreatureSpawnEvent.SpawnReason.DROWNED);
+            CreatureSpawnEvent cse = new CreatureSpawnEvent(Drowned.NETWORK_ID, this, new CompoundTag(), CreatureSpawnEvent.SpawnReason.DROWNED);
             level.getServer().getPluginManager().callEvent(cse);
 
             if (!cse.isCancelled()) {
-                Entity ent = Entity.createEntity("Drowned", this);
+                CompoundTag nbt = Entity.getDefaultNBT(this).putBoolean("HandItemSet", true);
+                Entity ent = Entity.createEntity(Drowned.NETWORK_ID, this.getChunk(), nbt);
                 if (ent != null) {
-                    ent.setHealth(this.getHealth());
                     this.close();
                     ent.spawnToAll();
                 }
