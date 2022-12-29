@@ -118,9 +118,10 @@ public class Pig extends WalkingAnimal implements EntityRideable {
 
         if (!this.isBaby()) {
             drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, Utils.rand(1, 3)));
-            if (this.isSaddled()) {
-                drops.add(Item.get(Item.SADDLE));
-            }
+        }
+
+        if (this.isSaddled()) {
+            drops.add(Item.get(Item.SADDLE, 0, 1));
         }
 
         return drops.toArray(new Item[0]);

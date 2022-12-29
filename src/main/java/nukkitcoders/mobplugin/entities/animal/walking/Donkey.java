@@ -76,10 +76,14 @@ public class Donkey extends HorseBase {
             for (int i = 0; i < Utils.rand(0, 2); i++) {
                 drops.add(Item.get(Item.LEATHER, 0, 1));
             }
+        }
 
-            if (this.isChested()) {
-                drops.add(Item.get(Item.CHEST, 0, 1));
-            }
+        if (this.isChested()) {
+            drops.add(Item.get(Item.CHEST, 0, 1));
+        }
+
+        if (this.isSaddled()) {
+            drops.add(Item.get(Item.SADDLE, 0, 1));
         }
 
         return drops.toArray(new Item[0]);

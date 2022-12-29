@@ -57,6 +57,10 @@ public class ZombieHorse extends HorseBase implements EntitySmite {
             drops.add(Item.get(Item.ROTTEN_FLESH, 0, Utils.rand(0, 2)));
         }
 
+        if (this.isSaddled()) {
+            drops.add(Item.get(Item.SADDLE, 0, 1));
+        }
+
         return drops.toArray(new Item[0]);
     }
 

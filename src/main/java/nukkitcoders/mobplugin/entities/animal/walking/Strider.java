@@ -200,10 +200,10 @@ public class Strider extends WalkingAnimal implements EntityRideable {
             for (int i = 0; i < Utils.rand(2, 5); i++) {
                 drops.add(Item.get(Item.STRING, 0, 1));
             }
+        }
 
-            if (this.isSaddled()) {
-                drops.add(Item.get(Item.SADDLE));
-            }
+        if (this.isSaddled()) {
+            drops.add(Item.get(Item.SADDLE, 0, 1));
         }
 
         return drops.toArray(new Item[0]);
