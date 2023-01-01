@@ -9,6 +9,9 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.HorseBase;
 import nukkitcoders.mobplugin.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
  */
@@ -80,12 +83,19 @@ public class Horse extends HorseBase {
 
     @Override
     public Item[] getDrops() {
+        List<Item> drops = new ArrayList<>();
+
         if (!this.isBaby()) {
-            int c = Utils.rand(0, 2);
-            if (c > 0) return new Item[]{Item.get(Item.LEATHER, 0, 1)};
+            for (int i = 0; i < Utils.rand(0, 2); i++) {
+                drops.add(Item.get(Item.LEATHER, 0, 1));
+            }
         }
 
-        return new Item[0];
+        if (this.isSaddled()) {
+            drops.add(Item.get(Item.SADDLE, 0, 1));
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     private int getRandomVariant() {

@@ -58,6 +58,10 @@ public class SkeletonHorse extends HorseBase implements EntitySmite {
             drops.add(Item.get(Item.BONE, 0, Utils.rand(0, 1)));
         }
 
+        if (this.isSaddled()) {
+            drops.add(Item.get(Item.SADDLE, 0, 1));
+        }
+
         return drops.toArray(new Item[0]);
     }
 
