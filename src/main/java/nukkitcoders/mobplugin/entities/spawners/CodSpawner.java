@@ -2,10 +2,10 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.passive.EntityCod;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
-import nukkitcoders.mobplugin.entities.animal.swimming.Cod;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 
 public class CodSpawner extends AbstractEntitySpawner {
@@ -29,6 +29,6 @@ public class CodSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return Cod.NETWORK_ID;
+        return EntityCod.NETWORK_ID;
     }
 }
