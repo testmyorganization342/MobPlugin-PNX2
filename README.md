@@ -1,8 +1,9 @@
 # NukkitX MobPlugin
 MobPlugin is a plugin that implements mobs and animals for NukkitX servers including movement, aggression, spawners etc.
 
-## Notice
-This plugin is still in development. Therefore, it may function abnormally. Please report bugs on the issues page.
+This is a modified version for PowerNukkitX, you can learn about the original version from here  
+https://github.com/Nukkit-coders/MobPlugin
 
-[![NukkitX.com](https://img.shields.io/badge/MobPlugin-Download-brightgreen.svg)](https://cloudburstmc.org/resources/mobplugin.3/)
-[![CircleCI builds](https://img.shields.io/circleci/project/github/Nukkit-coders/MobPlugin.svg)](https://circleci.com/gh/Nukkit-coders/MobPlugin)
+
+## Download
+https://ci.lanink.cn/job/MobPlugin/job/PNX/
