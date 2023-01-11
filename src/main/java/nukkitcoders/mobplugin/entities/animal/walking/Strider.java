@@ -227,7 +227,7 @@ public class Strider extends WalkingAnimal implements EntityRideable {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            return player.spawned && player.isAlive() && !player.closed && distance <= 40
+            return player.spawned && player.isAlive() && !player.closed && distance <= 49
                     && player.getInventory().getItemInHand().getId() == Item.WARPED_FUNGUS_ON_A_STICK;
         }
         return false;

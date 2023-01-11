@@ -15,6 +15,7 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityInteractEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.particle.HeartParticle;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -25,6 +26,7 @@ import cn.nukkit.potion.Effect;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import nukkitcoders.mobplugin.MobPlugin;
+import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
 import nukkitcoders.mobplugin.utils.FastMathLite;
@@ -47,6 +49,9 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     protected int attackDelay = 0;
     protected boolean noFallDamage;
     public Item[] armor;
+    private short inLoveTicks = 0;
+    private short inLoveCooldown = 0;
+    protected Player lastInteract;
     //private int inEndPortal;
     //private int inNetherPortal;
 
@@ -185,6 +190,14 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             this.baby = true;
             this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, true);
         }
+
+        if (this.namedTag.contains("InLoveTicks")) {
+            this.inLoveTicks = (short) this.namedTag.getShort("InLoveTicks");
+        }
+
+        if (this.namedTag.contains("InLoveCooldown")) {
+            this.inLoveCooldown = (short) this.namedTag.getShort("InLoveCooldown");
+        }
     }
 
     @Override
@@ -198,6 +211,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         this.namedTag.putBoolean("Baby", this.isBaby());
         this.namedTag.putBoolean("Movement", this.isMovement());
         this.namedTag.putShort("Age", this.age);
+        this.namedTag.putShort("InLoveTicks", this.inLoveTicks);
+        this.namedTag.putShort("InLoveCooldown", this.inLoveCooldown);
     }
 
     public boolean targetOption(EntityCreature creature, double distance) {
@@ -207,27 +222,58 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 return !player.closed && player.spawned && player.isAlive() && (player.isSurvival() || player.isAdventure()) && distance <= 100;
             }
             return creature.isAlive() && !creature.closed && distance <= 100;
+        } else if (this instanceof Animal && this.isInLove()) {
+            return creature instanceof BaseEntity && ((BaseEntity) creature).isInLove() && creature.isAlive() && !creature.closed && creature.getNetworkId() == this.getNetworkId() && distance <= 100;
         }
         return false;
     }
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
-        super.entityBaseTick(tickDiff);
-
         if (this.canDespawn()) {
             if (MobPlugin.getInstance().config.killOnDespawn) {
                 this.kill();
+                return true;
             } else {
                 this.close();
+                return false;
             }
         }
+
+        boolean hasUpdate = super.entityBaseTick(tickDiff);
 
         if (this instanceof Monster && this.attackDelay < 200) {
             this.attackDelay++;
         }
 
-        return true;
+        if (this.moveTime > 0) {
+            this.moveTime -= tickDiff;
+        }
+
+        if (this.isBaby() && this.age > 0) {
+            this.setBaby(false);
+        }
+
+        if (this.isInLove()) {
+            this.inLoveTicks -= tickDiff;
+            if (!this.isBaby() && this.age > 0 && this.age % 20 == 0) {
+                for (int i = 0; i < 3; i++) {
+                    this.level.addParticle(new HeartParticle(this.add(Utils.rand(-1.0, 1.0), this.getMountedYOffset() + Utils.rand(-1.0, 1.0), Utils.rand(-1.0, 1.0))));
+                }
+                if (MobPlugin.getInstance().config.allowBreeding) {
+                    Entity[] colliding = level.getCollidingEntities(this.boundingBox.grow(0.5f, 0.5f, 0.5f));
+                    for (Entity entity : colliding) {
+                        if (entity != this && entity != null && this.tryBreedWih(entity)) {
+                            break;
+                        }
+                    }
+                }
+            }
+        } else if (this.isInLoveCooldown()) {
+            this.inLoveCooldown -= tickDiff;
+        }
+
+        return hasUpdate;
     }
 
     @Override
@@ -774,5 +820,49 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
      */
     protected boolean canSwimIn(int block) {
         return block == BlockID.WATER || block == BlockID.STILL_WATER;
+    }
+
+    public boolean isInLoveCooldown() {
+        return inLoveCooldown > 0;
+    }
+
+    protected boolean tryBreedWih(Entity entity) {
+        if (entity instanceof BaseEntity && entity.getNetworkId() == this.getNetworkId()) {
+            BaseEntity be = (BaseEntity) entity;
+            if (be.isInLove() && !be.isBaby() && be.age > 0) {
+                be.lastInteract = null;
+                this.setInLove(false);
+                be.setInLove(false);
+                this.inLoveCooldown = 1200;
+                be.inLoveCooldown = 1200;
+                this.stayTime = 60;
+                be.stayTime = 60;
+                BaseEntity baby = (BaseEntity) Entity.createEntity(this.getNetworkId(), this);
+                baby.setBaby(true);
+                baby.spawnToAll();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setInLove() {
+        this.setInLove(true);
+    }
+
+    public void setInLove(boolean inLove) {
+        if (inLove) {
+            if (!this.isBaby()) {
+                this.inLoveTicks = 600;
+                //this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE, true);
+            }
+        } else {
+            this.inLoveTicks = 0;
+            //this.setDataFlag(DATA_FLAGS, DATA_FLAG_INLOVE, false);
+        }
+    }
+
+    public boolean isInLove() {
+        return inLoveTicks > 0;
     }
 }

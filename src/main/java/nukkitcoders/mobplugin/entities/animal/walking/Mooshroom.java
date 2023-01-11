@@ -10,6 +10,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.ItemBreakParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -110,6 +111,7 @@ public class Mooshroom extends WalkingAnimal {
             if (!player.isCreative()) {
                 player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             }
+            this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_EAT);
             this.level.addParticle(new ItemBreakParticle(this.add(0, this.getMountedYOffset(), 0), Item.get(Item.WHEAT)));
             this.setInLove();
         }
