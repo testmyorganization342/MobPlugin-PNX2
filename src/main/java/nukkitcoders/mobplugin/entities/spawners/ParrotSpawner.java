@@ -17,7 +17,7 @@ public class ParrotSpawner extends AbstractEntitySpawner {
     }
 
     public void spawn(Player player, Position pos, Level level) {
-        if (Utils.rand(1, 3) == 1) {
+        if (pos.y < 70 || Utils.rand(1, 3) != 1) {
             return;
         }
         final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
@@ -25,7 +25,9 @@ public class ParrotSpawner extends AbstractEntitySpawner {
             final int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId == Block.GRASS || blockId == Block.LEAVES || blockId == Block.WOOD) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-                    this.spawnTask.createEntity("Parrot", pos.add(0.5, 1, 0.5));
+                    for (int i = 0; i < Utils.rand(1, 2); i++) {
+                        this.spawnTask.createEntity("Parrot", pos.add(0.5, 1, 0.5));
+                    }
                 }
             }
         }
