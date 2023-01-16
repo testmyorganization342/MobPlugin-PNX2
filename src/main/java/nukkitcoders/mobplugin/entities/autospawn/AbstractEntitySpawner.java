@@ -50,6 +50,13 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 return;
             }
 
+            if (Utils.monstersList.contains(getEntityNetworkId())) {
+                int biome = level.getBiomeId((int) pos.x, (int) pos.z);
+                if (biome == 14 || biome == 15) {
+                    return; // Hostile mobs don't spawn on mushroom island
+                }
+            }
+
             pos.y = this.spawnTask.getSafeYCoord(level, pos);
 
             if (pos.y < 1 || pos.y > 255 || level.getDimension() == Level.DIMENSION_NETHER && pos.y > 125) {
@@ -84,6 +91,9 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
     private static final IntArrayList WATER_MOBS = new IntArrayList(new int[]{EntityDrowned.NETWORK_ID, EntityCod.NETWORK_ID, EntitySalmon.NETWORK_ID, EntityPufferfish.NETWORK_ID, EntityTropicalFish.NETWORK_ID, EntityTurtle.NETWORK_ID, EntityDolphin.NETWORK_ID, EntitySquid.NETWORK_ID, EntityGlowSquid.NETWORK_ID});
 
     private boolean isSpawningAllowed(Player player) {
+        if (player.isSpectator()) {
+            return false;
+        }
         if (Utils.rand(1, 4) != 1 && MobPlugin.isSpawningAllowedByLevel(player.getLevel())) {
             if (Server.getInstance().getDifficulty() == 0) {
                 return !Utils.monstersList.contains(getEntityNetworkId());

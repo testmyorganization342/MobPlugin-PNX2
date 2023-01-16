@@ -114,7 +114,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
             int nearbyEntities = 0;
             boolean playerInRange = false;
             for (Entity entity : this.level.getEntities()) {
-                if (!playerInRange && entity instanceof Player) {
+                if (!playerInRange && entity instanceof Player && !((Player) entity).isSpectator()) {
                     if (entity.distance(this) <= this.requiredPlayerRange) {
                         playerInRange = true;
                     }

@@ -53,9 +53,9 @@ public class Phantom extends FlyingMonster implements EntitySmite {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance <= 100;
+            return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance <= 1024;
         }
-        return creature.isAlive() && !creature.closed && distance <= 100;
+        return creature.isAlive() && !creature.closed && distance <= 1024;
     }
 
     @Override

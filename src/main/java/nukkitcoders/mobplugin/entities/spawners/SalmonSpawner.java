@@ -7,6 +7,7 @@ import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.entities.animal.swimming.Salmon;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
+import nukkitcoders.mobplugin.utils.Utils;
 
 public class SalmonSpawner extends AbstractEntitySpawner {
 
@@ -21,7 +22,9 @@ public class SalmonSpawner extends AbstractEntitySpawner {
             if (biomeId == 0 || biomeId == 7) {
                 int b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                 if (b == Block.WATER || b == Block.STILL_WATER) {
-                    this.spawnTask.createEntity("Salmon", pos.add(0.5, -1, 0.5));
+                    for (int i = 0; i < 3; i++) {
+                        this.spawnTask.createEntity("Salmon", pos.add(Utils.rand(0.3, 0.7), -1, Utils.rand(0.3, 0.7)));
+                    }
                 }
             }
         }

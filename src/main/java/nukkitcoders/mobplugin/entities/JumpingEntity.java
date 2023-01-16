@@ -105,6 +105,9 @@ public abstract class JumpingEntity extends BaseEntity {
     }
 
     public Vector3 updateMove(int tickDiff) {
+        if (!this.isInTickingRange()) {
+            return null;
+        }
         if (!isImmobile()) {
             if (!this.isMovement()) {
                 return null;

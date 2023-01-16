@@ -865,4 +865,13 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public boolean isInLove() {
         return inLoveTicks > 0;
     }
+
+    protected boolean isInTickingRange() {
+        for (Player player : this.level.getPlayers().values()) {
+            if (player.distanceSquared(this) < 6400) { // 80 blocks
+                return true;
+            }
+        }
+        return false;
+    }
 }

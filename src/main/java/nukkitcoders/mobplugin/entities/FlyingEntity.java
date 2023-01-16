@@ -96,6 +96,9 @@ public abstract class FlyingEntity extends BaseEntity {
 
     @Override
     public Vector3 updateMove(int tickDiff) {
+        if (!this.isInTickingRange()) {
+            return null;
+        }
         if (!isImmobile()) {
             if (!this.isMovement()) {
                 return null;
