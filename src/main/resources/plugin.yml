@@ -12,10 +12,6 @@ commands:
   description: Mob plugin main command
   usage: /mob
   permission: mobplugin.command
- summon:
-  description: Summon entity
-  usage: /summon <entity> [player]
-  permission: mobplugin.command
 
 permissions:
  mobplugin.command:

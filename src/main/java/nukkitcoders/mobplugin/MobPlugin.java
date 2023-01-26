@@ -77,7 +77,7 @@ public class MobPlugin extends PluginBase implements Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!sender.hasPermission("mobplugin.command")) return false;
-        if (cmd.getName().equals("summon")) {
+        /*if (cmd.getName().equals("summon")) {
             if (args.length == 0 || (args.length == 1 && !(sender instanceof Player))) {
                 return false;
             }
@@ -110,7 +110,7 @@ public class MobPlugin extends PluginBase implements Listener {
             } else {
                 sender.sendMessage("\u00A7cUnknown player " + (args.length == 2 ? args[1] : sender.getName()));
             }
-        } else if (cmd.getName().equals("mob")) {
+        } else */if (cmd.getName().equals("mob")) {
             if (args.length == 0) {
                 sender.sendMessage("-- MobPlugin " + this.getDescription().getVersion() + " --");
                 sender.sendMessage("/mob spawn <entity> <opt:player> - Summon entity");
