@@ -325,11 +325,9 @@ public class Wolf extends TameableMonster {
             return;
         }
 
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
             return;
         }
-
-        this.followTarget = null;
 
         double near = Integer.MAX_VALUE;
 
@@ -348,11 +346,10 @@ public class Wolf extends TameableMonster {
 
             this.stayTime = 0;
             this.moveTime = 0;
-            this.followTarget = creature;
             if (this.route == null && this.passengers.isEmpty()) this.target = creature;
         }
 
-        if (this.followTarget instanceof EntityCreature && !this.followTarget.closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
+        if (this.target instanceof EntityCreature && !((EntityCreature) this.target).closed && ((EntityCreature) this.target).isAlive() && this.targetOption((EntityCreature) this.target, this.distanceSquared(this.target))) {
             return;
         }
 

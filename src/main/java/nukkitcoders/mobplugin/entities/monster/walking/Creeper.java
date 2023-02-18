@@ -115,10 +115,6 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         return 5;
     }
 
-    public int getMaxFallHeight() {
-        return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
-    }
-
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
         if (item.getId() == Item.FLINT_AND_STEEL && !exploding) {

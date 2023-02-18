@@ -151,4 +151,9 @@ public class EnderDragon extends FlyingMonster implements Boss {
         pkBoss.healthPercent = this.health / 100;
         player.dataPacket(pkBoss);
     }
+
+    @Override
+    protected boolean isInTickingRange() {
+        return true;
+    }
 }
