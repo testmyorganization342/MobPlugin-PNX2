@@ -10,7 +10,6 @@ public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
 
     public SwimmingAnimal(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = null;
     }
 
     @Override

@@ -325,7 +325,7 @@ public class Wolf extends TameableMonster {
             return;
         }
 
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
+        if (this.followTarget instanceof EntityCreature && !this.followTarget.closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget))) {
             return;
         }
 
@@ -346,10 +346,11 @@ public class Wolf extends TameableMonster {
 
             this.stayTime = 0;
             this.moveTime = 0;
+            this.followTarget = creature;
             if (this.route == null && this.passengers.isEmpty()) this.target = creature;
         }
 
-        if (this.target instanceof EntityCreature && !((EntityCreature) this.target).closed && ((EntityCreature) this.target).isAlive() && this.targetOption((EntityCreature) this.target, this.distanceSquared(this.target))) {
+        if (this.target != null) {
             return;
         }
 

@@ -11,7 +11,6 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class Husk extends WalkingMonster implements EntityAgeable, EntitySmite {
 
     public Husk(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
     }
 
     @Override

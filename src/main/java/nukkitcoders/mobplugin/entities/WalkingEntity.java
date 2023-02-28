@@ -33,9 +33,11 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
             return;
         }
+
+        this.followTarget = null;
 
         if (!this.passengers.isEmpty() && !(this instanceof Llama) && !(this instanceof Pig)) {
             return;
@@ -44,7 +46,7 @@ public abstract class WalkingEntity extends BaseEntity {
         double near = Integer.MAX_VALUE;
 
         for (Entity entity : this.getLevel().getEntities()) {
-            if (entity == this || !(entity instanceof EntityCreature) || !this.canTarget(entity)) {
+            if (entity == this || !(entity instanceof EntityCreature) || entity.closed || !this.canTarget(entity)) {
                 continue;
             }
 
@@ -61,10 +63,11 @@ public abstract class WalkingEntity extends BaseEntity {
 
             this.stayTime = 0;
             this.moveTime = 0;
+            this.followTarget = creature;
             if (this.route == null && this.passengers.isEmpty()) this.target = creature;
         }
 
-        if (this.target instanceof EntityCreature && !((EntityCreature) this.target).closed && ((EntityCreature) this.target).isAlive() && this.targetOption((EntityCreature) this.target, this.distanceSquared(this.target))) {
+        if (this.followTarget != null) {
             return;
         }
 
@@ -160,7 +163,7 @@ public abstract class WalkingEntity extends BaseEntity {
             int downId = level.getBlockIdAt(getFloorX(), getFloorY() - 1, getFloorZ());
             if (inWater && (downId == 0 || downId == 8 || downId == 9 || downId == BlockID.LAVA || downId == BlockID.STILL_LAVA || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN)) onGround = false;
             if (downId == 0 || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN) onGround = false;
-            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
+            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target != null) {
                 double x = this.target.x - this.x;
                 double z = this.target.z - this.z;
 
@@ -185,12 +188,10 @@ public abstract class WalkingEntity extends BaseEntity {
                     }
                 }
                 if ((this.passengers.isEmpty() || this instanceof Llama || this instanceof Pig) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
-                return this.followTarget;
             }
 
-            Vector3 before = this.target;
             this.checkTarget();
-            if (this.target instanceof EntityCreature || before != this.target) {
+            if (this.target != null) {
                 double x = this.target.x - this.x;
                 double z = this.target.z - this.z;
 
@@ -209,8 +210,8 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.05 * (z / diff);
                         if (!(this instanceof Drowned)) {
                             this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
-                        } else if (this.target instanceof Entity) {
-                            double y = this.target.y - this.y;
+                        } else if (this.followTarget != null) {
+                            double y = this.followTarget.y - this.y;
                             this.motionY = this.getSpeed() * moveMultiplier * 0.05 * (y / (diff + Math.abs(y)));
                         }
                     } else {
@@ -262,7 +263,7 @@ public abstract class WalkingEntity extends BaseEntity {
                     }
                 }
             }
-            return this.target;
+            return this.followTarget != null ? this.followTarget : this.target;
         }
         return null;
     }

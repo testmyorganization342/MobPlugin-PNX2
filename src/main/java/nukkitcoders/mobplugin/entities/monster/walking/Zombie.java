@@ -18,7 +18,6 @@ import cn.nukkit.network.protocol.MobArmorEquipmentPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
 
     public Zombie(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
     }
 
     @Override

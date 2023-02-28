@@ -7,8 +7,6 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.animal.Animal;
-import nukkitcoders.mobplugin.entities.monster.flying.Wither;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -32,12 +30,12 @@ public abstract class FlyingEntity extends BaseEntity {
         if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
             double near = Integer.MAX_VALUE;
             for (Entity entity : this.getLevel().getEntities()) {
-                if (entity == this || !(entity instanceof EntityCreature) || (entity instanceof Animal && !(this instanceof Wither))) {
+                if (entity == this || !(entity instanceof EntityCreature) || entity.closed || !this.canTarget(entity)) {
                     continue;
                 }
 
                 EntityCreature creature = (EntityCreature) entity;
-                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly() && !(this instanceof Wither)) {
+                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
                     continue;
                 }
 

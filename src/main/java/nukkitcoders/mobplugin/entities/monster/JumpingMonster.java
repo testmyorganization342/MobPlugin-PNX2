@@ -22,10 +22,10 @@ public abstract class JumpingMonster extends JumpingEntity implements Monster {
 
     @Override
     public void setFollowTarget(Entity target) {
-        this.setTarget(target, true);
+        this.setFollowTarget(target, true);
     }
 
-    public void setTarget(Entity target, boolean attack) {
+    public void setFollowTarget(Entity target, boolean attack) {
         super.setFollowTarget(target);
         this.canAttack = attack;
     }

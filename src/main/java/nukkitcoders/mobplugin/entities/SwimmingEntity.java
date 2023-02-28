@@ -7,15 +7,10 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.RouteFinderThreadPool;
-import nukkitcoders.mobplugin.route.RouteFinder;
-import nukkitcoders.mobplugin.runnable.RouteFinderSearchTask;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class SwimmingEntity extends BaseEntity {
-
-    protected RouteFinder route = null;
 
     public SwimmingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -87,13 +82,6 @@ public abstract class SwimmingEntity extends BaseEntity {
         }
 
         if (this.isMovement() && !isImmobile()) {
-            if (this.age % 10 == 0 && this.route != null && !this.route.isSearching()) {
-                RouteFinderThreadPool.executeRouteFinderThread(new RouteFinderSearchTask(this.route));
-                if (this.route.hasNext()) {
-                    this.target = this.route.next();
-                }
-            }
-
             if (this.isKnockback()) {
                 this.move(this.motionX, this.motionY, this.motionZ);
                 this.motionY -= this.getGravity() * (Utils.entityInsideWaterFast(this) ? 0.5 : 1);
@@ -165,25 +153,10 @@ public abstract class SwimmingEntity extends BaseEntity {
             }
 
             this.updateMovement();
-            if (this.route != null) {
-                if (this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {
-                    if (this.route.hasNext()) {
-                        this.target = this.route.next();
-                    }
-                }
-            }
             return this.target;
         }
 
         return null;
-    }
-
-    public RouteFinder getRoute() {
-        return this.route;
-    }
-
-    public void setRoute(RouteFinder route) {
-        this.route = route;
     }
 
     @Override
