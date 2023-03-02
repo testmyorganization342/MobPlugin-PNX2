@@ -4,6 +4,7 @@ import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -135,7 +136,7 @@ public abstract class SwimmingEntity extends BaseEntity {
             }
 
             int block;
-            if (this.stayTime <= 0 && this.motionY >= 0 && (Math.abs(motionX) > 0 || Math.abs(motionZ) > 0) && (block = this.level.getBlockIdAt(this.getFloorX(), this.getFloorY() - 1, this.getFloorZ())) != Block.WATER && block != Block.STILL_WATER) {
+            if (this.stayTime <= 0 && this.motionY >= 0 && (Math.abs(motionX) > 0 || Math.abs(motionZ) > 0) && (block = this.level.getBlockIdAt(this.getFloorX(), NukkitMath.floorDouble(this.getY() + this.getHeight()), this.getFloorZ())) != Block.WATER && block != Block.STILL_WATER) {
                 this.motionY = -0.05;
             }
 
