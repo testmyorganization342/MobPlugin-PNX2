@@ -99,12 +99,13 @@ public abstract class FlyingEntity extends BaseEntity {
                 double diff = Math.abs(x) + Math.abs(z);
                 if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() / 2 + 0.05)) {
                     this.motionX = 0;
+                    this.motionY = this.getSpeed() * 0.01 * y;
                     this.motionZ = 0;
                 } else {
                     this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                    this.motionY = this.getSpeed() * 0.27 * (y / diff);
                     this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
-                this.motionY = this.getSpeed() * 0.27 * (y / diff);
                 if (this.stayTime <= 0 || Utils.rand()) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
                 return this.followTarget;
             }
@@ -119,12 +120,13 @@ public abstract class FlyingEntity extends BaseEntity {
                 double diff = Math.abs(x) + Math.abs(z);
                 if (this.stayTime > 0 || this.distance(this.target) <= (this.getWidth() / 2 + 0.05) * nearbyDistanceMultiplier()) {
                     this.motionX = 0;
+                    this.motionY = this.getSpeed() * 0.01 * y;
                     this.motionZ = 0;
                 } else {
                     this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                    this.motionY = this.getSpeed() * 0.27 * (y / diff);
                     this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
-                this.motionY = this.getSpeed() * 0.27 * (y / diff);
                 if (this.stayTime <= 0 || Utils.rand()) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
             }
 
