@@ -45,7 +45,7 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
 
     @Override
     public double getSpeed() {
-        return this.isBaby() ? 1.6 : 1.1;
+        return this.isBaby() ? 1.6 : this.isAngry() ? 1.15 : 1.1;
     }
 
     @Override
