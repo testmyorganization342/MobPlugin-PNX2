@@ -13,7 +13,6 @@ import cn.nukkit.network.protocol.MobEquipmentPacket;
 import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
 
     public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
     }
 
     @Override

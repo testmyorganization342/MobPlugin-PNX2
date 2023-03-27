@@ -173,7 +173,7 @@ public class AutoSpawnTask implements Runnable {
         }
 
         for (Entity entity : level.getEntities()) {
-            if (entity.isAlive() && entity.getNetworkId() == networkId && new Vector3(pos.x, entity.y, pos.z).distanceSquared(entity) < 10000) {
+            if (entity.isAlive() && entity.getNetworkId() == networkId && new Vector3(pos.x, entity.y, pos.z).distanceSquared(entity) < 16384) { // 128 blocks
                 count++;
                 if (count > max) {
                     return false;

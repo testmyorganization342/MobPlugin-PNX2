@@ -61,7 +61,7 @@ public class Guardian extends SwimmingMonster {
     @Override
     public void attackEntity(Entity player) {
         HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
-        damage.put(EntityDamageEvent.DamageModifier.BASE, 8.0F);
+        damage.put(EntityDamageEvent.DamageModifier.BASE, 1F);
 
         float points = 0;
         for (Item i : ((Player) player).getInventory().getArmorContents()) {

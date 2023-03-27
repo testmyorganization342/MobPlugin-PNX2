@@ -4,11 +4,8 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockLava;
-import cn.nukkit.entity.mob.EntityDrowned;
-import cn.nukkit.entity.passive.*;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.walking.Strider;
@@ -38,7 +35,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         Level level = player.getLevel();
         Position pos = new Position(player.getFloorX(), player.getFloorY(), player.getFloorZ(), level);
 
-        if (this.spawnTask.entitySpawnAllowed(level, getEntityNetworkId(), player)) {
+        if (this.spawnTask.entitySpawnAllowed(level, this.getEntityNetworkId(), player)) {
             pos.x += this.spawnTask.getRandomSafeXZCoord(Utils.rand(48, 52), Utils.rand(24, 28), Utils.rand(4, 8));
             pos.z += this.spawnTask.getRandomSafeXZCoord(Utils.rand(48, 52), Utils.rand(24, 28), Utils.rand(4, 8));
 
@@ -50,7 +47,18 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 return;
             }
 
+            if (Utils.monstersList.contains(this.getEntityNetworkId())) {
+                int biome = level.getBiomeId((int) pos.x, (int) pos.z);
+                if (biome == 14 || biome == 15) {
+                    return; // Hostile mobs don't spawn on mushroom island
+                }
+            }
+
             pos.y = this.spawnTask.getSafeYCoord(level, pos);
+
+            if (this.isWaterMob()) {
+                pos.y--;
+            }
 
             if (pos.y < 1 || pos.y > 255 || level.getDimension() == Level.DIMENSION_NETHER && pos.y > 125) {
                 return;
@@ -61,7 +69,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             }
 
             Block block = level.getBlock(pos, false);
-            if (getEntityNetworkId() == Strider.NETWORK_ID) {
+            if (this.getEntityNetworkId() == Strider.NETWORK_ID) {
                 if (!(block instanceof BlockLava)) {
                     return;
                 }
@@ -71,7 +79,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                 }
 
                 if (block.isTransparent() && block.getId() != Block.SNOW_LAYER) { // Snow layer is an exception
-                    if ((block.getId() != Block.WATER && block.getId() != Block.STILL_WATER) || !WATER_MOBS.contains(getEntityNetworkId())) { // Water mobs can spawn in water
+                    if ((block.getId() != Block.WATER && block.getId() != Block.STILL_WATER) || !this.isWaterMob()) { // Water mobs can spawn in water
                         return;
                     }
                 }
@@ -81,12 +89,13 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
         }
     }
 
-    private static final IntArrayList WATER_MOBS = new IntArrayList(new int[]{EntityDrowned.NETWORK_ID, EntityCod.NETWORK_ID, EntitySalmon.NETWORK_ID, EntityPufferfish.NETWORK_ID, EntityTropicalFish.NETWORK_ID, EntityTurtle.NETWORK_ID, EntityDolphin.NETWORK_ID, EntitySquid.NETWORK_ID, EntityGlowSquid.NETWORK_ID});
-
     private boolean isSpawningAllowed(Player player) {
+        if (player.isSpectator()) {
+            return false;
+        }
         if (Utils.rand(1, 4) != 1 && MobPlugin.isSpawningAllowedByLevel(player.getLevel())) {
             if (Server.getInstance().getDifficulty() == 0) {
-                return !Utils.monstersList.contains(getEntityNetworkId());
+                return !Utils.monstersList.contains(this.getEntityNetworkId());
             }
             return true;
         }

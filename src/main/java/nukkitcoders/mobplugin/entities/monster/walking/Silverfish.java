@@ -9,7 +9,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 
 import java.util.HashMap;
 
@@ -19,7 +18,6 @@ public class Silverfish extends WalkingMonster implements EntityArthropod {
 
     public Silverfish(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
     }
 
     @Override

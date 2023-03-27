@@ -20,10 +20,8 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class WalkingEntity extends BaseEntity {
 
-    private static final double FLOW_MULTIPLIER = .1;
-    protected RouteFinder route = null;
-
-    protected final boolean isDrowned = this instanceof Drowned;
+    private static final double FLOW_MULTIPLIER = 0.1;
+    protected RouteFinder route;
 
     public WalkingEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -34,7 +32,7 @@ public abstract class WalkingEntity extends BaseEntity {
             return;
         }
 
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget,this.distanceSquared(this.followTarget)) && this.target!=null) {
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
             return;
         }
 
@@ -47,7 +45,7 @@ public abstract class WalkingEntity extends BaseEntity {
         double near = Integer.MAX_VALUE;
 
         for (Entity entity : this.getLevel().getEntities()) {
-            if (entity == this || !(entity instanceof EntityCreature) || !this.canTarget(entity)) {
+            if (entity == this || !(entity instanceof EntityCreature) || entity.closed || !this.canTarget(entity)) {
                 continue;
             }
 
@@ -68,7 +66,7 @@ public abstract class WalkingEntity extends BaseEntity {
             if (this.route == null && this.passengers.isEmpty()) this.target = creature;
         }
 
-        if (this.followTarget instanceof EntityCreature && !this.followTarget.closed && this.followTarget.isAlive() && this.targetOption((EntityCreature) this.followTarget, this.distanceSquared(this.followTarget)) && this.target != null) {
+        if (this.followTarget != null) {
             return;
         }
 
@@ -99,7 +97,7 @@ public abstract class WalkingEntity extends BaseEntity {
             return this.canSwimIn(level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z)));
         } else if (!(this instanceof SkeletonHorse)) {
             if (this.canSwimIn(level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z)))) {
-                if (!this.isDrowned || this.target == null) {
+                if (!(this instanceof Drowned) || this.target == null) {
                     this.motionY = this.getGravity() * 2;
                 }
                 return true;
@@ -112,8 +110,8 @@ public abstract class WalkingEntity extends BaseEntity {
 
         Block that = this.getLevel().getBlock(new Vector3(NukkitMath.floorDouble(this.x + dx), (int) this.y, NukkitMath.floorDouble(this.z + dz)));
         Block block = that.getSide(this.getHorizontalFacing());
-        Block down = block.down();
-        if (!down.isSolid() && !block.isSolid() && !down.down().isSolid()) {
+        Block down;
+        if (this.followTarget == null && this.passengers.isEmpty() && !(down = block.down()).isSolid() && !block.isSolid() && !down.down().isSolid()) {
             this.stayTime = 10;
         } else if (!block.canPassThrough() && block.up().canPassThrough() && that.up(2).canPassThrough()) {
             if (block instanceof BlockFence || block instanceof BlockFenceGate) {
@@ -133,6 +131,9 @@ public abstract class WalkingEntity extends BaseEntity {
     }
 
     public Vector3 updateMove(int tickDiff) {
+        if (!this.isInTickingRange()) {
+            return null;
+        }
         if (!isImmobile()) {
             if (!this.isMovement()) {
                 return null;
@@ -147,7 +148,11 @@ public abstract class WalkingEntity extends BaseEntity {
 
             if (this.isKnockback()) {
                 this.move(this.motionX, this.motionY, this.motionZ);
-                this.motionY -= this.getGravity();
+                if (this instanceof Drowned && Utils.entityInsideWaterFast(this)) {
+                    this.motionY -= this.getGravity() * 0.3;
+                } else {
+                    this.motionY -= this.getGravity();
+                }
                 this.updateMovement();
                 return null;
             }
@@ -157,7 +162,7 @@ public abstract class WalkingEntity extends BaseEntity {
             int downId = level.getBlockIdAt(getFloorX(), getFloorY() - 1, getFloorZ());
             if (inWater && (downId == 0 || downId == 8 || downId == 9 || downId == BlockID.FLOWING_LAVA || downId == BlockID.STILL_LAVA || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN)) onGround = false;
             if (downId == 0 || downId == BlockID.SIGN_POST || downId == BlockID.WALL_SIGN) onGround = false;
-            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target!=null) {
+            if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target != null) {
                 double x = this.target.x - this.x;
                 double z = this.target.z - this.z;
 
@@ -174,7 +179,7 @@ public abstract class WalkingEntity extends BaseEntity {
                     } else if (levelBlock.getId() == 9) {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.05 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.05 * (z / diff);
-                        if (!this.isDrowned)
+                        if (!(this instanceof Drowned))
                             this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
                     } else {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.1 * (x / diff);
@@ -184,9 +189,8 @@ public abstract class WalkingEntity extends BaseEntity {
                 if ((this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
             }
 
-            Vector3 before = this.target;
             this.checkTarget();
-            if (this.target instanceof Vector3 || before != this.target) {
+            if (this.target != null) {
                 double x = this.target.x - this.x;
                 double z = this.target.z - this.z;
 
@@ -203,8 +207,12 @@ public abstract class WalkingEntity extends BaseEntity {
                     } else if (levelBlock.getId() == 9) {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.05 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.05 * (z / diff);
-                        if (!this.isDrowned)
+                        if (!(this instanceof Drowned)) {
                             this.level.addParticle(new BubbleParticle(this.add(Utils.rand(-2.0, 2.0), Utils.rand(-0.5, 0), Utils.rand(-2.0, 2.0))));
+                        } else if (this.followTarget != null) {
+                            double y = this.followTarget.y - this.y;
+                            this.motionY = this.getSpeed() * moveMultiplier * 0.05 * (y / (diff + Math.abs(y)));
+                        }
                     } else {
                         this.motionX = this.getSpeed() * moveMultiplier * 0.15 * (x / diff);
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.15 * (z / diff);
@@ -237,9 +245,15 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionY -= this.getGravity();
                     }
                 } else {
-                    this.motionY -= this.getGravity();
+                    if (this instanceof Drowned && inWater && this.motionY < 0) {
+                        this.motionY = this.getGravity() * -0.3;
+                        this.stayTime = 40;
+                    } else {
+                        this.motionY -= this.getGravity();
+                    }
                 }
             }
+
             this.updateMovement();
             if (this.route != null) {
                 if (this.route.hasCurrentNode() && this.route.hasArrivedNode(this)) {

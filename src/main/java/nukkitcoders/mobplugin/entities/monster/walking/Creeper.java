@@ -19,7 +19,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -114,10 +112,6 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     @Override
     public int getKillExperience() {
         return 5;
-    }
-
-    public int getMaxFallHeight() {
-        return this.followTarget == null ? 3 : 3 + (int) (this.getHealth() - 1.0F);
     }
 
     @Override

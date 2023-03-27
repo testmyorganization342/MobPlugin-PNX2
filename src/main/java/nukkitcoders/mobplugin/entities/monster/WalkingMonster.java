@@ -7,6 +7,7 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.WalkingEntity;
+import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class WalkingMonster extends WalkingEntity implements Monster {
@@ -21,6 +22,7 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.route = new WalkerRouteFinder(this);
     }
 
     @Override

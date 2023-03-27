@@ -18,22 +18,19 @@ public class ZombieSpawner extends AbstractEntitySpawner {
 
     @Override
     public void spawn(Player player, Position pos, Level level) {
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
-        if (biomeId != 14 && biomeId != 15) {
-            if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
-                if (MobPlugin.isMobSpawningAllowedByTime(level)) {
-                    if (Utils.rand(1, 40) == 30) {
-                        EntityCreature entity = this.spawnTask.createEntity("ZombieVillager", pos.add(0.5, 1, 0.5));
-                        if (entity == null) return;
-                        if (Utils.rand(1, 20) == 1) {
-                            entity.setBaby(true);
-                        }
-                    } else {
-                        EntityCreature entity = this.spawnTask.createEntity("Zombie", pos.add(0.5, 1, 0.5));
-                        if (entity == null) return;
-                        if (Utils.rand(1, 20) == 1) {
-                            entity.setBaby(true);
-                        }
+        if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
+            if (MobPlugin.isMobSpawningAllowedByTime(level)) {
+                if (Utils.rand(1, 40) == 30) {
+                    EntityCreature entity = this.spawnTask.createEntity("ZombieVillager", pos.add(0.5, 1, 0.5));
+                    if (entity == null) return;
+                    if (Utils.rand(1, 20) == 1) {
+                        entity.setBaby(true);
+                    }
+                } else {
+                    EntityCreature entity = this.spawnTask.createEntity("Zombie", pos.add(0.5, 1, 0.5));
+                    if (entity == null) return;
+                    if (Utils.rand(1, 20) == 1) {
+                        entity.setBaby(true);
                     }
                 }
             }

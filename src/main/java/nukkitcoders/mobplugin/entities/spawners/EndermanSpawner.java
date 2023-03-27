@@ -23,12 +23,9 @@ public class EndermanSpawner extends AbstractEntitySpawner {
             return;
         }
 
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
-        if (biomeId != 14 && biomeId != 15) {
-            if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7 || nether || end) {
-                if (MobPlugin.isMobSpawningAllowedByTime(level) || nether || end) {
-                    this.spawnTask.createEntity("Enderman", pos.add(0.5, 1, 0.5));
-                }
+        if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7 || nether || end) {
+            if (MobPlugin.isMobSpawningAllowedByTime(level) || nether || end) {
+                this.spawnTask.createEntity("Enderman", pos.add(0.5, 1, 0.5));
             }
         }
     }

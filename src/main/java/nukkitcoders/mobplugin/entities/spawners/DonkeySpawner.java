@@ -19,7 +19,7 @@ public class DonkeySpawner extends AbstractEntitySpawner {
 
     @Override
     public void spawn(Player player, Position pos, Level level) {
-        if (Utils.rand(1, 3) == 1) {
+        if (Utils.rand(1, 3) != 1) {
             return;
         }
         int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
@@ -27,10 +27,12 @@ public class DonkeySpawner extends AbstractEntitySpawner {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
             if (biomeId == 1 || biomeId == 35 || biomeId == 128 || biomeId == 129) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-                    EntityCreature entity = this.spawnTask.createEntity("Donkey", pos.add(0.5, 1, 0.5));
-                    if (entity == null) return;
-                    if (Utils.rand(1, 20) == 1) {
-                        entity.setBaby(true);
+                    for (int i = 0; i < Utils.rand(1, 3); i++) {
+                        EntityCreature entity = this.spawnTask.createEntity("Donkey", pos.add(0.5, 1, 0.5));
+                        if (entity == null) return;
+                        if (Utils.rand(1, 20) == 1) {
+                            entity.setBaby(true);
+                        }
                     }
                 }
             }

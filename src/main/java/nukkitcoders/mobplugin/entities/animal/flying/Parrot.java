@@ -76,7 +76,7 @@ public class Parrot extends FlyingAnimal {
                     || id == Item.BEETROOT_SEEDS
                     || id == Item.PUMPKIN_SEEDS
                     || id == Item.MELON_SEEDS)
-                    && distance <= 40;
+                    && distance <= 49;
         }
         return false;
     }

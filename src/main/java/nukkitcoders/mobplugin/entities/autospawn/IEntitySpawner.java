@@ -14,4 +14,8 @@ public interface IEntitySpawner {
     void spawn(Player player, Position pos, Level level);
 
     int getEntityNetworkId();
+
+    default boolean isWaterMob() {
+        return false;
+    }
 }

@@ -1,13 +1,12 @@
 package nukkitcoders.mobplugin.entities;
 
+import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.animal.Animal;
-import nukkitcoders.mobplugin.entities.monster.flying.Wither;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -23,18 +22,20 @@ public abstract class FlyingEntity extends BaseEntity {
             return;
         }
 
+        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
+            return;
+        }
+
         Vector3 target = this.target;
         if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
-            this.followTarget = null;
             double near = Integer.MAX_VALUE;
-
             for (Entity entity : this.getLevel().getEntities()) {
-                if (entity == this || !(entity instanceof EntityCreature) || (entity instanceof Animal && !(this instanceof Wither))) {
+                if (entity == this || !(entity instanceof EntityCreature) || entity.closed || !this.canTarget(entity)) {
                     continue;
                 }
 
                 EntityCreature creature = (EntityCreature) entity;
-                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly() && !(this instanceof Wither)) {
+                if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
                     continue;
                 }
 
@@ -47,16 +48,14 @@ public abstract class FlyingEntity extends BaseEntity {
                 this.stayTime = 0;
                 this.moveTime = 0;
                 this.target = creature;
-                this.followTarget = creature;
             }
         }
 
-        if (this.target instanceof EntityCreature && ((EntityCreature) this.target).isAlive()) {
+        if (this.target instanceof EntityCreature && !((EntityCreature) this.target).closed && ((EntityCreature) this.target).isAlive() && this.targetOption((EntityCreature) this.target, this.distanceSquared(this.target))) {
             return;
         }
 
-        int x, y, z;
-        int maxY = Math.max(this.getLevel().getHighestBlockAt(this.getFloorX(), this.getFloorZ()) + 15, 120);
+        int x, z;
         if (this.stayTime > 0) {
             if (Utils.rand(1, 100) > 5) {
                 return;
@@ -64,85 +63,79 @@ public abstract class FlyingEntity extends BaseEntity {
 
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            if (this.y > maxY) {
-                y = Utils.rand(-12, -4);
-            } else {
-                y = Utils.rand(-10, 10);
-            }
-            this.target = this.add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         } else if (Utils.rand(1, 100) == 1) {
             x = Utils.rand(10, 30);
             z = Utils.rand(10, 30);
-            if (this.y > maxY) {
-                y = Utils.rand(-12, -4);
-            } else {
-                y = Utils.rand(-10, 10);
-            }
             this.stayTime = Utils.rand(100, 200);
-            this.target = this.add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         } else if (this.moveTime <= 0 || this.target == null) {
             x = Utils.rand(20, 100);
             z = Utils.rand(20, 100);
-            if (this.y > maxY) {
-                y = Utils.rand(-12, -4);
-            } else {
-                y = Utils.rand(-10, 10);
-            }
             this.stayTime = 0;
             this.moveTime = Utils.rand(100, 200);
-            this.target = this.add(Utils.rand() ? x : -x, y, Utils.rand() ? z : -z);
+            this.target = this.add(Utils.rand() ? x : -x, 0, Utils.rand() ? z : -z);
         }
     }
 
     @Override
     public Vector3 updateMove(int tickDiff) {
-        if (!isImmobile()) {
-            if (!this.isMovement()) {
-                return null;
-            }
-    
+        if (!this.isInTickingRange()) {
+            return null;
+        }
+
+        if (this.isMovement() && !isImmobile()) {
             if (this.isKnockback()) {
                 this.move(this.motionX, this.motionY, this.motionZ);
                 this.updateMovement();
                 return null;
             }
-    
+
             if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive()) {
                 double x = this.followTarget.x - this.x;
                 double y = this.followTarget.y - this.y;
                 double z = this.followTarget.z - this.z;
-    
+
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth()) / 2 + 0.05) {
+                if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() / 2 + 0.05)) {
                     this.motionX = 0;
+                    this.motionY = this.getSpeed() * 0.01 * y;
                     this.motionZ = 0;
                 } else {
                     this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                     this.motionY = this.getSpeed() * 0.27 * (y / diff);
+                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
-                if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                if (this.stayTime <= 0 || Utils.rand()) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
+                return this.followTarget;
             }
-    
+
             Vector3 before = this.target;
             this.checkTarget();
             if (this.target instanceof EntityCreature || before != this.target) {
                 double x = this.target.x - this.x;
                 double y = this.target.y - this.y;
                 double z = this.target.z - this.z;
-    
+
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) {
+                if (this.stayTime > 0 || this.distance(this.target) <= (this.getWidth() / 2 + 0.05) * nearbyDistanceMultiplier()) {
                     this.motionX = 0;
+                    this.motionY = this.getSpeed() * 0.01 * y;
                     this.motionZ = 0;
                 } else {
                     this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                     this.motionY = this.getSpeed() * 0.27 * (y / diff);
+                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
-                if (this.stayTime <= 0 || Utils.rand()) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                if (this.stayTime <= 0 || Utils.rand()) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
             }
-    
+
+            int block;
+            if (this.stayTime <= 0 && this.motionY == 0 && (Math.abs(motionX) > 0 || Math.abs(motionZ) > 0) &&
+                    (Block.solid[(block = this.level.getBlockIdAt(this.getFloorX(), this.getFloorY() - 1, this.getFloorZ()))] || block == Block.WATER || block == Block.STILL_WATER || block == Block.LAVA || block == Block.STILL_LAVA)) {
+                this.motionY = 0.05;
+            }
+
             double dx = this.motionX;
             double dy = this.motionY;
             double dz = this.motionZ;
@@ -153,19 +146,9 @@ public abstract class FlyingEntity extends BaseEntity {
                 Vector2 be = new Vector2(this.x + dx, this.z + dz);
                 this.move(dx, dy, dz);
                 Vector2 af = new Vector2(this.x, this.z);
-    
+
                 if (be.x != af.x || be.y != af.y) {
                     this.moveTime -= 90;
-                }
-            }
-
-            if (this.stayTime <= 0) {
-                if (this.isOnGround()) {
-                    this.motionY = Utils.rand(0.05, 0.1);
-                } else if (this.followTarget != null) {
-                    this.motionY = Math.min(0.2, Math.max(-0.2, (this.followTarget.x - this.x) / 100));
-                } else {
-                    this.motionY = Utils.rand(-0.05, 0.05);
                 }
             }
 

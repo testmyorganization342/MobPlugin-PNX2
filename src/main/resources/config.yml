@@ -14,7 +14,7 @@ entities:
   worlds-spawning-disabled: "exampleworld1, exampleworld2"
 
 # Spawning limit settings
-# Per player, in 100 blocks range
+# Per player, in 128 blocks range
 autospawn:
   bat: 0
   blaze: 0

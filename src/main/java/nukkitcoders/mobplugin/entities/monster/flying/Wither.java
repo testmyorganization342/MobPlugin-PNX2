@@ -2,8 +2,10 @@ package nukkitcoders.mobplugin.entities.monster.flying;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.*;
 import cn.nukkit.entity.data.IntEntityData;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
@@ -31,6 +33,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
     public static final int NETWORK_ID = 52;
 
     private boolean exploded;
+    private boolean wasExplosion;
 
     public Wither(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -190,7 +193,40 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
             return false;
         }
 
-        return super.attack(ev);
+        boolean r = super.attack(ev);
+        if (this.wasExplosion) {
+            this.wasExplosion = false;
+        } else if (r && ev instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) ev).getDamager() instanceof Player && !this.closed && this.isAlive() && Utils.rand() && this.level.getGameRules().getBoolean(GameRule.MOB_GRIEFING)) {
+            this.wasExplosion = true;
+            this.level.addSound(this, Sound.MOB_WITHER_BREAK_BLOCK);
+            int fx = this.getFloorX();
+            int fy = this.getFloorY();
+            int fz = this.getFloorZ();
+            Vector3 pos = new Vector3(0, 0, 0);
+            Item tool = Item.get(Item.DIAMOND_PICKAXE);
+            for (int x = fx - 2; x <= fx + 2; x++) {
+                for (int y = fy; y <= fy + 4; y++) {
+                    for (int z = fz - 2; z <= fz + 2; z++) {
+                        Block block = this.level.getBlock(x, y, z);
+                        if (block.isBreakable(tool)) {
+                            pos.setComponents(x, y, z);
+                            this.level.setBlock(pos, Block.get(Block.AIR));
+                            BlockEntity blockEntity = this.level.getBlockEntityIfLoaded(pos);
+                            if (blockEntity != null) {
+                                blockEntity.onBreak();
+                                blockEntity.close();
+                            }
+                            if (this.level.getGameRules().getBoolean(GameRule.DO_TILE_DROPS) && Math.random() * 100 < 14) {
+                                for (Item drop : block.getDrops(tool)) {
+                                    this.level.dropItem(block, drop);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return r;
     }
 
     private int witherMaxHealth() {

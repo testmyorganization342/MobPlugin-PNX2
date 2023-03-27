@@ -8,7 +8,7 @@
      </properties>
     <groupId>nukkitcoders.mobplugin</groupId>
     <artifactId>MobPlugin</artifactId>
-    <version>1.24.4.dev-PNX</version>
+    <version>1.25.3.dev-PNX</version>
     <build>
         <defaultGoal>install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -21,18 +21,6 @@
                     <source>17</source>
                     <target>17</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -80,7 +68,7 @@
         <dependency>
             <groupId>cn.powernukkitx</groupId>
             <artifactId>powernukkitx</artifactId>
-            <version>1.19.50-r3</version>
+            <version>1.19.70-r1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
