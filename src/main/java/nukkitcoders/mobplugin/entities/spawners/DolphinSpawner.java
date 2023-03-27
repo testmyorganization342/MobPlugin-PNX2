@@ -6,7 +6,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
-import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.swimming.Dolphin;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -28,7 +27,7 @@ public class DolphinSpawner extends AbstractEntitySpawner {
                 final int b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                 if (b == Block.WATER || b == Block.STILL_WATER) {
                     for (int i = 0; i < Utils.rand(1, 3); i++) {
-                        BaseEntity entity = this.spawnTask.createEntity("Dolphin", pos.add(0, -1, 0));
+                        var entity = this.spawnTask.createEntity("Dolphin", pos.add(0, -1, 0));
                         if (entity == null) return;
                         if (Utils.rand(1, 10) == 1) {
                             entity.setBaby(true);
