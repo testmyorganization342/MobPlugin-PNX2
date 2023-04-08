@@ -108,7 +108,9 @@ public class Llama extends HorseBase {
                     double x = this.damagedBy.x - this.x;
                     double z = this.damagedBy.z - this.z;
                     double diff = Math.abs(x) + Math.abs(z);
-                    this.yaw = FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                    if (diff != 0) {
+                        this.yaw = FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                    }
                     if (this.attackTicks == 0) {
                         if (this.distanceSquared(this.damagedBy) < 100) {
                             double f = 2;

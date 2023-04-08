@@ -191,8 +191,10 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                     this.bombTime = 0;
                 }
 
-                this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                this.motionZ = this.getSpeed() * 0.15 * (z / diff);
+                if (diff != 0) {
+                    this.motionX = this.getSpeed() * 0.15 * (x / diff);
+                    this.motionZ = this.getSpeed() * 0.15 * (z / diff);
+                }
             }
         }
 

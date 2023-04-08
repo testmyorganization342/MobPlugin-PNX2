@@ -97,7 +97,7 @@ public abstract class FlyingEntity extends BaseEntity {
                 double z = this.followTarget.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() / 2 + 0.05)) {
+                if (diff == 0 || this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() / 2 + 0.05)) {
                     this.motionX = 0;
                     this.motionY = this.getSpeed() * 0.01 * y;
                     this.motionZ = 0;
@@ -106,7 +106,7 @@ public abstract class FlyingEntity extends BaseEntity {
                     this.motionY = this.getSpeed() * 0.27 * (y / diff);
                     this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
-                if (this.stayTime <= 0 || Utils.rand()) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
+                if ((this.stayTime <= 0 || Utils.rand()) && diff != 0) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
                 return this.followTarget;
             }
 
@@ -118,7 +118,7 @@ public abstract class FlyingEntity extends BaseEntity {
                 double z = this.target.z - this.z;
 
                 double diff = Math.abs(x) + Math.abs(z);
-                if (this.stayTime > 0 || this.distance(this.target) <= (this.getWidth() / 2 + 0.05) * nearbyDistanceMultiplier()) {
+                if (diff == 0 || this.stayTime > 0 || this.distance(this.target) <= (this.getWidth() / 2 + 0.05) * nearbyDistanceMultiplier()) {
                     this.motionX = 0;
                     this.motionY = this.getSpeed() * 0.01 * y;
                     this.motionZ = 0;
@@ -127,7 +127,7 @@ public abstract class FlyingEntity extends BaseEntity {
                     this.motionY = this.getSpeed() * 0.27 * (y / diff);
                     this.motionZ = this.getSpeed() * 0.15 * (z / diff);
                 }
-                if (this.stayTime <= 0 || Utils.rand()) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
+                if ((this.stayTime <= 0 || Utils.rand()) && diff != 0) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
             }
 
             int block;
