@@ -840,6 +840,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 BaseEntity baby = (BaseEntity) Entity.createEntity(this.getNetworkId(), this);
                 baby.setBaby(true);
                 baby.spawnToAll();
+                this.level.dropExpOrb(this, Utils.rand(1, 7));
                 return true;
             }
         }
