@@ -18,6 +18,7 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.utils.DyeColor;
+import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.Turtle;
 import nukkitcoders.mobplugin.entities.animal.walking.Fox;
@@ -179,8 +180,11 @@ public class Wolf extends TameableMonster {
                     this.setCollarColor(DyeColor.RED);
                     this.setRoute(null);
 
-                    this.getLevel().dropExpOrb(this, Utils.rand(1, 7));
-                    
+                    if (MobPlugin.getInstance().config.noXpOrbs) {
+                        player.addExperience(Utils.rand(1, 7));
+                    } else {
+                        this.getLevel().dropExpOrb(this, Utils.rand(1, 7));
+                    }
                     return true;
                 } else {
                     EntityEventPacket packet = new EntityEventPacket();
