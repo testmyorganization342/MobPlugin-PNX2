@@ -106,7 +106,7 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
 
         if (others && val > 0) {
             for (Entity creature : this.level.getEntities()) {
-                if (creature instanceof ZombiePigman && !((ZombiePigman) creature).isAngry() && this.distanceSquared(creature) <= 100) {
+                if (creature instanceof ZombiePigman && !((ZombiePigman) creature).isAngry() && this.distanceSquared(creature) <= 400) { // 20 blocks
                     ((ZombiePigman) creature).setAngry(val);
                 }
             }
