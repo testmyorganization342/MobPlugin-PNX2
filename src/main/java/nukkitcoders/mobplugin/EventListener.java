@@ -88,11 +88,11 @@ public class EventListener implements Listener {
 
     private void handleExperienceOrb(Entity entity) {
         if (!(entity instanceof BaseEntity)) return;
-        
+
         BaseEntity baseEntity = (BaseEntity) entity;
-        
+
         if (!(baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent)) return;
-        
+
         Entity damager = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
         if (!(damager instanceof Player)) return;
         int killExperience = baseEntity.getKillExperience();
@@ -104,21 +104,21 @@ public class EventListener implements Listener {
             }
         }
     }
-    
+
     private void handleTamedEntityDeathMessage(Entity entity) {
         if (!(entity instanceof BaseEntity)) return;
-        
+
         BaseEntity baseEntity = (BaseEntity) entity;
-        
+
         if (baseEntity instanceof Tameable) {
             if (!((Tameable) baseEntity).hasOwner()) {
                 return;
             }
-            
+
             if (((Tameable) baseEntity).getOwner() == null) {
                 return;
             }
-            
+
             // TODO: More detailed death messages
             String killedEntity;
             if (baseEntity instanceof Wolf) {
@@ -126,7 +126,7 @@ public class EventListener implements Listener {
             } else {
                 killedEntity = baseEntity.getName();
             }
-            
+
             TranslationContainer deathMessage = new TranslationContainer("death.attack.generic", killedEntity);
             if (baseEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
                 Entity damageEntity = ((EntityDamageByEntityEvent) baseEntity.getLastDamageCause()).getDamager();
@@ -136,7 +136,7 @@ public class EventListener implements Listener {
                     deathMessage = new TranslationContainer("death.attack.mob", killedEntity, damageEntity.getName());
                 }
             }
-            
+
             TextPacket tameDeathMessage = new TextPacket();
             tameDeathMessage.type = TextPacket.TYPE_TRANSLATION;
             tameDeathMessage.message = deathMessage.getText();
@@ -397,14 +397,14 @@ public class EventListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(ignoreCancelled = true)
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent ev) {
         if (!MobPlugin.getInstance().config.checkTamedEntityAttack) {
             return;
         }
-        
-        if (ev.getEntity() instanceof Player)  {
+
+        if (ev.getEntity() instanceof Player) {
             for (Entity entity : ev.getEntity().getLevel().getNearbyEntities(ev.getEntity().getBoundingBox().grow(17, 17, 17), ev.getEntity())) {
                 if (entity instanceof Wolf) {
                     if (((Wolf) entity).hasOwner()) {
@@ -416,7 +416,7 @@ public class EventListener implements Listener {
         } else if (ev.getDamager() instanceof Player) {
             for (Entity entity : ev.getDamager().getLevel().getNearbyEntities(ev.getDamager().getBoundingBox().grow(17, 17, 17), ev.getDamager())) {
                 if (entity.getId() == ev.getEntity().getId()) return;
-                
+
                 if (entity instanceof Wolf) {
                     if (((Wolf) entity).hasOwner()) {
                         if (((Wolf) entity).getOwner().equals(ev.getDamager())) {
