@@ -21,7 +21,7 @@ public class Slime extends JumpingMonster {
     public static final int SIZE_MEDIUM = 2;
     public static final int SIZE_BIG = 3;
 
-    protected int size = SIZE_BIG;
+    protected int size;
 
     public Slime(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -80,7 +80,7 @@ public class Slime extends JumpingMonster {
     public void saveNBT() {
         super.saveNBT();
 
-        this.namedTag.putInt("Size", this.size);
+        this.namedTag.putInt("Size", this.getSlimeSize());
     }
 
     public void attackEntity(Entity player) {
@@ -104,44 +104,51 @@ public class Slime extends JumpingMonster {
     }
 
     @Override
-    public Item[] getDrops() {
+    public void kill() {
+        if (this.closed || !this.isAlive() || this.chunk == null) {
+            return;
+        }
+
+        super.kill();
+
         if (this.size == SIZE_BIG) {
             CreatureSpawnEvent ev = new CreatureSpawnEvent(NETWORK_ID, this, this.namedTag, CreatureSpawnEvent.SpawnReason.SLIME_SPLIT);
             level.getServer().getPluginManager().callEvent(ev);
 
             if (ev.isCancelled()) {
-                return new Item[0];
+                return;
             }
 
-            Slime entity = (Slime) Entity.createEntity("Slime", this);
-
-            if (entity != null) {
-                entity.size = SIZE_MEDIUM;
-                entity.setScale(0.51f + entity.size * 0.51f);
-                entity.spawnToAll();
+            for (int i = 0; i < 2; i++) {
+                Slime entity = (Slime) Entity.createEntity("Slime", this.chunk, Entity.getDefaultNBT(this).putInt("Size", SIZE_MEDIUM));
+                if (entity != null) {
+                    entity.spawnToAll();
+                }
             }
-
-            return new Item[0];
         } else if (this.size == SIZE_MEDIUM) {
             CreatureSpawnEvent ev = new CreatureSpawnEvent(NETWORK_ID, this, this.namedTag, CreatureSpawnEvent.SpawnReason.SLIME_SPLIT);
             level.getServer().getPluginManager().callEvent(ev);
 
             if (ev.isCancelled()) {
-                return new Item[0];
+                return;
             }
 
-            Slime entity = (Slime) Entity.createEntity("Slime", this);
-
-            if (entity != null) {
-                entity.size = SIZE_SMALL;
-                entity.setScale(0.51f + entity.size * 0.51f);
-                entity.spawnToAll();
+            for (int i = 0; i < 2; i++) {
+                Slime entity = (Slime) Entity.createEntity("Slime", this.chunk, Entity.getDefaultNBT(this).putInt("Size", SIZE_SMALL));
+                if (entity != null) {
+                    entity.spawnToAll();
+                }
             }
+        }
+    }
 
-            return new Item[0];
-        } else {
+    @Override
+    public Item[] getDrops() {
+        if (this.size == SIZE_SMALL) {
             return new Item[]{Item.get(Item.SLIMEBALL, 0, Utils.rand(0, 2))};
         }
+
+        return new Item[0];
     }
 
     @Override

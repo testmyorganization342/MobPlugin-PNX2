@@ -37,25 +37,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class BaseEntity extends EntityCreature implements EntityAgeable {
 
-    public int stayTime = 0;
-    protected int moveTime = 0;
-    private int airTicks = 0;
-    protected float moveMultiplier = 1.0f;
-    protected Vector3 target = null;
-    protected Entity followTarget = null;
-    private boolean baby = false;
-    private boolean movement = true;
-    private boolean friendly = false;
-    protected int attackDelay = 0;
-    protected boolean noFallDamage;
-    public Item[] armor;
-    private short inLoveTicks = 0;
-    private short inLoveCooldown = 0;
-    protected Player lastInteract;
-    //private int inEndPortal;
-    //private int inNetherPortal;
-
-    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<>() {
+    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<Float>() {
         {
             put(Item.LEATHER_CAP, Float.valueOf(1));
             put(Item.LEATHER_TUNIC, Float.valueOf(3));
@@ -85,6 +67,25 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
     };
 
+    public int stayTime = 0;
+    public Item[] armor;
+    protected int moveTime = 0;
+    protected float moveMultiplier = 1.0f;
+    protected Vector3 target = null;
+    protected Entity followTarget = null;
+    protected int attackDelay = 0;
+    protected boolean noFallDamage;
+    protected Player lastInteract;
+    private int airTicks = 0;
+    private boolean baby = false;
+    private boolean movement = true;
+    private boolean friendly = false;
+    private int knockBackTime;
+    private short inLoveTicks = 0;
+    //private int inEndPortal;
+    //private int inNetherPortal;
+    private short inLoveCooldown = 0;
+
     public BaseEntity(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
 
@@ -100,20 +101,20 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return this.friendly;
     }
 
-    public boolean isMovement() {
-        return this.movement;
-    }
-
-    public boolean isKnockback() {
-        return this.attackTime > 0;
-    }
-
     public void setFriendly(boolean bool) {
         this.friendly = bool;
     }
 
+    public boolean isMovement() {
+        return this.movement;
+    }
+
     public void setMovement(boolean value) {
         this.movement = value;
+    }
+
+    public boolean isKnockback() {
+        return this.knockBackTime > 0;
     }
 
     public double getSpeed() {
@@ -141,6 +142,13 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
     }
 
+    public void setFollowTarget(Entity target) {
+        this.followTarget = target;
+        this.moveTime = 0;
+        this.stayTime = 0;
+        this.target = null;
+    }
+
     public Vector3 getTargetVector() {
         if (this.followTarget != null) {
             return this.followTarget;
@@ -149,13 +157,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         } else {
             return null;
         }
-    }
-
-    public void setFollowTarget(Entity target) {
-        this.followTarget = target;
-        this.moveTime = 0;
-        this.stayTime = 0;
-        this.target = null;
     }
 
     @Override
@@ -248,6 +249,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
         if (this.moveTime > 0) {
             this.moveTime -= tickDiff;
+        }
+
+        if (this.knockBackTime > 0) {
+            this.knockBackTime -= tickDiff;
         }
 
         if (this.isBaby() && this.age > 0) {
@@ -384,6 +389,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     /**
      * Get mounted entity y offset. Used to determine the height for heart particle spawning.
+     *
      * @return entity height * 0.75
      */
     protected float getMountedYOffset() {
@@ -392,6 +398,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     /**
      * Get a random set of armor
+     *
      * @return armor items
      */
     protected Item[] getRandomArmor() {
@@ -768,6 +775,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     /**
      * Get armor defense points for item
+     *
      * @param item item id
      * @return defense points
      */
@@ -815,6 +823,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     /**
      * Override this to allow the mob to swim in lava
+     *
      * @param block block id
      * @return can swim
      */
@@ -840,6 +849,9 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 BaseEntity baby = (BaseEntity) Entity.createEntity(this.getNetworkId(), this);
                 baby.setBaby(true);
                 baby.spawnToAll();
+                if (!MobPlugin.getInstance().config.noXpOrbs) {
+                    this.level.dropExpOrb(this, Utils.rand(1, 7));
+                }
                 return true;
             }
         }
@@ -848,6 +860,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     public void setInLove() {
         this.setInLove(true);
+    }
+
+    public boolean isInLove() {
+        return inLoveTicks > 0;
     }
 
     public void setInLove(boolean inLove) {
@@ -862,10 +878,6 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
     }
 
-    public boolean isInLove() {
-        return inLoveTicks > 0;
-    }
-
     protected boolean isInTickingRange() {
         for (Player player : this.level.getPlayers().values()) {
             if (player.distanceSquared(this) < 6400) { // 80 blocks
@@ -873,5 +885,12 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             }
         }
         return false;
+    }
+
+    @Override
+    public void knockBack(Entity attacker, double damage, double x, double z, double base) {
+        super.knockBack(attacker, damage, x, z, base);
+
+        this.knockBackTime = 10;
     }
 }

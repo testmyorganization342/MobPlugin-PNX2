@@ -4,18 +4,16 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityExplosive;
-import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Explosion;
 import cn.nukkit.level.GameRule;
-import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.level.particle.HugeExplodeSeedParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.network.protocol.LevelEventPacket;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
@@ -29,8 +27,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     public static final int NETWORK_ID = 33;
 
-    private int bombTime = 0;
-    private boolean exploding;
+    private short bombTime;
+    private int explodeTimer;
 
     public Creeper(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -63,7 +61,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         this.setMaxHealth(20);
 
         if (this.namedTag.contains("powered")) {
-           this.setPowered(this.namedTag.getBoolean("powered"));
+            this.setPowered(this.namedTag.getBoolean("powered"));
         }
     }
 
@@ -71,7 +69,6 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         return this.bombTime;
     }
 
-    @Override
     public void explode() {
         if (this.closed) return;
 
@@ -91,12 +88,73 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             }
 
             explosion.explodeB();
-            this.level.addParticle(new HugeExplodeSeedParticle(this));
         }
 
         this.close();
     }
 
+    @Override
+    public boolean onUpdate(int currentTick) {
+        if (this.closed) {
+            return false;
+        }
+
+        if (this.server.getDifficulty() < 1) {
+            this.close();
+            return false;
+        }
+
+        if (!this.isAlive()) {
+            if (++this.deadTicks >= 23) {
+                this.close();
+                return false;
+            }
+            return true;
+        }
+
+        if (this.explodeTimer > 0) {
+            if (this.explodeTimer == 1) {
+                this.explode();
+                return false;
+            }
+            this.explodeTimer--;
+        }
+
+        int tickDiff = currentTick - this.lastUpdate;
+        this.lastUpdate = currentTick;
+        this.entityBaseTick(tickDiff);
+
+        Vector3 target = this.updateMove(tickDiff);
+        if (target != null) {
+            double distance = target.distanceSquared(this);
+            if (distance <= 16) { // 4 blocks
+                if (target instanceof EntityCreature) {
+                    if (this.explodeTimer <= 0) {
+                        if (bombTime == 0) {
+                            this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_TNT);
+                            this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
+                        }
+                        this.bombTime += tickDiff;
+                        if (this.bombTime >= 30) {
+                            this.explode();
+                            return false;
+                        }
+                    }
+                    if (distance <= 1) {
+                        this.stayTime = 10;
+                    }
+                }
+            } else {
+                if (this.explodeTimer <= 0) {
+                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
+                    this.bombTime = 0;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public void attackEntity(Entity player) {
     }
 
@@ -116,14 +174,15 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.getId() == Item.FLINT_AND_STEEL && !exploding) {
-            this.exploding = true;
+        if (item.getId() == Item.FLINT_AND_STEEL && this.explodeTimer <= 0) {
             level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_IGNITE);
             this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
-            this.level.addSound(this, Sound.RANDOM_FUSE);
-            level.getServer().getScheduler().scheduleDelayedTask(null, this::explode, 30);
+            this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_TNT);
+            this.stayTime = 31;
+            this.explodeTimer = 31;
             return true;
         }
+
         return super.onInteract(player, item, clickedPos);
     }
 
@@ -143,60 +202,13 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     }
 
     @Override
-    public void onStruckByLightning(Entity entity) {
-        if (this.attack(new EntityDamageByEntityEvent(entity, this, EntityDamageEvent.DamageCause.LIGHTNING, 5))) {
+    public void onStruckByLightning(Entity lightning) {
+        if (this.attack(new EntityDamageByEntityEvent(lightning, this, EntityDamageEvent.DamageCause.LIGHTNING, 5))) {
             if (this.fireTicks < 160) {
                 this.setOnFire(8);
             }
 
             this.setPowered(true);
         }
-    }
-
-    @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
-
-        boolean hasUpdate = super.entityBaseTick(tickDiff);
-
-        if (this.followTarget != null && !this.followTarget.closed && this.followTarget.isAlive() && this.target != null) {
-            double x = this.target.x - this.x;
-            double z = this.target.z - this.z;
-
-            double diff = Math.abs(x) + Math.abs(z);
-            double distance = followTarget.distanceSquared(this);
-            if (distance <= 16) { // 4 blocks
-                if (followTarget instanceof EntityCreature) {
-                    if (!exploding) {
-                        if (bombTime >= 0) {
-                            this.level.addSound(this, Sound.RANDOM_FUSE);
-                            this.setDataProperty(new IntEntityData(Entity.DATA_FUSE_LENGTH, bombTime));
-                            this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
-                        }
-                        this.bombTime += tickDiff;
-                        if (this.bombTime >= 30) {
-                            this.explode();
-                            return false;
-                        }
-                    }
-                    if (distance <= 1) {
-                        this.stayTime = 10;
-                    }
-                }
-            } else {
-                if (!exploding) {
-                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
-                    this.bombTime = 0;
-                }
-
-                this.motionX = this.getSpeed() * 0.15 * (x / diff);
-                this.motionZ = this.getSpeed() * 0.15 * (z / diff);
-            }
-        }
-
-        return hasUpdate;
     }
 }

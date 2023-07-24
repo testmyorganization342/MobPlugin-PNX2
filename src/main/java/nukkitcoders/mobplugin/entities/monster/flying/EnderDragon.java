@@ -55,9 +55,11 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
     @Override
     public int getKillExperience() {
-        for (int i = 0; i < 167;) {
-            this.level.dropExpOrb(this, 3);
-            i++;
+        if (!MobPlugin.getInstance().config.noXpOrbs) {
+            for (int i = 0; i < 167; ) {
+                this.level.dropExpOrb(this, 3);
+                i++;
+            }
         }
         return 0;
     }

@@ -35,9 +35,8 @@ import nukkitcoders.mobplugin.utils.Utils;
  */
 public class MobPlugin extends PluginBase implements Listener {
 
-    public Config config;
-
     private static MobPlugin INSTANCE;
+    public Config config;
 
     public MobPlugin() {
         INSTANCE = this;
@@ -93,7 +92,7 @@ public class MobPlugin extends PluginBase implements Listener {
             Player playerThatSpawns;
 
             if (args.length == 2) {
-                playerThatSpawns = getServer().getPlayer(args[1].replace("@s", sender.getName()));
+                playerThatSpawns = getServer().getPlayerExact(args[1].replace("@s", sender.getName()));
             } else {
                 playerThatSpawns = (Player) sender;
             }
@@ -130,7 +129,7 @@ public class MobPlugin extends PluginBase implements Listener {
                     Player playerThatSpawns;
 
                     if (args.length == 3) {
-                        playerThatSpawns = this.getServer().getPlayer(args[2]);
+                        playerThatSpawns = this.getServer().getPlayerExact(args[2]);
                     } else {
                         playerThatSpawns = (Player) sender;
                     }

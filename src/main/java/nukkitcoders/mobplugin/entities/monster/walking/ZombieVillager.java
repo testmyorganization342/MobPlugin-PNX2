@@ -41,7 +41,7 @@ public class ZombieVillager extends WalkingMonster implements EntitySmite {
 
     @Override
     public double getSpeed() {
-        return 1.1;
+        return this.isBaby() ? 1.6 : 1.1;
     }
 
     @Override

@@ -8,7 +8,7 @@
      </properties>
     <groupId>nukkitcoders.mobplugin</groupId>
     <artifactId>MobPlugin</artifactId>
-    <version>1.25.3.dev-PNX</version>
+    <version>1.26.0-PNX</version>
     <build>
         <defaultGoal>install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>cn.powernukkitx</groupId>
             <artifactId>powernukkitx</artifactId>
-            <version>1.19.70-r1</version>
+            <version>1.20.10-r1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

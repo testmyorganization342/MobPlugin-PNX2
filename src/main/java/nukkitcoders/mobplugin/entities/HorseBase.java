@@ -58,7 +58,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
     }
 
     @Override
-    public boolean mountEntity(Entity entity) {
+    public boolean mountEntity(Entity entity, byte mode) {
         Objects.requireNonNull(entity, "The target of the mounting entity can't be null");
 
         if (entity.riding != null) {
