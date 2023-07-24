@@ -127,7 +127,7 @@ public class AutoSpawnTask implements Runnable {
         maxSpawns.put(Donkey.NETWORK_ID, this.pluginConfig.getInt("autospawn.donkey"));
         maxSpawns.put(Enderman.NETWORK_ID, this.pluginConfig.getInt("autospawn.enderman"));
         maxSpawns.put(Ghast.NETWORK_ID, this.pluginConfig.getInt("autospawn.ghast"));
-        maxSpawns.put(Horse.NETWORK_ID, this.pluginConfig.getInt("autospawn.horse"));
+        maxSpawns.put(EntityHorse.NETWORK_ID, this.pluginConfig.getInt("autospawn.horse"));
         maxSpawns.put(Husk.NETWORK_ID, this.pluginConfig.getInt("autospawn.husk"));
         maxSpawns.put(MagmaCube.NETWORK_ID, this.pluginConfig.getInt("autospawn.magmacube"));
         maxSpawns.put(EntityMooshroom.NETWORK_ID, this.pluginConfig.getInt("autospawn.mooshroom"));

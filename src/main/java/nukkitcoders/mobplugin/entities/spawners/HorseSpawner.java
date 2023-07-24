@@ -3,11 +3,11 @@ package nukkitcoders.mobplugin.entities.spawners;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.passive.EntityHorse;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
-import nukkitcoders.mobplugin.entities.animal.walking.Horse;
 import nukkitcoders.mobplugin.entities.autospawn.AbstractEntitySpawner;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -41,6 +41,6 @@ public class HorseSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return Horse.NETWORK_ID;
+        return EntityHorse.NETWORK_ID;
     }
 }

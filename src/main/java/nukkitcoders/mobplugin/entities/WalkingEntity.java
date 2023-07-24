@@ -11,7 +11,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.RouteFinderThreadPool;
 import nukkitcoders.mobplugin.entities.animal.walking.Llama;
-import nukkitcoders.mobplugin.entities.animal.walking.Pig;
 import nukkitcoders.mobplugin.entities.animal.walking.SkeletonHorse;
 import nukkitcoders.mobplugin.entities.monster.walking.Drowned;
 import nukkitcoders.mobplugin.route.RouteFinder;
@@ -46,11 +45,10 @@ public abstract class WalkingEntity extends BaseEntity {
         double near = Integer.MAX_VALUE;
 
         for (Entity entity : this.getLevel().getEntities()) {
-            if (entity == this || !(entity instanceof EntityCreature) || entity.closed || !this.canTarget(entity)) {
+            if (entity == this || !(entity instanceof EntityCreature creature) || entity.closed || !this.canTarget(entity)) {
                 continue;
             }
 
-            EntityCreature creature = (EntityCreature) entity;
             if (creature instanceof BaseEntity && ((BaseEntity) creature).isFriendly() == this.isFriendly()) {
                 continue;
             }
@@ -187,7 +185,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.1 * (z / diff);
                     }
                 }
-                if ((this.passengers.isEmpty() || this instanceof Llama || this instanceof Pig) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                if ((this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand())) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
             }
 
             this.checkTarget();
@@ -220,7 +218,7 @@ public abstract class WalkingEntity extends BaseEntity {
                         this.motionZ = this.getSpeed() * moveMultiplier * 0.15 * (z / diff);
                     }
                 }
-                if (!distance && (this.passengers.isEmpty() || this instanceof Llama || this instanceof Pig) && (this.stayTime <= 0 || Utils.rand()) && diff != 0) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
+                if (!distance && (this.passengers.isEmpty() || this instanceof Llama) && (this.stayTime <= 0 || Utils.rand()) && diff != 0) this.yaw = Math.toDegrees(-FastMathLite.atan2(x / diff, z / diff));
             }
 
             double dx = this.motionX;
