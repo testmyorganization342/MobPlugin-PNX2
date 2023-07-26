@@ -47,6 +47,12 @@ public class MobPlugin extends PluginBase implements Listener {
     }
 
     @Override
+    public void onLoad() {
+        //提前注册，防止核心找不到
+        this.registerEntities();
+    }
+
+    @Override
     public void onEnable() {
         config = new Config(this);
 
@@ -54,7 +60,7 @@ public class MobPlugin extends PluginBase implements Listener {
             return;
         }
 
-        this.registerEntities();
+        //this.registerEntities();
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
 
         if (config.spawnDelay > 0) {
