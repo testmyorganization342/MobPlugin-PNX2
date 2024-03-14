@@ -61,7 +61,6 @@ public class MobPlugin extends PluginBase implements Listener {
             return;
         }
 
-        //this.registerEntities();
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
 
         if (config.spawnDelay > 0) {

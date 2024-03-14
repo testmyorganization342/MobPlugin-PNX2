@@ -19,6 +19,7 @@ import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemSpawnEgg;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.AxisAlignedBB;
@@ -68,16 +69,18 @@ public class EventListener implements Listener {
 
         Item item = ev.getItem();
         Block block = ev.getBlock();
-        if (item.getId() != Item.SPAWN_EGG || block.getId() != Block.MOB_SPAWNER) return;
+        if (!item.getId().endsWith("_spawn_egg") || !block.getId().equals(Block.MOB_SPAWNER)) return;
 
         Player player = ev.getPlayer();
+        ItemSpawnEgg spawnEgg = (ItemSpawnEgg) item;
         if (player.isAdventure()) return;
 
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
         if (blockEntity instanceof BlockEntitySpawner) {
-            SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), item.getDamage());
+            MobPlugin.getInstance().getLogger().info("hmm");
+            SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), spawnEgg.getEntityNetworkId());
             Server.getInstance().getPluginManager().callEvent(event);
-            if (((BlockEntitySpawner) blockEntity).getSpawnEntityType() == item.getDamage()) {
+            if (((BlockEntitySpawner) blockEntity).getSpawnEntityType() == spawnEgg.getEntityNetworkId()) {
                 if (MobPlugin.getInstance().config.noSpawnEggWasting) {
                     event.setCancelled(true);
                     return;
@@ -85,14 +88,14 @@ public class EventListener implements Listener {
             }
 
             if (event.isCancelled()) return;
-            ((BlockEntitySpawner) blockEntity).setSpawnEntityType(item.getDamage());
+            ((BlockEntitySpawner) blockEntity).setSpawnEntityType(spawnEgg.getEntityNetworkId());
             ev.setCancelled(true);
 
             if (!player.isCreative()) {
                 player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             }
         } else {
-            SpawnerCreateEvent event = new SpawnerCreateEvent(ev.getPlayer(), ev.getBlock(), item.getDamage());
+            SpawnerCreateEvent event = new SpawnerCreateEvent(ev.getPlayer(), ev.getBlock(), spawnEgg.getEntityNetworkId());
             Server.getInstance().getPluginManager().callEvent(event);
             if (event.isCancelled()) return;
             ev.setCancelled(true);
@@ -101,7 +104,7 @@ public class EventListener implements Listener {
             }
             CompoundTag nbt = new CompoundTag()
                     .putString(TAG_ID, BlockEntity.MOB_SPAWNER)
-                    .putInt(TAG_ENTITY_ID, item.getDamage())
+                    .putInt(TAG_ENTITY_ID, spawnEgg.getEntityNetworkId())
                     .putInt(TAG_X, (int) block.x)
                     .putInt(TAG_Y, (int) block.y)
                     .putInt(TAG_Z, (int) block.z);
