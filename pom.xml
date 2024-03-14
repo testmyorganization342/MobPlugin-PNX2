@@ -6,7 +6,7 @@
 
     <groupId>nukkitcoders.mobplugin</groupId>
     <artifactId>MobPlugin</artifactId>
-    <version>1.26.0-PNX</version>
+    <version>1.26.3-PNX</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
