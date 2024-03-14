@@ -1,15 +1,21 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
+import org.jetbrains.annotations.NotNull;
 
 public class WanderingTrader extends WalkingAnimal {
 
     public static final int NETWORK_ID = 118;
 
-    public WanderingTrader(FullChunk chunk, CompoundTag nbt) {
+    public WanderingTrader(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return WANDERING_TRADER;
     }
 
     @Override

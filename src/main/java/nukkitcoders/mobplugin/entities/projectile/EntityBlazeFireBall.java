@@ -2,18 +2,24 @@ package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityBlazeFireBall extends EntityProjectile {
 
     public static final int NETWORK_ID = 94;
 
-    public EntityBlazeFireBall(FullChunk chunk, CompoundTag nbt) {
+    public EntityBlazeFireBall(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityBlazeFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    @Override
+    public @NotNull String getIdentifier() {
+        return SMALL_FIREBALL;
+    }
+
+    public EntityBlazeFireBall(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 

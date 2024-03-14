@@ -1,16 +1,22 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Goat extends WalkingAnimal {
 
     public static final int NETWORK_ID = 128;
 
-    public Goat(FullChunk chunk, CompoundTag nbt) {
+    public Goat(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return GOAT;
     }
 
     @Override

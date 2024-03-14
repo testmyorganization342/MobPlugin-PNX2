@@ -6,10 +6,11 @@ import cn.nukkit.event.entity.CreatureSpawnEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.JumpingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -23,8 +24,13 @@ public class Slime extends JumpingMonster {
 
     protected int size;
 
-    public Slime(FullChunk chunk, CompoundTag nbt) {
+    public Slime(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return SLIME;
     }
 
     @Override
@@ -145,7 +151,7 @@ public class Slime extends JumpingMonster {
     @Override
     public Item[] getDrops() {
         if (this.size == SIZE_SMALL) {
-            return new Item[]{Item.get(Item.SLIMEBALL, 0, Utils.rand(0, 2))};
+            return new Item[]{Item.get(Item.SLIME_BALL, 0, Utils.rand(0, 2))};
         }
 
         return new Item[0];

@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities.monster;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.WalkingEntity;
@@ -20,7 +20,7 @@ public abstract class WalkingMonster extends WalkingEntity implements Monster {
 
     public long isAngryTo = -1L;
 
-    public WalkingMonster(FullChunk chunk, CompoundTag nbt) {
+    public WalkingMonster(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.route = new WalkerRouteFinder(this);
     }

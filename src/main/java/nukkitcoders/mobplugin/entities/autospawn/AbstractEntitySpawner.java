@@ -48,7 +48,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             }
 
             if (Utils.monstersList.contains(this.getEntityNetworkId())) {
-                int biome = level.getBiomeId((int) pos.x, (int) pos.z);
+                int biome = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
                 if (biome == 14 || biome == 15) {
                     return; // Hostile mobs don't spawn on mushroom island
                 }
@@ -74,12 +74,12 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
                     return;
                 }
             } else {
-                if (block.getId() == Block.BROWN_MUSHROOM_BLOCK || block.getId() == Block.RED_MUSHROOM_BLOCK) { // Mushrooms aren't transparent but shouldn't have mobs spawned on them
+                if (block.getId().equals(Block.BROWN_MUSHROOM_BLOCK) || block.getId().equals(Block.RED_MUSHROOM_BLOCK)) { // Mushrooms aren't transparent but shouldn't have mobs spawned on them
                     return;
                 }
 
-                if (block.isTransparent() && block.getId() != Block.SNOW_LAYER) { // Snow layer is an exception
-                    if ((block.getId() != Block.WATER && block.getId() != Block.STILL_WATER) || !this.isWaterMob()) { // Water mobs can spawn in water
+                if (block.isTransparent() && !block.getId().equals(Block.SNOW_LAYER)) { // Snow layer is an exception
+                    if ((!block.getId().equals(Block.WATER) && !block.getId().equals(Block.FLOWING_WATER)) || !this.isWaterMob()) { // Water mobs can spawn in water
                         return;
                     }
                 }

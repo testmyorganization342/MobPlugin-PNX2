@@ -6,11 +6,12 @@ import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +21,13 @@ public class ZombieVillager extends WalkingMonster implements EntitySmite {
 
     public static final int NETWORK_ID = 44;
 
-    public ZombieVillager(FullChunk chunk, CompoundTag nbt) {
+    public ZombieVillager(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ZOMBIE_VILLAGER;
     }
 
     @Override

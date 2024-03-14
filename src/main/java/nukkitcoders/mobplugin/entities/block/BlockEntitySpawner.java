@@ -8,10 +8,10 @@ import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.CreatureSpawnEvent;
 import cn.nukkit.level.Position;
-import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ShortTag;
+import cn.nukkit.utils.random.NukkitRandom;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -55,7 +55,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
     public static final int MAX_NEARBY_ENTITIES = MobPlugin.getInstance().config.spawnerMaxNearby;
     public static final int REQUIRED_PLAYER_RANGE = MobPlugin.getInstance().config.spawnerRequiredPlayerRange;
 
-    public BlockEntitySpawner(FullChunk chunk, CompoundTag nbt) {
+    public BlockEntitySpawner(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.entityId = this.namedTag.getInt(TAG_ENTITY_ID);
     }
@@ -138,9 +138,9 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
                     Block block = level.getBlock(pos);
                     //Mobs shouldn't spawn in walls and they shouldn't retry to
                     if (
-                            block.getId() != 0 && block.getId() != BlockID.SIGN_POST && block.getId() != BlockID.WALL_SIGN &&
-                            block.getId() != BlockID.STILL_WATER && block.getId() != BlockID.WATER &&
-                            block.getId() != BlockID.LAVA && block.getId() != BlockID.STILL_LAVA
+                            !block.getId().equals(BlockID.AIR) && !block.getId().equals(BlockID.STANDING_SIGN) && !block.getId().equals(BlockID.WALL_SIGN) &&
+                                    !block.getId().equals(BlockID.WATER) && !block.getId().equals(BlockID.WATER) &&
+                                    !block.getId().equals(BlockID.LAVA) && !block.getId().equals(BlockID.FLOWING_LAVA)
                     ) {
                         continue;
                     }
@@ -199,7 +199,7 @@ public class BlockEntitySpawner extends BlockEntitySpawnable {
 
     @Override
     public boolean isBlockEntityValid() {
-        return level.getBlockIdAt((int) x, (int) y, (int) z) == Block.MONSTER_SPAWNER;
+        return level.getBlockIdAt((int) x, (int) y, (int) z).equals(Block.MOB_SPAWNER);
     }
 
     public int getSpawnEntityType() {

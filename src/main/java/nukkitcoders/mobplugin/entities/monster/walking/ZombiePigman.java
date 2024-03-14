@@ -7,12 +7,13 @@ import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemSwordGold;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.item.ItemGoldenSword;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +25,13 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
 
     private int angry = 0;
 
-    public ZombiePigman(FullChunk chunk, CompoundTag nbt) {
+    public ZombiePigman(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ZOMBIE_PIGMAN;
     }
 
     @Override
@@ -132,7 +138,7 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
-        pk.item = new ItemSwordGold();
+        pk.item = new ItemGoldenSword();
         pk.inventorySlot = 0;
         player.dataPacket(pk);
     }
@@ -144,7 +150,7 @@ public class ZombiePigman extends WalkingMonster implements EntitySmite {
         if (!this.isBaby()) {
             drops.add(Item.get(Item.ROTTEN_FLESH, 0, Utils.rand(0, 1)));
             drops.add(Item.get(Item.GOLD_NUGGET, 0, Utils.rand(0, 1)));
-            drops.add(Item.get(Item.GOLD_SWORD, Utils.rand(20, 30), Utils.rand(0, 101) <= 9 ? 1 : 0));
+            drops.add(Item.get(Item.GOLDEN_SWORD, Utils.rand(20, 30), Utils.rand(0, 101) <= 9 ? 1 : 0));
         }
 
         return drops.toArray(new Item[0]);

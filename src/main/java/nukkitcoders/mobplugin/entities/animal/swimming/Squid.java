@@ -3,19 +3,25 @@ package nukkitcoders.mobplugin.entities.animal.swimming;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDye;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.utils.DyeColor;
 import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Squid extends SwimmingAnimal {
 
     public static final int NETWORK_ID = 17;
 
-    public Squid(FullChunk chunk, CompoundTag nbt) {
+    public Squid(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return SQUID;
     }
 
     @Override

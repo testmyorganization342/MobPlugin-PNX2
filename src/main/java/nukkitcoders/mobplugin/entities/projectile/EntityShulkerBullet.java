@@ -1,12 +1,14 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityShulkerBullet extends EntityProjectile {
 
@@ -47,11 +49,16 @@ public class EntityShulkerBullet extends EntityProjectile {
         return 4;
     }
 
-    public EntityShulkerBullet(FullChunk chunk, CompoundTag nbt) {
+    public EntityShulkerBullet(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityShulkerBullet(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    @Override
+    public @NotNull String getIdentifier() {
+        return SHULKER_BULLET;
+    }
+
+    public EntityShulkerBullet(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 
@@ -81,6 +88,6 @@ public class EntityShulkerBullet extends EntityProjectile {
     public void onCollideWithEntity(Entity entity) {
         super.onCollideWithEntity(entity);
         this.level.addSound(this, Sound.MOB_SHULKER_BULLET_HIT);
-        entity.addEffect(Effect.getEffect(Effect.LEVITATION).setDuration(200));
+        entity.addEffect(Effect.get(EffectType.LEVITATION).setDuration(200));
     }
 }

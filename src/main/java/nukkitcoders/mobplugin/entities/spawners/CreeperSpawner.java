@@ -24,6 +24,6 @@ public class CreeperSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityCreeper.NETWORK_ID;
+        return 33;
     }
 }

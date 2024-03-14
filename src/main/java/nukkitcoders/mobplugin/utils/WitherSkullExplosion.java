@@ -2,13 +2,13 @@ package nukkitcoders.mobplugin.utils;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
-import cn.nukkit.block.BlockTNT;
+import cn.nukkit.block.BlockTnt;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.entity.item.EntityItem;
-import cn.nukkit.entity.item.EntityXPOrb;
+import cn.nukkit.entity.item.EntityXpOrb;
 import cn.nukkit.event.block.BlockUpdateEvent;
 import cn.nukkit.event.entity.EntityDamageByBlockEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -150,7 +150,7 @@ public class WitherSkullExplosion extends Explosion {
                     entity.attack(new EntityDamageEvent(entity, DamageCause.BLOCK_EXPLOSION, damage));
                 }
 
-                if (!(entity instanceof EntityItem || entity instanceof EntityXPOrb)) {
+                if (!(entity instanceof EntityItem || entity instanceof EntityXpOrb)) {
                     entity.setMotion(motion.multiply(impact));
                 }
             }
@@ -161,9 +161,9 @@ public class WitherSkullExplosion extends Explosion {
 
         for (Block block : this.affectedBlocks) {
             if (block.getId() == Block.TNT) {
-                ((BlockTNT) block).prime(Utils.rand(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
-            } else if (block.getId() == Block.BED_BLOCK && (block.getDamage() & 0x08) == 0x08) {
-                this.level.setBlockAt((int) block.x, (int) block.y, (int) block.z, Block.AIR);
+                ((BlockTnt) block).prime(Utils.rand(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
+            } else if (block.getId().equals(Block.BED)) {
+                this.level.setBlock(new Vector3(block.getFloorX(), block.getFloorY(), block.getFloorZ()), Block.get(Block.AIR));
                 continue;
             } else if ((container = block.getLevel().getBlockEntity(block)) instanceof InventoryHolder) {
                 if (block.getLevel().getGameRules().getBoolean(GameRule.DO_TILE_DROPS)) {
@@ -183,7 +183,7 @@ public class WitherSkullExplosion extends Explosion {
                 }
             }
 
-            this.level.setBlockAt((int) block.x, (int) block.y, (int) block.z, Block.AIR);
+            this.level.setBlock(new Vector3(block.getFloorX(), block.getFloorY(), block.getFloorZ()), Block.get(Block.AIR));
 
             Vector3 pos = new Vector3(block.x, block.y, block.z);
 

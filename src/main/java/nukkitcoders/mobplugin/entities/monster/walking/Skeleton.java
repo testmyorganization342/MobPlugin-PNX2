@@ -5,7 +5,6 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntitySmite;
-import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.*;
@@ -13,13 +12,14 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBow;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,13 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
 
     private boolean angryFlagSet;
 
-    public Skeleton(FullChunk chunk, CompoundTag nbt) {
+    public Skeleton(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return SKELETON;
     }
 
     @Override
@@ -150,12 +155,12 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
         boolean hasTarget = super.targetOption(creature, distance);
         if (hasTarget) {
             if (!this.angryFlagSet && creature != null) {
-                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, creature.getId()));
+                this.setDataProperty(TARGET_EID, creature.getId());
                 this.angryFlagSet = true;
             }
         } else {
             if (this.angryFlagSet) {
-                this.setDataProperty(new LongEntityData(DATA_TARGET_EID, 0));
+                this.setDataProperty(TARGET_EID, 0);
                 this.angryFlagSet = false;
                 this.stayTime = 100;
             }

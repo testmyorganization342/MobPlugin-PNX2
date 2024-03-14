@@ -1,14 +1,20 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 public class Tadpole extends Fish {
 
     public static final int NETWORK_ID = 133;
 
-    public Tadpole(FullChunk chunk, CompoundTag nbt) {
+    public Tadpole(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return TADPOLE;
     }
 
     @Override

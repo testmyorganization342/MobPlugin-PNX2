@@ -20,9 +20,9 @@ public class ParrotSpawner extends AbstractEntitySpawner {
         if (pos.y < 70 || Utils.rand(1, 3) != 1) {
             return;
         }
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (biomeId == 21 || biomeId == 149 || biomeId == 23 || biomeId == 151) {
-            final int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+            final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId == Block.GRASS || blockId == Block.LEAVES || blockId == Block.WOOD) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     for (int i = 0; i < Utils.rand(1, 2); i++) {

@@ -127,7 +127,7 @@ public class WalkerRouteFinder extends SimpleRouteFinder {
     }
 
     private boolean canWalkOn(Block block) {
-        return !(block.getId() == Block.LAVA || block.getId() == Block.STILL_LAVA || block.getId() == Block.CACTUS);
+        return !(block.getId() == Block.LAVA || block.getId() == Block.FLOWING_WATER || block.getId() == Block.CACTUS);
     }
 
     private boolean isWalkable(Vector3 vector3) {

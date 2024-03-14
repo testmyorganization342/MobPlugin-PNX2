@@ -7,14 +7,14 @@ import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.EntityRideable;
-import cn.nukkit.entity.data.EntityData;
+import cn.nukkit.entity.data.EntityFlag;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.event.Event;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityInteractEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.HeartParticle;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
@@ -22,9 +22,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MoveEntityAbsolutePacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
-import cn.nukkit.potion.Effect;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -32,25 +29,25 @@ import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.Objects;
+import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class BaseEntity extends EntityCreature implements EntityAgeable {
 
-    private static final Int2ObjectMap<Float> ARMOR_POINTS = new Int2ObjectOpenHashMap<Float>() {
+    private static final HashMap<String, Float> ARMOR_POINTS = new HashMap<>() {
         {
-            put(Item.LEATHER_CAP, Float.valueOf(1));
-            put(Item.LEATHER_TUNIC, Float.valueOf(3));
-            put(Item.LEATHER_PANTS, Float.valueOf(2));
+            put(Item.LEATHER_HELMET, Float.valueOf(1));
+            put(Item.LEATHER_CHESTPLATE, Float.valueOf(3));
+            put(Item.LEATHER_LEGGINGS, Float.valueOf(2));
             put(Item.LEATHER_BOOTS, Float.valueOf(1));
-            put(Item.CHAIN_HELMET, Float.valueOf(2));
-            put(Item.CHAIN_CHESTPLATE, Float.valueOf(5));
-            put(Item.CHAIN_LEGGINGS, Float.valueOf(4));
-            put(Item.CHAIN_BOOTS, Float.valueOf(1));
-            put(Item.GOLD_HELMET, Float.valueOf(2));
-            put(Item.GOLD_CHESTPLATE, Float.valueOf(5));
-            put(Item.GOLD_LEGGINGS, Float.valueOf(3));
-            put(Item.GOLD_BOOTS, Float.valueOf(1));
+            put(Item.CHAINMAIL_HELMET, Float.valueOf(2));
+            put(Item.CHAINMAIL_CHESTPLATE, Float.valueOf(5));
+            put(Item.CHAINMAIL_LEGGINGS, Float.valueOf(4));
+            put(Item.CHAINMAIL_BOOTS, Float.valueOf(1));
+            put(Item.GOLDEN_HELMET, Float.valueOf(2));
+            put(Item.GOLDEN_CHESTPLATE, Float.valueOf(5));
+            put(Item.GOLDEN_LEGGINGS, Float.valueOf(3));
+            put(Item.GOLDEN_BOOTS, Float.valueOf(1));
             put(Item.IRON_HELMET, Float.valueOf(2));
             put(Item.IRON_CHESTPLATE, Float.valueOf(6));
             put(Item.IRON_LEGGINGS, Float.valueOf(5));
@@ -63,7 +60,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
             put(Item.NETHERITE_CHESTPLATE, Float.valueOf(8));
             put(Item.NETHERITE_LEGGINGS, Float.valueOf(6));
             put(Item.NETHERITE_BOOTS, Float.valueOf(3));
-            put(Item.TURTLE_SHELL, Float.valueOf(2));
+            put(Item.TURTLE_HELMET, Float.valueOf(2));
         }
     };
 
@@ -86,7 +83,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     //private int inNetherPortal;
     private short inLoveCooldown = 0;
 
-    public BaseEntity(FullChunk chunk, CompoundTag nbt) {
+    public BaseEntity(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
 
         this.setHealth(this.getMaxHealth());
@@ -166,7 +163,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
     public void setBaby(boolean baby) {
         this.baby = baby;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, baby);
+        this.setDataFlag(EntityFlag.BABY, baby);
         if (baby) {
             this.setScale(0.5f);
             this.age = Utils.rand(-2400, -1800);
@@ -189,7 +186,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
 
         if (this.namedTag.getBoolean("Baby")) {
             this.baby = true;
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_BABY, true);
+            this.setDataFlag(EntityFlag.BABY, true);
         }
 
         if (this.namedTag.contains("InLoveTicks")) {
@@ -403,30 +400,30 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
      */
     protected Item[] getRandomArmor() {
         Item[] slots = new Item[4];
-        Item helmet = Item.get(0);
-        Item chestplate = Item.get(0);
-        Item leggings = Item.get(0);
-        Item boots = Item.get(0);
+        Item helmet = Item.AIR;
+        Item chestplate = Item.AIR;
+        Item leggings = Item.AIR;
+        Item boots = Item.AIR;
 
         switch (Utils.rand(1, 5)) {
             case 1:
                 if (Utils.rand(1, 100) < 39) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.LEATHER_CAP, Utils.rand(30, 48), 1);
+                        helmet = Item.get(Item.LEATHER_HELMET, Utils.rand(30, 48), 1);
                     }
                 }
                 break;
             case 2:
                 if (Utils.rand(1, 100) < 50) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.GOLD_HELMET, Utils.rand(40, 70), 1);
+                        helmet = Item.get(Item.GOLDEN_HELMET, Utils.rand(40, 70), 1);
                     }
                 }
                 break;
             case 3:
                 if (Utils.rand(1, 100) < 14) {
                     if (Utils.rand(0, 1) == 0) {
-                        helmet = Item.get(Item.CHAIN_HELMET, Utils.rand(100, 160), 1);
+                        helmet = Item.get(Item.CHAINMAIL_HELMET, Utils.rand(100, 160), 1);
                     }
                 }
                 break;
@@ -453,21 +450,21 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case 1:
                     if (Utils.rand(1, 100) < 39) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.LEATHER_TUNIC, Utils.rand(60, 73), 1);
+                            chestplate = Item.get(Item.LEATHER_CHESTPLATE, Utils.rand(60, 73), 1);
                         }
                     }
                     break;
                 case 2:
                     if (Utils.rand(1, 100) < 50) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.GOLD_CHESTPLATE, Utils.rand(65, 105), 1);
+                            chestplate = Item.get(Item.GOLDEN_CHESTPLATE, Utils.rand(65, 105), 1);
                         }
                     }
                     break;
                 case 3:
                     if (Utils.rand(1, 100) < 14) {
                         if (Utils.rand(0, 1) == 0) {
-                            chestplate = Item.get(Item.CHAIN_CHESTPLATE, Utils.rand(170, 233), 1);
+                            chestplate = Item.get(Item.CHAINMAIL_CHESTPLATE, Utils.rand(170, 233), 1);
                         }
                     }
                     break;
@@ -495,21 +492,21 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case 1:
                     if (Utils.rand(1, 100) < 39) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.LEATHER_PANTS, Utils.rand(35, 68), 1);
+                            leggings = Item.get(Item.LEATHER_LEGGINGS, Utils.rand(35, 68), 1);
                         }
                     }
                     break;
                 case 2:
                     if (Utils.rand(1, 100) < 50) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.GOLD_LEGGINGS, Utils.rand(50, 98), 1);
+                            leggings = Item.get(Item.GOLDEN_LEGGINGS, Utils.rand(50, 98), 1);
                         }
                     }
                     break;
                 case 3:
                     if (Utils.rand(1, 100) < 14) {
                         if (Utils.rand(0, 1) == 0) {
-                            leggings = Item.get(Item.CHAIN_LEGGINGS, Utils.rand(170, 218), 1);
+                            leggings = Item.get(Item.CHAINMAIL_LEGGINGS, Utils.rand(170, 218), 1);
                         }
                     }
                     break;
@@ -544,14 +541,14 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case 2:
                     if (Utils.rand(1, 100) < 50) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.GOLD_BOOTS, Utils.rand(50, 86), 1);
+                            boots = Item.get(Item.GOLDEN_BOOTS, Utils.rand(50, 86), 1);
                         }
                     }
                     break;
                 case 3:
                     if (Utils.rand(1, 100) < 14) {
                         if (Utils.rand(0, 1) == 0) {
-                            boots = Item.get(Item.CHAIN_BOOTS, Utils.rand(100, 188), 1);
+                            boots = Item.get(Item.CHAINMAIL_BOOTS, Utils.rand(100, 188), 1);
                         }
                     }
                     break;
@@ -583,11 +580,11 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     protected void addArmorExtraHealth() {
         if (this.armor != null && this.armor.length == 4) {
             switch (armor[0].getId()) {
-                case Item.LEATHER_CAP:
+                case Item.LEATHER_HELMET:
                     this.addHealth(1);
                     break;
-                case Item.GOLD_HELMET:
-                case Item.CHAIN_HELMET:
+                case Item.GOLDEN_HELMET:
+                case Item.CHAINMAIL_HELMET:
                 case Item.IRON_HELMET:
                     this.addHealth(2);
                     break;
@@ -596,11 +593,11 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                     break;
             }
             switch (armor[1].getId()) {
-                case Item.LEATHER_TUNIC:
+                case Item.LEATHER_CHESTPLATE:
                     this.addHealth(2);
                     break;
-                case Item.GOLD_CHESTPLATE:
-                case Item.CHAIN_CHESTPLATE:
+                case Item.GOLDEN_CHESTPLATE:
+                case Item.CHAINMAIL_CHESTPLATE:
                 case Item.IRON_CHESTPLATE:
                     this.addHealth(3);
                     break;
@@ -609,11 +606,11 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                     break;
             }
             switch (armor[2].getId()) {
-                case Item.LEATHER_PANTS:
+                case Item.LEATHER_LEGGINGS:
                     this.addHealth(1);
                     break;
-                case Item.GOLD_LEGGINGS:
-                case Item.CHAIN_LEGGINGS:
+                case Item.GOLDEN_LEGGINGS:
+                case Item.CHAINMAIL_LEGGINGS:
                 case Item.IRON_LEGGINGS:
                     this.addHealth(2);
                     break;
@@ -625,8 +622,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
                 case Item.LEATHER_BOOTS:
                     this.addHealth(1);
                     break;
-                case Item.GOLD_BOOTS:
-                case Item.CHAIN_BOOTS:
+                case Item.GOLDEN_BOOTS:
+                case Item.CHAINMAIL_BOOTS:
                 case Item.IRON_BOOTS:
                     this.addHealth(2);
                     break;
@@ -761,25 +758,13 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return !(this instanceof EnderDragon) && super.applyNameTag(player, item);
     }
 
-    @Override
-    public boolean setDataProperty(EntityData data, boolean send) {
-        if (!Objects.equals(data, this.dataProperties.get(data.getId()))) {
-            this.dataProperties.put(data);
-            if (send && (data.getId() != DATA_HEALTH || this instanceof EntityRideable || this instanceof Boss)) {
-                this.sendData(this.hasSpawned.values().toArray(new Player[0]), this.dataProperties);
-            }
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Get armor defense points for item
      *
      * @param item item id
      * @return defense points
      */
-    protected float getArmorPoints(int item) {
+    protected float getArmorPoints(String item) {
         Float points = ARMOR_POINTS.get(item);
         if (points == null) return 0;
         return points;
@@ -798,18 +783,18 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     @Override
     public void fall(float fallDistance) {
         if (fallDistance > 0.75) {
-            if (!this.hasEffect(Effect.SLOW_FALLING)) {
+            if (!this.hasEffect(EffectType.SLOW_FALLING)) {
                 Block down = this.level.getBlock(this.down());
                 if (!this.noFallDamage) {
-                    float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(Effect.JUMP_BOOST) ? this.getEffect(Effect.JUMP_BOOST).getAmplifier() + 1 : 0));
-                    if (down.getId() == BlockID.HAY_BALE) {
+                    float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(EffectType.JUMP_BOOST) ? this.getEffect(EffectType.JUMP_BOOST).getAmplifier() + 1 : 0));
+                    if (down.getId().equals(BlockID.HAY_BLOCK)) {
                         damage -= (damage * 0.8f);
                     }
                     if (damage > 0) {
                         this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.FALL, damage));
                     }
                 }
-                if (down.getId() == BlockID.FARMLAND) {
+                if (down.getId().equals(BlockID.FARMLAND)) {
                     Event ev = new EntityInteractEvent(this, down);
                     this.server.getPluginManager().callEvent(ev);
                     if (ev.isCancelled()) {
@@ -827,8 +812,8 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
      * @param block block id
      * @return can swim
      */
-    protected boolean canSwimIn(int block) {
-        return block == BlockID.FLOWING_WATER || block == BlockID.STILL_WATER;
+    protected boolean canSwimIn(String block) {
+        return block.equals(BlockID.FLOWING_WATER) || block.equals(BlockID.WATER);
     }
 
     public boolean isInLoveCooldown() {
@@ -836,8 +821,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     }
 
     protected boolean tryBreedWih(Entity entity) {
-        if (entity instanceof BaseEntity && entity.getNetworkId() == this.getNetworkId()) {
-            BaseEntity be = (BaseEntity) entity;
+        if (entity instanceof BaseEntity be && entity.getNetworkId() == this.getNetworkId()) {
             if (be.isInLove() && !be.isBaby() && be.age > 0) {
                 be.lastInteract = null;
                 this.setInLove(false);

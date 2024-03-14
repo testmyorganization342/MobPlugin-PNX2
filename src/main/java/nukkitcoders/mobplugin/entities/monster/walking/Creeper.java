@@ -4,13 +4,14 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityExplosive;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Explosion;
 import cn.nukkit.level.GameRule;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelEventPacket;
@@ -18,6 +19,7 @@ import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +32,13 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     private short bombTime;
     private int explodeTimer;
 
-    public Creeper(FullChunk chunk, CompoundTag nbt) {
+    public Creeper(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return CREEPER;
     }
 
     @Override
@@ -132,7 +139,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                     if (this.explodeTimer <= 0) {
                         if (bombTime == 0) {
                             this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_TNT);
-                            this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
+                            this.setDataFlag(EntityFlag.IGNITED, true);
                         }
                         this.bombTime += tickDiff;
                         if (this.bombTime >= 30) {
@@ -146,7 +153,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                 }
             } else {
                 if (this.explodeTimer <= 0) {
-                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, false);
+                    this.setDataFlag(EntityFlag.IGNITED, false);
                     this.bombTime = 0;
                 }
             }
@@ -176,7 +183,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
         if (item.getId() == Item.FLINT_AND_STEEL && this.explodeTimer <= 0) {
             level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_IGNITE);
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_IGNITED, true);
+            this.setDataFlag(EntityFlag.IGNITED, true);
             this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_TNT);
             this.stayTime = 31;
             this.explodeTimer = 31;
@@ -187,11 +194,11 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
     }
 
     public boolean isPowered() {
-        return this.getDataFlag(DATA_FLAGS, DATA_FLAG_POWERED);
+        return this.getDataFlag(EntityFlag.POWERED);
     }
 
     public void setPowered(boolean charged) {
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_POWERED, charged);
+        this.setDataFlag(EntityFlag.POWERED, charged);
     }
 
     @Override

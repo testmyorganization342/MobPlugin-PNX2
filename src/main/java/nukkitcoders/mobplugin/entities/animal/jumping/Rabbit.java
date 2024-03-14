@@ -1,15 +1,17 @@
 package nukkitcoders.mobplugin.entities.animal.jumping;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.ItemBreakParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.entities.animal.JumpingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +20,13 @@ public class Rabbit extends JumpingAnimal {
 
     public static final int NETWORK_ID = 18;
 
-    public Rabbit(FullChunk chunk, CompoundTag nbt) {
+    public Rabbit(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return RABBIT;
     }
 
     @Override
@@ -58,8 +65,8 @@ public class Rabbit extends JumpingAnimal {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            int id = player.getInventory().getItemInHand().getId();
-            return player.spawned && player.isAlive() && !player.closed && (id == Item.DANDELION || id == Item.CARROT || id == Item.GOLDEN_CARROT) && distance <= 49;
+            String id = player.getInventory().getItemInHand().getId();
+            return player.spawned && player.isAlive() && !player.closed && (id == BlockID.RED_FLOWER || id == Item.CARROT || id == Item.GOLDEN_CARROT) && distance <= 49;
         }
         return super.targetOption(creature, distance);
     }
@@ -70,7 +77,7 @@ public class Rabbit extends JumpingAnimal {
 
         if (!this.isBaby()) {
             drops.add(Item.get(Item.RABBIT_HIDE, 0, Utils.rand(0, 1)));
-            drops.add(Item.get(this.isOnFire() ? Item.COOKED_RABBIT : Item.RAW_RABBIT, 0, Utils.rand(0, 1)));
+            drops.add(Item.get(this.isOnFire() ? Item.COOKED_RABBIT : Item.RABBIT, 0, Utils.rand(0, 1)));
             drops.add(Item.get(Item.RABBIT_FOOT, 0, Utils.rand(0, 101) <= 9 ? 1 : 0));
         }
 
@@ -84,10 +91,10 @@ public class Rabbit extends JumpingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.getId() == Item.DANDELION && !this.isBaby() && !this.isInLoveCooldown()) {
+        if (item.getId() == BlockID.RED_FLOWER && !this.isBaby() && !this.isInLoveCooldown()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.DANDELION)));
+            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(BlockID.RED_FLOWER)));
             this.setInLove();
             return true;
         } else if (item.getId() == Item.CARROT && !this.isBaby() && !this.isInLoveCooldown()) {

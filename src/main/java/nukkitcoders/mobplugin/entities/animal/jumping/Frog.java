@@ -1,16 +1,22 @@
 package nukkitcoders.mobplugin.entities.animal.jumping;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.JumpingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Frog extends JumpingAnimal {
 
     public static final int NETWORK_ID = 132;
 
-    public Frog(FullChunk chunk, CompoundTag nbt) {
+    public Frog(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return FROG;
     }
 
     @Override

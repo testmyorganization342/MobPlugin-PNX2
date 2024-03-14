@@ -1,22 +1,29 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.entity.projectile.EntityProjectile;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.SmokeParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityWitherSkull extends EntityProjectile {
 
     public static final int NETWORK_ID = 89;
 
-    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt) {
+    public EntityWitherSkull(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    @Override
+    public @NotNull String getIdentifier() {
+        return WITHER_SKULL;
+    }
+
+    public EntityWitherSkull(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 
@@ -81,6 +88,6 @@ public class EntityWitherSkull extends EntityProjectile {
     @Override
     public void onCollideWithEntity(Entity entity) {
         super.onCollideWithEntity(entity);
-        entity.addEffect(Effect.getEffect(Effect.WITHER).setDuration(200));
+        entity.addEffect(Effect.get(EffectType.WITHER).setDuration(200));
     }
 }

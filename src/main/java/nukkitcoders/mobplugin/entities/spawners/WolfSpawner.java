@@ -21,10 +21,10 @@ public class WolfSpawner extends AbstractEntitySpawner {
         if (Utils.rand(1, 3) != 1) {
             return;
         }
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (MobPlugin.isAnimalSpawningAllowedByTime(level) && ((biomeId == 4 || biomeId == 5 || biomeId == 20 || biomeId == 27 || biomeId == 30 || biomeId == 32 || biomeId == 133 || biomeId == 158))) {
-            int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-            if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
+            String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+            if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
                 for (int i = 0; i < 4; i++) {
                     var entity = this.spawnTask.createEntity("Wolf", pos.add(0.5, 1, 0.5));
                     if (entity == null) return;
@@ -38,6 +38,6 @@ public class WolfSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityWolf.NETWORK_ID;
+        return 14;
     }
 }

@@ -22,8 +22,8 @@ public class SheepSpawner extends AbstractEntitySpawner {
             return;
         }
         if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-            int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-            if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
+            String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+            if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
                 for (int i = 0; i < Utils.rand(2, 3); i++) {
                     EntityCreature entity = this.spawnTask.createEntity("Sheep", pos.add(0.5, 1, 0.5));
                     if (entity == null) return;
@@ -37,6 +37,6 @@ public class SheepSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntitySheep.NETWORK_ID;
+        return 13;
     }
 }

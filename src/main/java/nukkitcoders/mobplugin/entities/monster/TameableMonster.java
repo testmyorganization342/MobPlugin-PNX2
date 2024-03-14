@@ -1,8 +1,8 @@
 package nukkitcoders.mobplugin.entities.monster;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.data.LongEntityData;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.entity.data.EntityFlag;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.Tameable;
@@ -18,7 +18,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 
     private boolean sitting = false;
 
-    public TameableMonster(FullChunk chunk, CompoundTag nbt) {
+    public TameableMonster(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 
@@ -75,7 +75,7 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 
     public void setOwner(Player player) {
         this.owner = player;
-        this.setDataProperty(new LongEntityData(DATA_OWNER_EID, player.getId()));
+        this.setDataProperty(OWNER_EID, player.getId());
         this.setTamed(true);
     }
 
@@ -91,12 +91,12 @@ public abstract class TameableMonster extends WalkingMonster implements Tameable
 
     public void setSitting(boolean sit) {
         this.sitting = sit;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SITTING, sit);
+        this.setDataFlag(EntityFlag.SITTING, sit);
     }
 
 
     private void setTamed(boolean tamed) {
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_TAMED, tamed);
+        this.setDataFlag(EntityFlag.TAMED, tamed);
     }
 
     @Override

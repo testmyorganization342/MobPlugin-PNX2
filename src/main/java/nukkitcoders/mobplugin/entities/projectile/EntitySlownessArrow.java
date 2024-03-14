@@ -1,26 +1,26 @@
 package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.data.ByteEntityData;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.entity.projectile.EntityArrow;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 
 public class EntitySlownessArrow extends EntityArrow {
 
-    public EntitySlownessArrow(FullChunk chunk, CompoundTag nbt) {
+    public EntitySlownessArrow(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntitySlownessArrow(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    public EntitySlownessArrow(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
-        this.setDataProperty(new ByteEntityData(DATA_HAS_DISPLAY, 19), false);
+        this.setDataProperty(CUSTOM_DISPLAY, 19);
     }
 
     @Override
     public void onCollideWithEntity(Entity entity) {
         super.onCollideWithEntity(entity);
-        entity.addEffect(Effect.getEffect(Effect.SLOWNESS).setDuration(600));
+        entity.addEffect(Effect.get(EffectType.SLOWNESS).setDuration(600));
     }
 }

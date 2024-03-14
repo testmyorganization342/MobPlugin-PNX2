@@ -5,18 +5,18 @@ import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntityRideable;
-import cn.nukkit.entity.data.FloatEntityData;
-import cn.nukkit.entity.data.Vector3fEntityData;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
-import cn.nukkit.network.protocol.SetEntityLinkPacket;
+import cn.nukkit.network.protocol.types.EntityLink;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,8 +34,13 @@ public class Strider extends WalkingAnimal implements EntityRideable {
         return NETWORK_ID;
     }
 
-    public Strider(FullChunk chunk, CompoundTag nbt) {
+    public Strider(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return STRIDER;
     }
 
     @Override
@@ -64,7 +69,8 @@ public class Strider extends WalkingAnimal implements EntityRideable {
         return 1.7f;
     }
 
-    public boolean mountEntity(Entity entity, byte mode) {
+    @Override
+    public boolean mountEntity(Entity entity) {
         Objects.requireNonNull(entity, "The target of the mounting entity can't be null");
 
         if (entity.riding != null) {
@@ -78,12 +84,12 @@ public class Strider extends WalkingAnimal implements EntityRideable {
                 return false;
             }
 
-            broadcastLinkPacket(entity, SetEntityLinkPacket.TYPE_RIDE);
+            broadcastLinkPacket(entity, EntityLink.Type.RIDER);
 
             entity.riding = this;
-            entity.setDataFlag(DATA_FLAGS, DATA_FLAG_RIDING, true);
-            entity.setDataProperty(new Vector3fEntityData(DATA_RIDER_SEAT_POSITION, new Vector3f(0, 2.8f, 0)));
-            entity.setDataProperty(new FloatEntityData(DATA_RIDER_MAX_ROTATION, 181));
+            entity.setDataFlag(EntityFlag.RIDING, true);
+            entity.setDataProperty(SEAT_OFFSET, new Vector3f(0, 2.8f, 0));
+            entity.setDataProperty(SEAT_ROTATION_OFFSET_DEGREES, 181);
             passengers.add(entity);
         }
 
@@ -122,11 +128,11 @@ public class Strider extends WalkingAnimal implements EntityRideable {
 
     public void setSaddled(boolean saddled) {
         this.saddled = saddled;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SADDLED, saddled);
+        this.setDataFlag(EntityFlag.SADDLED, saddled);
     }
 
     public void onPlayerInput(Player player, double strafe, double forward) {
-        if (player.getInventory().getItemInHand().getId() == Item.WARPED_FUNGUS_ON_A_STICK) {
+        if (player.getInventory().getItemInHand().getId().equals(Item.WARPED_FUNGUS_ON_A_STICK)) {
             this.stayTime = 0;
             this.moveTime = 10;
             this.route = null;
@@ -234,7 +240,7 @@ public class Strider extends WalkingAnimal implements EntityRideable {
     }
 
     @Override
-    protected boolean canSwimIn(int block) {
-        return block == BlockID.WATER || block == BlockID.STILL_WATER || block == BlockID.LAVA || block == BlockID.STILL_LAVA;
+    protected boolean canSwimIn(String block) {
+        return block.equals(BlockID.WATER) || block.equals(BlockID.FLOWING_WATER) || block.equals(BlockID.LAVA) || block.equals(BlockID.FLOWING_LAVA);
     }
 }

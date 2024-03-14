@@ -2,15 +2,16 @@ package nukkitcoders.mobplugin.entities.animal.swimming;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.data.ByteEntityData;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Pufferfish extends Fish {
 
@@ -18,8 +19,13 @@ public class Pufferfish extends Fish {
 
     private int puffed = 0;
 
-    public Pufferfish(FullChunk chunk, CompoundTag nbt) {
+    public Pufferfish(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PUFFERFISH;
     }
 
     @Override
@@ -64,8 +70,8 @@ public class Pufferfish extends Fish {
             if (damager instanceof Player) {
                 if (this.puffed > 0) return true;
                 this.puffed = 200;
-                damager.addEffect(Effect.getEffect(Effect.POISON).setDuration(200));
-                this.setDataProperty(new ByteEntityData(DATA_PUFFERFISH_SIZE, 2));
+                damager.addEffect(Effect.get(EffectType.POISON).setDuration(200));
+                this.setDataProperty(PUFFED_STATE, 2);
             }
         }
 
@@ -75,8 +81,8 @@ public class Pufferfish extends Fish {
     @Override
     public boolean entityBaseTick(int tickDiff) {
         if (puffed == 0) {
-            if (this.getDataPropertyByte(DATA_PUFFERFISH_SIZE) == 2) {
-                this.setDataProperty(new ByteEntityData(DATA_PUFFERFISH_SIZE, 0));
+            if (this.getDataProperty(PUFFED_STATE) == 2) {
+                this.setDataProperty(PUFFED_STATE, 0);
             }
         }
 

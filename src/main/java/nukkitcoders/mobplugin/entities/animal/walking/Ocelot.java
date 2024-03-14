@@ -3,17 +3,23 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Ocelot extends WalkingAnimal {
 
     public static final int NETWORK_ID = 22;
 
-    public Ocelot(FullChunk chunk, CompoundTag nbt) {
+    public Ocelot(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return OCELOT;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class Ocelot extends WalkingAnimal {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            return player.spawned && player.isAlive() && !player.closed && (player.getInventory().getItemInHand().getId() == Item.RAW_FISH || player.getInventory().getItemInHand().getId() == Item.RAW_SALMON) && distance <= 49;
+            return player.spawned && player.isAlive() && !player.closed && (player.getInventory().getItemInHand().getId() == Item.COD || player.getInventory().getItemInHand().getId() == Item.SALMON) && distance <= 49;
         }
         return false;
     }

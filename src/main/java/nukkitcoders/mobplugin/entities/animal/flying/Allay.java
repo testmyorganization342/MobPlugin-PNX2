@@ -1,15 +1,21 @@
 package nukkitcoders.mobplugin.entities.animal.flying;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.FlyingAnimal;
+import org.jetbrains.annotations.NotNull;
 
 public class Allay extends FlyingAnimal {
 
     public static final int NETWORK_ID = 134;
 
-    public Allay(FullChunk chunk, CompoundTag nbt) {
+    public Allay(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ALLAY;
     }
 
     @Override

@@ -4,22 +4,24 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityShootBowEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
-import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.inventory.HumanInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Piglin extends WalkingMonster {
 
@@ -33,8 +35,13 @@ public class Piglin extends WalkingMonster {
         return NETWORK_ID;
     }
 
-    public Piglin(FullChunk chunk, CompoundTag nbt) {
+    public Piglin(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PIGLIN;
     }
 
     @Override
@@ -108,14 +115,14 @@ public class Piglin extends WalkingMonster {
 
     public void setAngry(int val) {
         this.angry = val;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, val > 0);
+        this.setDataFlag(EntityFlag.CHARGED, val > 0);
         this.angryFlagSet = val > 0;
     }
 
     private static boolean isWearingGold(Player p) {
         if (p.getInventory() == null) return false;
-        PlayerInventory i = p.getInventory();
-        return i.getHelmet().getId() == Item.GOLD_HELMET || i.getChestplate().getId() == Item.GOLD_CHESTPLATE || i.getLeggings().getId() == Item.GOLD_LEGGINGS || i.getBoots().getId() == Item.GOLD_BOOTS;
+        HumanInventory i = p.getInventory();
+        return i.getHelmet().getId().equals(Item.GOLDEN_HELMET) || i.getChestplate().getId().equals(Item.GOLDEN_CHESTPLATE) || i.getLeggings().getId().equals(Item.GOLDEN_LEGGINGS) || i.getBoots().getId().equals(Item.GOLDEN_BOOTS);
     }
 
     @Override
@@ -139,12 +146,12 @@ public class Piglin extends WalkingMonster {
         boolean hasTarget = creature instanceof Player && (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
         if (hasTarget) {
             if (!this.angryFlagSet) {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, true);
+                this.setDataFlag(EntityFlag.CHARGED, true);
                 this.angryFlagSet = true;
             }
         } else {
             if (this.angryFlagSet) {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, false);
+                this.setDataFlag(EntityFlag.CHARGED, false);
                 this.angryFlagSet = false;
                 this.stayTime = 100;
             }

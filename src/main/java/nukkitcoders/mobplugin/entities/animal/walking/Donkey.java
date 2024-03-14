@@ -1,9 +1,11 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.HorseBase;
@@ -21,7 +23,7 @@ public class Donkey extends HorseBase {
 
     private boolean chested;
 
-    public Donkey(FullChunk chunk, CompoundTag nbt) {
+    public Donkey(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 
@@ -79,7 +81,7 @@ public class Donkey extends HorseBase {
         }
 
         if (this.isChested()) {
-            drops.add(Item.get(Item.CHEST, 0, 1));
+            drops.add(Item.get(BlockID.CHEST, 0, 1));
         }
 
         if (this.isSaddled()) {
@@ -91,7 +93,7 @@ public class Donkey extends HorseBase {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (!this.isBaby() && !this.isChested() && item.getId() == Item.CHEST) {
+        if (!this.isBaby() && !this.isChested() && item.getId() == BlockID.CHEST) {
             if (!player.isCreative()) {
                 player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             }
@@ -114,6 +116,6 @@ public class Donkey extends HorseBase {
 
     public void setChested(boolean chested) {
         this.chested = chested;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHESTED, chested);
+        this.setDataFlag(EntityFlag.CHESTED, chested);
     }
 }

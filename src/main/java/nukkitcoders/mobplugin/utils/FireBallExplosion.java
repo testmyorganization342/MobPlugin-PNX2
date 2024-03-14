@@ -1,5 +1,6 @@
 package nukkitcoders.mobplugin.utils;
 
+import cn.nukkit.block.BlockTnt;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.entity.EntityExplosive;
@@ -7,7 +8,6 @@ import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.level.*;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
-import cn.nukkit.block.BlockTNT;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.block.BlockUpdateEvent;
 import cn.nukkit.event.entity.EntityDamageByBlockEvent;
@@ -73,7 +73,7 @@ public class FireBallExplosion extends Explosion {
                                 break;
                             }
                             Block block = this.level.getBlock(vBlock);
-                            if (block.getId() != 0) {
+                            if (!block.getId().equals(Block.AIR)) {
                                 blastForce -= (block.getResistance() / 5 + 0.3d) * 0.3d;
                                 if (blastForce > 0) {
                                     if (block.getResistance() < 20) {
@@ -134,13 +134,13 @@ public class FireBallExplosion extends Explosion {
                 entity.setMotion(motion.multiply(impact));
             }
         }
-        ItemBlock air = new ItemBlock(Block.get(0));
+        ItemBlock air = new ItemBlock(Block.get(Block.AIR));
         BlockEntity container;
         for (Block block : this.affectedBlocks) {
-            if (block.getId() == Block.TNT) {
-                ((BlockTNT) block).prime(Utils.rand(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
-            } else if (block.getId() == Block.BED_BLOCK && (block.getDamage() & 0x08) == 0x08) {
-                this.level.setBlockAt((int) block.x, (int) block.y, (int) block.z, BlockID.AIR);
+            if (block.getId().equals(Block.TNT)) {
+                ((BlockTnt) block).prime(Utils.rand(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
+            } else if (block.getId().equals(Block.BED)) {
+                this.level.setBlock(new Vector3(block.getFloorX(), block.getFloorY(), block.getFloorZ()), Block.get(Block.AIR));
                 continue;
             } else if ((container = block.getLevel().getBlockEntity(block)) instanceof InventoryHolder) {
                 if (container instanceof BlockEntityShulkerBox) {
@@ -157,7 +157,7 @@ public class FireBallExplosion extends Explosion {
                     this.level.dropItem(block.add(0.5, 0.5, 0.5), drop);
                 }
             }
-            this.level.setBlockAt((int) block.x, (int) block.y, (int) block.z, BlockID.AIR);
+            this.level.setBlock(new Vector3(block.getFloorX(), block.getFloorY(), block.getFloorZ()), Block.get(Block.AIR));
             Vector3 pos = new Vector3(block.x, block.y, block.z);
             for (BlockFace side : BlockFace.values()) {
                 Vector3 sideBlock = pos.getSide(side);

@@ -39,6 +39,6 @@ public class ZombieSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityZombie.NETWORK_ID;
+        return 32;
     }
 }

@@ -5,10 +5,11 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,13 @@ public class Hoglin extends WalkingMonster {
         return NETWORK_ID;
     }
 
-    public Hoglin(FullChunk chunk, CompoundTag nbt) {
+    public Hoglin(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return HOGLIN;
     }
 
     @Override
@@ -74,7 +80,7 @@ public class Hoglin extends WalkingMonster {
 
         if (!this.isBaby()) {
             for (int i = 0; i < Utils.rand(2, 4); i++) {
-                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
+                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.PORKCHOP, 0, 1));
             }
 
             if (Utils.rand()) {

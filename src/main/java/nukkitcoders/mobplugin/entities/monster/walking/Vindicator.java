@@ -2,16 +2,16 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.data.LongEntityData;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
-import cn.nukkit.network.protocol.types.ContainerIds;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -21,8 +21,13 @@ public class Vindicator extends WalkingMonster {
 
     private boolean angry;
     
-    public Vindicator(FullChunk chunk, CompoundTag nbt) {
+    public Vindicator(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return VINDICATOR;
     }
 
     @Override
@@ -93,18 +98,18 @@ public class Vindicator extends WalkingMonster {
             if (this.getFollowTarget() != null) {
                 if (!this.angry) {
                     this.angry = true;
-                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, true);
+                    this.setDataFlag(EntityFlag.ANGRY, true);
                 }
-                if (this.getDataPropertyLong(DATA_TARGET_EID) != this.getFollowTarget().getId()) {
-                    this.setDataProperty(new LongEntityData(DATA_TARGET_EID, this.getFollowTarget().getId()));
+                if (this.getDataProperty(TARGET_EID) != this.getFollowTarget().getId()) {
+                    this.setDataProperty(TARGET_EID, this.getFollowTarget().getId());
                 }
             } else {
                 if (this.angry) {
                     this.angry = false;
-                    this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, false);
+                    this.setDataFlag(EntityFlag.ANGRY, false);
                 }
-                if (this.getDataPropertyLong(DATA_TARGET_EID) != 0) {
-                    this.setDataProperty(new LongEntityData(DATA_TARGET_EID, 0));
+                if (this.getDataProperty(TARGET_EID) != 0) {
+                    this.setDataProperty(TARGET_EID, 0);
                 }
             }
         }
@@ -119,7 +124,7 @@ public class Vindicator extends WalkingMonster {
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
         pk.item = Item.get(Item.IRON_AXE);
-        pk.windowId = ContainerIds.INVENTORY;
+        pk.windowId = 0;
         pk.inventorySlot = pk.hotbarSlot = 0;
         player.dataPacket(pk);
     }

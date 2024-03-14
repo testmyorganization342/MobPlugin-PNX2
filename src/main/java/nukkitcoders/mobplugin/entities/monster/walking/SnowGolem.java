@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.entity.projectile.EntitySnowball;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,12 +14,13 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,14 @@ public class SnowGolem extends WalkingMonster {
 
     public boolean sheared = false;
 
-    public SnowGolem(FullChunk chunk, CompoundTag nbt) {
+    public SnowGolem(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.setFriendly(true);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return SNOW_GOLEM;
     }
 
     @Override
@@ -150,7 +157,7 @@ public class SnowGolem extends WalkingMonster {
 
     public void shear(boolean shear) {
         this.sheared = shear;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_SHEARED, shear);
+        this.setDataFlag(EntityFlag.SHEARED, shear);
     }
 
     public void saveNBT() {

@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -12,7 +12,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class FlyingEntity extends BaseEntity {
 
-    public FlyingEntity(FullChunk chunk, CompoundTag nbt) {
+    public FlyingEntity(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.noFallDamage = true;
     }
@@ -130,9 +130,9 @@ public abstract class FlyingEntity extends BaseEntity {
                 if ((this.stayTime <= 0 || Utils.rand()) && diff != 0) this.yaw = (FastMathLite.toDegrees(-FastMathLite.atan2(x / diff, z / diff)));
             }
 
-            int block;
+            Block block = this.level.getBlock(this.getFloorX(), this.getFloorY() - 1, this.getFloorZ());
             if (this.stayTime <= 0 && this.motionY == 0 && (Math.abs(motionX) > 0 || Math.abs(motionZ) > 0) &&
-                    (Block.solid[(block = this.level.getBlockIdAt(this.getFloorX(), this.getFloorY() - 1, this.getFloorZ()))] || block == Block.WATER || block == Block.STILL_WATER || block == Block.LAVA || block == Block.STILL_LAVA)) {
+                    (block.isSolid() || block.getId().equals(Block.WATER) || block.getId().equals(Block.FLOWING_WATER) || block.getId().equals(Block.LAVA) || block.getId().equals(Block.FLOWING_LAVA))) {
                 this.motionY = 0.05;
             }
 

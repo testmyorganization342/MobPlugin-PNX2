@@ -1,14 +1,14 @@
 package nukkitcoders.mobplugin.entities.animal;
 
 import cn.nukkit.Player;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.JumpingEntity;
 
 public abstract class JumpingAnimal extends JumpingEntity implements Animal {
 
-    public JumpingAnimal(FullChunk chunk, CompoundTag nbt) {
+    public JumpingAnimal(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

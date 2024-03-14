@@ -6,10 +6,11 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +22,13 @@ public class PolarBear extends WalkingMonster {
 
     private int angry = 0;
 
-    public PolarBear(FullChunk chunk, CompoundTag nbt) {
+    public PolarBear(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return POLAR_BEAR;
     }
 
     @Override
@@ -123,8 +129,8 @@ public class PolarBear extends WalkingMonster {
         List<Item> drops = new ArrayList<>();
 
         if (!this.isBaby()) {
-            drops.add(Item.get(Item.RAW_FISH, 0, Utils.rand(0, 2)));
-            drops.add(Item.get(Item.RAW_SALMON, 0, Utils.rand(0, 2)));
+            drops.add(Item.get(Item.COD, 0, Utils.rand(0, 2)));
+            drops.add(Item.get(Item.SALMON, 0, Utils.rand(0, 2)));
         }
 
         return drops.toArray(new Item[0]);

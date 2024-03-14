@@ -22,9 +22,9 @@ public class HorseSpawner extends AbstractEntitySpawner {
         if (Utils.rand(1, 3) != 1) {
             return;
         }
-        int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+        String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
-            final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+            final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
             if (biomeId == 1 || biomeId == 35 || biomeId == 128 || biomeId == 129) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     for (int i = 0; i < Utils.rand(2, 6); i++) {
@@ -41,6 +41,6 @@ public class HorseSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityHorse.NETWORK_ID;
+        return 23;
     }
 }

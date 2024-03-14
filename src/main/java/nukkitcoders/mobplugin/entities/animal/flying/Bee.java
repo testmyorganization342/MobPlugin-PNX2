@@ -3,14 +3,17 @@ package nukkitcoders.mobplugin.entities.animal.flying;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -20,8 +23,13 @@ public class Bee extends FlyingMonster {
 
     private boolean angry;
 
-    public Bee(FullChunk chunk, CompoundTag nbt) {
+    public Bee(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return BEE;
     }
 
     @Override
@@ -80,9 +88,9 @@ public class Bee extends FlyingMonster {
             }
             if (player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage))) {
                 if (this.getServer().getDifficulty() == 2) {
-                    player.addEffect(Effect.getEffect(Effect.POISON).setDuration(200));
+                    player.addEffect(Effect.get(EffectType.POISON).setDuration(200));
                 } else if (this.getServer().getDifficulty() == 3) {
-                    player.addEffect(Effect.getEffect(Effect.POISON).setDuration(360));
+                    player.addEffect(Effect.get(EffectType.POISON).setDuration(360));
                 }
             }
         }
@@ -111,6 +119,6 @@ public class Bee extends FlyingMonster {
 
     public void setAngry(boolean angry) {
         this.angry = angry;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, angry);
+        this.setDataFlag(EntityFlag.ANGRY, angry);
     }
 }

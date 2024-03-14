@@ -2,8 +2,9 @@ package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityLlamaSpit extends EntityProjectile {
 
@@ -39,11 +40,16 @@ public class EntityLlamaSpit extends EntityProjectile {
         return 1;
     }
 
-    public EntityLlamaSpit(FullChunk chunk, CompoundTag nbt) {
+    public EntityLlamaSpit(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityLlamaSpit(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    @Override
+    public @NotNull String getIdentifier() {
+        return LLAMA_SPIT;
+    }
+
+    public EntityLlamaSpit(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 

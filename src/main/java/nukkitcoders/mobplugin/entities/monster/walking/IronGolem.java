@@ -1,16 +1,18 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.passive.EntityWolf;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,9 +22,14 @@ public class IronGolem extends WalkingMonster {
 
     public static final int NETWORK_ID = 20;
 
-    public IronGolem(FullChunk chunk, CompoundTag nbt) {
+    public IronGolem(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.setFriendly(true);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return IRON_GOLEM;
     }
 
     @Override
@@ -83,7 +90,7 @@ public class IronGolem extends WalkingMonster {
         List<Item> drops = new ArrayList<>();
         drops.add(Item.get(Item.IRON_INGOT, 0, Utils.rand(3, 5)));
         int c2 = Utils.rand(0, 2);
-        if (c2 > 0) drops.add(Item.get(Item.POPPY, 0, c2));
+        if (c2 > 0) drops.add(Item.get(BlockID.RED_FLOWER, 0, c2));
         return drops.toArray(new Item[0]);
     }
 

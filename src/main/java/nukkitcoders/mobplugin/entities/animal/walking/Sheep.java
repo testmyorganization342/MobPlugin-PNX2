@@ -1,7 +1,7 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.entity.passive.EntitySheep;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 @Deprecated
@@ -9,7 +9,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 
     public static final int NETWORK_ID = 13;
 
-    public Sheep(FullChunk chunk, CompoundTag nbt) {
+    public Sheep(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

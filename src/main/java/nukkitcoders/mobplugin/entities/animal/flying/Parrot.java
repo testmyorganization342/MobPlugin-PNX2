@@ -2,12 +2,12 @@ package nukkitcoders.mobplugin.entities.animal.flying;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.FlyingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Parrot extends FlyingAnimal {
 
@@ -17,8 +17,13 @@ public class Parrot extends FlyingAnimal {
 
     private static final int[] VARIANTS = {0, 1, 2, 3, 4};
 
-    public Parrot(FullChunk chunk, CompoundTag nbt) {
+    public Parrot(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PARROT;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class Parrot extends FlyingAnimal {
             this.variant = getRandomVariant();
         }
 
-        this.setDataProperty(new IntEntityData(DATA_VARIANT, this.variant));
+        this.setDataProperty(VARIANT, this.variant);
     }
 
     @Override
@@ -70,12 +75,12 @@ public class Parrot extends FlyingAnimal {
     public boolean targetOption(EntityCreature creature, double distance) {
         if (creature instanceof Player) {
             Player player = (Player) creature;
-            int id = player.getInventory().getItemInHand().getId();
+            String id = player.getInventory().getItemInHand().getId();
             return player.spawned && player.isAlive() && !player.closed
-                    && (id == Item.SEEDS
-                    || id == Item.BEETROOT_SEEDS
-                    || id == Item.PUMPKIN_SEEDS
-                    || id == Item.MELON_SEEDS)
+                    && (id.equals(Item.WHEAT_SEEDS)
+                    || id.equals(Item.BEETROOT_SEEDS)
+                    || id.equals(Item.PUMPKIN_SEEDS)
+                    || id.equals(Item.MELON_SEEDS))
                     && distance <= 49;
         }
         return false;

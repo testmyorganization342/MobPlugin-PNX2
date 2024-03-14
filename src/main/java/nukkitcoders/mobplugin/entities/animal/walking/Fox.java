@@ -1,16 +1,22 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Fox extends WalkingAnimal {
 
     public static final int NETWORK_ID = 121;
 
-    public Fox(FullChunk chunk, CompoundTag nbt) {
+    public Fox(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return FOX;
     }
 
     @Override

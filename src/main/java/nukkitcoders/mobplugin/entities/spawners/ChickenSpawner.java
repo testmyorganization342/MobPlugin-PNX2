@@ -22,7 +22,7 @@ public class ChickenSpawner extends AbstractEntitySpawner {
             return;
         }
         if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-            int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+            String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
                 for (int i = 0; i < Utils.rand(2, 4); i++) {
                     EntityCreature entity = this.spawnTask.createEntity("Chicken", pos.add(0.5, 1, 0.5));
@@ -37,6 +37,6 @@ public class ChickenSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityChicken.NETWORK_ID;
+        return 10;
     }
 }

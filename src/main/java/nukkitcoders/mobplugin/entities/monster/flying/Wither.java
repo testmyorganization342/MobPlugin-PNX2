@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.*;
-import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
@@ -14,7 +13,7 @@ import cn.nukkit.level.Explosion;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -27,6 +26,7 @@ import nukkitcoders.mobplugin.entities.projectile.EntityBlueWitherSkull;
 import nukkitcoders.mobplugin.entities.projectile.EntityWitherSkull;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
@@ -35,8 +35,13 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
     private boolean exploded;
     private boolean wasExplosion;
 
-    public Wither(FullChunk chunk, CompoundTag nbt) {
+    public Wither(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return WITHER;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
         this.setMaxHealth(witherMaxHealth());
         this.setDamage(new float[]{0, 2, 4, 6});
         if (this.age == 0) {
-            this.setDataProperty(new IntEntityData(DATA_WITHER_INVULNERABLE_TICKS, 200));
+            this.setDataProperty(WITHER_INVULNERABLE_TICKS, 200);
         }
     }
 
@@ -148,7 +153,6 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
         addEntity.speedX = (float) this.motionX;
         addEntity.speedY = (float) this.motionY;
         addEntity.speedZ = (float) this.motionZ;
-        addEntity.metadata = this.dataProperties;
         addEntity.attributes = new Attribute[]{Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(witherMaxHealth()).setValue(witherMaxHealth())};
         return addEntity;
     }
@@ -162,7 +166,7 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
 
         if (!this.closed && this.age == 200) {
             this.explode();
-            this.setDataProperty(new IntEntityData(DATA_WITHER_INVULNERABLE_TICKS, 0));
+            this.setDataProperty(WITHER_INVULNERABLE_TICKS, 0);
         }
 
         return super.entityBaseTick(tickDiff);
@@ -208,12 +212,12 @@ public class Wither extends FlyingMonster implements Boss, EntitySmite {
                 for (int y = fy; y <= fy + 4; y++) {
                     for (int z = fz - 2; z <= fz + 2; z++) {
                         Block block = this.level.getBlock(x, y, z);
-                        if (block.isBreakable(tool)) {
+                        if (block.getToolTier() >= tool.getTier()) {
                             pos.setComponents(x, y, z);
                             this.level.setBlock(pos, Block.get(Block.AIR));
                             BlockEntity blockEntity = this.level.getBlockEntityIfLoaded(pos);
                             if (blockEntity != null) {
-                                blockEntity.onBreak();
+                                blockEntity.onBreak(false);
                                 blockEntity.close();
                             }
                             if (this.level.getGameRules().getBoolean(GameRule.DO_TILE_DROPS) && Math.random() * 100 < 14) {

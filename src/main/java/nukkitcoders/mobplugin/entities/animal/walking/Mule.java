@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.HorseBase;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -18,7 +18,7 @@ public class Mule extends HorseBase {
 
     public static final int NETWORK_ID = 25;
 
-    public Mule(FullChunk chunk, CompoundTag nbt) {
+    public Mule(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

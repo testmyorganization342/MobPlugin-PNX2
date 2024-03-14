@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.HorseBase;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -18,7 +18,7 @@ public class SkeletonHorse extends HorseBase implements EntitySmite {
 
     public static final int NETWORK_ID = 26;
 
-    public SkeletonHorse(FullChunk chunk, CompoundTag nbt) {
+    public SkeletonHorse(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

@@ -6,10 +6,11 @@ import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -22,8 +23,13 @@ public class Zoglin extends WalkingMonster implements EntitySmite {
         return NETWORK_ID;
     }
 
-    public Zoglin(FullChunk chunk, CompoundTag nbt) {
+    public Zoglin(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ZOGLIN;
     }
 
     @Override

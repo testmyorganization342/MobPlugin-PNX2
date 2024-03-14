@@ -23,7 +23,7 @@ public class CowSpawner extends AbstractEntitySpawner {
             return;
         }
         if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-            int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+            String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
                 for (int i = 0; i < Utils.rand(2, 3); i++) {
                     EntityCreature entity = this.spawnTask.createEntity("Cow", pos.add(0.5, 1, 0.5));
@@ -38,6 +38,6 @@ public class CowSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityCow.NETWORK_ID;
+        return 11;
     }
 }

@@ -17,7 +17,7 @@ public class WitchSpawner extends AbstractEntitySpawner {
 
     @Override
     public void spawn(Player player, Position pos, Level level) {
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (Utils.rand(1, 5) != 1 && biomeId != 6 && biomeId != 134) {
             return;
         }

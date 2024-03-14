@@ -3,14 +3,13 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.HorseBase;
@@ -29,7 +28,7 @@ public class Llama extends HorseBase {
     private int attackTicks;
     private Entity damagedBy;
 
-    public Llama(FullChunk chunk, CompoundTag nbt) {
+    public Llama(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 
@@ -71,7 +70,7 @@ public class Llama extends HorseBase {
             this.variant = getRandomVariant();
         }
 
-        this.setDataProperty(new IntEntityData(DATA_VARIANT, this.variant));
+        this.setDataProperty(VARIANT, this.variant);
     }
 
     @Override

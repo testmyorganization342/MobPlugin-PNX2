@@ -21,7 +21,7 @@ public class PandaSpawner extends AbstractEntitySpawner {
         if (Utils.rand(1, 3) != 1) {
             return;
         }
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if ((biomeId == 21 && Utils.rand(1, 10) != 1) || biomeId != 168 && biomeId != 169 && biomeId != 21) {
             return;
         }

@@ -18,7 +18,7 @@ public class HuskSpawner extends AbstractEntitySpawner {
 
     @Override
     public void spawn(Player player, Position pos, Level level) {
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (biomeId == 2 || biomeId == 130) {
             if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
                 if (MobPlugin.isMobSpawningAllowedByTime(level)) {

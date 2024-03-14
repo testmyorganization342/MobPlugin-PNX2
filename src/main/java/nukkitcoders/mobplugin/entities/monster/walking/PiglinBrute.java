@@ -5,9 +5,10 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -15,11 +16,16 @@ public class PiglinBrute extends WalkingMonster {
 
     public static final int NETWORK_ID = 127;
 
-    public PiglinBrute(FullChunk chunk, CompoundTag nbt) {
+    public PiglinBrute(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
 
         this.setMaxHealth(50);
         this.setDamage(new float[]{0, 3, 7, 10});
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PIGLIN_BRUTE;
     }
 
     @Override

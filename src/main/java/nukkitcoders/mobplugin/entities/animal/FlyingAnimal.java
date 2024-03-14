@@ -2,14 +2,14 @@ package nukkitcoders.mobplugin.entities.animal;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.EntityAgeable;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.FlyingEntity;
 
 public abstract class FlyingAnimal extends FlyingEntity implements EntityAgeable {
 
-    public FlyingAnimal(FullChunk chunk, CompoundTag nbt) {
+    public FlyingAnimal(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

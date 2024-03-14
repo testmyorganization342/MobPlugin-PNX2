@@ -2,17 +2,17 @@ package nukkitcoders.mobplugin.entities.projectile;
 
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityThrownTrident;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 public class DespawnableThrownTrident extends EntityThrownTrident {
 
-    public DespawnableThrownTrident(FullChunk chunk, CompoundTag nbt) {
+    public DespawnableThrownTrident(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 
 
-    public DespawnableThrownTrident(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    public DespawnableThrownTrident(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 

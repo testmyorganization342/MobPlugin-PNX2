@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityEnderPearl;
@@ -123,7 +124,7 @@ public class EventListener implements Listener {
         Player player = ev.getPlayer();
         Item item = ev.getItem();
         if (block.getId() == Block.LIT_PUMPKIN || block.getId() == Block.PUMPKIN) {
-            if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
+            if (block.getSide(BlockFace.DOWN).getId() == BlockID.SNOW && block.getSide(BlockFace.DOWN, 2).getId() == BlockID.SNOW) {
 
                 Position pos = block.add(0.5, -1, 0.5);
                 SpawnGolemEvent event = new SpawnGolemEvent(player, pos, SpawnGolemEvent.GolemType.SNOW_GOLEM);
@@ -133,21 +134,21 @@ public class EventListener implements Listener {
                     return;
                 }
 
-                block.level.setBlock(block.add(0, -1, 0), Block.get(0));
-                block.level.setBlock(block.add(0, -2, 0), Block.get(0));
+                block.level.setBlock(block.add(0, -1, 0), Block.get(Block.AIR));
+                block.level.setBlock(block.add(0, -2, 0), Block.get(Block.AIR));
 
                 Entity.createEntity("SnowGolem", pos).spawnToAll();
                 ev.setCancelled(true);
                 if (player.isSurvival()) player.getInventory().removeItem(Item.get(block.getId()));
-            } else if (block.getSide(BlockFace.DOWN).getId() == Item.IRON_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.IRON_BLOCK) {
-                int removeId = block.getId();
+            } else if (block.getSide(BlockFace.DOWN).getId() == BlockID.IRON_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == BlockID.IRON_BLOCK) {
+                String removeId = block.getId();
                 block = block.getSide(BlockFace.DOWN);
 
                 Block first = null, second = null;
-                if (block.getSide(BlockFace.EAST).getId() == Item.IRON_BLOCK && block.getSide(BlockFace.WEST).getId() == Item.IRON_BLOCK) {
+                if (block.getSide(BlockFace.EAST).getId() == BlockID.IRON_BLOCK && block.getSide(BlockFace.WEST).getId() == BlockID.IRON_BLOCK) {
                     first = block.getSide(BlockFace.EAST);
                     second = block.getSide(BlockFace.WEST);
-                } else if (block.getSide(BlockFace.NORTH).getId() == Item.IRON_BLOCK && block.getSide(BlockFace.SOUTH).getId() == Item.IRON_BLOCK) {
+                } else if (block.getSide(BlockFace.NORTH).getId() == BlockID.IRON_BLOCK && block.getSide(BlockFace.SOUTH).getId() == BlockID.IRON_BLOCK) {
                     first = block.getSide(BlockFace.NORTH);
                     second = block.getSide(BlockFace.SOUTH);
                 }
@@ -162,20 +163,20 @@ public class EventListener implements Listener {
                     return;
                 }
 
-                block.level.setBlock(first, Block.get(0));
-                block.level.setBlock(second, Block.get(0));
-                block.level.setBlock(block, Block.get(0));
-                block.level.setBlock(block.add(0, -1, 0), Block.get(0));
+                block.level.setBlock(first, Block.get(Block.AIR));
+                block.level.setBlock(second, Block.get(Block.AIR));
+                block.level.setBlock(block, Block.get(Block.AIR));
+                block.level.setBlock(block.add(0, -1, 0), Block.get(Block.AIR));
 
                 Entity.createEntity("IronGolem", pos).spawnToAll();
                 ev.setCancelled(true);
                 if (player.isSurvival()) player.getInventory().removeItem(Item.get(removeId));
             }
         } else if (item.getId() == Item.SKULL && item.getDamage() == 1) {
-            if (block.getSide(BlockFace.DOWN).getId() == Item.SOUL_SAND && block.getSide(BlockFace.DOWN, 2).getId() == Item.SOUL_SAND) {
+            if (block.getSide(BlockFace.DOWN).getId() == BlockID.SOUL_SAND && block.getSide(BlockFace.DOWN, 2).getId() == BlockID.SOUL_SAND) {
                 Block first, second;
 
-                if (!(((first = block.getSide(BlockFace.EAST)).getId() == Item.SKULL_BLOCK && first.toItem().getDamage() == 1) && ((second = block.getSide(BlockFace.WEST)).getId() == Item.SKULL_BLOCK && second.toItem().getDamage() == 1) || ((first = block.getSide(BlockFace.NORTH)).getId() == Item.SKULL_BLOCK && first.toItem().getDamage() == 1) && ((second = block.getSide(BlockFace.SOUTH)).getId() == Item.SKULL_BLOCK && second.toItem().getDamage() == 1))) {
+                if (!(((first = block.getSide(BlockFace.EAST)).getId() == BlockID.SKULL && first.toItem().getDamage() == 1) && ((second = block.getSide(BlockFace.WEST)).getId() == BlockID.SKULL && second.toItem().getDamage() == 1) || ((first = block.getSide(BlockFace.NORTH)).getId() == BlockID.SKULL && first.toItem().getDamage() == 1) && ((second = block.getSide(BlockFace.SOUTH)).getId() == BlockID.SKULL && second.toItem().getDamage() == 1))) {
                     return;
                 }
 
@@ -183,7 +184,7 @@ public class EventListener implements Listener {
 
                 Block first2, second2;
 
-                if (!((first2 = block.getSide(BlockFace.EAST)).getId() == Item.SOUL_SAND && (second2 = block.getSide(BlockFace.WEST)).getId() == Item.SOUL_SAND || (first2 = block.getSide(BlockFace.NORTH)).getId() == Item.SOUL_SAND && (second2 = block.getSide(BlockFace.SOUTH)).getId() == Item.SOUL_SAND)) {
+                if (!((first2 = block.getSide(BlockFace.EAST)).getId() == BlockID.SOUL_SAND && (second2 = block.getSide(BlockFace.WEST)).getId() == BlockID.SOUL_SAND || (first2 = block.getSide(BlockFace.NORTH)).getId() == BlockID.SOUL_SAND && (second2 = block.getSide(BlockFace.SOUTH)).getId() == BlockID.SOUL_SAND)) {
                     return;
                 }
 
@@ -195,12 +196,12 @@ public class EventListener implements Listener {
                     return;
                 }
 
-                block.getLevel().setBlock(first, Block.get(0));
-                block.getLevel().setBlock(second, Block.get(0));
-                block.getLevel().setBlock(first2, Block.get(0));
-                block.getLevel().setBlock(second2, Block.get(0));
-                block.getLevel().setBlock(block, Block.get(0));
-                block.getLevel().setBlock(block.add(0, -1, 0), Block.get(0));
+                block.getLevel().setBlock(first, Block.get(Block.AIR));
+                block.getLevel().setBlock(second, Block.get(Block.AIR));
+                block.getLevel().setBlock(first2, Block.get(Block.AIR));
+                block.getLevel().setBlock(second2, Block.get(Block.AIR));
+                block.getLevel().setBlock(block, Block.get(Block.AIR));
+                block.getLevel().setBlock(block.add(0, -1, 0), Block.get(Block.AIR));
 
                 if (!player.isCreative()) {
                     item.setCount(item.getCount() - 1);

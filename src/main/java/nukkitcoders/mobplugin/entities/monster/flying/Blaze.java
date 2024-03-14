@@ -4,10 +4,11 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelEventPacket;
@@ -15,6 +16,7 @@ import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityBlazeFireBall;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Blaze extends FlyingMonster {
 
@@ -22,8 +24,13 @@ public class Blaze extends FlyingMonster {
 
     private int fireball;
 
-    public Blaze(FullChunk chunk, CompoundTag nbt) {
+    public Blaze(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return BLAZE;
     }
 
     @Override
@@ -61,7 +68,7 @@ public class Blaze extends FlyingMonster {
     @Override
     public void attackEntity(Entity player) {
         if (this.attackDelay == 60 && this.fireball == 0) {
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, true);
+            this.setDataFlag(EntityFlag.CHARGED, true);
         }
         if (((this.fireball > 0 && this.fireball < 3 && this.attackDelay > 5) || (this.attackDelay > 120 && Utils.rand(1, 32) < 4)) && this.distanceSquared(player) <= 256) { // 16 blocks
             this.attackDelay = 0;
@@ -69,7 +76,7 @@ public class Blaze extends FlyingMonster {
 
             if (this.fireball == 3) {
                 this.fireball = 0;
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, false);
+                this.setDataFlag(EntityFlag.CHARGED, false);
             }
 
             double f = 1.1;

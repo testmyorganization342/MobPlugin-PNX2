@@ -1,16 +1,22 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Turtle extends SwimmingAnimal {
 
     public static final int NETWORK_ID = 74;
 
-    public Turtle(FullChunk chunk, CompoundTag nbt) {
+    public Turtle(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return TURTLE;
     }
 
     @Override

@@ -1,14 +1,14 @@
 package nukkitcoders.mobplugin.entities.animal;
 
 import cn.nukkit.Player;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.SwimmingEntity;
 
 public abstract class SwimmingAnimal extends SwimmingEntity implements Animal {
 
-    public SwimmingAnimal(FullChunk chunk, CompoundTag nbt) {
+    public SwimmingAnimal(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

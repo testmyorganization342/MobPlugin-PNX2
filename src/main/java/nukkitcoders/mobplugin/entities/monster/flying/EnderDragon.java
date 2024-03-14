@@ -4,10 +4,11 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.item.EntityEndCrystal;
+import cn.nukkit.entity.data.EntityFlag;
+import cn.nukkit.entity.item.EntityEnderCrystal;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -18,13 +19,19 @@ import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityEnderCharge;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class EnderDragon extends FlyingMonster implements Boss {
 
     public static final int NETWORK_ID = 53;
 
-    public EnderDragon(FullChunk chunk, CompoundTag nbt) {
+    public EnderDragon(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ENDER_DRAGON;
     }
 
     @Override
@@ -47,7 +54,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
         super.initEntity();
 
         this.fireProof = true;
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_FIRE_IMMUNE, true);
+        this.setDataFlag(EntityFlag.FIRE_IMMUNE, true);
 
         this.setMaxHealth(200);
         this.setHealth(200);
@@ -117,7 +124,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
         addEntity.speedX = (float) this.motionX;
         addEntity.speedY = (float) this.motionY;
         addEntity.speedZ = (float) this.motionZ;
-        addEntity.metadata = this.dataProperties;
+        addEntity.entityData = entityDataMap;
         addEntity.attributes = new Attribute[]{Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(200).setValue(200)};
         return addEntity;
     }
@@ -126,7 +133,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
     public boolean entityBaseTick(int tickDiff) {
         if (tickDiff % 2 == 0) {
             for (Entity e : this.getLevel().getEntities()) {
-                if (e instanceof EntityEndCrystal) {
+                if (e instanceof EntityEnderCrystal) {
                     if (e.distanceSquared(this) <= 32) {
                         float health = this.getHealth();
                         if (!(health > this.getMaxHealth()) && health != 0) {

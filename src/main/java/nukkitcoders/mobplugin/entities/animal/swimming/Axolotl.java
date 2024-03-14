@@ -1,14 +1,20 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import org.jetbrains.annotations.NotNull;
 
 public class Axolotl extends Fish {
 
     public static final int NETWORK_ID = 130;
 
-    public Axolotl(FullChunk chunk, CompoundTag nbt) {
+    public Axolotl(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return AXOLOTL;
     }
 
     @Override

@@ -5,10 +5,11 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +19,13 @@ public class Evoker extends WalkingMonster {
 
     public static final int NETWORK_ID = 104;
 
-    public Evoker(FullChunk chunk, CompoundTag nbt) {
+    public Evoker(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return EVOCATION_ILLAGER;
     }
 
     @Override
@@ -74,7 +80,7 @@ public class Evoker extends WalkingMonster {
         List<Item> drops = new ArrayList<>();
 
         drops.add(Item.get(Item.EMERALD, 0, Utils.rand(0, 1)));
-        drops.add(Item.get(Item.TOTEM, 0, 1));
+        drops.add(Item.get(Item.TOTEM_OF_UNDYING, 0, 1));
 
         return drops.toArray(new Item[0]);
     }

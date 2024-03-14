@@ -1,15 +1,18 @@
 package nukkitcoders.mobplugin.entities.monster.swimming;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.BlockID;
 import cn.nukkit.block.BlockSponge;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.SwimmingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +21,13 @@ public class ElderGuardian extends SwimmingMonster {
 
     public static final int NETWORK_ID = 50;
 
-    public ElderGuardian(FullChunk chunk, CompoundTag nbt) {
+    public ElderGuardian(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ELDER_GUARDIAN;
     }
 
     @Override
@@ -42,7 +50,7 @@ public class ElderGuardian extends SwimmingMonster {
         super.initEntity();
 
         this.setMaxHealth(80);
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_ELDER, true);
+        this.setDataFlag(EntityFlag.ELDER, true);
     }
 
     @Override
@@ -62,7 +70,7 @@ public class ElderGuardian extends SwimmingMonster {
 
         if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
             if (((EntityDamageByEntityEvent) this.lastDamageCause).getDamager() instanceof Player) {
-                drops.add(Item.get(Item.SPONGE, BlockSponge.WET, 1));
+                drops.add(Item.get(BlockID.SPONGE, 1));
             }
         }
 

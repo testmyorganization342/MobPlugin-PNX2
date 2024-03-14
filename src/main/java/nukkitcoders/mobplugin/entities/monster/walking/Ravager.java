@@ -5,9 +5,10 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -15,8 +16,13 @@ public class Ravager extends WalkingMonster {
 
     public static final int NETWORK_ID = 59;
 
-    public Ravager(FullChunk chunk, CompoundTag nbt) {
+    public Ravager(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return RAVAGER;
     }
 
     @Override

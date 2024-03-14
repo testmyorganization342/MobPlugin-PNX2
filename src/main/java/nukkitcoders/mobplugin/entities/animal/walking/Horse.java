@@ -1,7 +1,7 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.entity.passive.EntityHorse;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 /**
@@ -12,7 +12,7 @@ public class Horse extends EntityHorse {
 
     public static final int NETWORK_ID = 23;
 
-    public Horse(FullChunk chunk, CompoundTag nbt) {
+    public Horse(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

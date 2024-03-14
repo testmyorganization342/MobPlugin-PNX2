@@ -5,11 +5,12 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemSwordIron;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.item.ItemIronSword;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -17,8 +18,13 @@ public class Vex extends FlyingMonster {
 
     public static final int NETWORK_ID = 105;
 
-    public Vex(FullChunk chunk, CompoundTag nbt) {
+    public Vex(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return VEX;
     }
 
     @Override
@@ -74,7 +80,7 @@ public class Vex extends FlyingMonster {
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
-        pk.item = new ItemSwordIron();
+        pk.item = new ItemIronSword();
         pk.hotbarSlot = 10;
         player.dataPacket(pk);
     }

@@ -2,20 +2,22 @@ package nukkitcoders.mobplugin.entities;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.*;
-import cn.nukkit.entity.data.Vector3fEntityData;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.entity.passive.EntitySkeletonHorse;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.ItemBreakParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.SetEntityLinkPacket;
+import cn.nukkit.network.protocol.types.EntityLink;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.entities.animal.walking.Donkey;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,8 +30,13 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
 
     private boolean saddled;
 
-    public HorseBase(FullChunk chunk, CompoundTag nbt) {
+    public HorseBase(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return HORSE;
     }
 
     @Override
@@ -58,7 +65,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
     }
 
     @Override
-    public boolean mountEntity(Entity entity, byte mode) {
+    public boolean mountEntity(Entity entity) {
         Objects.requireNonNull(entity, "The target of the mounting entity can't be null");
 
         if (entity.riding != null) {
@@ -72,11 +79,12 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
                 return false;
             }
 
-            broadcastLinkPacket(entity, SetEntityLinkPacket.TYPE_RIDE);
+            broadcastLinkPacket(entity, EntityLink.Type.RIDER);
 
             entity.riding = this;
-            entity.setDataFlag(DATA_FLAGS, DATA_FLAG_RIDING, true);
-            entity.setDataProperty(new Vector3fEntityData(DATA_RIDER_SEAT_POSITION, new Vector3f(0, this instanceof Donkey ? 2.1f : 2.3f, 0)));
+            entity.setDataFlag(EntityFlag.RIDING, true);
+
+            entity.setDataProperty(SEAT_OFFSET, new Vector3f(0, this instanceof Donkey ? 2.1f : 2.3f, 0));
             passengers.add(entity);
         }
 
@@ -90,7 +98,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
             this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(), 0), Item.get(item.getId(), 0, 1)));
             this.setInLove();
             return true;
-        } else if (this.canBeSaddled() && !this.isSaddled() && item.getId() == Item.SADDLE) {
+        } else if (this.canBeSaddled() && !this.isSaddled() && item.getId().equals(Item.SADDLE)) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_SADDLE);
             this.setSaddled(true);
@@ -173,7 +181,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
         }
 
         for (Entity passenger : new ArrayList<>(this.passengers)) {
-            if (!passenger.isAlive() || (this.getNetworkId() != EntitySkeletonHorse.NETWORK_ID && Utils.entityInsideWaterFast(this))) {
+            if (!passenger.isAlive() || (this.getNetworkId() == 26 && Utils.entityInsideWaterFast(this))) {
                 dismountEntity(passenger);
                 passenger.resetFallDistance();
                 continue;
@@ -199,18 +207,17 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
     public void setSaddled(boolean saddled) {
         if (this.canBeSaddled()) {
             this.saddled = saddled;
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_SADDLED, saddled);
+            this.setDataFlag(EntityFlag.SADDLED, saddled);
         }
     }
 
     public boolean isFeedItem(Item item) {
-        return item.getId() == Item.WHEAT ||
-                item.getId() == Item.APPLE ||
-                item.getId() == Item.HAY_BALE ||
-                item.getId() == Item.GOLDEN_APPLE ||
-                item.getId() == Item.SUGAR ||
-                item.getId() == Item.BREAD ||
-                item.getId() == Item.GOLDEN_CARROT;
+        return item.getId().equals(Item.WHEAT) ||
+                item.getId().equals(Item.APPLE) ||
+                item.getId().equals(Item.GOLDEN_APPLE) ||
+                item.getId().equals(Item.SUGAR) ||
+                item.getId().equals(Item.BREAD) ||
+                item.getId().equals(Item.GOLDEN_CARROT);
     }
 
     @Override

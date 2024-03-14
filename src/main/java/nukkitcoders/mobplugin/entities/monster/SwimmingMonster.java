@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities.monster;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.SwimmingEntity;
@@ -17,7 +17,7 @@ public abstract class SwimmingMonster extends SwimmingEntity implements Monster 
 
     protected boolean canAttack = true;
 
-    public SwimmingMonster(FullChunk chunk, CompoundTag nbt) {
+    public SwimmingMonster(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

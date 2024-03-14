@@ -4,14 +4,16 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityAgeable;
 import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +23,13 @@ public class Husk extends WalkingMonster implements EntityAgeable, EntitySmite {
 
     public static final int NETWORK_ID = 47;
 
-    public Husk(FullChunk chunk, CompoundTag nbt) {
+    public Husk(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return HUSK;
     }
 
     @Override
@@ -69,7 +76,7 @@ public class Husk extends WalkingMonster implements EntityAgeable, EntitySmite {
                         (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0f) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1f) * points * 0.04)));
             }
             if (player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage))) {
-                player.addEffect(Effect.getEffect(Effect.HUNGER).setDuration(140));
+                player.addEffect(Effect.get(EffectType.HUNGER).setDuration(140));
             }
             this.playAttack();
         }

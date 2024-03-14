@@ -7,20 +7,26 @@ import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityShulkerBullet;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Shulker extends WalkingMonster {
 
     public static final int NETWORK_ID = 54;
 
-    public Shulker(FullChunk chunk, CompoundTag nbt) {
+    public Shulker(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
      }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return SHULKER;
+    }
 
     @Override
     public int getNetworkId() {

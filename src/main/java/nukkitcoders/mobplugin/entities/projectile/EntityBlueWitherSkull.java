@@ -4,7 +4,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityExplosive;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.level.GameRule;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.SmokeParticle;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -16,11 +16,11 @@ public class EntityBlueWitherSkull extends EntityWitherSkull implements EntityEx
 
     private boolean canExplode;
 
-    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt) {
+    public EntityBlueWitherSkull(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityBlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    public EntityBlueWitherSkull(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 

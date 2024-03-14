@@ -24,10 +24,10 @@ public class LlamaSpawner extends AbstractEntitySpawner {
         if (Utils.rand(1, 3) != 1) {
             return;
         }
-        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (biomeId == 35 || biomeId == 36 || biomeId == 163 || biomeId == 164) {
             if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-                int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+                String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
                 if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
                     for (int i = 0; i < 4; i++) {
                         EntityCreature entity = this.spawnTask.createEntity("Llama", pos.add(0.5, 1, 0.5));

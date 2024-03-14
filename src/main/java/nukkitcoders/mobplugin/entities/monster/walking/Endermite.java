@@ -6,9 +6,10 @@ import cn.nukkit.entity.EntityArthropod;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -16,8 +17,13 @@ public class Endermite extends WalkingMonster implements EntityArthropod {
 
     public static final int NETWORK_ID = 55;
 
-    public Endermite(FullChunk chunk, CompoundTag nbt) {
+    public Endermite(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ENDERMITE;
     }
 
     @Override

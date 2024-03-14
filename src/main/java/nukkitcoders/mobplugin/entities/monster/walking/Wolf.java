@@ -1,7 +1,7 @@
 package nukkitcoders.mobplugin.entities.monster.walking;
 
 import cn.nukkit.entity.passive.EntityWolf;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 /**
@@ -12,7 +12,7 @@ public class Wolf extends EntityWolf {
 
     public static final int NETWORK_ID = 14;
 
-    public Wolf(FullChunk chunk, CompoundTag nbt) {
+    public Wolf(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

@@ -6,9 +6,10 @@ import cn.nukkit.entity.EntityArthropod;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -16,8 +17,13 @@ public class Silverfish extends WalkingMonster implements EntityArthropod {
 
     public static final int NETWORK_ID = 39;
 
-    public Silverfish(FullChunk chunk, CompoundTag nbt) {
+    public Silverfish(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return SILVERFISH;
     }
 
     @Override

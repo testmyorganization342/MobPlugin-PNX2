@@ -2,7 +2,7 @@ package nukkitcoders.mobplugin.entities.animal;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.WalkingEntity;
@@ -12,7 +12,7 @@ public abstract class WalkingAnimal extends WalkingEntity implements Animal {
 
     private int panicTicks = 0;
 
-    public WalkingAnimal(FullChunk chunk, CompoundTag nbt) {
+    public WalkingAnimal(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
         this.route = null;
     }

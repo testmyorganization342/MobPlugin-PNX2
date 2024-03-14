@@ -25,7 +25,7 @@ public class Utils {
     public static final SplittableRandom random = new SplittableRandom();
     public static final int ACCORDING_X_OBTAIN_Y = 0;
     public static final int ACCORDING_Y_OBTAIN_X = 1;
-    public static final IntSet monstersList = new IntOpenHashSet(new int[]{EntityBlaze.NETWORK_ID, EntityCaveSpider.NETWORK_ID, EntityCreeper.NETWORK_ID, EntityDrowned.NETWORK_ID, EntityElderGuardian.NETWORK_ID, EntityEnderman.NETWORK_ID, EntityEndermite.NETWORK_ID, EntityEvoker.NETWORK_ID, EntityGhast.NETWORK_ID, EntityGuardian.NETWORK_ID, EntityHoglin.NETWORK_ID, EntityHusk.NETWORK_ID, EntityPiglinBrute.NETWORK_ID, EntityPillager.NETWORK_ID, EntityRavager.NETWORK_ID, EntityShulker.NETWORK_ID, EntitySilverfish.NETWORK_ID, EntitySkeleton.NETWORK_ID, EntitySlime.NETWORK_ID, EntitySpider.NETWORK_ID, EntityStray.NETWORK_ID, EntityVex.NETWORK_ID, EntityVindicator.NETWORK_ID, EntityWitch.NETWORK_ID, EntityWither.NETWORK_ID, EntityWitherSkeleton.NETWORK_ID, EntityZoglin.NETWORK_ID, EntityZombie.NETWORK_ID, EntityZombiePigman.NETWORK_ID, EntityZombieVillagerV1.NETWORK_ID, EntityZombieVillager.NETWORK_ID});
+    public static final IntSet monstersList = new IntOpenHashSet(new int[]{43, 40, 33, 110, 50, 38, 55, 104, 41, 49, 124, 47, 127, 124, 59, 54, 39, 34, 37, 35, 46, 105, 57, 45, 52, 48, 126, 32, 36, 44, 116});
 
     public static int rand(int min, int max) {
         if (min == max) {
@@ -64,8 +64,8 @@ public class Utils {
 
     public static boolean entityInsideWaterFast(Entity ent) {
         double y = ent.y + ent.getEyeHeight();
-        int b = ent.level.getBlockIdAt(NukkitMath.floorDouble(ent.x), NukkitMath.floorDouble(y), NukkitMath.floorDouble(ent.z));
-        return b == BlockID.FLOWING_WATER || b == BlockID.STILL_WATER;
+        String b = ent.level.getBlockIdAt(NukkitMath.floorDouble(ent.x), NukkitMath.floorDouble(y), NukkitMath.floorDouble(ent.z));
+        return b == BlockID.FLOWING_WATER || b == BlockID.WATER;
     }
 
     public static boolean hasCollisionBlocks(Level level, AxisAlignedBB bb) {
@@ -80,7 +80,7 @@ public class Utils {
             for (int x = minX; x <= maxX; ++x) {
                 for (int y = minY; y <= maxY; ++y) {
                     Block block = level.getBlock(x, y, z, false);
-                    if (block != null && block.getId() != 0 && block.collidesWithBB(bb)) {
+                    if (block != null && !block.getId().equals(Block.AIR) && block.collidesWithBB(bb)) {
                         return true;
                     }
                 }
@@ -96,9 +96,9 @@ public class Utils {
                 return Item.get(Item.SKULL, ItemSkull.SKELETON_SKULL, 1);
             case WitherSkeleton.NETWORK_ID:
                 return Item.get(Item.SKULL, ItemSkull.WITHER_SKELETON_SKULL, 1);
-            case EntityZombie.NETWORK_ID:
+            case 32:
                 return Item.get(Item.SKULL, ItemSkull.ZOMBIE_HEAD, 1);
-            case EntityCreeper.NETWORK_ID:
+            case 33:
                 return Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1);
             default:
                 return null;

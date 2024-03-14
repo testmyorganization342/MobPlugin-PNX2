@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
@@ -13,7 +13,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class SwimmingEntity extends BaseEntity {
 
-    public SwimmingEntity(FullChunk chunk, CompoundTag nbt) {
+    public SwimmingEntity(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 
@@ -135,8 +135,8 @@ public abstract class SwimmingEntity extends BaseEntity {
                 this.motionY *= 0.1;
             }
 
-            int block;
-            if (this.stayTime <= 0 && this.motionY >= 0 && (Math.abs(motionX) > 0 || Math.abs(motionZ) > 0) && (block = this.level.getBlockIdAt(this.getFloorX(), NukkitMath.floorDouble(this.getY() + this.getHeight()), this.getFloorZ())) != Block.WATER && block != Block.STILL_WATER) {
+            String block;
+            if (this.stayTime <= 0 && this.motionY >= 0 && (Math.abs(motionX) > 0 || Math.abs(motionZ) > 0) && (block = this.level.getBlockIdAt(this.getFloorX(), NukkitMath.floorDouble(this.getY() + this.getHeight()), this.getFloorZ())).equals(Block.WATER) && block.equals(Block.WATER)) {
                 this.motionY = -0.05;
             }
 

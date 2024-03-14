@@ -3,16 +3,18 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntitySmite;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemSwordStone;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.item.ItemStoneSword;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +29,13 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
         return NETWORK_ID;
     }
 
-    public WitherSkeleton(FullChunk chunk, CompoundTag nbt) {
+    public WitherSkeleton(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return WITHER_SKELETON;
     }
 
     @Override
@@ -70,7 +77,7 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
             }
             if (player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage))) {
                 this.playAttack();
-                player.addEffect(Effect.getEffect(Effect.WITHER).setDuration(200));
+                player.addEffect(Effect.get(EffectType.WITHER).setDuration(200));
             }
         }
     }
@@ -81,7 +88,7 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
         pk.eid = this.getId();
-        pk.item = new ItemSwordStone();
+        pk.item = new ItemStoneSword();
         pk.hotbarSlot = 0;
         player.dataPacket(pk);
     }

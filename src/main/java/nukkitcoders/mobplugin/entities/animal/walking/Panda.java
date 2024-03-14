@@ -1,16 +1,22 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class Panda extends WalkingAnimal {
 
     public static final int NETWORK_ID = 113;
 
-    public Panda(FullChunk chunk, CompoundTag nbt) {
+    public Panda(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PANDA;
     }
 
     @Override

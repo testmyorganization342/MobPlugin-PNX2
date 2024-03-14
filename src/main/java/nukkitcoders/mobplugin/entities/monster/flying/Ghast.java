@@ -4,12 +4,13 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelEventPacket;
@@ -17,6 +18,7 @@ import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityGhastFireBall;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,13 @@ public class Ghast extends FlyingMonster {
 
     private boolean attacked;
 
-    public Ghast(FullChunk chunk, CompoundTag nbt) {
+    public Ghast(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return GHAST;
     }
 
     @Override
@@ -57,7 +64,7 @@ public class Ghast extends FlyingMonster {
 
         this.fireProof = true;
         this.setMaxHealth(10);
-        this.setDataFlag(DATA_FLAGS, DATA_FLAG_FIRE_IMMUNE, true);
+        this.setDataFlag(EntityFlag.FIRE_IMMUNE, true);
     }
 
     @Override

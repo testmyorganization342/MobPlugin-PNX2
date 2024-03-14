@@ -4,19 +4,21 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityShootBowEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,13 @@ public class Pillager extends WalkingMonster {
 
     private boolean angryFlagSet;
 
-    public Pillager(FullChunk chunk, CompoundTag nbt) {
+    public Pillager(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PILLAGER;
     }
 
     @Override
@@ -136,12 +143,12 @@ public class Pillager extends WalkingMonster {
         boolean hasTarget = super.targetOption(creature, distance);
         if (hasTarget) {
             if (!this.angryFlagSet) {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, true);
+                this.setDataFlag(EntityFlag.CHARGED, true);
                 this.angryFlagSet = true;
             }
         } else {
             if (this.angryFlagSet) {
-                this.setDataFlag(DATA_FLAGS, DATA_FLAG_CHARGED, false);
+                this.setDataFlag(EntityFlag.CHARGED, false);
                 this.angryFlagSet = false;
                 this.stayTime = 100;
             }

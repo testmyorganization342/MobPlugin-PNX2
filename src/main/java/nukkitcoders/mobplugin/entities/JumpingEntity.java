@@ -3,7 +3,7 @@ package nukkitcoders.mobplugin.entities;
 import cn.nukkit.block.BlockLiquid;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.BubbleParticle;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
@@ -14,7 +14,7 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public abstract class JumpingEntity extends BaseEntity {
 
-    public JumpingEntity(FullChunk chunk, CompoundTag nbt) {
+    public JumpingEntity(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
 

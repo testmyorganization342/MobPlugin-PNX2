@@ -5,6 +5,7 @@ import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.data.EntityFlag;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
@@ -12,12 +13,13 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -29,8 +31,13 @@ public class Enderman extends WalkingMonster {
 
     private boolean teleported;
 
-    public Enderman(FullChunk chunk, CompoundTag nbt) {
+    public Enderman(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return ENDERMAN;
     }
 
     @Override
@@ -137,8 +144,8 @@ public class Enderman extends WalkingMonster {
             }
         }
 
-        int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z));
-        if (b == BlockID.WATER || b == BlockID.STILL_WATER || (this.level.isRaining() && Utils.rand() && this.level.canBlockSeeSky(this))) {
+        String b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z));
+        if (b.equals(BlockID.WATER) || b.equals(BlockID.FLOWING_WATER) || (this.level.isRaining() && Utils.rand() && this.level.canBlockSeeSky(this))) {
             this.attack(new EntityDamageEvent(this, EntityDamageEvent.DamageCause.DROWNING, 1));
             this.setAngry(0);
             this.teleport();
@@ -165,7 +172,7 @@ public class Enderman extends WalkingMonster {
         double dx = this.x + Utils.rand(-16, 16);
         double dz = this.z + Utils.rand(-16, 16);
         Vector3 pos = new Vector3(Math.floor(dx), (int) Math.floor(this.y + 0.1) + 16, Math.floor(dz));
-        FullChunk chunk = this.level.getChunk((int) pos.x >> 4, (int) pos.z >> 4, false);
+        IChunk chunk = this.level.getChunk((int) pos.x >> 4, (int) pos.z >> 4, false);
         int x = (int) pos.x & 0x0f;
         int z = (int) pos.z & 0x0f;
         int previousY1 = -1;
@@ -173,7 +180,7 @@ public class Enderman extends WalkingMonster {
         if (chunk != null && chunk.isGenerated()) {
             for (int y = Math.min(255, (int) pos.y); y >= 0; y--) {
                 if (previousY1 > -1 && previousY2 > -1) {
-                    if (Block.solid[chunk.getBlockId(x, y, z)] && chunk.getBlockId(x, previousY1, z) == 0 && chunk.getBlockId(x, previousY2, z) == 0) {
+                    if (chunk.getBlockState(x, y, z).toBlock().isSolid() && chunk.getBlockState(x, previousY1, z).toBlock().equals(Block.AIR) && chunk.getBlockState(x, previousY2, z).toBlock().equals(Block.AIR)) {
                         return new Location(pos.x + 0.5, previousY1 + 0.1, pos.z + 0.5, this.level);
                     }
                 }
@@ -200,7 +207,7 @@ public class Enderman extends WalkingMonster {
     public void setAngry(int val) {
         if (this.angry != val) {
             this.angry = val;
-            this.setDataFlag(DATA_FLAGS, DATA_FLAG_ANGRY, val > 0);
+            this.setDataFlag(EntityFlag.ANGRY, val > 0);
         }
     }
 

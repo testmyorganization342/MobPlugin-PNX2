@@ -22,7 +22,7 @@ public class PigSpawner extends AbstractEntitySpawner {
             return;
         }
         if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-            int blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
+            String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
                 for (int i = 0; i < Utils.rand(1, 3); i++) {
                     EntityCreature entity = this.spawnTask.createEntity("Pig", pos.add(0.5, 1, 0.5));
@@ -37,6 +37,6 @@ public class PigSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityPig.NETWORK_ID;
+        return 12;
     }
 }

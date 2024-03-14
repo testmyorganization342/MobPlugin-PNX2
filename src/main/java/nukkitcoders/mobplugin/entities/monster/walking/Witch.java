@@ -4,19 +4,20 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.item.EntityPotion;
+import cn.nukkit.entity.effect.EffectType;
+import cn.nukkit.entity.effect.PotionType;
+import cn.nukkit.entity.item.EntitySplashPotion;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
-import cn.nukkit.potion.Potion;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,13 @@ public class Witch extends WalkingMonster {
 
     public static final int NETWORK_ID = 45;
 
-    public Witch(FullChunk chunk, CompoundTag nbt) {
+    public Witch(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return WITCH;
     }
 
     @Override
@@ -78,18 +84,18 @@ public class Witch extends WalkingMonster {
                 if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
                     return;
                 }
-                EntityPotion thrownPotion = (EntityPotion) Entity.createEntity("ThrownPotion", pos, this);
+                EntitySplashPotion thrownPotion = (EntitySplashPotion) Entity.createEntity("ThrownPotion", pos, this);
 
                 double distance = this.distanceSquared(player);
 
-                if (!player.hasEffect(Effect.SLOWNESS) && distance <= 64) {
-                    thrownPotion.potionId = Potion.SLOWNESS;
+                if (!player.hasEffect(EffectType.SLOWNESS) && distance <= 64) {
+                    thrownPotion.potionId = PotionType.SLOWNESS.id();
                 } else if (player.getHealth() >= 8) {
-                    thrownPotion.potionId = Potion.POISON;
-                } else if (!player.hasEffect(Effect.WEAKNESS) && Utils.rand(0, 4) == 0 && distance <= 9) {
-                    thrownPotion.potionId = Potion.WEAKNESS;
+                    thrownPotion.potionId = PotionType.POISON.id();
+                } else if (!player.hasEffect(EffectType.WEAKNESS) && Utils.rand(0, 4) == 0 && distance <= 9) {
+                    thrownPotion.potionId = PotionType.WEAKNESS.id();
                 } else {
-                    thrownPotion.potionId = Potion.HARMING;
+                    thrownPotion.potionId = PotionType.HARMING.id();
                 }
 
                 thrownPotion.setMotion(new Vector3(-Math.sin(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f, -Math.sin(Math.toDegrees(pitch)) * f * f,
@@ -117,7 +123,7 @@ public class Witch extends WalkingMonster {
         if (Utils.rand(1, 3) == 1) {
             switch (Utils.rand(1, 6)) {
                 case 1:
-                    drops.add(Item.get(Item.BOTTLE, 0, Utils.rand(0, 2)));
+                    drops.add(Item.get(Item.GLASS_BOTTLE, 0, Utils.rand(0, 2)));
                     break;
                 case 2:
                     drops.add(Item.get(Item.GLOWSTONE_DUST, 0, Utils.rand(0, 2)));

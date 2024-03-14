@@ -21,7 +21,7 @@ public class MooshroomSpawner extends AbstractEntitySpawner {
         if (Utils.rand(1, 3) != 1) {
             return;
         }
-        int biomeId = level.getBiomeId((int) pos.x, (int) pos.z);
+        int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (biomeId == 14 || biomeId == 15) {
             if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                 if (level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.MYCELIUM) {
@@ -39,6 +39,6 @@ public class MooshroomSpawner extends AbstractEntitySpawner {
 
     @Override
     public final int getEntityNetworkId() {
-        return EntityMooshroom.NETWORK_ID;
+        return 16;
     }
 }

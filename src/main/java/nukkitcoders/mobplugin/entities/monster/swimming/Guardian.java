@@ -3,15 +3,15 @@ package nukkitcoders.mobplugin.entities.monster.swimming;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
-import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.swimming.Squid;
 import nukkitcoders.mobplugin.entities.monster.SwimmingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -21,8 +21,13 @@ public class Guardian extends SwimmingMonster {
     private int laserChargeTick = 40;
     private long laserTargetEid = -1;
 
-    public Guardian(FullChunk chunk, CompoundTag nbt) {
+    public Guardian(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return GUARDIAN;
     }
 
     @Override
@@ -84,17 +89,17 @@ public class Guardian extends SwimmingMonster {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
         if (!this.closed && followTarget != null) {
             if (laserTargetEid !=followTarget.getId()) {
-                this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = followTarget.getId()));
+                this.setDataProperty(TARGET_EID, laserTargetEid = followTarget.getId());
                 laserChargeTick = 40;
             }
             if (targetOption((EntityCreature) followTarget,this.distanceSquared(followTarget))) {
                 if (--laserChargeTick < 0) {
                     attackEntity(followTarget);
-                    this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = -1));
+                    this.setDataProperty(TARGET_EID, laserTargetEid = -1);
                     laserChargeTick = 40;
                 }
             } else {
-                this.setDataProperty(new LongEntityData(Entity.DATA_TARGET_EID, laserTargetEid = -1));
+                this.setDataProperty(TARGET_EID, laserTargetEid = -1);
                 laserChargeTick = 40;
             }
         }

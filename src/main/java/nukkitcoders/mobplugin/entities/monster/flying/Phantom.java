@@ -7,10 +7,11 @@ import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -18,8 +19,13 @@ public class Phantom extends FlyingMonster implements EntitySmite {
 
     public static final int NETWORK_ID = 58;
 
-    public Phantom(FullChunk chunk, CompoundTag nbt) {
+    public Phantom(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return PHANTOM;
     }
 
     @Override

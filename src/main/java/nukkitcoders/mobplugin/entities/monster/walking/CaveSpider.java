@@ -3,13 +3,15 @@ package nukkitcoders.mobplugin.entities.monster.walking;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityArthropod;
+import cn.nukkit.entity.effect.Effect;
+import cn.nukkit.entity.effect.EffectType;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,8 +21,13 @@ public class CaveSpider extends Spider implements EntityArthropod {
 
     public static final int NETWORK_ID = 40;
 
-    public CaveSpider(FullChunk chunk, CompoundTag nbt) {
+    public CaveSpider(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return CAVE_SPIDER;
     }
 
     @Override
@@ -69,7 +76,7 @@ public class CaveSpider extends Spider implements EntityArthropod {
             }
             EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage);
             if (player.attack(ev) && !ev.isCancelled() && this.server.getDifficulty() > 0) {
-                player.addEffect(Effect.getEffect(Effect.POISON).setDuration(this.server.getDifficulty() > 1 ? 300 : 140));
+                player.addEffect(Effect.get(EffectType.POISON).setDuration(this.server.getDifficulty() > 1 ? 300 : 140));
             }
         }
     }

@@ -8,9 +8,10 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityExplosionPrimeEvent;
 import cn.nukkit.level.GameRule;
-import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.IChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.utils.FireBallExplosion;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityGhastFireBall extends EntityProjectile implements EntityExplosive {
 
@@ -50,11 +51,16 @@ public class EntityGhastFireBall extends EntityProjectile implements EntityExplo
         return 6;
     }
 
-    public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt) {
+    public EntityGhastFireBall(IChunk chunk, CompoundTag nbt) {
         this(chunk, nbt, null);
     }
 
-    public EntityGhastFireBall(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
+    @Override
+    public @NotNull String getIdentifier() {
+        return FIREBALL;
+    }
+
+    public EntityGhastFireBall(IChunk chunk, CompoundTag nbt, Entity shootingEntity) {
         super(chunk, nbt, shootingEntity);
     }
 
