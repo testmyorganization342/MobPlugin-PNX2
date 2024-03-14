@@ -253,6 +253,7 @@ public class MobPlugin extends PluginBase implements Listener {
         registry.registerEntity(new EntityDefinition(Entity.SLIME, "", 37, true, true), Slime.class);
         registry.registerEntity(new EntityDefinition(Entity.SQUID, "", 17, true, true), Squid.class);
         registry.registerEntity(new EntityDefinition(Entity.PHANTOM, "", 58, true, true), Phantom.class);
+        registry.registerEntity(new EntityDefinition(Entity.CAMEL, "", 138, true, true), Camel.class);
 
         registry.registerEntity(new EntityDefinition(Entity.SHULKER_BULLET, "", 76, false, false), EntityShulkerBullet.class);
         registry.registerEntity(new EntityDefinition(Entity.FIREBALL, "", 85, false, false), EntityGhastFireBall.class);

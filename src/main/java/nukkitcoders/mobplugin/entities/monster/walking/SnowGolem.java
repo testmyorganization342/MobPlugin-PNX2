@@ -98,21 +98,15 @@ public class SnowGolem extends WalkingMonster {
                     c).multiply(f);
             snowball.setMotion(motion);
 
-            EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), snowball, f);
-            this.server.getPluginManager().callEvent(ev);
-
-            EntityProjectile projectile = ev.getProjectile();
-            if (ev.isCancelled()) {
-                if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
-            } else if (projectile != null) {
-                ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile, this);
-                this.server.getPluginManager().callEvent(launch);
-                if (launch.isCancelled()) {
-                    if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
-                } else {
-                    projectile.spawnToAll();
-                    this.level.addSound(this, Sound.MOB_SNOWGOLEM_SHOOT);
+            ProjectileLaunchEvent launch = new ProjectileLaunchEvent(snowball);
+            this.server.getPluginManager().callEvent(launch);
+            if (launch.isCancelled()) {
+                if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) {
+                    snowball.close();
                 }
+            } else {
+                snowball.spawnToAll();
+                this.level.addSound(this, Sound.MOB_SNOWGOLEM_SHOOT);
             }
         }
     }
