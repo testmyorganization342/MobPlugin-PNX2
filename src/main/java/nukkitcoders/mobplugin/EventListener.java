@@ -77,7 +77,6 @@ public class EventListener implements Listener {
 
         BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
         if (blockEntity instanceof BlockEntitySpawner) {
-            MobPlugin.getInstance().getLogger().info("hmm");
             SpawnerChangeTypeEvent event = new SpawnerChangeTypeEvent((BlockEntitySpawner) blockEntity, ev.getBlock(), ev.getPlayer(), ((BlockEntitySpawner) blockEntity).getSpawnEntityType(), spawnEgg.getEntityNetworkId());
             Server.getInstance().getPluginManager().callEvent(event);
             if (((BlockEntitySpawner) blockEntity).getSpawnEntityType() == spawnEgg.getEntityNetworkId()) {
