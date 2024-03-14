@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -24,7 +25,7 @@ public class DrownedSpawner extends AbstractEntitySpawner {
                     if (MobPlugin.isMobSpawningAllowedByTime(level)) {
                         final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                         if (b == Block.WATER || b == Block.FLOWING_WATER) {
-                            this.spawnTask.createEntity("Drowned", pos.add(0.5, -1, 0.5));
+                            this.spawnTask.createEntity(EntityID.DROWNED, pos.add(0.5, -1, 0.5));
                         }
                     }
                 }

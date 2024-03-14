@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -27,7 +28,7 @@ public class RabbitSpawner extends AbstractEntitySpawner {
             if (biomeId == 2 || biomeId == 130 || biomeId == 30 || biomeId == 5 || biomeId == 12) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     for (int i = 0; i < Utils.rand(1, 3); i++) {
-                        this.spawnTask.createEntity("Rabbit", pos.add(0.5, 1, 0.5));
+                        this.spawnTask.createEntity(EntityID.RABBIT, pos.add(0.5, 1, 0.5));
                     }
                 }
             }

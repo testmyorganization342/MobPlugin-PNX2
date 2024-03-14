@@ -2,8 +2,8 @@ package nukkitcoders.mobplugin.entities.monster.flying;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemIronSword;
 import cn.nukkit.level.format.IChunk;

@@ -2,7 +2,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.passive.EntitySalmon;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -26,7 +26,7 @@ public class SalmonSpawner extends AbstractEntitySpawner {
                 final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                 if (b == Block.WATER || b == Block.FLOWING_WATER) {
                     for (int i = 0; i < Utils.rand(3, 5); i++) {
-                        this.spawnTask.createEntity("Salmon", pos.add(0, -1, 0));
+                        this.spawnTask.createEntity(EntityID.SALMON, pos.add(0, -1, 0));
                     }
                 }
             }

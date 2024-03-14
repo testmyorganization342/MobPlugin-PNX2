@@ -1,9 +1,6 @@
 package nukkitcoders.mobplugin.entities.monster;
 
 import cn.nukkit.entity.Entity;
-import cn.nukkit.item.Item;
-
-import java.util.HashMap;
 
 public interface Monster {
 

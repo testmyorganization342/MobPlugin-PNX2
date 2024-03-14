@@ -39,7 +39,7 @@ public abstract class AbstractEntitySpawner implements IEntitySpawner {
             pos.x += this.spawnTask.getRandomSafeXZCoord(Utils.rand(48, 52), Utils.rand(24, 28), Utils.rand(4, 8));
             pos.z += this.spawnTask.getRandomSafeXZCoord(Utils.rand(48, 52), Utils.rand(24, 28), Utils.rand(4, 8));
 
-            if (!level.isChunkLoaded((int) pos.x >> 4, (int) pos.z >> 4) || !level.isChunkGenerated((int) pos.x >> 4, (int) pos.z >> 4)) {
+            if (!level.isChunkLoaded((int) pos.x >> 4, (int) pos.z >> 4)) {
                 return;
             }
 

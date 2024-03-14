@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -30,10 +31,10 @@ public class EndermanSpawner extends AbstractEntitySpawner {
         if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7 || nether || end) {
             if (end) {
                 for (int i = 0; i < Utils.rand(1, 4); i++) {
-                    this.spawnTask.createEntity("Enderman", pos.add(0.5, 1, 0.5));
+                    this.spawnTask.createEntity(EntityID.ENDERMAN, pos.add(0.5, 1, 0.5));
                 }
             } else {
-                this.spawnTask.createEntity("Enderman", pos.add(0.5, 1, 0.5));
+                this.spawnTask.createEntity(EntityID.ENDERMAN, pos.add(0.5, 1, 0.5));
             }
         }
     }

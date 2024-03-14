@@ -4,11 +4,11 @@ import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.registry.BlockEntityRegistry;
 import cn.nukkit.registry.EntityRegistry;
-import cn.nukkit.registry.Registries;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import cn.nukkit.registry.EntityRegistry.EntityDefinition;
 import cn.nukkit.registry.RegisterException;
+import cn.nukkit.registry.Registries;
 import com.google.common.collect.BiMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.lang.reflect.Field;
 

@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -21,7 +22,7 @@ public class BatSpawner extends AbstractEntitySpawner {
         if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 3) {
             if (!level.canBlockSeeSky(pos)) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
-                    this.spawnTask.createEntity("Bat", pos.add(0.5, 1, 0.5));
+                    this.spawnTask.createEntity(EntityID.BAT, pos.add(0.5, 1, 0.5));
                 }
             }
         }

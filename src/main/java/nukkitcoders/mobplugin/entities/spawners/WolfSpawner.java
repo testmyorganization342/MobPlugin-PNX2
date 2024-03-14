@@ -2,7 +2,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.passive.EntityWolf;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -26,7 +26,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
             String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
                 for (int i = 0; i < 4; i++) {
-                    var entity = this.spawnTask.createEntity("Wolf", pos.add(0.5, 1, 0.5));
+                    var entity = this.spawnTask.createEntity(EntityID.WOLF, pos.add(0.5, 1, 0.5));
                     if (entity == null) return;
                     if (Utils.rand(1, 10) == 1) {
                         entity.setBaby(true);

@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -23,7 +24,7 @@ public class WitchSpawner extends AbstractEntitySpawner {
         }
         if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
             if (MobPlugin.isMobSpawningAllowedByTime(level)) {
-                this.spawnTask.createEntity("Witch", pos.add(0.5, 1, 0.5));
+                this.spawnTask.createEntity(EntityID.WITCH, pos.add(0.5, 1, 0.5));
             }
         }
     }

@@ -2,7 +2,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.passive.EntityCod;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -26,7 +26,7 @@ public class CodSpawner extends AbstractEntitySpawner {
                 final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                 if (b.equals(Block.WATER) || b.equals(Block.FLOWING_WATER)) {
                     for (int i = 0; i < Utils.rand(4, 7); i++) {
-                        this.spawnTask.createEntity("Cod", pos.add(0, -1, 0));
+                        this.spawnTask.createEntity(EntityID.COD, pos.add(0, -1, 0));
                     }
                 }
             }

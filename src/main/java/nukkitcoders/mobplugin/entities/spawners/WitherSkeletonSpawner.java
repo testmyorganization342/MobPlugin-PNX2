@@ -2,6 +2,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -21,7 +22,7 @@ public class WitherSkeletonSpawner extends AbstractEntitySpawner {
             return;
         }
         if (level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) == Block.NETHER_BRICK) {
-            this.spawnTask.createEntity("WitherSkeleton", pos.add(0.5, 1, 0.5));
+            this.spawnTask.createEntity(EntityID.WITHER_SKELETON, pos.add(0.5, 1, 0.5));
         }
     }
 

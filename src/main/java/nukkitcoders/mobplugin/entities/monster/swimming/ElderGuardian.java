@@ -2,7 +2,6 @@ package nukkitcoders.mobplugin.entities.monster.swimming;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.BlockID;
-import cn.nukkit.block.BlockSponge;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.entity.data.EntityFlag;

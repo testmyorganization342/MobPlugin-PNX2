@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -20,7 +21,7 @@ public class StraySpawner extends AbstractEntitySpawner {
         if (biomeId == 12 || biomeId == 30) {
             if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
                 if (MobPlugin.isMobSpawningAllowedByTime(level)) {
-                    this.spawnTask.createEntity("Stray", pos.add(0.5, 1, 0.5));
+                    this.spawnTask.createEntity(EntityID.STRAY, pos.add(0.5, 1, 0.5));
                 }
             }
         }

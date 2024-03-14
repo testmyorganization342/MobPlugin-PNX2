@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -20,7 +21,7 @@ public class SlimeSpawner extends AbstractEntitySpawner {
         if (pos.y < 70 && (biomeId == 6 || biomeId == 134)) {
             if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
                 if (MobPlugin.isMobSpawningAllowedByTime(level)) {
-                    this.spawnTask.createEntity("Slime", pos.add(0.5, 1, 0.5));
+                    this.spawnTask.createEntity(EntityID.SLIME, pos.add(0.5, 1, 0.5));
                 }
             }
         }

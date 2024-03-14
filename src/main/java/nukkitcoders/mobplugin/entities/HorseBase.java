@@ -1,9 +1,10 @@
 package nukkitcoders.mobplugin.entities;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.*;
+import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.EntityRideable;
 import cn.nukkit.entity.data.EntityFlag;
-import cn.nukkit.entity.passive.EntitySkeletonHorse;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.IChunk;
 import cn.nukkit.level.particle.ItemBreakParticle;
@@ -11,7 +12,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
-import cn.nukkit.network.protocol.SetEntityLinkPacket;
 import cn.nukkit.network.protocol.types.EntityLink;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.entities.animal.walking.Donkey;

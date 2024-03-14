@@ -1,6 +1,6 @@
 name: MobPlugin
 main: nukkitcoders.mobplugin.MobPlugin
-version: "${pom.version}"
+version: "1.26.3-PNX"
 api: ["2.0.0"]
 author: kniffo80, matt404, augesrob, PetteriM1, PikyCZ, zzz1999, SergeyDertan
 description: Entity AI & autospawn plugin for NukkitX servers

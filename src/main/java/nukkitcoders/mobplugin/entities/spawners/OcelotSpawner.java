@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -27,7 +28,7 @@ public class OcelotSpawner extends AbstractEntitySpawner {
             if (blockId.equals(Block.GRASS)) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     for (int i = 0; i < Utils.rand(1, 2); i++) {
-                        EntityCreature entity = this.spawnTask.createEntity("Ocelot", pos.add(0.5, 1, 0.5));
+                        EntityCreature entity = this.spawnTask.createEntity(EntityID.OCELOT, pos.add(0.5, 1, 0.5));
                         if (entity == null) return;
                         if (Utils.rand(1, 20) == 1) {
                             entity.setBaby(true);

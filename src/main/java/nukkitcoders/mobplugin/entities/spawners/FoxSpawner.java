@@ -3,6 +3,7 @@ package nukkitcoders.mobplugin.entities.spawners;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.EntityCreature;
+import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import nukkitcoders.mobplugin.AutoSpawnTask;
@@ -27,7 +28,7 @@ public class FoxSpawner extends AbstractEntitySpawner {
             if (biomeId == 5 || biomeId == 160 || biomeId == 31 || biomeId == 19 || biomeId == 30 || biomeId == 133 || biomeId == 158 || biomeId == 32 || biomeId == 33) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     for (int i = 0; i < Utils.rand(2, 4); i++) {
-                        EntityCreature entity = this.spawnTask.createEntity("Fox", pos.add(0.5, 1, 0.5));
+                        EntityCreature entity = this.spawnTask.createEntity(EntityID.FOX, pos.add(0.5, 1, 0.5));
                         if (entity == null) return;
                         if (Utils.rand(1, 20) == 1) {
                             entity.setBaby(true);
