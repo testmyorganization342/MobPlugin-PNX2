@@ -23,7 +23,7 @@ public class FoxSpawner extends AbstractEntitySpawner {
             return;
         }
         String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-        if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
+        if (blockId.equals(Block.GRASS_BLOCK) || blockId.equals(Block.SNOW_LAYER)) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
             if (biomeId == 5 || biomeId == 160 || biomeId == 31 || biomeId == 19 || biomeId == 30 || biomeId == 133 || biomeId == 158 || biomeId == 32 || biomeId == 33) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {

@@ -84,7 +84,7 @@ public class Ghast extends FlyingMonster {
                 return;
             }
             if (this.attackDelay == 50) {
-                this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST);
+                this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST_WARNING);
             }
             if (this.attackDelay > 60) {
                 this.attackDelay = 0;
@@ -110,7 +110,7 @@ public class Ghast extends FlyingMonster {
                     fireball.close();
                 } else {
                     fireball.spawnToAll();
-                    this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST_SHOOT);
+                    this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_GHAST_FIREBALL);
                 }
             }
         }

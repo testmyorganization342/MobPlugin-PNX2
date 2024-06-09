@@ -158,7 +158,7 @@ public class Llama extends HorseBase {
 
     @Override
     public boolean isFeedItem(Item item) {
-        return item.getId() == Item.WHEAT;
+        return item.getId() == Item.WHEAT_SEEDS;
     }
 
     private static int getRandomVariant() {

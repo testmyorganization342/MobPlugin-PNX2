@@ -23,7 +23,7 @@ public class RabbitSpawner extends AbstractEntitySpawner {
             return;
         }
         String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-        if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER || blockId == Block.SAND) {
+        if (blockId == Block.GRASS_BLOCK || blockId == Block.SNOW_LAYER || blockId == Block.SAND) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
             if (biomeId == 2 || biomeId == 130 || biomeId == 30 || biomeId == 5 || biomeId == 12) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {

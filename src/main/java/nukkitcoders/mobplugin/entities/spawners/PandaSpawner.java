@@ -26,7 +26,7 @@ public class PandaSpawner extends AbstractEntitySpawner {
         if ((biomeId == 21 && Utils.rand(1, 10) != 1) || biomeId != 168 && biomeId != 169 && biomeId != 21) {
             return;
         }
-        if (!MobPlugin.isAnimalSpawningAllowedByTime(level) || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) != Block.GRASS) {
+        if (!MobPlugin.isAnimalSpawningAllowedByTime(level) || level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z) != Block.GRASS_BLOCK) {
             return;
         }
         for (int i = 0; i < Utils.rand(1, 2); i++) {

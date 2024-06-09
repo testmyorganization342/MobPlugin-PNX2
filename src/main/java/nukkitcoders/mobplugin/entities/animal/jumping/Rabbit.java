@@ -66,7 +66,7 @@ public class Rabbit extends JumpingAnimal {
         if (creature instanceof Player) {
             Player player = (Player) creature;
             String id = player.getInventory().getItemInHand().getId();
-            return player.spawned && player.isAlive() && !player.closed && (id == BlockID.RED_FLOWER || id == Item.CARROT || id == Item.GOLDEN_CARROT) && distance <= 49;
+            return player.spawned && player.isAlive() && !player.closed && (id == Item.RED_FLOWER || id == Item.CARROT || id == Item.GOLDEN_CARROT) && distance <= 49;
         }
         return super.targetOption(creature, distance);
     }
@@ -91,10 +91,10 @@ public class Rabbit extends JumpingAnimal {
 
     @Override
     public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
-        if (item.getId() == BlockID.RED_FLOWER && !this.isBaby() && !this.isInLoveCooldown()) {
+        if (item.getId() == Item.RED_FLOWER && !this.isBaby() && !this.isInLoveCooldown()) {
             player.getInventory().decreaseCount(player.getInventory().getHeldItemIndex());
             this.level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_EAT);
-            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(BlockID.RED_FLOWER)));
+            this.level.addParticle(new ItemBreakParticle(this.add(0,this.getMountedYOffset(),0),Item.get(Item.RED_FLOWER)));
             this.setInLove();
             return true;
         } else if (item.getId() == Item.CARROT && !this.isBaby() && !this.isInLoveCooldown()) {

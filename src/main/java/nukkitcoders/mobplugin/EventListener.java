@@ -142,6 +142,7 @@ public class EventListener implements Listener {
                 Entity.createEntity("SnowGolem", pos).spawnToAll();
                 ev.setCancelled(true);
                 if (player.isSurvival()) player.getInventory().removeItem(Item.get(block.getId()));
+
             } else if (block.getSide(BlockFace.DOWN).getId() == BlockID.IRON_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == BlockID.IRON_BLOCK) {
                 String removeId = block.getId();
                 block = block.getSide(BlockFace.DOWN);
@@ -174,7 +175,7 @@ public class EventListener implements Listener {
                 ev.setCancelled(true);
                 if (player.isSurvival()) player.getInventory().removeItem(Item.get(removeId));
             }
-        } else if (item.getId() == Item.SKULL && item.getDamage() == 1) {
+        } else if (item.getId() == "minecraft:skull" && item.getDamage() == 1) {
             if (block.getSide(BlockFace.DOWN).getId() == BlockID.SOUL_SAND && block.getSide(BlockFace.DOWN, 2).getId() == BlockID.SOUL_SAND) {
                 Block first, second;
 
@@ -313,5 +314,4 @@ public class EventListener implements Listener {
             }
         }
     }
-
 }

@@ -97,7 +97,7 @@ public class ElderGuardian extends SwimmingMonster {
                 if (p.getGamemode() % 2 == 0 && p.distanceSquared(this) < 2500 && !p.hasEffect(EffectType.MINING_FATIGUE)) {
                     p.addEffect(Effect.get(EffectType.MINING_FATIGUE).setAmplifier(2).setDuration(6000));
                     LevelEventPacket pk = new LevelEventPacket();
-                    pk.evid = LevelEventPacket.EVENT_GUARDIAN_CURSE;
+                    pk.evid = LevelEventPacket.EVENT_PARTICLE_SOUND_GUARDIAN_GHOST;
                     pk.x = (float) this.x;
                     pk.y = (float) this.y;
                     pk.z = (float) this.z;

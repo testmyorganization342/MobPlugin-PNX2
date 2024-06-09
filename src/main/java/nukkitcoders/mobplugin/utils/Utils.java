@@ -92,13 +92,13 @@ public class Utils {
     public static Item getMobHead(int mob) {
         switch (mob) {
             case Skeleton.NETWORK_ID:
-                return Item.get(Item.SKULL, ItemSkull.SKELETON_SKULL, 1);
+                return Item.get("minecraft:skull", ItemSkull.SKELETON_SKULL, 1);
             case WitherSkeleton.NETWORK_ID:
-                return Item.get(Item.SKULL, ItemSkull.WITHER_SKELETON_SKULL, 1);
+                return Item.get("minecraft:skull", ItemSkull.WITHER_SKELETON_SKULL, 1);
             case 32:
-                return Item.get(Item.SKULL, ItemSkull.ZOMBIE_HEAD, 1);
+                return Item.get("minecraft:skull", ItemSkull.ZOMBIE_HEAD, 1);
             case 33:
-                return Item.get(Item.SKULL, ItemSkull.CREEPER_HEAD, 1);
+                return Item.get("minecraft:skull", ItemSkull.CREEPER_HEAD, 1);
             default:
                 return null;
         }

@@ -24,7 +24,7 @@ public class DonkeySpawner extends AbstractEntitySpawner {
             return;
         }
         String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-            if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
+            if (blockId.equals(Block.GRASS_BLOCK) || blockId.equals(Block.SNOW_LAYER)) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
             if (biomeId == 1 || biomeId == 35 || biomeId == 128 || biomeId == 129) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {

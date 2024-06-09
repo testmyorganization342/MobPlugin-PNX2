@@ -100,7 +100,7 @@ public class Blaze extends FlyingMonster {
                 fireball.close();
             } else {
                 fireball.spawnToAll();
-                this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_BLAZE_SHOOT);
+                this.level.addLevelEvent(this, LevelEventPacket.EVENT_SOUND_BLAZE_FIREBALL);
             }
         }
     }
