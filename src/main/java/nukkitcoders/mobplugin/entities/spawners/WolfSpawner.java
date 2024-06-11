@@ -24,7 +24,7 @@ public class WolfSpawner extends AbstractEntitySpawner {
         final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (MobPlugin.isAnimalSpawningAllowedByTime(level) && ((biomeId == 4 || biomeId == 5 || biomeId == 20 || biomeId == 27 || biomeId == 30 || biomeId == 32 || biomeId == 133 || biomeId == 158))) {
             String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-            if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
+            if (blockId.equals(Block.GRASS_BLOCK) || blockId.equals(Block.SNOW_LAYER)) {
                 for (int i = 0; i < 4; i++) {
                     var entity = this.spawnTask.createEntity(EntityID.WOLF, pos.add(0.5, 1, 0.5));
                     if (entity == null) return;

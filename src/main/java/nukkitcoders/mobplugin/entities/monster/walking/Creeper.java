@@ -138,7 +138,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
                 if (target instanceof EntityCreature) {
                     if (this.explodeTimer <= 0) {
                         if (bombTime == 0) {
-                            this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_TNT);
+                            this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_PARTICLE_EXPLOSION);
                             this.setDataFlag(EntityFlag.IGNITED, true);
                         }
                         this.bombTime += tickDiff;
@@ -184,7 +184,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
         if (item.getId() == Item.FLINT_AND_STEEL && this.explodeTimer <= 0) {
             level.addLevelSoundEvent(this, LevelSoundEventPacket.SOUND_IGNITE);
             this.setDataFlag(EntityFlag.IGNITED, true);
-            this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_SOUND_TNT);
+            this.getLevel().addLevelEvent(this, LevelEventPacket.EVENT_PARTICLE_EXPLOSION);
             this.stayTime = 31;
             this.explodeTimer = 31;
             return true;

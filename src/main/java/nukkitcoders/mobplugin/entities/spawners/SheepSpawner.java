@@ -23,7 +23,7 @@ public class SheepSpawner extends AbstractEntitySpawner {
         }
         if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
             String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-            if (blockId.equals(Block.GRASS) || blockId.equals(Block.SNOW_LAYER)) {
+            if (blockId.equals(Block.GRASS_BLOCK) || blockId.equals(Block.SNOW_LAYER)) {
                 for (int i = 0; i < Utils.rand(2, 3); i++) {
                     EntityCreature entity = this.spawnTask.createEntity(EntityID.SHEEP, pos.add(0.5, 1, 0.5));
                     if (entity == null) return;

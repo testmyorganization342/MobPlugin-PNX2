@@ -1,7 +1,9 @@
 package nukkitcoders.mobplugin.entities.spawners;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockGrassBlock;
+import cn.nukkit.block.BlockLeaves;
+import cn.nukkit.block.BlockWood;
 import cn.nukkit.entity.EntityID;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
@@ -23,8 +25,8 @@ public class ParrotSpawner extends AbstractEntitySpawner {
         }
         final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
         if (biomeId == 21 || biomeId == 149 || biomeId == 23 || biomeId == 151) {
-            final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-            if (blockId == Block.GRASS || blockId == Block.LEAVES || blockId == Block.WOOD) {
+            final var block = level.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+            if (block instanceof BlockGrassBlock || block instanceof BlockLeaves || block instanceof BlockWood) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     for (int i = 0; i < Utils.rand(1, 2); i++) {
                         this.spawnTask.createEntity(EntityID.PARROT, pos.add(0.5, 1, 0.5));

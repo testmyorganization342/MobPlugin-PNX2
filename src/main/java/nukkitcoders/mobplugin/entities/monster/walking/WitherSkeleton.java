@@ -104,7 +104,7 @@ public class WitherSkeleton extends WalkingMonster implements EntitySmite {
         }
 
         if (Utils.rand(1, 40) == 1) {
-            drops.add(Item.get(Item.SKULL, 1, 1));
+            drops.add(Item.get("minecraft:skull", 1, 1));
         }
 
         if (Utils.rand(1, 200) <= 17) {

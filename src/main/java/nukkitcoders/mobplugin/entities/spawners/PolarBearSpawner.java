@@ -26,7 +26,7 @@ public class PolarBearSpawner extends AbstractEntitySpawner {
         if (level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z) == 12) {
             if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                 String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
-                if (blockId == Block.GRASS || blockId == Block.SNOW_LAYER) {
+                if (blockId == Block.GRASS_BLOCK || blockId == Block.SNOW_LAYER) {
                     for (int i = 0; i < Utils.rand(1, 2); i++) {
                         EntityCreature entity = this.spawnTask.createEntity(EntityID.POLAR_BEAR, pos.add(0.5, 1, 0.5));
                         if (entity == null) return;

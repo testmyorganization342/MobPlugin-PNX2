@@ -212,7 +212,7 @@ public class HorseBase extends WalkingAnimal implements EntityRideable {
     }
 
     public boolean isFeedItem(Item item) {
-        return item.getId().equals(Item.WHEAT) ||
+        return item.getId().equals(Item.WHEAT_SEEDS) ||
                 item.getId().equals(Item.APPLE) ||
                 item.getId().equals(Item.GOLDEN_APPLE) ||
                 item.getId().equals(Item.SUGAR) ||
