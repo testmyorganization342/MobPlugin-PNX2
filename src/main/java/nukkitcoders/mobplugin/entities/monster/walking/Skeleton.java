@@ -75,7 +75,7 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
                     this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
 
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
-                Entity k = Entity.createEntity("Arrow", pos, this);
+                Entity k = Entity.createEntity("arrow", pos, this);
                 if (!(k instanceof EntityArrow)) {
                     return;
                 }
