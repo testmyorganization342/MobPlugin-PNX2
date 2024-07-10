@@ -14,6 +14,7 @@ import cn.nukkit.item.ItemBow;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.format.IChunk;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
@@ -42,9 +43,8 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
 
     @Override
     public void initEntity() {
-        super.initEntity();
-
         this.setMaxHealth(20);
+        super.initEntity();
     }
 
     @Override
@@ -67,21 +67,25 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
             this.attackDelay = 0;
 
             double f = 1.3;
-            double yaw = this.yaw;
-            double pitch = this.pitch;
-            double yawR = FastMathLite.toRadians(yaw);
-            double pitchR = FastMathLite.toRadians(pitch);
-            Location pos = new Location(this.x - Math.sin(yawR) * Math.cos(pitchR) * 0.5, this.y + this.getHeight() - 0.18,
-                    this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
+            Vector3 direction = player.getPosition().subtract(this.getPosition()).normalize();
+
+            Location pos = new Location(
+                    this.x + direction.x * 1.5,
+                    this.y + this.getEyeHeight(),
+                    this.z + direction.z * 1.5,
+                    0,
+                    0,
+                    this.level
+            );
+            pos.add(direction.getX(), direction.getY(), direction.getZ());
 
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
-                Entity k = Entity.createEntity("arrow", pos, this);
-                if (!(k instanceof EntityArrow)) {
+                EntityArrow arrow = (EntityArrow) Entity.createEntity("minecraft:arrow", pos, this);
+                if (arrow == null) {
                     return;
                 }
 
-                EntityArrow arrow = (EntityArrow) k;
-                setProjectileMotion(arrow, pitch, yawR, pitchR, f);
+                setProjectileMotion(arrow, direction.getX(), direction.getY(), direction.getZ(), f);
 
                 EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), arrow, f);
                 this.server.getPluginManager().callEvent(ev);
@@ -96,7 +100,7 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
                         if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
                     } else {
                         projectile.spawnToAll();
-                        ((EntityArrow) projectile).setPickupMode(EntityArrow.PICKUP_NONE);
+                        arrow.setPickupMode(EntityArrow.PICKUP_NONE);  // Set pickup mode for the arrow
                         this.level.addSound(this, Sound.RANDOM_BOW);
                     }
                 }

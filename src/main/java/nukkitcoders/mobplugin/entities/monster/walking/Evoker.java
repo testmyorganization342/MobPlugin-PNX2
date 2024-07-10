@@ -50,9 +50,9 @@ public class Evoker extends WalkingMonster {
 
     @Override
     protected void initEntity() {
+        this.setMaxHealth(24);
         super.initEntity();
         this.setDamage(new float[] { 0, 2, 3, 4 });
-        this.setMaxHealth(24);
     }
 
     @Override

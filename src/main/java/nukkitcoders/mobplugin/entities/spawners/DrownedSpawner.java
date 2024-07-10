@@ -20,8 +20,8 @@ public class DrownedSpawner extends AbstractEntitySpawner {
         final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         if (blockId == Block.WATER || blockId == Block.FLOWING_WATER) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
-            if (biomeId == 0 || biomeId == 7 || biomeId == 24) {
-                if (level.getBlockLightAt((int) pos.x, (int) pos.y, (int) pos.z) <= 7) {
+            if (biomeId == 0 || biomeId == 7 || biomeId == 10 || biomeId == 11 || biomeId == 24 || (biomeId >= 40 && biomeId <= 47)) {
+                if (level.getBlockLightAt((int) pos.x, (int) pos.y + 1, (int) pos.z) <= 7) {
                     if (MobPlugin.isMobSpawningAllowedByTime(level)) {
                         final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                         if (b == Block.WATER || b == Block.FLOWING_WATER) {

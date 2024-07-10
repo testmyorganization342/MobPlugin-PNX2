@@ -22,7 +22,7 @@ public class CodSpawner extends AbstractEntitySpawner {
         final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         if (blockId.equals(Block.WATER) || blockId.equals(Block.FLOWING_WATER)) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
-            if (biomeId == 0 || biomeId == 7 || biomeId == 24) {
+            if (biomeId == 0 || biomeId == 24 || (biomeId >= 42 && biomeId <= 45)) {
                 final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                 if (b.equals(Block.WATER) || b.equals(Block.FLOWING_WATER)) {
                     for (int i = 0; i < Utils.rand(4, 7); i++) {

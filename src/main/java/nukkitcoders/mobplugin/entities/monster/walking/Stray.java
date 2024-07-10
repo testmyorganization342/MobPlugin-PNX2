@@ -42,9 +42,8 @@ public class Stray extends WalkingMonster implements EntitySmite {
 
     @Override
     public void initEntity() {
-        super.initEntity();
-
         this.setMaxHealth(20);
+        super.initEntity();
     }
 
     @Override

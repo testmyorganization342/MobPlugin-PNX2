@@ -35,9 +35,8 @@ public class Bat extends FlyingAnimal {
 
     @Override
     public void initEntity() {
-        super.initEntity();
-
         this.setMaxHealth(6);
+        super.initEntity();
     }
 
     @Override

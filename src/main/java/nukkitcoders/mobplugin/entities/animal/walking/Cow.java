@@ -1,3 +1,4 @@
+
 package nukkitcoders.mobplugin.entities.animal.walking;
 
 import cn.nukkit.entity.passive.EntityCow;

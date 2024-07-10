@@ -51,8 +51,8 @@ public class Piglin extends WalkingMonster {
 
     @Override
     protected void initEntity() {
-        super.initEntity();
         this.setMaxHealth(16);
+        super.initEntity();
     }
 
     @Override

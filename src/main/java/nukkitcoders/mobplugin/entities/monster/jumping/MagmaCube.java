@@ -55,11 +55,6 @@ public class MagmaCube extends JumpingMonster {
 
     @Override
     protected void initEntity() {
-        super.initEntity();
-
-        this.fireProof = true;
-        this.noFallDamage = true;
-
         if (this.namedTag.contains("Size")) {
             this.size = this.namedTag.getInt("Size");
         } else {
@@ -75,6 +70,10 @@ public class MagmaCube extends JumpingMonster {
         } else if (size == SIZE_SMALL) {
             this.setMaxHealth(1);
         }
+        super.initEntity();
+
+        this.fireProof = true;
+        this.noFallDamage = true;
 
         if (size == SIZE_BIG) {
             this.setDamage(new float[] { 0, 3, 4, 6 });

@@ -50,11 +50,12 @@ public class Shulker extends WalkingMonster {
 
     @Override
     protected void initEntity() {
+        this.setMaxHealth(15);
         super.initEntity();
 
         this.fireProof = true;
         this.noFallDamage = true;
-        this.setMaxHealth(15);
+
     }
 
     @Override

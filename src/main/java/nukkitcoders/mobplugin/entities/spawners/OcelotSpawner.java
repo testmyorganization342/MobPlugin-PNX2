@@ -23,7 +23,7 @@ public class OcelotSpawner extends AbstractEntitySpawner {
             return;
         }
         final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
-        if (biomeId == 21 || biomeId == 149 || biomeId == 23 || biomeId == 151) {
+        if (biomeId == 21 || biomeId == 149 || biomeId == 23 || biomeId == 151 || biomeId == 48 || biomeId == 49) {
             final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
             if (blockId.equals(Block.GRASS_BLOCK)) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {

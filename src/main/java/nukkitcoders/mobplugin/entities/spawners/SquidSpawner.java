@@ -24,7 +24,7 @@ public class SquidSpawner extends AbstractEntitySpawner {
         final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         if (blockId == Block.WATER || blockId == Block.FLOWING_WATER) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
-            if (biomeId == 0 || biomeId == 24) {
+            if (biomeId == 0 || biomeId == 10 || biomeId == 24 || (biomeId >= 40 && biomeId <= 47)) {
                 if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
                     final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y - 1), (int) pos.z);
                     if (b == Block.WATER || b == Block.FLOWING_WATER) {

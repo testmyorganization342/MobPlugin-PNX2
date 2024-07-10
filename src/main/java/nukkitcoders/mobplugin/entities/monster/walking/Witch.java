@@ -52,8 +52,8 @@ public class Witch extends WalkingMonster {
 
     @Override
     protected void initEntity() {
-        super.initEntity();
         this.setMaxHealth(26);
+        super.initEntity();
     }
 
     @Override
@@ -73,21 +73,25 @@ public class Witch extends WalkingMonster {
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 60 && Utils.rand(1, 3) == 2 && this.distanceSquared(player) <= 60) {
+        if (this.attackDelay > 60 && Utils.rand(1, 3) == 2 && this.distanceSquared(player) <= 100) {
             this.attackDelay = 0;
             if (player.isAlive() && !player.closed) {
+                double f = 1.5;
 
-                double f = 1;
-                double yaw = this.yaw + Utils.rand(-4.0, 4.0);
-                Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
-                        this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
-                if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) != Block.AIR) {
-                    return;
-                }
-                EntitySplashPotion thrownPotion = (EntitySplashPotion) Entity.createEntity("ThrownPotion", pos, this);
+                Vector3 direction = player.getPosition().subtract(this.getPosition()).normalize();
+
+                Location pos = new Location(
+                        this.x + direction.x * 1.5,
+                        this.y + this.getEyeHeight(),
+                        this.z + direction.z * 1.5,
+                        0,
+                        0,
+                        this.level
+                );
+
+                EntitySplashPotion thrownPotion = (EntitySplashPotion) Entity.createEntity("minecraft:splash_potion", pos, this);
 
                 double distance = this.distanceSquared(player);
-
                 if (!player.hasEffect(EffectType.SLOWNESS) && distance <= 64) {
                     thrownPotion.potionId = PotionType.SLOWNESS.id();
                 } else if (player.getHealth() >= 8) {
@@ -98,15 +102,16 @@ public class Witch extends WalkingMonster {
                     thrownPotion.potionId = PotionType.HARMING.id();
                 }
 
-                thrownPotion.setMotion(new Vector3(-Math.sin(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f, -Math.sin(Math.toDegrees(pitch)) * f * f,
-                        Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
+                thrownPotion.setMotion(direction.multiply(f));
+
                 ProjectileLaunchEvent launch = new ProjectileLaunchEvent(thrownPotion, this);
                 this.server.getPluginManager().callEvent(launch);
-                if (launch.isCancelled()) {
-                    thrownPotion.close();
-                } else {
+
+                if (!launch.isCancelled()) {
                     thrownPotion.spawnToAll();
                     this.level.addSound(this, Sound.MOB_WITCH_THROW);
+                } else {
+                    thrownPotion.close();
                 }
             }
         }

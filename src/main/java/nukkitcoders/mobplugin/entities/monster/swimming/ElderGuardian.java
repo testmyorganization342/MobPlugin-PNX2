@@ -49,9 +49,9 @@ public class ElderGuardian extends SwimmingMonster {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(80);
         super.initEntity();
 
-        this.setMaxHealth(80);
         this.setDataFlag(EntityFlag.ELDER, true);
     }
 

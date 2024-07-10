@@ -20,6 +20,7 @@ import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityEnderCharge;
 import nukkitcoders.mobplugin.utils.Utils;
 import org.jetbrains.annotations.NotNull;
+import cn.nukkit.item.Item;
 
 public class EnderDragon extends FlyingMonster implements Boss {
 
@@ -51,13 +52,13 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(200);
+        this.setHealth(200);
+
         super.initEntity();
 
         this.fireProof = true;
         this.setDataFlag(EntityFlag.FIRE_IMMUNE, true);
-
-        this.setMaxHealth(200);
-        this.setHealth(200);
     }
 
     @Override
@@ -165,4 +166,10 @@ public class EnderDragon extends FlyingMonster implements Boss {
     protected boolean isInTickingRange() {
         return true;
     }
+
+    @Override
+    protected boolean applyNameTag(Player player, Item item) {
+        return false;
+    }
 }
+

@@ -23,7 +23,7 @@ public class PufferfishSpawner extends AbstractEntitySpawner {
         final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         if (blockId == Block.WATER || blockId == Block.FLOWING_WATER) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
-            if (biomeId == 0) {
+            if (biomeId == 40 || biomeId == 42 || biomeId == 43) {
                 final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y - 1), (int) pos.z);
                 if (b == Block.WATER || b == Block.FLOWING_WATER) {
                     for (int i = 0; i < Utils.rand(3, 5); i++) {

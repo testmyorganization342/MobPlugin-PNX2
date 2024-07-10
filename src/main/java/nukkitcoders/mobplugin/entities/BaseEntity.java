@@ -25,9 +25,9 @@ import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import nukkitcoders.mobplugin.MobPlugin;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
-import nukkitcoders.mobplugin.entities.monster.flying.EnderDragon;
 import nukkitcoders.mobplugin.utils.FastMathLite;
 import nukkitcoders.mobplugin.utils.Utils;
+
 
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -64,24 +64,24 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         }
     };
 
-    public int stayTime = 0;
+    public int stayTime;
     public Item[] armor;
-    protected int moveTime = 0;
+    protected int moveTime;
     protected float moveMultiplier = 1.0f;
-    protected Vector3 target = null;
-    protected Entity followTarget = null;
-    protected int attackDelay = 0;
+    protected Vector3 target;
+    protected Entity followTarget;
+    protected int attackDelay;
     protected boolean noFallDamage;
     protected Player lastInteract;
-    private int airTicks = 0;
-    private boolean baby = false;
+    private int airTicks;
+    private boolean baby;
     private boolean movement = true;
-    private boolean friendly = false;
+    private boolean friendly;
     private int knockBackTime;
-    private short inLoveTicks = 0;
+    private short inLoveTicks;
     //private int inEndPortal;
     //private int inNetherPortal;
-    private short inLoveCooldown = 0;
+    private short inLoveCooldown;
 
     public BaseEntity(IChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -753,9 +753,18 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
         return entity instanceof Player;
     }
 
-    @Override
-    protected boolean applyNameTag(Player player, Item item) {
-        return !(this instanceof EnderDragon) && super.applyNameTag(player, item);
+    protected boolean applyNameTag(Player player, Item nameTag) {
+        String name = nameTag.getCustomName();
+
+        if (!name.isEmpty()) {
+            this.namedTag.putString("CustomName", name);
+            this.namedTag.putBoolean("CustomNameVisible", true);
+            this.setNameTag(name);
+            this.setNameTagVisible(true);
+            return true; // onInteract: true = decrease count
+        }
+
+        return false;
     }
 
     /**
@@ -823,6 +832,7 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     protected boolean tryBreedWih(Entity entity) {
         if (entity instanceof BaseEntity be && entity.getNetworkId() == this.getNetworkId()) {
             if (be.isInLove() && !be.isBaby() && be.age > 0) {
+                Player pl = be.lastInteract;
                 be.lastInteract = null;
                 this.setInLove(false);
                 be.setInLove(false);

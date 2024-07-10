@@ -19,9 +19,8 @@ public class Axolotl extends Fish {
 
     @Override
     public void initEntity() {
-        super.initEntity();
-
         this.setMaxHealth(14);
+        super.initEntity();
     }
 
     @Override

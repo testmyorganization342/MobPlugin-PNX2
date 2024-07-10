@@ -60,10 +60,10 @@ public class Ghast extends FlyingMonster {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(10);
         super.initEntity();
 
         this.fireProof = true;
-        this.setMaxHealth(10);
         this.setDataFlag(EntityFlag.FIRE_IMMUNE, true);
     }
 

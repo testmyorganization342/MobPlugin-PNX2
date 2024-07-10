@@ -22,7 +22,7 @@ public class SalmonSpawner extends AbstractEntitySpawner {
         final String blockId = level.getBlockIdAt((int) pos.x, (int) pos.y, (int) pos.z);
         if (blockId == Block.WATER || blockId == Block.FLOWING_WATER) {
             final int biomeId = level.getBiomeId((int) pos.x, (int) pos.y, (int) pos.z);
-            if (biomeId == 0 || biomeId == 7 || biomeId == 24) {
+            if (biomeId == 7 || biomeId == 11 || biomeId == 44 || biomeId == 45 || biomeId == 10 || biomeId == 47) {
                 final String b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
                 if (b == Block.WATER || b == Block.FLOWING_WATER) {
                     for (int i = 0; i < Utils.rand(3, 5); i++) {
