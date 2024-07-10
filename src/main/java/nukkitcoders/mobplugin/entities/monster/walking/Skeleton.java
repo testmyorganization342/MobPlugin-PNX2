@@ -67,40 +67,40 @@ public class Skeleton extends WalkingMonster implements EntitySmite {
             this.attackDelay = 0;
 
             double f = 1.3;
-            Vector3 direction = player.getPosition().subtract(this.getPosition()).normalize();
-
-            Location pos = new Location(
-                    this.x + direction.x * 1.5,
-                    this.y + this.getEyeHeight(),
-                    this.z + direction.z * 1.5,
-                    0,
-                    0,
-                    this.level
-            );
-            pos.add(direction.getX(), direction.getY(), direction.getZ());
+            double yaw = this.yaw;
+            double pitch = this.pitch;
+            double yawR = FastMathLite.toRadians(yaw);
+            double pitchR = FastMathLite.toRadians(pitch);
+            Location pos = new Location(this.x - Math.sin(yawR) * Math.cos(pitchR) * 0.5, this.y + this.getHeight() - 0.18,
+                    this.z + Math.cos(yawR) * Math.cos(pitchR) * 0.5, yaw, pitch, this.level);
 
             if (this.getLevel().getBlockIdAt(pos.getFloorX(), pos.getFloorY(), pos.getFloorZ()) == Block.AIR) {
-                EntityArrow arrow = (EntityArrow) Entity.createEntity("minecraft:arrow", pos, this);
-                if (arrow == null) {
+                Entity k = Entity.createEntity("minecraft:arrow", pos, this);
+                if (!(k instanceof EntityArrow)) {
                     return;
                 }
 
-                setProjectileMotion(arrow, direction.getX(), direction.getY(), direction.getZ(), f);
+                EntityArrow arrow = (EntityArrow) k;
+                setProjectileMotion(arrow, pitch, yawR, pitchR, f);
 
                 EntityShootBowEvent ev = new EntityShootBowEvent(this, Item.get(Item.ARROW, 0, 1), arrow, f);
                 this.server.getPluginManager().callEvent(ev);
 
                 EntityProjectile projectile = ev.getProjectile();
                 if (ev.isCancelled()) {
-                    if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
+                    if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) {
+                        projectile.close();
+                    }
                 } else {
                     ProjectileLaunchEvent launch = new ProjectileLaunchEvent(projectile, this);
                     this.server.getPluginManager().callEvent(launch);
                     if (launch.isCancelled()) {
-                        if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) projectile.close();
+                        if (this.stayTime > 0 || this.distance(this.target) <= ((this.getWidth()) / 2 + 0.05) * nearbyDistanceMultiplier()) {
+                            projectile.close();
+                        }
                     } else {
                         projectile.spawnToAll();
-                        arrow.setPickupMode(EntityArrow.PICKUP_NONE);  // Set pickup mode for the arrow
+                        ((EntityArrow) projectile).setPickupMode(EntityArrow.PICKUP_NONE);
                         this.level.addSound(this, Sound.RANDOM_BOW);
                     }
                 }
