@@ -4,6 +4,8 @@ import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntityID;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.config.ServerProperties;
+import cn.nukkit.config.ServerPropertiesKeys;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.event.Listener;
@@ -65,9 +67,8 @@ public class MobPlugin extends PluginBase implements Listener {
 
         if (config.spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this, config.pluginConfig), config.spawnDelay, config.spawnDelay);
-
-            if (!this.getServer().getPropertyBoolean("spawn-animals") || !this.getServer().getPropertyBoolean("spawn-mobs")) {
-                this.getServer().getLogger().notice("Disabling mob/animal spawning from server.properties does not disable spawning in MobPlugin");
+                if (this.getServer().getProperties().get(ServerPropertiesKeys.SPAWN_ANIMALS, true) || this.getServer().getProperties().get(ServerPropertiesKeys.SPAWN_MOBS, true)){
+                    this.getServer().getLogger().notice("Disabling mob/animal spawning from server.properties does not disable spawning in MobPlugin");
             }
         } else {
             this.getServer().getLogger().notice("Mob spawning is disabled (autospawn-ticks <= 0)");
